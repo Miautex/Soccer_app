@@ -6,6 +6,7 @@ package Data;
 
 public class Player {
     private String name;
+    private int id;
 
     public Player (String name){
         this.name = name;
