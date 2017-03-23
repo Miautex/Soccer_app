@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-public final class Player implements Comparable, Serializable {
+public final class Player implements Comparable, Serializable, DatabaseObject {
 
     private int id;
     private boolean isAdmin;
@@ -33,6 +33,7 @@ public final class Player implements Comparable, Serializable {
         this.id = id;
     }
 
+    @Override
     public int getId () {
         return id;
     }
