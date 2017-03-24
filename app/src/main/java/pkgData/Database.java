@@ -24,7 +24,7 @@ public class Database extends Application {
         return instance;
     }
 
-    public ArrayList<Player> getPlayers() throws Exception {
+    public ArrayList<Player> getPlayers() {
         ArrayList<Player> listPlayers = new ArrayList<>();
 
         for (DatabaseObject dbo: listDbos) {
@@ -77,7 +77,31 @@ public class Database extends Application {
         listDbos.add(new Player(4, "raphael", "Raphael"));
         listDbos.add(new Player(5, "pascal", "Pascal"));
         listDbos.add(new Player(6, "jakob", "Jakob"));
-        listDbos.add(new Player(1, "martin", "Martin"));
-        listDbos.add(new Player(1, "martin", "Martin"));
+        listDbos.add(new Player(7, "stefan", "Stefan"));
+        listDbos.add(new Player(8, "lukas", "Lukas"));
+    }
+
+    /**
+     * Checks whether the passed username and password are valid or not
+     *
+     * @param  username the username
+     * @param  pw_Unencrypted the unencrypted password
+     * @return the player if the login data is correct, or null if it is incorrect
+     */
+    public Player login(String username, String pw_Unencrypted) {
+        //Temporary, because no webservice yet
+        return checkForUsername(getPlayers(), username);
+    }
+
+    private Player checkForUsername(ArrayList<Player> players, String username) {
+        Player retVal = null;
+
+        for (int i=0; i<players.size() && retVal==null; i++) {
+            if (players.get(i).getUsername().equals(username)) {
+                retVal = players.get(i);
+            }
+        }
+
+        return retVal;
     }
 }
