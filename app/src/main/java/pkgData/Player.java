@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-public final class Player implements Comparable, Serializable, DatabaseObject {
+public final class Player implements Comparable, Serializable {
 
     private int id;
     private boolean isAdmin;
@@ -15,10 +15,10 @@ public final class Player implements Comparable, Serializable, DatabaseObject {
 
     private Player () throws Exception {
         super();
-        setId(0);
-        setAdmin(false);
-        setName("Unknown");
-        setUsername("unknown");
+        id = 0;
+        isAdmin = false;
+        name = null;
+        username = null;
         positions = new HashSet<>();
     }
 
@@ -33,7 +33,6 @@ public final class Player implements Comparable, Serializable, DatabaseObject {
         this.id = id;
     }
 
-    @Override
     public int getId () {
         return id;
     }
@@ -57,9 +56,6 @@ public final class Player implements Comparable, Serializable, DatabaseObject {
         if (name.isEmpty()) {
             throw new Exception("name must not be empty");
         }
-        /*if (name.matches("")) {
-            throw new Exception("name must match the pattern \"" + pattern + "\"");
-        }*/
         this.name = name;
     }
 
@@ -123,7 +119,7 @@ public final class Player implements Comparable, Serializable, DatabaseObject {
         int cp;
         Player tmpP = (Player) o;
 
-        cp = this.getId() - tmpP.getId();
+        cp = getName().compareTo(tmpP.getName());
 
         return cp;
     }
