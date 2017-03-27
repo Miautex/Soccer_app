@@ -10,10 +10,10 @@ import java.util.ArrayList;
 
 public class Database extends Application {
     private static Database instance = null;
-    private ArrayList<DatabaseObject> listDbos = null;
+    private ArrayList<Player> listPlayers = null;
 
     private Database() throws Exception {
-        listDbos = new ArrayList<>();
+        listPlayers = new ArrayList<>();
         generateTestData();
     }
 
@@ -25,37 +25,29 @@ public class Database extends Application {
     }
 
     public ArrayList<Player> getPlayers() {
-        ArrayList<Player> listPlayers = new ArrayList<>();
-
-        for (DatabaseObject dbo: listDbos) {
-            if (dbo.getClass().equals(Player.class)) {
-                listPlayers.add((Player) dbo);
-            }
-        }
-
         return listPlayers;
     }
 
-    public void insert(DatabaseObject dbo) throws Exception {
-        if (listDbos.contains(dbo)) {
-            throw new Exception(dbo.getClass() + " with id=" + dbo.getId() + " already exists");
+    public void insert(Player p) throws Exception {
+        if (listPlayers.contains(p)) {
+            throw new Exception("Player with id=" + p.getId() + " already exists");
         }
-        listDbos.add(dbo);
+        listPlayers.add(p);
     }
 
-    public void update(DatabaseObject dbo) throws Exception {
-        if (!listDbos.contains(dbo)) {
-            throw new Exception(dbo.getClass() + " with id=" + dbo.getId() + " doesn't exist, so it cannot be updated");
+    public void update(Player p) throws Exception {
+        if (!listPlayers.contains(p)) {
+            throw new Exception("Player with id=" + p.getId() + " doesn't exist, so it cannot be updated");
         }
-        listDbos.remove(dbo);
-        listDbos.add(dbo);
+        listPlayers.remove(p);
+        listPlayers.add(p);
     }
 
-    public void remove(DatabaseObject dbo) throws Exception {
-        if (!listDbos.contains(dbo)) {
-            throw new Exception(dbo.getClass() + " with id=" + dbo.getId() + " doesn't exist, so it cannot be deleted");
+    public void remove(Player p) throws Exception {
+        if (!listPlayers.contains(p)) {
+            throw new Exception("Player with id=" + p.getId() + " doesn't exist, so it cannot be deleted");
         }
-        listDbos.remove(dbo);
+        listPlayers.remove(p);
     }
 
     public void commit() {
@@ -71,14 +63,14 @@ public class Database extends Application {
     }
 
     private void generateTestPlayers() throws Exception {
-        listDbos.add(new Player(1, "martin", "Martin"));
-        listDbos.add(new Player(2, "elias", "Elias"));
-        listDbos.add(new Player(3, "marco", "Marco"));
-        listDbos.add(new Player(4, "raphael", "Raphael"));
-        listDbos.add(new Player(5, "pascal", "Pascal"));
-        listDbos.add(new Player(6, "jakob", "Jakob"));
-        listDbos.add(new Player(7, "stefan", "Stefan"));
-        listDbos.add(new Player(8, "lukas", "Lukas"));
+        listPlayers.add(new Player(1, "martin", "Martin"));
+        listPlayers.add(new Player(2, "elias", "Elias"));
+        listPlayers.add(new Player(3, "marco", "Marco"));
+        listPlayers.add(new Player(4, "raphael", "Raphael"));
+        listPlayers.add(new Player(5, "pascal", "Pascal"));
+        listPlayers.add(new Player(6, "jakob", "Jakob"));
+        listPlayers.add(new Player(7, "stefan", "Stefan"));
+        listPlayers.add(new Player(8, "lukas", "Lukas"));
     }
 
     /**
