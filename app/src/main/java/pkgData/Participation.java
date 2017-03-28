@@ -145,6 +145,10 @@ public final class Participation implements Comparable, Serializable {
         this.player = player;
     }
 
+    @Override
+    public int hashCode () {
+        return this.player.hashCode();
+    }
 
     @Override
     public boolean equals (Object obj) {
@@ -154,9 +158,7 @@ public final class Participation implements Comparable, Serializable {
             if (obj instanceof Participation) {
                 tmpPart = (Participation)obj;
 
-                eq = this.getPlayer().equals(tmpPart.getPlayer())
-                        && this.getPosition().equals(tmpPart.getPosition())
-                        && this.getTeam().equals(tmpPart.getTeam());
+                eq = this.getPlayer().equals(tmpPart.getPlayer());
             }
         }
         return eq;
