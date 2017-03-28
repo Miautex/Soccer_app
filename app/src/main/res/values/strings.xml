@@ -3,4 +3,11 @@
     <string name="btnLogin">Login</string>
     <string name="Password">Password</string>
     <string name="Username">Username</string>
+    <string name="Name">Name</string>
+    <string name="PosMid">Midfield</string>
+    <string name="PosGoal">Goalie</string>
+    <string name="PosDef">Defender</string>
+    <string name="PosAtk">Attacker</string>
+    <string name="btnSave">Save</string>
+    <string name="btnCancel">Cancel</string>
 </resources>
