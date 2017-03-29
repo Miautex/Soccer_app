@@ -2,6 +2,7 @@ package group2.schoolproject.a02soccer;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,8 +17,6 @@ public class MainActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getAllViews();
-        showToast("created");
-
     }
 
     private void getAllViews(){
@@ -37,12 +36,19 @@ public class MainActivity extends Activity {
                 break;
             case R.id.mniEditUser:
                 showToast("Edit User clicked");
+                openEditPlayerActivity();
                 break;
             default:
                 return super.onOptionsItemSelected(item);
         }
         return true;
     }
+
+    private void openEditPlayerActivity(){
+        Intent myIntent = new Intent(MainActivity.this, EditPlayerActivity.class);
+        MainActivity.this.startActivity(myIntent);
+    }
+
 
     private void showToast(String text) {
         Context context = getApplicationContext();

@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import pkgData.Database;
+
 public class LoginActivity extends AppCompatActivity implements OnClickListener {
 
     Button btnLogin = null;
@@ -53,13 +55,21 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
     /**
      * try to login and if successful open the MainActivity
      */
-    private void tryLogin(){
+    private void tryLogin() throws Exception {
         //Datenbank Abfrage
-        boolean success = true;
+        boolean success = false;
+        String msg = "";
+
+        success = Database.getInstance().login(edtUsername.getText().toString(), edtPassword.getText().toString());
+
         if(success){
-            showToast("Login successful");
+            msg = "Login successful";
             openMainActivity();
         }
+        else {
+            msg = "Username or Password is wrong";
+        }
+        showToast(msg);
     }
 
     /**
