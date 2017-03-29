@@ -13,8 +13,6 @@ import android.widget.Toast;
 import pkgData.Database;
 import pkgData.Game;
 
-import static group2.schoolproject.a02soccer.Utilities.showToast;
-
 public class MainActivity extends Activity {
     ListView lsvEditableGames = null;
     Database db = null;
@@ -30,7 +28,7 @@ public class MainActivity extends Activity {
             showGames();
         }
         catch (Exception ex) {
-            showToast("Error: " + ex.getMessage(), Toast.LENGTH_SHORT, getApplicationContext());
+            Toast.makeText(this, "Error: " + ex.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -55,7 +53,7 @@ public class MainActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.mniAddUser:
-                showToast("Add User clicked", Toast.LENGTH_SHORT, getApplicationContext());
+                Toast.makeText(this, "Add User clicked", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.mniEditUser:
                 openEditPlayerActivity();

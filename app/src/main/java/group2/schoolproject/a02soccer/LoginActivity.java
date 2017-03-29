@@ -12,8 +12,6 @@ import android.widget.Toast;
 
 import pkgData.Database;
 
-import static group2.schoolproject.a02soccer.Utilities.showToast;
-
 public class LoginActivity extends AppCompatActivity implements OnClickListener {
 
     Button btnLogin = null;
@@ -63,7 +61,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
                 tryLogin();
             }
         } catch (Exception e) {
-            showToast("Error with onClick", Toast.LENGTH_SHORT, getApplicationContext());
+            Toast.makeText(this, "Error with onClick", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -84,7 +82,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
         else {
             msg = "Username or Password is wrong";
         }
-        showToast(msg, Toast.LENGTH_SHORT, getApplicationContext());
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
     /**
