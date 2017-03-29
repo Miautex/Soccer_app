@@ -1,6 +1,5 @@
 package group2.schoolproject.a02soccer;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -14,6 +13,8 @@ import java.util.ArrayList;
 import pkgData.Database;
 import pkgData.Player;
 import pkgData.PlayerPosition;
+
+import static group2.schoolproject.a02soccer.Utilities.showToast;
 
 /**
  * Created by Martin on 28.03.2017.
@@ -44,7 +45,7 @@ public class EditPlayerActivity extends AppCompatActivity implements View.OnClic
             initCheckboxes();
         }
         catch (Exception ex) {
-            showToast("Error: " + ex.getMessage());
+            showToast("Error: " + ex.getMessage(), Toast.LENGTH_SHORT, getApplicationContext());
         }
     }
 
@@ -112,13 +113,13 @@ public class EditPlayerActivity extends AppCompatActivity implements View.OnClic
         try {
             if (v.getId() == R.id.btnSave) {
                 onBtnSaveClick();
-                showToast("Changes Saved");
+                showToast("Changes Saved", Toast.LENGTH_SHORT, getApplicationContext());
             }
             else if (v.getId() == R.id.btnCancel) {
                 this.finish();
             }
         } catch (Exception e) {
-            showToast("Error: " + e.getMessage());
+            showToast("Error: " + e.getMessage(), Toast.LENGTH_SHORT, getApplicationContext());
         }
     }
 
@@ -135,26 +136,14 @@ public class EditPlayerActivity extends AppCompatActivity implements View.OnClic
         currPlayer.setUsername(edtUsername.getText().toString());
         currPlayer.setName(edtName.getText().toString());
 
-        for (PlayerPosition pp: currPlayer.getPositions()) {
+        for (PlayerPosition pp : currPlayer.getPositions()) {
             currPlayer.removePosition(pp);
         }
 
-        for (PlayerPosition pp: getCheckedPlayerPositions()) {
+        for (PlayerPosition pp : getCheckedPlayerPositions()) {
             currPlayer.addPosition(pp);
         }
 
         db.update(currPlayer);
-    }
-
-
-    /**
-     * shows Toast == MessageLine
-     * @param text Message you want to display
-     */
-    private void showToast(String text) {
-        Context context = getApplicationContext();
-        int duration = Toast.LENGTH_SHORT;
-        Toast toast = Toast.makeText(context, text, duration);
-        toast.show();
     }
 }
