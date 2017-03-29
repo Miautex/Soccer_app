@@ -5,10 +5,6 @@ import android.app.Application;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-/**
- * Created by Elias on 22.03.2017.
- */
-
 public class Database extends Application {
     private static Database instance = null;
     private ArrayList<Player> listPlayers = null;

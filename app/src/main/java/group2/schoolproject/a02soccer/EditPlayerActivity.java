@@ -14,8 +14,6 @@ import pkgData.Database;
 import pkgData.Player;
 import pkgData.PlayerPosition;
 
-import static group2.schoolproject.a02soccer.Utilities.showToast;
-
 /**
  * Created by Martin on 28.03.2017.
  */
@@ -45,7 +43,7 @@ public class EditPlayerActivity extends AppCompatActivity implements View.OnClic
             initCheckboxes();
         }
         catch (Exception ex) {
-            showToast("Error: " + ex.getMessage(), Toast.LENGTH_SHORT, getApplicationContext());
+            Toast.makeText(this, "Error: " + ex.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -113,13 +111,13 @@ public class EditPlayerActivity extends AppCompatActivity implements View.OnClic
         try {
             if (v.getId() == R.id.btnSave) {
                 onBtnSaveClick();
-                showToast("Changes Saved", Toast.LENGTH_SHORT, getApplicationContext());
+                Toast.makeText(this, "Changes Saved", Toast.LENGTH_SHORT).show();
             }
             else if (v.getId() == R.id.btnCancel) {
                 this.finish();
             }
         } catch (Exception e) {
-            showToast("Error: " + e.getMessage(), Toast.LENGTH_SHORT, getApplicationContext());
+            Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -129,9 +127,6 @@ public class EditPlayerActivity extends AppCompatActivity implements View.OnClic
         if (edtName.getText().toString().isEmpty() || edtUsername.getText().toString().isEmpty()) {
             throw new Exception("Name and Username may not be empty");
         }
-        /*if (!db.isUsernameAvailable(edtUsername.getText().toString())) {
-            throw new Exception("Username '" + edtUsername.getText().toString() + "' is already assigned to a different user");
-        }*/
 
         currPlayer.setUsername(edtUsername.getText().toString());
         currPlayer.setName(edtName.getText().toString());
