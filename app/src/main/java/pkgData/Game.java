@@ -3,6 +3,7 @@ package pkgData;
 import android.support.annotation.NonNull;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -93,7 +94,8 @@ public final class Game implements Serializable, Comparable<Game> {
 
     @Override
     public String toString () {
-        return "Game (#" + getId() + " - " + getDate() + ") A:B (" + getScoreTeamA() + ":" + getScoreTeamB() + ")";
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd.MM.yyyy");
+        return "Game (#" + getId() + " - " + sdf.format(getDate()) + ") A:B (" + getScoreTeamA() + ":" + getScoreTeamB() + ")";
     }
 
     @Override
