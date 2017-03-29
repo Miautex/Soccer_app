@@ -28,7 +28,8 @@
         android:layout_toEndOf="@+id/txvUsername"
         android:layout_toRightOf="@+id/txvUsername"
         android:ems="10"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:text="admin" />
 
     <TextView
         android:id="@+id/txvPassword"
