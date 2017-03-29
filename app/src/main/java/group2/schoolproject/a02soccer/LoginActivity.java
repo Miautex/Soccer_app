@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -40,6 +41,19 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
      */
     private void registrateEventHandlers(){
         btnLogin.setOnClickListener(this);
+        edtPassword.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if(keyCode == event.KEYCODE_ENTER){
+                    try {
+                        tryLogin();
+                    }catch(Exception x){
+                        showToast("Error occured");
+                    }
+                }
+                return false;
+            }
+        });
     }
 
     public void onClick(View arg0) {
