@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-public final class Player implements Comparable, Serializable {
+public final class Player implements Comparable, Serializable, Cloneable {
 
     private int id;
     private boolean isAdmin;
@@ -63,7 +63,7 @@ public final class Player implements Comparable, Serializable {
         return username;
     }
 
-    private void setUsername (String username) throws Exception {
+    public void setUsername (String username) throws Exception {
         if (username == null) {
             throw new Exception("username must not be null");
         }
@@ -85,6 +85,10 @@ public final class Player implements Comparable, Serializable {
         positions.remove(position);
     }
 
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 
     @Override
     public int hashCode () {
