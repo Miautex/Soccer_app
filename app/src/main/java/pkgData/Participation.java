@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import java.io.Serializable;
 
 public final class Participation implements Comparable, Serializable {
-    private int numGoalsGot, numGoalsShotDefault, numGoalsShotHead, numGoalsShotHeadSnow, numGoalsShotPenalty, numNutmeg, goalDifference;
+    private int numGoalsGot, numGoalsShotDefault, numGoalsShotHead, numGoalsShotHeadSnow, numGoalsShotPenalty, numNutmeg;
     private Team team;
     private PlayerPosition position;
     private Player player;
@@ -18,7 +18,6 @@ public final class Participation implements Comparable, Serializable {
         this.numGoalsShotHeadSnow = 0;
         this.numGoalsShotPenalty = 0;
         this.numNutmeg = 0;
-        this.goalDifference = 0;
         this.team = Team.NULL;
         this.position = PlayerPosition.ATTACK;
         this.player = null;
@@ -45,14 +44,6 @@ public final class Participation implements Comparable, Serializable {
         this.setNumGoalsShotHeadSnow(numGoalsShotHeadSnow);
         this.setNumGoalsShotPenalty(numGoalsShotPenalty);
         this.setNumNutmeg(numNutmeg);
-    }
-
-    public int getGoalDifference() {
-        return goalDifference;
-    }
-
-    public void setGoalDifference(int goalDifference) {
-        this.goalDifference = goalDifference;
     }
 
     public int getNumGoalsGot() {

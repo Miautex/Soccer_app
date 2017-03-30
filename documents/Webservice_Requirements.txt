@@ -33,6 +33,6 @@ Player Attributes are calculated the following way:
     numWins ........... sum of all wins a player has earned (has to be calculated from participations)
     numDefeats ........ sum of all defeats a player has earned (has to be calculated from participations)
     numDraws .......... sum of all draws a player has earned (has to be calculated from participations)
-    goalDifference .... sum of all goal differences (has to be calculated from participations)
+    goalDifference .... avg of all goal differences (has to be calculated from games to player has participated in)
 
-Game Attributes (scoreTeamA, scoreTeamB) have to be calculated from participations
+Game Attributes (scoreTeamA, scoreTeamB) DO NOT have to be calculated from participations (They are calculated on client-side)

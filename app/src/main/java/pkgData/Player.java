@@ -13,7 +13,7 @@ public final class Player implements Comparable, Serializable, Cloneable {
     private String name, username;
     private HashSet<PlayerPosition> positions;
     private int numWins, numDefeats, numDraws;
-    private float goalDifference;
+    private float avgGoalDifference;
 
     private Player () throws Exception {
         super();
@@ -121,14 +121,14 @@ public final class Player implements Comparable, Serializable, Cloneable {
     }
 
     public float getGoalDifference() {
-        return goalDifference;
+        return avgGoalDifference;
     }
 
     public void setGoalDifference(float goalRatio) {
         if (goalRatio < 0) {
             throw new IllegalArgumentException("goalRatio must not be negative");
         }
-        this.goalDifference = goalRatio;
+        this.avgGoalDifference = goalRatio;
     }
 
     @Override
