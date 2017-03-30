@@ -12,6 +12,7 @@ public final class Game implements Serializable, Comparable<Game> {
 
     private int id, scoreTeamA, scoreTeamB;
     private Date date;
+    private String remark;
     private HashSet<Participation> participations;
 
     private Game () {
@@ -28,6 +29,14 @@ public final class Game implements Serializable, Comparable<Game> {
         setDate(date);
         setScoreTeamA(scoreA);
         setScoreTeamB(scoreB);
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String additionalInformation) {
+        this.remark = additionalInformation;
     }
 
     private void setId (int id) {

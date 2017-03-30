@@ -12,6 +12,8 @@ public final class Player implements Comparable, Serializable, Cloneable {
     private boolean isAdmin;
     private String name, username;
     private HashSet<PlayerPosition> positions;
+    private int numWins, numDefeats, numDraws;
+    private float goalDifference;
 
     private Player () throws Exception {
         super();
@@ -83,6 +85,50 @@ public final class Player implements Comparable, Serializable, Cloneable {
 
     public void removePosition (PlayerPosition position) throws Exception {
         positions.remove(position);
+    }
+
+    public int getNumWins() {
+        return numWins;
+    }
+
+    public void setNumWins(int numWins) {
+        if (numWins < 0) {
+            throw new IllegalArgumentException("numWins must not be negative");
+        }
+        this.numWins = numWins;
+    }
+
+    public int getNumDefeats() {
+        return numDefeats;
+    }
+
+    public void setNumDefeats(int numDefeats) {
+        if (numDefeats < 0) {
+            throw new IllegalArgumentException("numDefeats must not be negative");
+        }
+        this.numDefeats = numDefeats;
+    }
+
+    public int getNumDraws() {
+        return numDraws;
+    }
+
+    public void setNumDraws(int numDraws) {
+        if (numDraws < 0) {
+            throw new IllegalArgumentException("numDraws must not be negative");
+        }
+        this.numDraws = numDraws;
+    }
+
+    public float getGoalDifference() {
+        return goalDifference;
+    }
+
+    public void setGoalDifference(float goalRatio) {
+        if (goalRatio < 0) {
+            throw new IllegalArgumentException("goalRatio must not be negative");
+        }
+        this.goalDifference = goalRatio;
     }
 
     @Override

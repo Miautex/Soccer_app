@@ -25,6 +25,14 @@
 13. Collection<Game> getGamesByPlayer(int playerID, Date dateFrom, Date dateTo) ... returns a collection of all Games the given Player has participated in
                                                                                      in the timespan from dateFrom to dateTo
 
-14. PlayerStatistics getPlayerStatistics(int playerID) ... returns the statistics of given player (values are the sum of all values from all Participations)
+14. void setPassword(int playerID, String newPassword) ... sets newPassword as the password of given Player
 
-15. void setPassword(int playerID, String newPassword) ... sets newPassword as the password of given Player
+
+NOTE:
+Player Attributes are calculated the following way:
+    numWins ........... sum of all wins a player has earned (has to be calculated from participations)
+    numDefeats ........ sum of all defeats a player has earned (has to be calculated from participations)
+    numDraws .......... sum of all draws a player has earned (has to be calculated from participations)
+    goalDifference .... sum of all goal differences (has to be calculated from participations)
+
+Game Attributes (scoreTeamA, scoreTeamB) have to be calculated from participations
