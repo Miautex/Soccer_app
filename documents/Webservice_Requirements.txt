@@ -27,4 +27,4 @@
 
 14. PlayerStatistics getPlayerStatistics(int playerID) ... returns the statistics of given player (values are the sum of all values from all Participations)
 
-15. void setPassword(Player player, String newPassword) ... sets newPassword as the password of given Player
+15. void setPassword(int playerID, String newPassword) ... sets newPassword as the password of given Player
