@@ -26,3 +26,5 @@
                                                                                      in the timespan from dateFrom to dateTo
 
 14. PlayerStatistics getPlayerStatistics(Player player) ... returns the statistics of given player (values are the sum of all values from all Participations)
+
+15. void setPassword(Player player, String newPassword) ... sets newPassword as the password of given Player
