@@ -1,20 +1,20 @@
 -- phpMyAdmin SQL Dump
--- version 3.4.10.1deb1
+-- version 4.5.4.1deb2ubuntu2
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 20. Mrz 2017 um 15:40
--- Server Version: 5.5.54
--- PHP-Version: 5.5.23-1+deb.sury.org~precise+2
+-- Erstellungszeit: 31. Mrz 2017 um 12:58
+-- Server-Version: 5.7.17-0ubuntu0.16.04.1
+-- PHP-Version: 7.0.15-0ubuntu0.16.04.4
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Datenbank: `4BHIFS_2017_SOCCER_G2`
@@ -26,23 +26,23 @@ SET time_zone = "+00:00";
 -- Tabellenstruktur für Tabelle `games`
 --
 
-CREATE TABLE IF NOT EXISTS `games` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `games` (
+  `id` int(11) NOT NULL,
   `date` date NOT NULL,
-  `scoreTeamA` int(10) unsigned NOT NULL,
-  `scoreTeamB` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+  `remark` varchar(250) NOT NULL,
+  `scoreTeamA` int(11) NOT NULL,
+  `scoreTeamB` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Daten für Tabelle `games`
 --
 
-INSERT INTO `games` (`id`, `date`, `scoreTeamA`, `scoreTeamB`) VALUES
-(1, '2017-03-16', 5, 1),
-(2, '2017-03-15', 2, 2),
-(3, '2017-03-14', 0, 0),
-(4, '2017-03-12', 1, 2);
+INSERT INTO `games` (`id`, `date`, `remark`, `scoreTeamA`, `scoreTeamB`) VALUES
+(1, '2017-03-16', '', 0, 0),
+(2, '2017-03-15', '', 0, 0),
+(3, '2017-03-14', '', 0, 0),
+(4, '2017-03-12', '', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -50,8 +50,8 @@ INSERT INTO `games` (`id`, `date`, `scoreTeamA`, `scoreTeamB`) VALUES
 -- Tabellenstruktur für Tabelle `participation`
 --
 
-CREATE TABLE IF NOT EXISTS `participation` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `participation` (
+  `id` int(11) NOT NULL,
   `idGame` int(11) NOT NULL,
   `idPlayer` int(11) NOT NULL,
   `goalsGot` int(11) NOT NULL,
@@ -60,18 +60,16 @@ CREATE TABLE IF NOT EXISTS `participation` (
   `goalsShotHeadSnow` int(11) NOT NULL,
   `goalsShotPenalty` int(11) NOT NULL,
   `nutmeg` int(11) NOT NULL,
-  `team` enum('A','B','UNASSIGNED') NOT NULL DEFAULT 'UNASSIGNED',
-  PRIMARY KEY (`id`),
-  KEY `idGame` (`idGame`),
-  KEY `idPlayer` (`idPlayer`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+  `team` varchar(20) NOT NULL,
+  `position` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Daten für Tabelle `participation`
 --
 
-INSERT INTO `participation` (`id`, `idGame`, `idPlayer`, `goalsGot`, `goalsShotDefault`, `goalsShotHead`, `goalsShotHeadSnow`, `goalsShotPenalty`, `nutmeg`, `team`) VALUES
-(3, 1, 1, 0, 0, 0, 0, 0, 0, 'UNASSIGNED');
+INSERT INTO `participation` (`id`, `idGame`, `idPlayer`, `goalsGot`, `goalsShotDefault`, `goalsShotHead`, `goalsShotHeadSnow`, `goalsShotPenalty`, `nutmeg`, `team`, `position`) VALUES
+(5, 1, 1, 0, 0, 0, 0, 0, 0, 'TEAM A', 'ATTACK');
 
 -- --------------------------------------------------------
 
@@ -79,14 +77,13 @@ INSERT INTO `participation` (`id`, `idGame`, `idPlayer`, `goalsGot`, `goalsShotD
 -- Tabellenstruktur für Tabelle `players`
 --
 
-CREATE TABLE IF NOT EXISTS `players` (
-  `ID` int(10) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `players` (
+  `ID` int(10) NOT NULL,
   `USERNAME` varchar(50) NOT NULL,
   `NAME` varchar(50) NOT NULL,
   `ISADMIN` tinyint(1) NOT NULL DEFAULT '0',
-  `PASSWORD` varchar(256) NOT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+  `PASSWORD` varchar(256) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Daten für Tabelle `players`
@@ -105,31 +102,134 @@ INSERT INTO `players` (`ID`, `USERNAME`, `NAME`, `ISADMIN`, `PASSWORD`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Tabellenstruktur für Tabelle `playersGamePositions`
+--
+
+CREATE TABLE `playersGamePositions` (
+  `id_player` int(11) NOT NULL,
+  `position` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Daten für Tabelle `playersGamePositions`
+--
+
+INSERT INTO `playersGamePositions` (`id_player`, `position`) VALUES
+(4, 'ATTACK'),
+(8, 'ATTACK'),
+(3, 'DEFENSE'),
+(7, 'DEFENSE'),
+(8, 'DEFENSE'),
+(1, 'GOAL'),
+(5, 'GOAL'),
+(2, 'MIDFIELD'),
+(6, 'MIDFIELD'),
+(7, 'MIDFIELD');
+
+-- --------------------------------------------------------
+
+--
 -- Tabellenstruktur für Tabelle `positions`
 --
 
-CREATE TABLE IF NOT EXISTS `positions` (
-  `id_player` int(11) NOT NULL,
-  `position` enum('GOAL','MIDFIELD','DEFENSE','ATTACK') NOT NULL,
-  PRIMARY KEY (`id_player`,`position`)
+CREATE TABLE `positions` (
+  `NAME` varchar(20) NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Daten für Tabelle `positions`
 --
 
-INSERT INTO `positions` (`id_player`, `position`) VALUES
-(1, 'GOAL'),
-(2, 'MIDFIELD'),
-(3, 'DEFENSE'),
-(4, 'ATTACK'),
-(5, 'GOAL'),
-(6, 'MIDFIELD'),
-(7, 'MIDFIELD'),
-(7, 'DEFENSE'),
-(8, 'DEFENSE'),
-(8, 'ATTACK');
+INSERT INTO `positions` (`NAME`) VALUES
+('ATTACK'),
+('DEFENSE'),
+('GOAL'),
+('MIDFIELD');
 
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `teams`
+--
+
+CREATE TABLE `teams` (
+  `NAME` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Daten für Tabelle `teams`
+--
+
+INSERT INTO `teams` (`NAME`) VALUES
+('TEAM A'),
+('TEAM B');
+
+--
+-- Indizes der exportierten Tabellen
+--
+
+--
+-- Indizes für die Tabelle `games`
+--
+ALTER TABLE `games`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indizes für die Tabelle `participation`
+--
+ALTER TABLE `participation`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `idGame_2` (`idGame`,`idPlayer`),
+  ADD KEY `idGame` (`idGame`),
+  ADD KEY `idPlayer` (`idPlayer`),
+  ADD KEY `team` (`team`),
+  ADD KEY `position` (`position`);
+
+--
+-- Indizes für die Tabelle `players`
+--
+ALTER TABLE `players`
+  ADD PRIMARY KEY (`ID`),
+  ADD UNIQUE KEY `USERNAME` (`USERNAME`);
+
+--
+-- Indizes für die Tabelle `playersGamePositions`
+--
+ALTER TABLE `playersGamePositions`
+  ADD PRIMARY KEY (`id_player`,`position`(1)),
+  ADD KEY `position` (`position`);
+
+--
+-- Indizes für die Tabelle `positions`
+--
+ALTER TABLE `positions`
+  ADD PRIMARY KEY (`NAME`);
+
+--
+-- Indizes für die Tabelle `teams`
+--
+ALTER TABLE `teams`
+  ADD PRIMARY KEY (`NAME`);
+
+--
+-- AUTO_INCREMENT für exportierte Tabellen
+--
+
+--
+-- AUTO_INCREMENT für Tabelle `games`
+--
+ALTER TABLE `games`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT für Tabelle `participation`
+--
+ALTER TABLE `participation`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+--
+-- AUTO_INCREMENT für Tabelle `players`
+--
+ALTER TABLE `players`
+  MODIFY `ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- Constraints der exportierten Tabellen
 --
@@ -139,13 +239,16 @@ INSERT INTO `positions` (`id_player`, `position`) VALUES
 --
 ALTER TABLE `participation`
   ADD CONSTRAINT `participation_ibfk_1` FOREIGN KEY (`idGame`) REFERENCES `games` (`id`),
-  ADD CONSTRAINT `participation_ibfk_2` FOREIGN KEY (`idPlayer`) REFERENCES `players` (`ID`);
+  ADD CONSTRAINT `participation_ibfk_2` FOREIGN KEY (`idPlayer`) REFERENCES `players` (`ID`),
+  ADD CONSTRAINT `participation_ibfk_3` FOREIGN KEY (`position`) REFERENCES `positions` (`NAME`),
+  ADD CONSTRAINT `participation_ibfk_4` FOREIGN KEY (`team`) REFERENCES `teams` (`NAME`);
 
 --
--- Constraints der Tabelle `positions`
+-- Constraints der Tabelle `playersGamePositions`
 --
-ALTER TABLE `positions`
-  ADD CONSTRAINT `positions_ibfk_1` FOREIGN KEY (`id_player`) REFERENCES `players` (`ID`);
+ALTER TABLE `playersGamePositions`
+  ADD CONSTRAINT `playersGamePositions_ibfk_1` FOREIGN KEY (`id_player`) REFERENCES `players` (`ID`),
+  ADD CONSTRAINT `playersGamePositions_ibfk_2` FOREIGN KEY (`position`) REFERENCES `positions` (`NAME`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
