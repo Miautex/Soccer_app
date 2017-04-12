@@ -3,6 +3,7 @@ package group2.schoolproject.a02soccer;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -13,7 +14,7 @@ import android.widget.Toast;
 import pkgData.Database;
 import pkgData.Game;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
     ListView lsvEditableGames = null;
     Database db = null;
 
@@ -21,11 +22,11 @@ public class MainActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getAllViews();
+        //getAllViews();
 
         try {
             db = Database.getInstance();
-            showGames();
+            //showGames();
         }
         catch (Exception ex) {
             Toast.makeText(this, "Error: " + ex.getMessage(), Toast.LENGTH_SHORT).show();
