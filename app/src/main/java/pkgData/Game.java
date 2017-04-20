@@ -1,7 +1,5 @@
 package pkgData;
 
-import android.support.annotation.NonNull;
-
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -9,13 +7,12 @@ import java.util.Date;
 import java.util.HashSet;
 
 public final class Game implements Serializable, Comparable<Game> {
-
     private int id, scoreTeamA, scoreTeamB;
     private Date date;
     private String remark;
     private HashSet<Participation> participations;
 
-    private Game () {
+    private Game() {
         id = -1;
         scoreTeamA = -1;
         scoreTeamB = -1;
@@ -23,7 +20,15 @@ public final class Game implements Serializable, Comparable<Game> {
         participations = new HashSet<>();
     }
 
-    public Game (int id, Date date, int scoreA, int scoreB) {
+    public Game(int id, Date date, int scoreA, int scoreB) {
+        this();
+        setId(id);
+        setDate(date);
+        setScoreTeamA(scoreA);
+        setScoreTeamB(scoreB);
+    }
+
+    public Game(Date date, int scoreA, int scoreB) {
         this();
         setId(id);
         setDate(date);
@@ -39,35 +44,35 @@ public final class Game implements Serializable, Comparable<Game> {
         this.remark = additionalInformation;
     }
 
-    private void setId (int id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public int getId () {
+    public int getId() {
         return id;
     }
 
-    private void setScoreTeamA (int scoreTeamA) {
+    private void setScoreTeamA(int scoreTeamA) {
         this.scoreTeamA = scoreTeamA;
     }
 
-    public int getScoreTeamA () {
+    public int getScoreTeamA() {
         return scoreTeamA;
     }
 
-    private void setScoreTeamB (int scoreTeamB) {
+    private void setScoreTeamB(int scoreTeamB) {
         this.scoreTeamB = scoreTeamB;
     }
 
-    public int getScoreTeamB () {
+    public int getScoreTeamB() {
         return scoreTeamB;
     }
 
-    private void setDate (Date date) {
+    private void setDate(Date date) {
         this.date = date;
     }
 
-    public Date getDate () {
+    public Date getDate() {
         return date;
     }
 
@@ -84,17 +89,17 @@ public final class Game implements Serializable, Comparable<Game> {
     }
 
     @Override
-    public int hashCode () {
+    public int hashCode() {
         return id;
     }
 
     @Override
-    public boolean equals (Object obj) {
+    public boolean equals(Object obj) {
         boolean eq = false;
         Game tmpG;
         if (obj != null) {
             if (obj instanceof Game) {
-                tmpG = (Game)obj;
+                tmpG = (Game) obj;
                 eq = this.getId() == tmpG.getId();
             }
         }
@@ -102,20 +107,22 @@ public final class Game implements Serializable, Comparable<Game> {
     }
 
     @Override
-    public String toString () {
+    public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd.MM.yyyy");
-        return "Game (#" + getId() + " - " + sdf.format(getDate()) + ") A:B (" + getScoreTeamA() + ":" + getScoreTeamB() + ")";
+        return "Game (#" + getId() + " - " + sdf.format(getDate()) + ") A:B (" + getScoreTeamA() + ":" + getScoreTeamB()
+                + ")";
     }
 
     @Override
-    protected void finalize () throws Throwable {
+    protected void finalize() throws Throwable {
         super.finalize();
     }
 
     @Override
-    public int compareTo (@NonNull Game game) {
+    public int compareTo(Game game) {
         int cp;
         cp = getDate().compareTo(game.getDate());
         return cp;
     }
+
 }

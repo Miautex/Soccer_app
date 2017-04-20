@@ -112,14 +112,14 @@ public class Database extends Application {
     }
 
     private void generateTestPlayers() throws Exception {
-        listPlayers.add(new Player(1, "admin", "Admin"));
-        listPlayers.add(new Player(2, "elias", "Elias"));
-        listPlayers.add(new Player(3, "marco", "Marco"));
-        listPlayers.add(new Player(4, "raphael", "Raphael"));
-        listPlayers.add(new Player(5, "pascal", "Pascal"));
-        listPlayers.add(new Player(6, "jakob", "Jakob"));
-        listPlayers.add(new Player(7, "martin", "Martin"));
-        listPlayers.add(new Player(8, "lukas", "Lukas"));
+        listPlayers.add(new Player("admin", "Admin", true));
+        listPlayers.add(new Player("elias", "Elias", false));
+        listPlayers.add(new Player("marco", "Marco", false));
+        listPlayers.add(new Player("raphael", "Raphael", false));
+        listPlayers.add(new Player("pascal", "Pascal", false));
+        listPlayers.add(new Player("jakob", "Jakob", false));
+        listPlayers.add(new Player("martin", "Martin", false));
+        listPlayers.add(new Player("lukas", "Lukas", false));
     }
 
     private void generateTestGames() throws Exception {

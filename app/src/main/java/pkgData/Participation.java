@@ -1,16 +1,16 @@
 package pkgData;
 
-import android.support.annotation.NonNull;
-
 import java.io.Serializable;
 
 public final class Participation implements Comparable, Serializable {
-    private int numGoalsGot, numGoalsShotDefault, numGoalsShotHead, numGoalsShotHeadSnow, numGoalsShotPenalty, numNutmeg;
+    private int numGoalsGot, numGoalsShotDefault, numGoalsShotHead, numGoalsShotHeadSnow, numGoalsShotPenalty,
+            numNutmeg;
     private Team team;
     private PlayerPosition position;
     private Player player;
+    private Game game;
 
-    private Participation() {
+    public Participation() {
         super();
         this.numGoalsGot = 0;
         this.numGoalsShotDefault = 0;
@@ -30,10 +30,9 @@ public final class Participation implements Comparable, Serializable {
         this.setPosition(position);
     }
 
-    public Participation(Player player, Team team, PlayerPosition position,
-                         int numGoalsGot, int numGoalsShotDefault, int numGoalsShotHead,
-                         int numGoalsShotHeadSnow, int numGoalsShotPenalty, int numNutmeg)
-                         throws NullPointerException, IllegalArgumentException {
+    public Participation(Player player, Team team, PlayerPosition position, int numGoalsGot, int numGoalsShotDefault,
+                         int numGoalsShotHead, int numGoalsShotHeadSnow, int numGoalsShotPenalty, int numNutmeg)
+            throws NullPointerException, IllegalArgumentException {
         this();
         this.setPlayer(player);
         this.setTeam(team);
@@ -145,19 +144,28 @@ public final class Participation implements Comparable, Serializable {
         this.player = player;
     }
 
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+
+
     @Override
-    public int hashCode () {
+    public int hashCode() {
         return this.player.hashCode();
     }
 
     @Override
-    public boolean equals (Object obj) {
+    public boolean equals(Object obj) {
         boolean eq = false;
         Participation tmpPart;
         if (obj != null) {
             if (obj instanceof Participation) {
-                tmpPart = (Participation)obj;
-
+                tmpPart = (Participation) obj;
                 eq = this.getPlayer().equals(tmpPart.getPlayer());
             }
         }
@@ -165,20 +173,19 @@ public final class Participation implements Comparable, Serializable {
     }
 
     @Override
-    public String toString () {
+    public String toString() {
         return "Participation (Player: '" + getPlayer().toString() + "' - " + getTeam() + " - " + getPosition() + ")";
     }
 
     @Override
-    protected void finalize () throws Throwable {
+    protected void finalize() throws Throwable {
         super.finalize();
     }
 
     @Override
-    public int compareTo (@NonNull Object o) {
+    public int compareTo(Object o) {
         int cp;
         Participation tmpPart = (Participation) o;
-
         cp = getPlayer().compareTo(tmpPart.getPlayer());
         if (cp == 0) {
             cp = getTeam().compareTo(tmpPart.getTeam());
@@ -186,7 +193,6 @@ public final class Participation implements Comparable, Serializable {
                 cp = getPosition().compareTo(tmpPart.getPosition());
             }
         }
-
         return cp;
     }
 }

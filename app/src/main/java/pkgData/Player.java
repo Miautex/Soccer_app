@@ -1,13 +1,10 @@
 package pkgData;
 
-import android.support.annotation.NonNull;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 
 public final class Player implements Comparable, Serializable, Cloneable {
-
     private int id;
     private boolean isAdmin;
     private String name, username;
@@ -15,7 +12,7 @@ public final class Player implements Comparable, Serializable, Cloneable {
     private int numWins, numDefeats, numDraws;
     private float avgGoalDifference;
 
-    private Player () throws Exception {
+    public Player() throws Exception {
         super();
         id = 0;
         isAdmin = false;
@@ -24,34 +21,42 @@ public final class Player implements Comparable, Serializable, Cloneable {
         positions = new HashSet<>();
     }
 
-    public Player(int id, String username, String name) throws Exception {
+    public Player(int id, String username, String name, Boolean isAdmin) throws Exception {
         this();
         setId(id);
         setUsername(username);
         setName(name);
+        setAdmin(isAdmin);
     }
 
-    private void setId (int id) {
+    public Player(String username, String name, Boolean isAdmin) throws Exception {
+        this();
+        setUsername(username);
+        setName(name);
+        setAdmin(isAdmin);
+    }
+
+    public void setId(int id) {
         this.id = id;
     }
 
-    public int getId () {
+    public int getId() {
         return id;
     }
 
-    public boolean isAdmin () {
+    public boolean isAdmin() {
         return isAdmin;
     }
 
-    private void setAdmin (boolean admin) {
+    private void setAdmin(boolean admin) {
         isAdmin = admin;
     }
 
-    public String getName () {
+    public String getName() {
         return name;
     }
 
-    public void setName (String name) throws Exception {
+    public void setName(String name) throws Exception {
         if (name == null) {
             throw new Exception("name must not be null");
         }
@@ -61,11 +66,11 @@ public final class Player implements Comparable, Serializable, Cloneable {
         this.name = name;
     }
 
-    public String getUsername () {
+    public String getUsername() {
         return username;
     }
 
-    public void setUsername (String username) throws Exception {
+    public void setUsername(String username) throws Exception {
         if (username == null) {
             throw new Exception("username must not be null");
         }
@@ -79,11 +84,11 @@ public final class Player implements Comparable, Serializable, Cloneable {
         return new ArrayList<>(positions);
     }
 
-    public void addPosition (PlayerPosition position) throws Exception {
+    public void addPosition(PlayerPosition position) throws Exception {
         positions.add(position);
     }
 
-    public void removePosition (PlayerPosition position) throws Exception {
+    public void removePosition(PlayerPosition position) throws Exception {
         positions.remove(position);
     }
 
@@ -137,17 +142,17 @@ public final class Player implements Comparable, Serializable, Cloneable {
     }
 
     @Override
-    public int hashCode () {
+    public int hashCode() {
         return id;
     }
 
     @Override
-    public boolean equals (Object obj) {
+    public boolean equals(Object obj) {
         boolean eq = false;
         Player tmpP;
         if (obj != null) {
             if (obj instanceof Player) {
-                tmpP = (Player)obj;
+                tmpP = (Player) obj;
                 eq = this.getId() == tmpP.getId();
             }
         }
@@ -155,22 +160,20 @@ public final class Player implements Comparable, Serializable, Cloneable {
     }
 
     @Override
-    public String toString () {
+    public String toString() {
         return "Player (#" + getId() + " - " + getUsername() + ") " + getUsername();
     }
 
     @Override
-    protected void finalize () throws Throwable {
+    protected void finalize() throws Throwable {
         super.finalize();
     }
 
     @Override
-    public int compareTo (@NonNull Object o) {
+    public int compareTo(Object o) {
         int cp;
         Player tmpP = (Player) o;
-
         cp = getName().compareTo(tmpP.getName());
-
         return cp;
     }
 }

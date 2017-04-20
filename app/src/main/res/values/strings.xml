@@ -12,4 +12,6 @@
     <string name="btnCancel">Cancel</string>
     <string name="mniAdd">Add Player</string>
     <string name="mniEdit">Edit Player</string>
+    <string name="ckbIsAdmin">Is Admin</string>
+    <string name="btnAdd">Add</string>
 </resources>

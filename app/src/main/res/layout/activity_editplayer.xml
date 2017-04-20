@@ -31,7 +31,7 @@
         android:layout_toStartOf="@+id/ckbPosAtk" />
 
     <EditText
-        android:id="@+id/edtName"
+        android:id="@+id/edtPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/ckbPosMid"

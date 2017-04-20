@@ -50,7 +50,7 @@ public class EditPlayerActivity extends AppCompatActivity implements View.OnClic
     private void getAllViews(){
         btnSave = (Button) findViewById(R.id.btnSave);
         btnCancel = (Button) findViewById(R.id.btnCancel);
-        edtName = (EditText) findViewById(R.id.edtName);
+        edtName = (EditText) findViewById(R.id.edtPassword);
         edtUsername = (EditText) findViewById(R.id.edtUsername);
         ckbPosAtk = (CheckBox) findViewById(R.id.ckbPosAtk);
         ckbPosDef = (CheckBox) findViewById(R.id.ckbPosDef);
