@@ -12,10 +12,10 @@
         android:paddingRight="30dp"
         android:paddingTop="20dp"
         android:text="@string/btnCancel"
-        android:layout_marginRight="51dp"
-        android:layout_marginEnd="51dp"
-        android:layout_alignBaseline="@+id/btnSave"
-        android:layout_alignBottom="@+id/btnSave"
+        android:layout_marginRight="60dp"
+        android:layout_marginEnd="60dp"
+        android:layout_alignBaseline="@+id/btnAdd"
+        android:layout_alignBottom="@+id/btnAdd"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 

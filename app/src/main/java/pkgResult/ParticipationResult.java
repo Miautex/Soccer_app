@@ -1,11 +1,9 @@
 package pkgResult;
 
-import edu.soccer.database.dto.Participation;
 import java.util.ArrayList;
+import pkgData.Participation;
 
-import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement
 public class ParticipationResult extends Result{
 
 	private ArrayList<Participation> content;

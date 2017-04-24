@@ -1,9 +1,7 @@
 package pkgResult;
 
-import edu.soccer.database.dto.Participation;
-import javax.xml.bind.annotation.XmlRootElement;
+import pkgData.Participation;
 
-@XmlRootElement
 public class SingleParticipationResult extends Result{
 
 	private Participation content;

@@ -25,7 +25,7 @@ public class AddPlayerActivity extends AppCompatActivity implements View.OnClick
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_editplayer);
+        setContentView(R.layout.activity_addplayer);
         getAllViews();
         registrateEventHandlers();
 
@@ -74,6 +74,7 @@ public class AddPlayerActivity extends AppCompatActivity implements View.OnClick
         Player newPlayer = new Player(edtName.getText().toString(), edtUsername.getText().toString(), ckbIsAdmin.isChecked());
 
         db.insert(newPlayer);
+        db.setPassword(newPlayer, edtPassword.getText().toString());
     }
 }
 

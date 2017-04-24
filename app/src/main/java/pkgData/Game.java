@@ -10,7 +10,7 @@ public final class Game implements Serializable, Comparable<Game> {
     private int id, scoreTeamA, scoreTeamB;
     private Date date;
     private String remark;
-    private HashSet<Participation> participations;
+    private transient HashSet<Participation> participations;
 
     private Game() {
         id = -1;

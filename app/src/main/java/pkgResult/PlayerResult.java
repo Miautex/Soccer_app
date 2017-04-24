@@ -1,8 +1,8 @@
 package pkgResult;
 
-import edu.soccer.database.dto.Player;
-import edu.soccer.rs.Result.Result;
 import java.util.ArrayList;
+
+import pkgData.Player;
 
 public class PlayerResult extends Result{
 

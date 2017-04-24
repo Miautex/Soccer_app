@@ -5,15 +5,15 @@
  */
 package pkgResult;
 
-import edu.soccer.database.dto.Game;
-import edu.soccer.database.dto.Participation;
+
+import pkgData.Game;
 
 /**
  *
  * @author Max
  */
 public class SingleGameResult extends Result {
-    	private Game content;
+	private Game content;
 	
 	public SingleGameResult() {
 	}

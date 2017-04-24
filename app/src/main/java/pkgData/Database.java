@@ -2,22 +2,25 @@ package pkgData;
 
 import android.app.Application;
 
-import java.text.SimpleDateFormat;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+
+import pkgResult.GameResult;
+import pkgResult.PlayerResult;
+import pkgResult.Result;
+import pkgResult.SinglePlayerResult;
 
 public class Database extends Application {
     private static Database instance = null;
-    private ArrayList<Player> listPlayers = null;
-    private ArrayList<Game> listGames = null;
     private Player currentlyLoggedInPlayer = null;
 
-    private Database() throws Exception {
-        listPlayers = new ArrayList<>();
-        listGames = new ArrayList<>();
-        generateTestData();
+    private Database()  {
+
     }
 
-    public static Database getInstance() throws Exception {
+    public static Database getInstance()  {
         if (instance == null) {
             instance = new Database();
         }
@@ -29,73 +32,60 @@ public class Database extends Application {
      * @return a COPY of the currently logged in player
      */
     public Player getCurrentlyLoggedInPlayer() {
-        Player retVal = null;
+        return currentlyLoggedInPlayer;
+    }
 
-        try {
-            retVal = (Player) currentlyLoggedInPlayer.clone();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
+    public ArrayList<Player> getPlayers() throws Exception {
+        ArrayList<Player> listPlayers = null;
+        PlayerResult pr = GsonSerializor.deserializePlayerResult("A");
+
+        if (pr.isSuccess()) {
+            listPlayers = pr.getContent();
+        }
+        else {
+            throw new Exception(pr.getError().getMessage());
         }
 
-        return retVal;
+        return listPlayers;
     }
 
-    /**
-     * Returns a copy of all players
-     * @return a COPIED collection of all players
-     */
-    public ArrayList<Player> getPlayers() {
-        return new ArrayList<>(listPlayers);
-    }
 
-    /**
-     * Returns a copy of all games
-     * @return a COPIED collection of all games
-     */
-    public ArrayList<Game> getGames() {
-        return new ArrayList<>(listGames);
+    public ArrayList<Game> getAllGames() throws Exception {
+        ArrayList<Game> listGames = null;
+        GameResult gr = GsonSerializor.deserializeGameResult(TestAccessor.getAllGames());
+
+        if (gr.isSuccess()) {
+            listGames = gr.getContent();
+        }
+        else {
+            throw new Exception(gr.getError().getMessage());
+        }
+
+        return listGames;
     }
 
     public void insert(Player p) throws Exception {
-        if (listPlayers.contains(p)) {
-            throw new Exception("Player with id=" + p.getId() + " already exists");
-        }
+        SinglePlayerResult spr = GsonSerializor.deserializeSinglePlayerResult(TestAccessor.insertPlayer(true));
 
-        if (checkForUsername(getPlayers(), p.getUsername()) != null) {
-            throw new Exception("Username '" + p.getUsername() + "' is already assigned to a different user");
+        if (!spr.isSuccess()) {
+            throw new Exception(spr.getError().getMessage());
         }
-
-        if (currentlyLoggedInPlayer.equals(p)) {
-            currentlyLoggedInPlayer = p;
-        }
-
-        listPlayers.add(p);
     }
 
     public void update(Player p) throws Exception {
-        if (!listPlayers.contains(p)) {
-            throw new Exception("Player with id=" + p.getId() + " doesn't exist, so it cannot be updated");
-        }
-        ArrayList<Player> tmpPlayers = getPlayers();
-        tmpPlayers.remove(getCurrentlyLoggedInPlayer());
+        Result r = GsonSerializor.deserializeResult(TestAccessor.updatePlayer(true));
 
-        if (checkForUsername(tmpPlayers, p.getUsername()) != null) {
-            throw new Exception("Username '" + p.getUsername() + "' is already assigned to a different user");
+        if (!r.isSuccess()) {
+            throw new Exception(r.getError().getMessage());
         }
-
-        if (currentlyLoggedInPlayer.equals(p)) {
-            currentlyLoggedInPlayer = p;
-        }
-
-        listPlayers.remove(p);
-        listPlayers.add(p);
     }
 
     public void remove(Player p) throws Exception {
-        if (!listPlayers.contains(p)) {
-            throw new Exception("Player with id=" + p.getId() + " doesn't exist, so it cannot be deleted");
+        Result r = GsonSerializor.deserializeResult(TestAccessor.removePlayer(true));
+
+        if (!r.isSuccess()) {
+            throw new Exception(r.getError().getMessage());
         }
-        listPlayers.remove(p);
     }
 
     public void commit() {
@@ -106,32 +96,6 @@ public class Database extends Application {
         //TODO
     }
 
-    private void generateTestData() throws Exception {
-        generateTestPlayers();
-        generateTestGames();
-    }
-
-    private void generateTestPlayers() throws Exception {
-        listPlayers.add(new Player("admin", "Admin", true));
-        listPlayers.add(new Player("elias", "Elias", false));
-        listPlayers.add(new Player("marco", "Marco", false));
-        listPlayers.add(new Player("raphael", "Raphael", false));
-        listPlayers.add(new Player("pascal", "Pascal", false));
-        listPlayers.add(new Player("jakob", "Jakob", false));
-        listPlayers.add(new Player("martin", "Martin", false));
-        listPlayers.add(new Player("lukas", "Lukas", false));
-    }
-
-    private void generateTestGames() throws Exception {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-
-        listGames.add(new Game(1, sdf.parse("13.02.2017"), 2, 1));
-        listGames.add(new Game(2, sdf.parse("16.02.2017"), 1, 4));
-        listGames.add(new Game(3, sdf.parse("21.02.2017"), 4, 5));
-        listGames.add(new Game(4, sdf.parse("02.03.2017"), 6, 3));
-        listGames.add(new Game(5, sdf.parse("11.03.2017"), 1, 1));
-    }
-
     /**
      * Checks whether the passed username and password are valid or not
      * If username and password are correct, this user is set to currentlyLoggedInUser
@@ -140,26 +104,36 @@ public class Database extends Application {
      * @param  pw_Unencrypted the unencrypted password
      * @return true, if the username and password are correct
      */
-    public boolean login(String username, String pw_Unencrypted) {
-        //Temporary, because no webservice yet
-        currentlyLoggedInPlayer = checkForUsername(getPlayers(), username.trim());
+    public boolean login(String username, String pw_Unencrypted) throws Exception {
+        //Temporary until webservice
+        boolean isPWValid = true;
+        String pwEnc = encryptPassword(pw_Unencrypted);
 
-        return currentlyLoggedInPlayer==null ? false : true;
-    }
-
-    private Player checkForUsername(ArrayList<Player> players, String username) {
-        Player retVal = null;
-
-        for (int i=0; i<players.size() && retVal==null; i++) {
-            if (players.get(i).getUsername().equals(username)) {
-                retVal = players.get(i);
-            }
+        if (isPWValid = (pwEnc.equals(TestAccessor.getPassword()))) {
+            SinglePlayerResult spr = GsonSerializor.deserializeSinglePlayerResult(TestAccessor.getPlayerByUsername(username));
+            this.currentlyLoggedInPlayer = spr.getContent();
+        }
+        else {
+            this.currentlyLoggedInPlayer = null;
         }
 
-        return retVal;
+        return isPWValid;
     }
 
-    public boolean isUsernameAvailable(String username) {
-        return (checkForUsername(getPlayers(), username.trim()) == null ? true : false);
+    public void setPassword(Player p, String pw) {
+        //TODO: Enc pw
+
+    }
+
+    private String encryptPassword(String pwInput) {
+        String hash = null;
+        MessageDigest m= null;
+        try {
+            m = MessageDigest.getInstance("MD5");
+            m.update(pwInput.getBytes(), 0, pwInput.length());
+            hash = new BigInteger(1,m.digest()).toString(16);
+        } catch (NoSuchAlgorithmException e) { }
+
+        return hash;
     }
 }

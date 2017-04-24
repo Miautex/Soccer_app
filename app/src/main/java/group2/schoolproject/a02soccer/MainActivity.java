@@ -1,6 +1,5 @@
 package group2.schoolproject.a02soccer;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -22,11 +21,11 @@ public class MainActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //getAllViews();
+        getAllViews();
 
         try {
             db = Database.getInstance();
-            //showGames();
+            showGames();
         }
         catch (Exception ex) {
             Toast.makeText(this, "Error: " + ex.getMessage(), Toast.LENGTH_SHORT).show();
@@ -39,9 +38,9 @@ public class MainActivity extends AppCompatActivity {
             lsvEditableGames = (ListView) this.findViewById(R.id.lsvEditableGames);
     }
 
-    private void showGames() {
+    private void showGames() throws Exception {
         ArrayAdapter<Game> lsvAdapter = new ArrayAdapter<Game>(this, android.R.layout.simple_list_item_1);
-        lsvAdapter.addAll(db.getGames());
+        lsvAdapter.addAll(db.getAllGames());
         lsvEditableGames.setAdapter(lsvAdapter);
     }
 
@@ -54,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.mniAddUser:
-                Toast.makeText(this, "Add User clicked", Toast.LENGTH_SHORT).show();
+                openAddPlayerActivity();
                 break;
             case R.id.mniEditUser:
                 openEditPlayerActivity();
@@ -63,6 +62,11 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
         return true;
+    }
+
+    private void openAddPlayerActivity(){
+        Intent myIntent = new Intent(MainActivity.this, AddPlayerActivity.class);
+        MainActivity.this.startActivity(myIntent);
     }
 
     private void openEditPlayerActivity(){

@@ -5,16 +5,19 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 public final class Player implements Comparable, Serializable, Cloneable {
-    private int id;
-    private boolean isAdmin;
-    private String name, username;
-    private HashSet<PlayerPosition> positions;
-    private int numWins, numDefeats, numDraws;
-    private float avgGoalDifference;
+    private Integer id = null;
+    private Boolean isAdmin = false;
+    private String name = null,
+                   username = null;
+    private HashSet<PlayerPosition> positions = null;
+    private Integer numWins = null,
+                    numDefeats = null,
+                    numDraws = null;
+    private Float avgGoalDifference = null;
 
-    public Player() throws Exception {
+    public Player() {
         super();
-        id = 0;
+        id = null;
         isAdmin = false;
         name = null;
         username = null;

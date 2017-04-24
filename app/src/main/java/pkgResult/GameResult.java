@@ -1,10 +1,8 @@
 package pkgResult;
 
 import java.util.ArrayList;
-import javax.xml.bind.annotation.XmlRootElement;
 import pkgData.Game;
 
-@XmlRootElement
 public class GameResult extends Result{
 
 	private ArrayList<Game> content;

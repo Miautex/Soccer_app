@@ -7,8 +7,8 @@ public final class Participation implements Comparable, Serializable {
             numNutmeg;
     private Team team;
     private PlayerPosition position;
-    private Player player;
-    private Game game;
+    private transient Player player;
+    private transient Game game;
 
     public Participation() {
         super();
