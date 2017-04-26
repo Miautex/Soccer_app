@@ -18,12 +18,22 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
     EditText edtPassword = null;
     EditText edtUsername = null;
 
+    Database db = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         getAllViews();
         registrateEventHandlers();
+
+        try {
+            db = Database.getInstance();
+        }
+        catch (Exception ex) {
+            Toast.makeText(this, "Error: " + ex.getMessage(), Toast.LENGTH_SHORT).show();
+            ExceptionNotification.notify(this, ex);
+        }
     }
 
     /**
@@ -65,24 +75,22 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
         }
     }
 
-    /**
-     * try to login and if successful open the MainActivity
-     */
-    private void tryLogin() throws Exception {
-        //Datenbank Abfrage
-        boolean success = false;
-        String msg = "";
-
-        success = Database.getInstance().login(edtUsername.getText().toString(), edtPassword.getText().toString());
-
-        if(success){
-            msg = "Login successful";
-            openMainActivity();
+    private void tryLogin() {
+        /*try {
+            if (edtUsername.getText().toString().isEmpty() || edtPassword.getText().toString().isEmpty()) {
+                throw new Exception("Please enter Username and Password");
+            }
+            else if (db.login(edtUsername.getText().toString(), edtPassword.getText().toString())) {
+                openMainActivity();
+            }
+            else {
+                throw new Exception("Username or Password invalid");
+            }
         }
-        else {
-            msg = "Username or Password is wrong";
-        }
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+        catch (Exception ex) {
+            Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
+        }*/
+        openMainActivity();
     }
 
     /**

@@ -11,6 +11,14 @@ import pkgResult.GameResult;
 import pkgResult.PlayerResult;
 import pkgResult.Result;
 import pkgResult.SinglePlayerResult;
+import pkgTasks.DeletePlayerTask;
+import pkgTasks.GetPasswordTask;
+import pkgTasks.GetPlayerByUsernameTask;
+import pkgTasks.InsertPlayerTask;
+import pkgTasks.LoadAllGamesTask;
+import pkgTasks.SetPasswordTask;
+import pkgTasks.UpdatePlayerTask;
+import pkgWSA.AccessorResponse;
 
 public class Database extends Application {
     private static Database instance = null;
@@ -32,10 +40,18 @@ public class Database extends Application {
      * @return a COPY of the currently logged in player
      */
     public Player getCurrentlyLoggedInPlayer() {
-        return currentlyLoggedInPlayer;
+        Player returnPlayer = null;
+
+        try {
+            returnPlayer = (Player) currentlyLoggedInPlayer.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return returnPlayer;
     }
 
-    public ArrayList<Player> getPlayers() throws Exception {
+    public ArrayList<Player> getAllPlayers() throws Exception {
+        //TODO
         ArrayList<Player> listPlayers = null;
         PlayerResult pr = GsonSerializor.deserializePlayerResult("A");
 
@@ -49,51 +65,110 @@ public class Database extends Application {
         return listPlayers;
     }
 
+    public Player getPlayerByUsername(String username) throws Exception {
+        Player player = null;
+        AccessorResponse response = null;
+
+        GetPlayerByUsernameTask task = new GetPlayerByUsernameTask();
+        task.execute(username);
+        response = task.get();
+
+        if (response.getResponseCode() == 500) {
+            throw new Exception(response.getJson());
+        }
+        else {
+            SinglePlayerResult spr = GsonSerializor.deserializeSinglePlayerResult(response.getJson());
+            player = spr.getContent();
+        }
+
+        return player;
+    }
+
 
     public ArrayList<Game> getAllGames() throws Exception {
         ArrayList<Game> listGames = null;
-        GameResult gr = GsonSerializor.deserializeGameResult(TestAccessor.getAllGames());
+        AccessorResponse response = null;
 
-        if (gr.isSuccess()) {
-            listGames = gr.getContent();
+        LoadAllGamesTask task = new LoadAllGamesTask();
+        task.execute();
+        response = task.get();
+
+        if (response.getResponseCode() == 500) {
+            throw new Exception(response.getJson());
         }
         else {
-            throw new Exception(gr.getError().getMessage());
+            GameResult gs = GsonSerializor.deserializeGameResult(response.getJson());
+            listGames = gs.getContent();
         }
 
         return listGames;
     }
 
-    public void insert(Player p) throws Exception {
-        SinglePlayerResult spr = GsonSerializor.deserializeSinglePlayerResult(TestAccessor.insertPlayer(true));
+    public Player insert(Player p) throws Exception {
+        Player player = null;
+        AccessorResponse response = null;
 
-        if (!spr.isSuccess()) {
-            throw new Exception(spr.getError().getMessage());
+        InsertPlayerTask task = new InsertPlayerTask();
+        task.execute(GsonSerializor.serializePlayer(p));
+        response = task.get();
+
+        if (response.getResponseCode() == 500) {
+            throw new Exception(response.getJson());
         }
-    }
+        else {
+            SinglePlayerResult spr = GsonSerializor.deserializeSinglePlayerResult(response.getJson());
 
-    public void update(Player p) throws Exception {
-        Result r = GsonSerializor.deserializeResult(TestAccessor.updatePlayer(true));
-
-        if (!r.isSuccess()) {
-            throw new Exception(r.getError().getMessage());
+            if (!spr.isSuccess()) {
+                throw new Exception(spr.getError());
+            }
+            else {
+                player = spr.getContent();
+            }
         }
+
+        return player;
     }
 
-    public void remove(Player p) throws Exception {
-        Result r = GsonSerializor.deserializeResult(TestAccessor.removePlayer(true));
+    public boolean update(Player p) throws Exception {
+        boolean isSuccess = false;
+        AccessorResponse response = null;
 
-        if (!r.isSuccess()) {
-            throw new Exception(r.getError().getMessage());
+        UpdatePlayerTask task = new UpdatePlayerTask();
+        task.execute(GsonSerializor.serializePlayer(p));
+        response = task.get();
+
+        if (response.getResponseCode() == 500) {
+            throw new Exception(response.getJson());
         }
+        else {
+            Result r = GsonSerializor.deserializeResult(response.getJson());
+            isSuccess = r.isSuccess();
+
+            if (isSuccess && p.equals(currentlyLoggedInPlayer)) {
+                currentlyLoggedInPlayer = p;
+            }
+        }
+
+        return isSuccess;
     }
 
-    public void commit() {
-        //TODO
-    }
+    public boolean remove(Player p) throws Exception {
+        boolean isSuccess = false;
+        AccessorResponse response = null;
 
-    public void rollback() {
-        //TODO
+        DeletePlayerTask task = new DeletePlayerTask();
+        task.execute(Integer.toString(p.getId()));
+        response = task.get();
+
+        if (response.getResponseCode() == 500) {
+            throw new Exception(response.getJson());
+        }
+        else {
+            Result r = GsonSerializor.deserializeResult(response.getJson());
+            isSuccess = r.isSuccess();
+        }
+
+        return isSuccess;
     }
 
     /**
@@ -101,28 +176,51 @@ public class Database extends Application {
      * If username and password are correct, this user is set to currentlyLoggedInUser
      *
      * @param  username the username
-     * @param  pw_Unencrypted the unencrypted password
+     * @param  local_pw_Unencrypted the unencrypted password
      * @return true, if the username and password are correct
      */
-    public boolean login(String username, String pw_Unencrypted) throws Exception {
-        //Temporary until webservice
-        boolean isPWValid = true;
-        String pwEnc = encryptPassword(pw_Unencrypted);
+    public boolean login(String username, String local_pw_Unencrypted) throws Exception {
+        boolean isPWValid = false;
+        String local_pwEnc = encryptPassword(local_pw_Unencrypted);
+        AccessorResponse response = null;
 
-        if (isPWValid = (pwEnc.equals(TestAccessor.getPassword()))) {
-            SinglePlayerResult spr = GsonSerializor.deserializeSinglePlayerResult(TestAccessor.getPlayerByUsername(username));
-            this.currentlyLoggedInPlayer = spr.getContent();
+        GetPasswordTask task = new GetPasswordTask();
+        task.execute(username);
+        response = task.get();
+
+        if (response.getResponseCode() == 500) {
+            throw new Exception(response.getJson());
         }
         else {
-            this.currentlyLoggedInPlayer = null;
+            String remote_pwEnc = response.getJson();
+            if (local_pwEnc.equals(remote_pwEnc)) {
+                isPWValid = true;
+
+                currentlyLoggedInPlayer = getPlayerByUsername(username);
+            }
         }
 
         return isPWValid;
     }
 
-    public void setPassword(Player p, String pw) {
-        //TODO: Enc pw
+    public boolean setPassword(Player p, String pw) throws Exception {
+        boolean isSuccess = false;
+        String local_pwEnc = encryptPassword(pw);
+        AccessorResponse response = null;
 
+        SetPasswordTask task = new SetPasswordTask();
+        task.execute(Integer.toString(p.getId()));
+        response = task.get();
+
+        if (response.getResponseCode() == 500) {
+            throw new Exception(response.getJson());
+        }
+        else {
+            Result r = GsonSerializor.deserializeResult(response.getJson());
+            isSuccess = r.isSuccess();
+        }
+
+        return isSuccess;
     }
 
     private String encryptPassword(String pwInput) {

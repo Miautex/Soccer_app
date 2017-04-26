@@ -23,17 +23,17 @@
         android:id="@+id/btnAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/ckbIsAdmin"
-        android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/ckbIsAdmin"
-        android:layout_marginBottom="46dp"
-        android:layout_marginLeft="31dp"
-        android:layout_marginStart="31dp"
+        android:layout_marginBottom="45dp"
+        android:layout_marginLeft="57dp"
+        android:layout_marginStart="57dp"
         android:paddingBottom="20dp"
         android:paddingLeft="30dp"
         android:paddingRight="30dp"
         android:paddingTop="20dp"
-        android:text="@string/btnAdd" />
+        android:text="@string/btnAdd"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <EditText
         android:id="@+id/edtPassword"
@@ -117,6 +117,7 @@
         android:text="@string/ckbIsAdmin"
         android:textSize="18sp"
         android:layout_below="@+id/txtName"
-        android:layout_toLeftOf="@+id/editName" />
+        android:layout_toRightOf="@+id/txtName"
+        android:layout_toEndOf="@+id/txtName" />
 
 </RelativeLayout>

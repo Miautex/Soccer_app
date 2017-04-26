@@ -51,21 +51,6 @@ public class AddPlayerActivity extends AppCompatActivity implements View.OnClick
         btnCancel.setOnClickListener(this);
     }
 
-    @Override
-    public void onClick(View v) {
-        try {
-            if (v.getId() == R.id.btnAdd) {
-                onBtnAddClick();
-                Toast.makeText(this, "Player added", Toast.LENGTH_SHORT).show();
-            }
-            else if (v.getId() == R.id.btnCancel) {
-                this.finish();
-            }
-        } catch (Exception e) {
-            Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    }
-
     private void onBtnAddClick() throws Exception {
         if (edtName.getText().toString().isEmpty() || edtUsername.getText().toString().isEmpty() || edtPassword.getText().toString().isEmpty()) {
             throw new Exception("Name, Username and Password may not be empty");
@@ -73,8 +58,22 @@ public class AddPlayerActivity extends AppCompatActivity implements View.OnClick
 
         Player newPlayer = new Player(edtName.getText().toString(), edtUsername.getText().toString(), ckbIsAdmin.isChecked());
 
-        db.insert(newPlayer);
-        db.setPassword(newPlayer, edtPassword.getText().toString());
+        Player remote_newPlayer = db.insert(newPlayer);
+        db.setPassword(remote_newPlayer, edtPassword.getText().toString());
+    }
+
+    @Override
+    public void onClick(View v) {
+        try {
+            if (v.getId() == R.id.btnAdd) {
+                onBtnAddClick();
+            }
+            else if (v.getId() == R.id.btnCancel) {
+                this.finish();
+            }
+        } catch (Exception e) {
+            Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 }
 

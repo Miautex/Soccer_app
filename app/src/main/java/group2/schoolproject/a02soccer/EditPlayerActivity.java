@@ -111,7 +111,6 @@ public class EditPlayerActivity extends AppCompatActivity implements View.OnClic
         try {
             if (v.getId() == R.id.btnSave) {
                 onBtnSaveClick();
-                Toast.makeText(this, "Changes Saved", Toast.LENGTH_SHORT).show();
             }
             else if (v.getId() == R.id.btnCancel) {
                 this.finish();
@@ -123,6 +122,8 @@ public class EditPlayerActivity extends AppCompatActivity implements View.OnClic
 
     private void onBtnSaveClick() throws Exception {
         Player currPlayer = db.getCurrentlyLoggedInPlayer();
+        boolean isSuccess = false;
+        String msg = null;
 
         if (edtName.getText().toString().isEmpty() || edtUsername.getText().toString().isEmpty()) {
             throw new Exception("Name and Username may not be empty");
@@ -139,6 +140,15 @@ public class EditPlayerActivity extends AppCompatActivity implements View.OnClic
             currPlayer.addPosition(pp);
         }
 
-        db.update(currPlayer);
+        isSuccess = db.update(currPlayer);
+
+        if (isSuccess) {
+            msg = "Successfully updated userdata";
+        }
+        else {
+            msg = "Could not update userdata";
+        }
+
+        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }
 }

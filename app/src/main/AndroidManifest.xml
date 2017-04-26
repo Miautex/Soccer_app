@@ -3,6 +3,7 @@
     package="group2.schoolproject.a02soccer">
 
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"

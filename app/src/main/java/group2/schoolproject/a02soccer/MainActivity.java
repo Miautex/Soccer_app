@@ -25,20 +25,18 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             db = Database.getInstance();
-            showGames();
+            displayGames();
         }
         catch (Exception ex) {
             Toast.makeText(this, "Error: " + ex.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
-
-
     private void getAllViews(){
             lsvEditableGames = (ListView) this.findViewById(R.id.lsvEditableGames);
     }
 
-    private void showGames() throws Exception {
+    public void displayGames() throws Exception {
         ArrayAdapter<Game> lsvAdapter = new ArrayAdapter<Game>(this, android.R.layout.simple_list_item_1);
         lsvAdapter.addAll(db.getAllGames());
         lsvEditableGames.setAdapter(lsvAdapter);
