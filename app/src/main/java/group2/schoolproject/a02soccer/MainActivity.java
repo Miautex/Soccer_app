@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             db = Database.getInstance();
-            displayGames();
+            //displayGames();
         }
         catch (Exception ex) {
             Toast.makeText(this, "Error: " + ex.getMessage(), Toast.LENGTH_SHORT).show();
@@ -41,34 +41,24 @@ public class MainActivity extends AppCompatActivity {
         lsvAdapter.addAll(db.getAllGames());
         lsvEditableGames.setAdapter(lsvAdapter);
     }
-
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main, menu);
-        return true;
+        return dynamicMenu.onCreateOptionsMenu(menu,this);
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.mniAddUser:
-                openAddPlayerActivity();
-                break;
-            case R.id.mniEditUser:
-                openEditPlayerActivity();
-                break;
-            default:
-                return super.onOptionsItemSelected(item);
+        boolean retval = true;
+        Class toOpen = null;
+        toOpen = dynamicMenu.onOptionsItemSelected(item);
+        if(toOpen != null){
+            openActivity(toOpen);
         }
-        return true;
+        retval = super.onOptionsItemSelected(item);
+        return retval;
     }
 
-    private void openAddPlayerActivity(){
-        Intent myIntent = new Intent(MainActivity.this, AddPlayerActivity.class);
-        MainActivity.this.startActivity(myIntent);
+    private void openActivity(Class toOpen){
+        Intent myIntent = new Intent(this, toOpen);
+        this.startActivity(myIntent);
     }
 
-    private void openEditPlayerActivity(){
-        Intent myIntent = new Intent(MainActivity.this, EditPlayerActivity.class);
-        MainActivity.this.startActivity(myIntent);
-    }
 }
