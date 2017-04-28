@@ -1,13 +1,15 @@
 package group2.schoolproject.a02soccer;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 
 import pkgData.Database;
@@ -45,6 +47,26 @@ public class EditPlayerActivity extends AppCompatActivity implements View.OnClic
         catch (Exception ex) {
             Toast.makeText(this, "Error: " + ex.getMessage(), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return dynamicMenu.onCreateOptionsMenu(menu,this);
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        boolean retval;
+        Class toOpen = null;
+        toOpen = dynamicMenu.onOptionsItemSelected(item);
+        if(toOpen != null){
+            openActivity(toOpen);
+        }
+        retval = super.onOptionsItemSelected(item);
+        return retval;
+    }
+
+    private void openActivity(Class toOpen){
+        Intent myIntent = new Intent(this, toOpen);
+        this.startActivity(myIntent);
     }
 
     private void getAllViews(){

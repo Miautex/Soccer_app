@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -44,24 +43,24 @@ public class MainActivity extends AppCompatActivity {
         lsvEditableGames.setAdapter(lsvAdapter);
     }
 
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main, menu);
-        return true;
+    public boolean onOptionsItemSelected(MenuItem item) {
+        boolean retval = true;
+        Class toOpen = null;
+        toOpen = dynamicMenu.onOptionsItemSelected(item);
+        if(toOpen != null){
+            openActivity(toOpen);
+        }
+        retval = super.onOptionsItemSelected(item);
+        return retval;
     }
 
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.mniAddUser:
-                openAddPlayerActivity();
-                break;
-            case R.id.mniEditUser:
-                openEditPlayerActivity();
-                break;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-        return true;
+    private void openActivity(Class toOpen){
+        Intent myIntent = new Intent(this, toOpen);
+        this.startActivity(myIntent);
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return dynamicMenu.onCreateOptionsMenu(menu,this);
     }
 
     private void openAddPlayerActivity(){
