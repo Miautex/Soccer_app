@@ -7,6 +7,7 @@ import android.view.MenuItem;
 
 /**
  * Created by Raphael on 28.04.2017.
+ * The best productowner
  */
 
 public class DynamicMenu {
@@ -43,6 +44,9 @@ public class DynamicMenu {
         else if(item.getItemId() == DynamicMenuItem.EDIT_PLAYER.ordinal()){
             retVal = EditPlayerActivity.class;
         }
+        else if(item.getItemId() == DynamicMenuItem.LOGIN.ordinal()){
+            retVal = LoginActivity.class;
+        }
         // else if(item.getItemId() == DynamicMenuItem."neue_activty_EnumWert".ordinal())
         // retVal = "neue_Activity".class"
         return retVal;
@@ -53,8 +57,21 @@ public class DynamicMenu {
         menu.add(0,DynamicMenuItem.MAIN.ordinal(), Menu.NONE,R.string.mniMain);
         menu.add(0, DynamicMenuItem.ADD_PLAYER.ordinal(), Menu.NONE, R.string.mniAdd);
         menu.add(0,DynamicMenuItem.EDIT_PLAYER.ordinal(),Menu.NONE, R.string.mniEdit);
+        menu.add(0,DynamicMenuItem.LOGIN.ordinal(),Menu.NONE, R.string.mniLogin);
         //menu.add(0,DynamicMenuItem."neue_activty_EnumWert".ordinal(),Menu.NONE, R.string."strings.xml value für die Activity bzw für Menuitem/eintrag")
+        //die aktuelle Activity wird aus dem Menü entfernt
         menu.removeItem(classtoEnum(cl).ordinal());
+        return true;
+    }
+
+    public static boolean onPrepareOptionsMenu(Menu menu) {
+        //wenn kein Menüpunkt entfernt werden muss
+        menu.clear();
+        menu.add(0,DynamicMenuItem.MAIN.ordinal(), Menu.NONE,R.string.mniMain);
+        menu.add(0, DynamicMenuItem.ADD_PLAYER.ordinal(), Menu.NONE, R.string.mniAdd);
+        menu.add(0,DynamicMenuItem.EDIT_PLAYER.ordinal(),Menu.NONE, R.string.mniEdit);
+        menu.add(0,DynamicMenuItem.LOGIN.ordinal(),Menu.NONE, R.string.mniLogin);
+        //menu.add(0,DynamicMenuItem."neue_activty_EnumWert".ordinal(),Menu.NONE, R.string."strings.xml value für die Activity bzw für Menuitem/eintrag")
         return true;
     }
 
