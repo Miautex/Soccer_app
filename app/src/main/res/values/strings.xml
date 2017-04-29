@@ -10,6 +10,7 @@
     <string name="PosAtk">Attacker</string>
     <string name="btnSave">Save</string>
     <string name="btnCancel">Cancel</string>
+    <string name="mniMain">Main</string>
     <string name="mniAdd">Add Player</string>
     <string name="mniEdit">Edit Player</string>
     <string name="ckbIsAdmin">Is Admin</string>

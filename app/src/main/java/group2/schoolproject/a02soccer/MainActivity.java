@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -42,13 +41,13 @@ public class MainActivity extends AppCompatActivity {
         lsvEditableGames.setAdapter(lsvAdapter);
     }
     public boolean onCreateOptionsMenu(Menu menu) {
-        return dynamicMenu.onCreateOptionsMenu(menu,this);
+        return DynamicMenu.onPrepareOptionsMenu(menu, this.getClass());
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
         boolean retval = true;
         Class toOpen = null;
-        toOpen = dynamicMenu.onOptionsItemSelected(item);
+        toOpen = DynamicMenu.onOptionsItemSelected(item);
         if(toOpen != null){
             openActivity(toOpen);
         }

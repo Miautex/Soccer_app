@@ -51,13 +51,13 @@ public class EditPlayerActivity extends AppCompatActivity implements View.OnClic
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
-        return dynamicMenu.onCreateOptionsMenu(menu,this);
+        return DynamicMenu.onPrepareOptionsMenu(menu, this.getClass());
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
         boolean retval = true;
         Class toOpen = null;
-        toOpen = dynamicMenu.onOptionsItemSelected(item);
+        toOpen = DynamicMenu.onOptionsItemSelected(item);
         if(toOpen != null){
             openActivity(toOpen);
         }
