@@ -13,7 +13,7 @@ public class InsertPlayerTask extends AsyncTask<String, Void, AccessorResponse> 
         AccessorResponse response = null;
 
         try {
-            response = Accessor.requestJSON(HttpMethod.POST, "player", args[0]);
+            //response = Accessor.requestJSON(HttpMethod.POST, "player", args[0]);
 
             if (response == null) {
                 throw new Exception("Could not reach webservice");

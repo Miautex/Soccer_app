@@ -39,14 +39,14 @@
         android:id="@+id/edtPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:layout_below="@+id/edtUsername"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/txtName"
         android:layout_above="@+id/txtName"
-        android:layout_toRightOf="@+id/txtName" />
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/edtUsername"
+        android:layout_toEndOf="@+id/txtName"
+        android:layout_toRightOf="@+id/txtName"
+        android:ems="10"
+        android:inputType="textPersonName" />
 
     <EditText
         android:id="@+id/edtUsername"
@@ -87,7 +87,7 @@
         android:textSize="18sp" />
 
     <EditText
-        android:id="@+id/editName"
+        android:id="@+id/edtName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/txtName"

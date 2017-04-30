@@ -13,7 +13,7 @@ public class LoadAllGamesTask extends AsyncTask<String, Void, AccessorResponse> 
         AccessorResponse response = null;
 
         try {
-            response = Accessor.requestJSON(HttpMethod.GET, "game", null);
+            //response = Accessor.requestJSON(HttpMethod.GET, "game", null);
 
             if (response == null) {
                 throw new Exception("Could not reach webservice");

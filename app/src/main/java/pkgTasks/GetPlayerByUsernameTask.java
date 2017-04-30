@@ -14,7 +14,7 @@ public class GetPlayerByUsernameTask extends AsyncTask<String, Void, AccessorRes
         AccessorResponse response = null;
 
         try {
-            response = Accessor.requestJSON(HttpMethod.GET, "player/" + args[0], null);
+            //response = Accessor.requestJSON(HttpMethod.GET, "player/" + args[0], null);
 
             if (response == null) {
                 throw new Exception("Could not reach webservice");

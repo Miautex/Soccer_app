@@ -41,7 +41,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
      */
     private void getAllViews(){
         btnLogin = (Button) findViewById(R.id.btnLogin);
-        edtPassword = (EditText) findViewById(R.id.edtPassword);
+        edtPassword = (EditText) findViewById(R.id.edtName);
         edtUsername = (EditText) findViewById(R.id.edtUsername);
     }
 
