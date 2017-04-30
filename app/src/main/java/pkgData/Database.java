@@ -1,7 +1,6 @@
 package pkgData;
 
 import android.app.Application;
-import android.content.res.Configuration;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;

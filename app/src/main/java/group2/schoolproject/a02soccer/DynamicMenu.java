@@ -52,7 +52,7 @@ public class DynamicMenu {
             retVal = LoginActivity.class;
         }
         else if(item.getItemId() == DynamicMenuItem.GERMAN.ordinal()){
-            //Database.getInstance().setLocale("de");
+            //Database.getInstance().setLocale(new Locale("de"));
         }
         else if(item.getItemId() == DynamicMenuItem.ENGLISH.ordinal()){
             //Database.getInstance().setLocale("en");
