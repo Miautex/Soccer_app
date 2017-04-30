@@ -5,6 +5,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import java.util.Locale;
+
+import pkgData.Database;
+
 /**
  * Created by Raphael on 28.04.2017.
  * The best productowner
@@ -47,6 +51,12 @@ public class DynamicMenu {
         else if(item.getItemId() == DynamicMenuItem.LOGIN.ordinal()){
             retVal = LoginActivity.class;
         }
+        else if(item.getItemId() == DynamicMenuItem.GERMAN.ordinal()){
+            //Database.getInstance().setLocale("de");
+        }
+        else if(item.getItemId() == DynamicMenuItem.ENGLISH.ordinal()){
+            //Database.getInstance().setLocale("en");
+        }
         // else if(item.getItemId() == DynamicMenuItem."neue_activty_EnumWert".ordinal())
         // retVal = "neue_Activity".class"
         return retVal;
@@ -61,6 +71,14 @@ public class DynamicMenu {
         //menu.add(0,DynamicMenuItem."neue_activty_EnumWert".ordinal(),Menu.NONE, R.string."strings.xml value für die Activity bzw für Menuitem/eintrag")
         //die aktuelle Activity wird aus dem Menü entfernt
         menu.removeItem(classtoEnum(cl).ordinal());
+        //Sprache hinzufügen
+        System.out.println(Database.getInstance().getLocale().toString());
+        if(Database.getInstance().getLocale().toString().compareTo(Database.getInstance().getLocale().toString()) == 0){
+            menu.add(0,DynamicMenuItem.GERMAN.ordinal(),Menu.NONE, R.string.mniGerman);
+        }
+        else{
+            menu.add(0,DynamicMenuItem.ENGLISH.ordinal(),Menu.NONE, R.string.mniEnglish);
+        }
         return true;
     }
 

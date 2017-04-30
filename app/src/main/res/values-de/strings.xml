@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Fußball</string>
+    <string name="btnLogin">Anmelden</string>
+    <string name="Password">Passwort</string>
+    <string name="Username">Benutzername</string>
+    <string name="Name">Name</string>
+    <string name="PosMid">Mittelfeld</string>
+    <string name="PosGoal">Torwart</string>
+    <string name="PosDef">Verteidigung</string>
+    <string name="PosAtk">Sturm</string>
+    <string name="btnSave">Speichern</string>
+    <string name="btnCancel">Abbruch</string>
+    <string name="mniMain">Hauptfenster</string>
+    <string name="mniGerman">Deutsch</string>
+    <string name="mniEnglish">English</string>
+    <string name="mniLogin">Anmelden</string>
+    <string name="mniAdd">Spieler hinzufügen</string>
+    <string name="mniEdit">Spieler bearbeiten</string>
+    <string name="ckbIsAdmin">ist Admin</string>
+    <string name="btnAdd">Hinzufügen</string>
+</resources>

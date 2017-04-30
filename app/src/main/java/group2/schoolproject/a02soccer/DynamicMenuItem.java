@@ -7,5 +7,5 @@ package group2.schoolproject.a02soccer;
 
 public enum DynamicMenuItem {
     //einfach des Benutzen was vor Activity steht
-    MAIN,ADD_PLAYER,EDIT_PLAYER,LOGIN
+    MAIN,ADD_PLAYER,EDIT_PLAYER,LOGIN,ENGLISH,GERMAN
 }

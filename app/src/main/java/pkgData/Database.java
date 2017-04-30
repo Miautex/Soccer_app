@@ -1,11 +1,13 @@
 package pkgData;
 
 import android.app.Application;
+import android.content.res.Configuration;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import pkgResult.GameResult;
 import pkgResult.PlayerResult;
@@ -23,6 +25,15 @@ import pkgWSA.AccessorResponse;
 public class Database extends Application {
     private static Database instance = null;
     private Player currentlyLoggedInPlayer = null;
+    private Locale locale;
+
+    public void setLocale(Locale loc){
+        locale = loc;
+    }
+
+    public Locale getLocale(){
+        return locale;
+    }
 
     private Database()  {
 

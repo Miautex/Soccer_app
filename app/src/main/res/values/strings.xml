@@ -6,11 +6,13 @@
     <string name="Name">Name</string>
     <string name="PosMid">Midfield</string>
     <string name="PosGoal">Goalie</string>
-    <string name="PosDef">Defender</string>
+    <string name="PosDef">Defends</string>
     <string name="PosAtk">Attacker</string>
     <string name="btnSave">Save</string>
     <string name="btnCancel">Cancel</string>
     <string name="mniMain">Main</string>
+    <string name="mniGerman">Deutsch</string>
+    <string name="mniEnglish">English</string>
     <string name="mniLogin">Login</string>
     <string name="mniAdd">Add Player</string>
     <string name="mniEdit">Edit Player</string>
