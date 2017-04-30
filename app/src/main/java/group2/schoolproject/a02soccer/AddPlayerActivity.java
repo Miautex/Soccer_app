@@ -1,10 +1,6 @@
 package group2.schoolproject.a02soccer;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -15,7 +11,7 @@ import pkgData.Database;
 import pkgData.Player;
 
 
-public class AddPlayerActivity extends AppCompatActivity implements View.OnClickListener {
+public class AddPlayerActivity extends DynamicMenuActivity implements View.OnClickListener {
     Button btnAdd = null;
     Button btnCancel = null;
     EditText edtName = null;
@@ -26,7 +22,7 @@ public class AddPlayerActivity extends AppCompatActivity implements View.OnClick
     Database db = null;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addplayer);
         getAllViews();
@@ -64,27 +60,6 @@ public class AddPlayerActivity extends AppCompatActivity implements View.OnClick
         Player remote_newPlayer = db.insert(newPlayer);
         db.setPassword(remote_newPlayer, edtPassword.getText().toString());
     }
-
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return DynamicMenu.onPrepareOptionsMenu(menu, this.getClass());
-    }
-
-    public boolean onOptionsItemSelected(MenuItem item) {
-        boolean retval = true;
-        Class toOpen = null;
-        toOpen = DynamicMenu.onOptionsItemSelected(item);
-        if(toOpen != null){
-            openActivity(toOpen);
-        }
-        retval = super.onOptionsItemSelected(item);
-        return retval;
-    }
-
-    private void openActivity(Class toOpen){
-        Intent myIntent = new Intent(this, toOpen);
-        this.startActivity(myIntent);
-    }
-
 
     @Override
     public void onClick(View v) {
