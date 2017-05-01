@@ -47,6 +47,9 @@ public class DynamicMenuActivity extends AppCompatActivity {
         else if(item.getItemId() == DynamicMenuItem.LOGIN.ordinal()){
             openActivity(LoginActivity.class);
         }
+        else if(item.getItemId() == DynamicMenuItem.EDITTEAM.ordinal()){
+            openActivity(TeamManagmentActivity.class);
+        }
         else if(item.getItemId() == DynamicMenuItem.GERMAN.ordinal()){
             changeLanguage("de");
         }
@@ -83,6 +86,7 @@ public class DynamicMenuActivity extends AppCompatActivity {
         menu.add(0, DynamicMenuItem.ADD_PLAYER.ordinal(), Menu.NONE, R.string.mniAdd);
         menu.add(0,DynamicMenuItem.EDIT_PLAYER.ordinal(),Menu.NONE, R.string.mniEdit);
         menu.add(0,DynamicMenuItem.LOGIN.ordinal(),Menu.NONE, R.string.mniLogin);
+        menu.add(0,DynamicMenuItem.EDITTEAM.ordinal(),Menu.NONE,R.string.mniTeam);
         //menu.add(0,DynamicMenuItem."neue_activty_EnumWert".ordinal(),Menu.NONE, R.string."strings.xml value für die Activity bzw für Menuitem/eintrag")
         onPrepareOptionsMenu(menu, this.getClass());
         return true;

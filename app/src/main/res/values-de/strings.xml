@@ -11,6 +11,7 @@
     <string name="btnSave">Speichern</string>
     <string name="btnCancel">Abbruch</string>
     <string name="mniMain">Hauptfenster</string>
+    <string name="mniTeam">Team(test)</string>
     <string name="mniGerman">Deutsch</string>
     <string name="mniEnglish">English</string>
     <string name="mniLogin">Anmelden</string>

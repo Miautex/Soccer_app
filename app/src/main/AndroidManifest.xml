@@ -15,6 +15,7 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -27,6 +28,10 @@
         <activity
             android:name=".AddPlayerActivity"
             android:label="@string/app_name" />
+        <activity
+            android:name=".TeamManagmentActivity"
+            android:label="@string/title_activity_team_managment"/>
+            <!--android:theme="@style/AppTheme.NoActionBar"></activity> -->
     </application>
 
 </manifest>

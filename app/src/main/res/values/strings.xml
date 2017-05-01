@@ -11,6 +11,7 @@
     <string name="btnSave">Save</string>
     <string name="btnCancel">Cancel</string>
     <string name="mniMain">Main</string>
+    <string name="mniTeam">Team(test)</string>
     <string name="mniGerman">Deutsch</string>
     <string name="mniEnglish">English</string>
     <string name="mniLogin">Login</string>
@@ -18,4 +19,7 @@
     <string name="mniEdit">Edit Player</string>
     <string name="ckbIsAdmin">Is Admin</string>
     <string name="btnAdd">Add</string>
+    <string name="title_activity_team_managment">Team Managment</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 </resources>
