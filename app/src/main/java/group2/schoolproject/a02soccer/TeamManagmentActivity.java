@@ -17,7 +17,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TeamManagmentActivity extends AppCompatActivity {
 
@@ -38,6 +43,7 @@ public class TeamManagmentActivity extends AppCompatActivity {
         TabLayout tablayout = (TabLayout) findViewById(R.id.tabs);
         tablayout.setupWithViewPager(mViewPager);
     }
+
 
     private void setupViewPager(ViewPager viewPager){
         SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
