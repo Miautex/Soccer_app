@@ -1,4 +1,4 @@
-package group2.schoolproject.a02soccer;
+package pkgMenu;
 
 /**
  * Created by Raphael on 29.04.2017.

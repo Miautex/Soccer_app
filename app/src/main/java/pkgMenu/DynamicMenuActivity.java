@@ -1,6 +1,5 @@
-package group2.schoolproject.a02soccer;
+package pkgMenu;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -10,10 +9,15 @@ import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import java.util.Locale;
 
+import group2.schoolproject.a02soccer.AddPlayerActivity;
+import group2.schoolproject.a02soccer.EditPlayerActivity;
+import group2.schoolproject.a02soccer.LoginActivity;
+import group2.schoolproject.a02soccer.MainActivity;
+import group2.schoolproject.a02soccer.R;
+import pkgTab.TeamManagmentActivity;
 import pkgData.Database;
 
 /**

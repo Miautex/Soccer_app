@@ -1,4 +1,4 @@
-package group2.schoolproject.a02soccer;
+package pkgTab;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,6 +12,7 @@ import android.widget.Spinner;
 import java.util.ArrayList;
 import java.util.List;
 
+import group2.schoolproject.a02soccer.R;
 import pkgData.PlayerPosition;
 
 /**

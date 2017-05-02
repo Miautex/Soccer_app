@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import pkgData.Database;
 import pkgData.Game;
+import pkgMenu.DynamicMenuActivity;
 
 public class MainActivity extends DynamicMenuActivity {
     ListView lsvEditableGames = null;

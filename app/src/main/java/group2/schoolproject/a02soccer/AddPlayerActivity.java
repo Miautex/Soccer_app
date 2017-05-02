@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import pkgData.Database;
 import pkgData.Player;
+import pkgMenu.DynamicMenuActivity;
 
 
 public class AddPlayerActivity extends DynamicMenuActivity implements View.OnClickListener {

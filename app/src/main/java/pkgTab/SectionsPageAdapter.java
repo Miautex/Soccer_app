@@ -1,4 +1,4 @@
-package group2.schoolproject.a02soccer;
+package pkgTab;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
