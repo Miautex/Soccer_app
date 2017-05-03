@@ -12,10 +12,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity2" android:label= "MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -38,9 +39,13 @@
         <activity
             android:name=".AddGameEnterDataActivity"
             android:label="@string/title_activity_add_game_enter_data" />
-            android:name="group2.schoolproject.a02soccer.TeamManagmentActivity"
-            android:label="@string/title_activity_team_managment"/>
-            <!--android:theme="@style/AppTheme.NoActionBar"></activity> -->
+        android:name="group2.schoolproject.a02soccer.TeamManagmentActivity"
+        android:label="@string/title_activity_team_managment"/>
+        <!-- android:theme="@style/AppTheme.NoActionBar"></activity> -->
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main2">
+            </activity>
     </application>
 
 </manifest>
