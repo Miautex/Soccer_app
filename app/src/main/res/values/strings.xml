@@ -8,6 +8,7 @@
     <string name="PosGoal">Goalie</string>
     <string name="PosDef">Defends</string>
     <string name="PosAtk">Attacker</string>
+    <string name="Positions">Positions</string>
     <string name="btnSave">Save</string>
     <string name="btnCancel">Cancel</string>
     <string name="mniMain">Main</string>

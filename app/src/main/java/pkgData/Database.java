@@ -11,6 +11,7 @@ import java.util.Locale;
 import pkgResult.GameResult;
 import pkgResult.PlayerResult;
 import pkgResult.Result;
+import pkgResult.SingleGameResult;
 import pkgResult.SinglePlayerResult;
 import pkgWSA.Accessor;
 import pkgWSA.AccessorResponse;
@@ -289,6 +290,43 @@ public class Database extends Application {
         }
 
         return player;
+    }
+
+    public Game insert(Game g) throws Exception {
+        Game game = null;
+        AccessorResponse response = Accessor.requestJSON(HttpMethod.POST, "game", null, GsonSerializor.serializeGame(g));
+
+        if (response.getResponseCode() == 500) {
+            throw new Exception(response.getJson());
+        }
+        else {
+            SingleGameResult sgr = GsonSerializor.deserializeSingleGameResult(response.getJson());
+
+            if (!sgr.isSuccess()) {
+                throw new Exception(sgr.getError());
+            }
+            else {
+                game = sgr.getContent();
+            }
+        }
+        return game;
+    }
+
+    public boolean insert(Participation p) throws Exception {
+        Result r = null;
+
+        AccessorResponse response = Accessor.requestJSON(HttpMethod.POST, "participation",
+                "idGame=" + p.getGame().getId() + "&idPlayer=" + p.getPlayer().getId()
+                , GsonSerializor.serializeParticipation(p));
+
+        if (response.getResponseCode() == 500) {
+            throw new Exception(response.getJson());
+        }
+        else {
+             r = GsonSerializor.deserializeResult(response.getJson());
+        }
+
+        return r.isSuccess();
     }
 
     public boolean update(Player p) throws Exception {

@@ -8,6 +8,7 @@
     <string name="PosGoal">Torwart</string>
     <string name="PosDef">Verteidigung</string>
     <string name="PosAtk">Sturm</string>
+    <string name="Positions">Positionen</string>
     <string name="btnSave">Speichern</string>
     <string name="btnCancel">Abbruch</string>
     <string name="mniMain">Hauptfenster</string>
@@ -22,6 +23,22 @@
     <string name="Date">Datum</string>
     <string name="SelectPlayersForGame">Spieler für Spiel auswählen</string>
     <string name="mniAddGame">Spiel hinzufügen</string>
-    <string name="Teilnahme">Participation</string>
+    <string name="Participation">Teilnahme</string>
     <string name="btnContinue">Weiter</string>
+    <string name="title_activity_team_managment">Team Managment</string>
+    <string name="action_settings">Einstellungen</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_add_game_enter_data">Daten eingeben</string>
+    <string name="Remark">Bemerkung</string>
+    <string name="GoalsShotDefault">Tore geschossen</string>
+    <string name="GoalsShotHead">Tore geschossen (Kopf)</string>
+    <string name="GoalsShotHeadSnow">Tore geschossen (Kopf+Schnee)</string>
+    <string name="GoalsShotPenalty">Tore geschossen (Elfmeter)</string>
+    <string name="GoalsGot">Tore bekommen</string>
+    <string name="Nutmeg">Gurken</string>
+    <string name="btnBack">Zurück</string>
+    <string name="title_activity_main2">MainActivity2</string>
+
+    <string name="navigation_drawer_open">Navigation öffnen</string>
+    <string name="navigation_drawer_close">Navigation schließen</string>
 </resources>

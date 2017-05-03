@@ -40,11 +40,6 @@
             android:name=".AddGameEnterDataActivity"
             android:label="@string/title_activity_add_game_enter_data"
             android:screenOrientation="portrait"/>
-            <!--android:theme="@style/AppTheme.NoActionBar"></activity> -->
-            android:label="@string/title_activity_add_game_enter_data" />
-        android:name="group2.schoolproject.a02soccer.TeamManagmentActivity"
-        android:label="@string/title_activity_team_managment"/>
-        <!-- android:theme="@style/AppTheme.NoActionBar"></activity> -->
     </application>
 
 </manifest>

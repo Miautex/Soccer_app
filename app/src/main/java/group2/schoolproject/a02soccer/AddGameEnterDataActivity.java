@@ -9,11 +9,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.TreeSet;
 
 import pkgComparator.ParticipationComparatorName;
+import pkgData.Database;
 import pkgData.Game;
 import pkgData.Participation;
 import pkgData.Team;
@@ -34,6 +36,7 @@ public class AddGameEnterDataActivity extends AppCompatActivity implements TabLa
                    btnSave = null;
 
     private Game tmpGame = null;
+    private Database db = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +47,7 @@ public class AddGameEnterDataActivity extends AppCompatActivity implements TabLa
             getAllViews();
             registrateEventHandlers();
 
+            db = Database.getInstance();
             tmpGame = (Game) this.getIntent().getSerializableExtra("game");
 
             if (tmpGame == null) {
@@ -152,8 +156,32 @@ public class AddGameEnterDataActivity extends AppCompatActivity implements TabLa
         txtScore.setText("A:B - " + scoreTeamA + ":" + scoreTeamB);
     }
 
+    private void onBtnSaveClick() {
+        try {
+            tmpGame.setRemark(edtRemark.getText().toString());
+
+            db.insert(tmpGame);
+
+            for (Participation p: tmpGame.getParticipations()) {
+                db.insert(p);
+            }
+        }
+        catch (Exception ex) {
+            ExceptionNotification.notify(this, ex);
+        }
+    }
+
     @Override
     public void onClick(View v) {
-
+        try {
+            if (v.getId() == R.id.btnSave) {
+                onBtnSaveClick();
+            }
+            else if (v.getId() == R.id.btnBack) {
+                this.finish();
+            }
+        } catch (Exception e) {
+            Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 }
