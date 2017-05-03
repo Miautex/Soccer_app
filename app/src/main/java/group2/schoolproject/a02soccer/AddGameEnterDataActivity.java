@@ -1,23 +1,38 @@
 package group2.schoolproject.a02soccer;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.TreeSet;
 
+import pkgComparator.ParticipationComparatorName;
 import pkgData.Game;
 import pkgData.Participation;
 import pkgData.Team;
+import pkgListeners.OnScoreChangedListener;
 import pkgTab.SectionsPageAdapter;
 import pkgTab.TabAddGameEnterData;
 
-public class AddGameEnterDataActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener {
+public class AddGameEnterDataActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener,
+        OnScoreChangedListener, View.OnClickListener {
 
     private SectionsPageAdapter adapter = null;
     private ViewPager mViewPager = null;
     private TabLayout tablayout = null;
+
+    private TextView txtScore = null;
+    private EditText edtRemark = null;
+    private Button btnBack = null,
+                   btnSave = null;
+
     private Game tmpGame = null;
 
     @Override
@@ -27,6 +42,7 @@ public class AddGameEnterDataActivity extends AppCompatActivity implements TabLa
 
         try {
             getAllViews();
+            registrateEventHandlers();
 
             tmpGame = (Game) this.getIntent().getSerializableExtra("game");
 
@@ -38,6 +54,15 @@ public class AddGameEnterDataActivity extends AppCompatActivity implements TabLa
             setupViewPager(mViewPager);
             tablayout.setupWithViewPager(mViewPager);
             tablayout.setOnTabSelectedListener(this);
+
+            //Handler to display first tab after 0.1sec
+            new Handler().postDelayed(
+                new Runnable(){
+                    @Override
+                    public void run() {
+                        tablayout.getTabAt(0).select();
+                    }
+                }, 100);
         }
         catch (Exception ex) {
             ExceptionNotification.notify(this, ex);
@@ -48,6 +73,15 @@ public class AddGameEnterDataActivity extends AppCompatActivity implements TabLa
     private void getAllViews() {
         mViewPager = (ViewPager) findViewById(R.id.pager);
         tablayout = (TabLayout) findViewById(R.id.tabs);
+        txtScore = (TextView) findViewById(R.id.txtScore);
+        edtRemark = (EditText) findViewById(R.id.edtRemark);
+        btnBack = (Button) findViewById(R.id.btnBack);
+        btnSave = (Button) findViewById(R.id.btnSave);
+    }
+
+    private void registrateEventHandlers() {
+        btnBack.setOnClickListener(this);
+        btnSave.setOnClickListener(this);
     }
 
     private void setupViewPager(ViewPager viewPager){
@@ -80,7 +114,11 @@ public class AddGameEnterDataActivity extends AppCompatActivity implements TabLa
         else if (tab.getPosition() == 1) {
             fragment.setParticipations(getParticipationsOfTeam(Team.TEAM2));
         }*/
-        fragment.setParticipations(tmpGame.getParticipations());
+
+        TreeSet<Participation> tsp = new TreeSet<>(new ParticipationComparatorName());
+        tsp.addAll(tmpGame.getParticipations());
+        fragment.setParticipations(tsp);
+        fragment.setOnScoreChangedListener(this);
     }
 
     @Override
@@ -96,6 +134,26 @@ public class AddGameEnterDataActivity extends AppCompatActivity implements TabLa
 
     @Override
     public void onTabReselected(TabLayout.Tab tab) {
+        onTabSelected(tab);
+    }
+
+    @Override
+    public void onScoreUpdated(int sumGoalsShot) {
+        if (tablayout.getTabAt(0).isSelected()) {
+            tmpGame.setScoreTeamA(sumGoalsShot);
+        }
+        else {
+            tmpGame.setScoreTeamB(sumGoalsShot);
+        }
+        updateScoreDisplay(tmpGame.getScoreTeamA(), tmpGame.getScoreTeamB());
+    }
+
+    private void updateScoreDisplay(int scoreTeamA, int scoreTeamB) {
+        txtScore.setText("A:B - " + scoreTeamA + ":" + scoreTeamB);
+    }
+
+    @Override
+    public void onClick(View v) {
 
     }
 }

@@ -25,35 +25,19 @@
                 android:layout_height="wrap_content" />
         </android.support.design.widget.AppBarLayout>
 
+
+        <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_weight="0.5"
+            android:layout_below="@+id/appbar"></android.support.v4.view.ViewPager>
+
         <RelativeLayout
             android:id="@+id/layout_common_data"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/appbar">
-
-            <TextView
-                android:id="@+id/txtRemark"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:text="@string/Remark"
-                android:gravity="center"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="18sp"
-                android:layout_alignBottom="@+id/edtRemark" />
-
-            <EditText
-                android:id="@+id/edtRemark"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:width="250dp"/>
+            android:layout_below="@+id/pager">
 
             <TextView
                 android:id="@+id/txtScore"
@@ -63,23 +47,40 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentStart="true"
-                android:layout_below="@+id/txtRemark"
-                android:layout_marginTop="25dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:textSize="24sp" />
-        </RelativeLayout>
 
-        <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/pager"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:layout_weight="0.5"
-            android:layout_below="@+id/layout_common_data"></android.support.v4.view.ViewPager>
+            <TextView
+                android:id="@+id/txtRemark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Remark"
+                android:gravity="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="18sp"
+                android:layout_below="@+id/txtScore"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignBottom="@+id/edtRemark" />
+
+            <EditText
+                android:id="@+id/edtRemark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:width="250dp"
+                android:layout_below="@+id/txtScore"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/layout_buttons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/pager">
+            android:layout_below="@+id/layout_common_data">
 
             <Button
                 android:id="@+id/btnBack"
@@ -89,6 +90,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
+                android:layout_marginTop="10dp"
                 android:layout_marginLeft="34dp"
                 android:layout_marginStart="34dp" />
 
@@ -100,6 +102,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="31dp"
                 android:layout_marginEnd="31dp" />
         </RelativeLayout>

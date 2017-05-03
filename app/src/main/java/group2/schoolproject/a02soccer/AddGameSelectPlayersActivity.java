@@ -16,7 +16,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.TreeSet;
 
+import pkgComparator.PlayerComparatorName;
 import pkgData.Database;
 import pkgData.Game;
 import pkgData.Participation;
@@ -49,7 +51,10 @@ public class AddGameSelectPlayersActivity extends DynamicMenuActivity implements
 
             getAllViews();
             registrateEventHandlers();
-            displayPlayersInTable(hmPlayers.values());
+
+            TreeSet<Player> tsPlayers = new TreeSet<>(new PlayerComparatorName());
+            tsPlayers.addAll(hmPlayers.values());
+            displayPlayersInTable(tsPlayers);
 
         } catch (Exception ex) {
             ExceptionNotification.notify(this, ex);
@@ -82,10 +87,9 @@ public class AddGameSelectPlayersActivity extends DynamicMenuActivity implements
             txvId.setText(Integer.toString(p.getId()));
             txvId.setVisibility(View.GONE);
 
-            //Layout doesn't work...
-            TableRow.LayoutParams params = new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1);
-            cb.setLayoutParams(params);
-            txvId.setLayoutParams(params);
+            //Layout doesn't really work...
+            cb.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.5f));
+            txvId.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 2));
 
             row.addView(cb);
             row.addView(txvName);
