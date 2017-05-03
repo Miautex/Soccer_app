@@ -67,7 +67,7 @@ public class DynamicMenuActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void openActivity(Class toOpen){
+    public void openActivity(Class toOpen){
         Intent myIntent = new Intent(this, toOpen);
         this.startActivity(myIntent);
     }
