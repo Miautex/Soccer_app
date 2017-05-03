@@ -1,69 +1,21 @@
 package pkgWSA;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
 /**
  * Created by Wilscher Marco
  */
 
 public final class Accessor {
-    private static String serverUrl = "http://192.168.194.27:8080/team02/services/";
+    private final static String serverUrl = "http://192.168.194.27:8080/team02/services/";
 
     public static AccessorResponse requestJSON(HttpMethod method, String servicePath, String serviceQuery, String body) throws Exception {
-        URL url = null;
-        HttpURLConnection con = null;
-        int responseCode = 0;
-        BufferedReader reader = null;
-        String inputLine = null;
-        StringBuffer jsonStringBuffer = null;
-        String strUrl = "";
+        AccessorResponse response;
+        WebServiceTask task = new WebServiceTask();
 
-        try {
-            strUrl += serverUrl;
-            if (servicePath != null) {
-                strUrl += servicePath;
-            }
-            if (serviceQuery != null) {
-                if (!serviceQuery.isEmpty()) {
-                    strUrl += ("?" + serviceQuery);
-                }
-            }
-
-            url = new URL(strUrl);
-            con = (HttpURLConnection) url.openConnection();
-
-            con.setRequestMethod(method.toString());
-            con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-            con.setRequestProperty("Accept", "application/json; charset=UTF-8");
-
-            if (body != null) {
-                con.setRequestProperty("Content-Length", Integer.toString(body.length()));
-                con.getOutputStream().write(body.getBytes("UTF8"));
-            }
-            
-            responseCode = con.getResponseCode();
-            reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            jsonStringBuffer = new StringBuffer();
-            while ((inputLine = reader.readLine()) != null) {
-                jsonStringBuffer.append(inputLine);
-            }
-
+        task.execute(new TaskParams(serverUrl, method, servicePath, serviceQuery, body));
+        response = task.get();
+        if (response.getException() != null) {
+            throw response.getException();
         }
-        catch (Exception exc) {
-            throw exc;
-        }
-        finally {
-            if (con != null) {
-                con.disconnect();
-            }
-            if (reader != null) {
-                reader.close();
-            }
-        }
-        return new AccessorResponse(responseCode, jsonStringBuffer.toString());
+        return response;
     }
-
 }
