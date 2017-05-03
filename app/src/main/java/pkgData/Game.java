@@ -10,7 +10,7 @@ public final class Game implements Serializable, Comparable<Game> {
     private int id, scoreTeamA, scoreTeamB;
     private Date date;
     private String remark;
-    private transient HashSet<Participation> participations;
+    private HashSet<Participation> participations;
 
     private Game() {
         id = -1;
@@ -68,7 +68,7 @@ public final class Game implements Serializable, Comparable<Game> {
         return scoreTeamB;
     }
 
-    private void setDate(Date date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
@@ -81,7 +81,15 @@ public final class Game implements Serializable, Comparable<Game> {
     }
 
     public void addParticipation(Participation p) {
+        if (p == null) {
+            throw new IllegalArgumentException("Participation must not be null");
+        }
+
         participations.add(p);
+
+        if (p.getGame()!= null && !p.getGame().equals(this)) {
+            p.setGame(this);
+        }
     }
 
     public void removeParticipation(Participation p) {

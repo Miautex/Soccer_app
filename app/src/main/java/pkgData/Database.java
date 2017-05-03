@@ -17,6 +17,7 @@ import pkgTasks.GetPasswordTask;
 import pkgTasks.GetPlayerByUsernameTask;
 import pkgTasks.InsertPlayerTask;
 import pkgTasks.LoadAllGamesTask;
+import pkgTasks.LoadAllPlayersTask;
 import pkgTasks.SetPasswordTask;
 import pkgTasks.UpdatePlayerTask;
 import pkgWSA.AccessorResponse;
@@ -61,15 +62,19 @@ public class Database extends Application {
     }
 
     public ArrayList<Player> getAllPlayers() throws Exception {
-        //TODO
         ArrayList<Player> listPlayers = null;
-        PlayerResult pr = GsonSerializor.deserializePlayerResult("A");
+        AccessorResponse response = null;
 
-        if (pr.isSuccess()) {
-            listPlayers = pr.getContent();
+        LoadAllPlayersTask task = new LoadAllPlayersTask();
+        task.execute();
+        response = task.get();
+
+        if (response.getResponseCode() == 500) {
+            throw new Exception(response.getJson());
         }
         else {
-            throw new Exception(pr.getError().getMessage());
+            PlayerResult ps = GsonSerializor.deserializePlayerResult(response.getJson());
+            listPlayers = ps.getContent();
         }
 
         return listPlayers;
@@ -240,7 +245,7 @@ public class Database extends Application {
             m = MessageDigest.getInstance("MD5");
             m.update(pwInput.getBytes(), 0, pwInput.length());
             hash = new BigInteger(1,m.digest()).toString(16);
-        } catch (NoSuchAlgorithmException e) { }
+        } catch (NoSuchAlgorithmException e) { e.printStackTrace(); }
 
         return hash;
     }

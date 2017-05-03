@@ -1,14 +1,16 @@
-package pkgTab;
+package group2.schoolproject.a02soccer;
 
-import android.support.design.widget.TabLayout;
-import android.support.v7.app.AppCompatActivity;
-import pkgTab.SectionsPageAdapter;
-import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.widget.TableRow;
-import android.widget.TextView;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 
+import group2.schoolproject.a02soccer.ExceptionNotification;
 import group2.schoolproject.a02soccer.R;
+import pkgData.Player;
+import pkgTab.SectionsPageAdapter;
+import pkgTab.Tab1Fragment;
+import pkgTab.Tab2Fragment;
 
 public class TeamManagmentActivity extends AppCompatActivity {
 
@@ -29,9 +31,9 @@ public class TeamManagmentActivity extends AppCompatActivity {
         TabLayout tablayout = (TabLayout) findViewById(R.id.tabs);
         tablayout.setupWithViewPager(mViewPager);
 
+        addPlayer();
 
     }
-
 
     private void setupViewPager(ViewPager viewPager){
         SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
@@ -43,7 +45,7 @@ public class TeamManagmentActivity extends AppCompatActivity {
     public void addPlayer(){
         SectionsPageAdapter adapter = (SectionsPageAdapter) mViewPager.getAdapter();
         Tab1Fragment test = (Tab1Fragment) adapter.getItem(0);
-        // create a new TableRow
+        /*// create a new TableRow
         TableRow row = new TableRow(this);
         // create a new TextView for showing xml data
         TextView t = new TextView(this);
@@ -51,7 +53,13 @@ public class TeamManagmentActivity extends AppCompatActivity {
         t.setText( "Santner");
         // add the TextView  to the new TableRow
         row.addView(t);
-        test.addPlayer(row);
+        test.addPlayer(row);*/
+        try {
+            test.addPlayerTest(new Player("santnere", "Santner", true));
+        } catch (Exception e) {
+            ExceptionNotification.notify(this, e);
+            e.printStackTrace();
+        }
     }
 
 

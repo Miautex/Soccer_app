@@ -50,6 +50,7 @@ public final class Accessor {
             while ((inputLine = reader.readLine()) != null) {
                 jsonStringBuffer.append(inputLine);
             }
+
         }
         catch (Exception exc) {
             throw exc;

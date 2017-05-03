@@ -19,4 +19,9 @@
     <string name="mniEdit">Spieler bearbeiten</string>
     <string name="ckbIsAdmin">ist Admin</string>
     <string name="btnAdd">Hinzufügen</string>
+    <string name="Date">Datum</string>
+    <string name="SelectPlayersForGame">Spieler für Spiel auswählen</string>
+    <string name="mniAddGame">Spiel hinzufügen</string>
+    <string name="Teilnahme">Participation</string>
+    <string name="btnContinue">Weiter</string>
 </resources>

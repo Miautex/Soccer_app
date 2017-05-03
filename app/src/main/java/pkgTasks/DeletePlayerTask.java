@@ -3,9 +3,7 @@ package pkgTasks;
 
 import android.os.AsyncTask;
 
-import pkgWSA.Accessor;
 import pkgWSA.AccessorResponse;
-import pkgWSA.HttpMethod;
 
 public class DeletePlayerTask extends AsyncTask<String, Void, AccessorResponse> {
 
@@ -14,7 +12,7 @@ public class DeletePlayerTask extends AsyncTask<String, Void, AccessorResponse> 
         AccessorResponse response = null;
 
         try {
-            //response = Accessor.requestJSON(HttpMethod.DELETE, "player/" + args[0], null);
+            //response = Accessor.requestJSON(HttpMethod.DELETE, "player/" + args[0], null, null);
 
             if (response == null) {
                 throw new Exception("Could not reach webservice");

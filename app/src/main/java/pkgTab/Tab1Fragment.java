@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import group2.schoolproject.a02soccer.R;
+import pkgData.Player;
 import pkgData.PlayerPosition;
 
 /**
@@ -45,7 +46,7 @@ public class Tab1Fragment extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         Spinner sItems = (Spinner) view.findViewById(R.id.Team1Spinner);
         sItems.setAdapter(adapter);
-        table = (TableLayout)mview.findViewById(R.id.tableTeam1);
+        table = (TableLayout)view.findViewById(R.id.tableTeam1);
         return view;
     }
 
@@ -54,6 +55,17 @@ public class Tab1Fragment extends Fragment {
         System.out.println(table);
             // get a reference for the TableLayout
             table.addView(row, new TableLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+    }
+
+    public void addPlayerTest(Player p) {
+        TableRow row = new TableRow(this.getContext());
+        // create a new TextView for showing xml data
+        TextView t = new TextView(this.getContext());
+        // set the text to "text xx"
+        t.setText("Santner");
+        // add the TextView  to the new TableRow
+        row.addView(t);
+        this.addPlayer(row);
     }
 
 

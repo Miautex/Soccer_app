@@ -7,8 +7,8 @@ public final class Participation implements Comparable, Serializable {
             numNutmeg;
     private Team team;
     private PlayerPosition position;
-    private transient Player player;
-    private transient Game game;
+    private Player player;
+    private Game game;
 
     public Participation() {
         super();
@@ -141,6 +141,7 @@ public final class Participation implements Comparable, Serializable {
         if (player == null) {
             throw new NullPointerException("player may not be null");
         }
+
         this.player = player;
     }
 
@@ -149,7 +150,15 @@ public final class Participation implements Comparable, Serializable {
     }
 
     public void setGame(Game game) {
+        if (player == null) {
+            throw new NullPointerException("player must not be null");
+        }
+
         this.game = game;
+
+        if (!game.getParticipations().contains(this)) {
+            game.addParticipation(this);
+        }
     }
 
 
@@ -188,10 +197,7 @@ public final class Participation implements Comparable, Serializable {
         Participation tmpPart = (Participation) o;
         cp = getPlayer().compareTo(tmpPart.getPlayer());
         if (cp == 0) {
-            cp = getTeam().compareTo(tmpPart.getTeam());
-            if (cp == 0) {
-                cp = getPosition().compareTo(tmpPart.getPosition());
-            }
+            cp = getGame().compareTo(tmpPart.getGame());
         }
         return cp;
     }

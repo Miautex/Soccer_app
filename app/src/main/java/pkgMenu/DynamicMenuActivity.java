@@ -12,13 +12,14 @@ import android.view.MenuItem;
 
 import java.util.Locale;
 
+import group2.schoolproject.a02soccer.AddGameSelectPlayersActivity;
 import group2.schoolproject.a02soccer.AddPlayerActivity;
 import group2.schoolproject.a02soccer.EditPlayerActivity;
 import group2.schoolproject.a02soccer.LoginActivity;
 import group2.schoolproject.a02soccer.MainActivity;
 import group2.schoolproject.a02soccer.R;
-import pkgTab.TeamManagmentActivity;
 import pkgData.Database;
+import group2.schoolproject.a02soccer.TeamManagmentActivity;
 
 /**
  * Created by Raphael on 28.04.2017.
@@ -50,6 +51,9 @@ public class DynamicMenuActivity extends AppCompatActivity {
         }
         else if(item.getItemId() == DynamicMenuItem.LOGIN.ordinal()){
             openActivity(LoginActivity.class);
+        }
+        else if(item.getItemId() == DynamicMenuItem.ADD_GAME.ordinal()){
+            openActivity(AddGameSelectPlayersActivity.class);
         }
         else if(item.getItemId() == DynamicMenuItem.EDITTEAM.ordinal()){
             openActivity(TeamManagmentActivity.class);
@@ -89,6 +93,7 @@ public class DynamicMenuActivity extends AppCompatActivity {
         menu.add(0,DynamicMenuItem.MAIN.ordinal(), Menu.NONE,R.string.mniMain);
         menu.add(0, DynamicMenuItem.ADD_PLAYER.ordinal(), Menu.NONE, R.string.mniAdd);
         menu.add(0,DynamicMenuItem.EDIT_PLAYER.ordinal(),Menu.NONE, R.string.mniEdit);
+        menu.add(0,DynamicMenuItem.ADD_GAME.ordinal(),Menu.NONE, R.string.mniAddGame);
         menu.add(0,DynamicMenuItem.LOGIN.ordinal(),Menu.NONE, R.string.mniLogin);
         menu.add(0,DynamicMenuItem.EDITTEAM.ordinal(),Menu.NONE,R.string.mniTeam);
         //menu.add(0,DynamicMenuItem."neue_activty_EnumWert".ordinal(),Menu.NONE, R.string."strings.xml value für die Activity bzw für Menuitem/eintrag")
@@ -103,6 +108,9 @@ public class DynamicMenuActivity extends AppCompatActivity {
         }
         else if (cl == EditPlayerActivity.class) {
             dmi = DynamicMenuItem.EDIT_PLAYER;
+        }
+        else if (cl == AddGameSelectPlayersActivity.class) {
+            dmi = DynamicMenuItem.ADD_GAME;
         }
         //neue Einträge einfach mit else is (cl == "neue_Activity".class)
         //dmi = "Enumwert für die neue_Activity" (muss selbst angelegt werden)

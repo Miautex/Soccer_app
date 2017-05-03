@@ -19,7 +19,21 @@
     <string name="mniEdit">Edit Player</string>
     <string name="ckbIsAdmin">Is Admin</string>
     <string name="btnAdd">Add</string>
+    <string name="Date">Date</string>
+    <string name="SelectPlayersForGame">Select Players for the Game</string>
+    <string name="mniAddGame">Add Game</string>
+    <string name="Participation">Participation</string>
+    <string name="btnContinue">Continue</string>
     <string name="title_activity_team_managment">Team Managment</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_add_game_enter_data">Enter Data</string>
+    <string name="Remark">Remark</string>
+    <string name="GoalsShotDefault">Goals Shot</string>
+    <string name="GoalsShotHead">Goals Shot (Head)</string>
+    <string name="GoalsShotHeadSnow">Goals Shot (Head+Snow)</string>
+    <string name="GoalsShotPenalty">Goals Shot (Penalty)</string>
+    <string name="GoalsGot">Goals Got</string>
+    <string name="Nutmeg">Nutmeg</string>
+    <string name="btnBack">Back</string>
 </resources>

@@ -2,9 +2,7 @@ package pkgTasks;
 
 import android.os.AsyncTask;
 
-import pkgWSA.Accessor;
 import pkgWSA.AccessorResponse;
-import pkgWSA.HttpMethod;
 
 public class InsertPlayerTask extends AsyncTask<String, Void, AccessorResponse> {
 
@@ -13,7 +11,7 @@ public class InsertPlayerTask extends AsyncTask<String, Void, AccessorResponse> 
         AccessorResponse response = null;
 
         try {
-            //response = Accessor.requestJSON(HttpMethod.POST, "player", args[0]);
+            //response = Accessor.requestJSON(HttpMethod.POST, "player", null, args[0]);
 
             if (response == null) {
                 throw new Exception("Could not reach webservice");
