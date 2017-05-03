@@ -16,58 +16,67 @@ import java.util.ArrayList;
 import java.util.List;
 
 import group2.schoolproject.a02soccer.R;
-import pkgData.Player;
 import pkgData.PlayerPosition;
 
 /**
  * Created by Raphael on 01.05.2017.
+ * The best Productowner
  */
 
 public class Tab1Fragment extends Fragment {
-    private static final String TAG = "Tab1Fragment";
-    private View mview = null;
-    private TableLayout table;
+    private TableLayout table_PlayersData = null;
+    private Spinner sItems = null;
+    private View view = null;
+    private  ArrayAdapter<String> adapter= null;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.tab_team1,container,false);
-        mview = view;
+        view = inflater.inflate(R.layout.tab_team1,container,false);
 
-        List<String> spinnerArray =  new ArrayList<String>();
+        List<String> spinnerArray = new ArrayList<>();
         for(PlayerPosition p : PlayerPosition.values()){
             spinnerArray.add(p.toString());
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_spinner_dropdown_item,spinnerArray);
+        adapter = new ArrayAdapter<>(getContext(),android.R.layout.simple_spinner_dropdown_item,spinnerArray);
 
-
+        getAllViews();
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        Spinner sItems = (Spinner) view.findViewById(R.id.Team1Spinner);
         sItems.setAdapter(adapter);
-        table = (TableLayout)view.findViewById(R.id.tableTeam1);
         return view;
     }
 
-    public void addPlayer(TableRow row){
-        System.out.println("+++++++++++++++++++++++++++");
-        System.out.println(table);
-            // get a reference for the TableLayout
-            table.addView(row, new TableLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+    private void getAllViews() {
+        sItems = (Spinner) view.findViewById(R.id.Team1Spinner);
+        table_PlayersData = (TableLayout) view.findViewById(R.id.tableTeam1);
     }
 
-    public void addPlayerTest(Player p) {
+    public void addPlayer() {
         TableRow row = new TableRow(this.getContext());
         // create a new TextView for showing xml data
         TextView t = new TextView(this.getContext());
+        t.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT,1));
         // set the text to "text xx"
         t.setText("Santner");
         // add the TextView  to the new TableRow
         row.addView(t);
-        this.addPlayer(row);
+        Spinner s = new Spinner(this.getContext());
+        s.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT,1));
+        s.setAdapter(adapter);
+        row.addView(s);
+        table_PlayersData.addView(row);
     }
 
-
-
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        try {
+            addPlayer();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

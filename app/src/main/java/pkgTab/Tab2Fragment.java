@@ -10,17 +10,19 @@ import android.view.ViewGroup;
 import group2.schoolproject.a02soccer.R;
 
 /**
- * Created by Raphael on 01.05.2017.
+ * Created by Raphael
  */
 
 public class Tab2Fragment extends Fragment {
-    private static final String TAG = "Tab2Fragment";
 
+    private View view = null;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.tab_team2,container,false);
+        view = inflater.inflate(R.layout.tab_team2,container,false);
 
         return view;
     }
+
+
 }

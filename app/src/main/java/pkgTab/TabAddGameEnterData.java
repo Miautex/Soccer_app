@@ -31,7 +31,6 @@ public class TabAddGameEnterData extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_add_game_enter_data,container,false);
-
         hmParticipations = new HashMap<>();
         getAllViews();
 
@@ -108,15 +107,15 @@ public class TabAddGameEnterData extends Fragment {
     }
 
     public ArrayList<Participation> getParticipationsFromTable() {
-        ArrayList<Participation> participations = new ArrayList<Participation>();
-        TableRow row = null;
-        EditText txvGoalsShot = null,
-                 txvGoalsShotHead = null,
-                 txvGoalsShotSnow = null,
-                 txvGoalsShotPenalty = null,
-                 txvGoalsGot = null,
-                 txvNutmeg = null,
-                 txvId = null;
+        ArrayList<Participation> participations = new ArrayList<>();
+        TableRow row;
+        EditText txvGoalsShot,
+                 txvGoalsShotHead,
+                 txvGoalsShotSnow,
+                 txvGoalsShotPenalty,
+                 txvGoalsGot,
+                 txvNutmeg,
+                 txvId;
 
         for (int i=0; i<table_PlayersData.getChildCount(); i++) {
             row = (TableRow) table_PlayersData.getChildAt(i);

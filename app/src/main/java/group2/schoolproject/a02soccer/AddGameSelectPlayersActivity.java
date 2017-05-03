@@ -125,9 +125,9 @@ public class AddGameSelectPlayersActivity extends DynamicMenuActivity implements
 
     private ArrayList<Player> getSelectedPlayersFromTable() {
         ArrayList<Player> selectedPlayers = new ArrayList<Player>();
-        TableRow row = null;
-        CheckBox checkBox = null;
-        TextView textViewId = null;
+        TableRow row;
+        CheckBox checkBox;
+        TextView textViewId;
 
         for (int i = 0; i < tablePlayers.getChildCount(); i++) {
             row = (TableRow) tablePlayers.getChildAt(i);

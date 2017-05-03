@@ -4,17 +4,14 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.TableRow;
+import android.widget.TextView;
 
-import group2.schoolproject.a02soccer.ExceptionNotification;
-import group2.schoolproject.a02soccer.R;
-import pkgData.Player;
 import pkgTab.SectionsPageAdapter;
 import pkgTab.Tab1Fragment;
 import pkgTab.Tab2Fragment;
 
 public class TeamManagmentActivity extends AppCompatActivity {
-
-    private static final String TAG = "TeamMangamnet";
 
     private SectionsPageAdapter mSectionsPageAdapter;
     private ViewPager mViewPager;
@@ -31,37 +28,35 @@ public class TeamManagmentActivity extends AppCompatActivity {
         TabLayout tablayout = (TabLayout) findViewById(R.id.tabs);
         tablayout.setupWithViewPager(mViewPager);
 
-        addPlayer();
-
+        addPlayer(false);
     }
 
     private void setupViewPager(ViewPager viewPager){
-        SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
+        SectionsPageAdapter adapter = mSectionsPageAdapter;
         adapter.addFragment(new Tab1Fragment(),"TEAM1");
         adapter.addFragment(new Tab2Fragment(),"TEAM2");
         viewPager.setAdapter(adapter);
     }
 
-    public void addPlayer(){
-        SectionsPageAdapter adapter = (SectionsPageAdapter) mViewPager.getAdapter();
-        Tab1Fragment test = (Tab1Fragment) adapter.getItem(0);
-        /*// create a new TableRow
-        TableRow row = new TableRow(this);
-        // create a new TextView for showing xml data
-        TextView t = new TextView(this);
-        // set the text to "text xx"
-        t.setText( "Santner");
-        // add the TextView  to the new TableRow
-        row.addView(t);
-        test.addPlayer(row);*/
-        try {
-            test.addPlayerTest(new Player("santnere", "Santner", true));
-        } catch (Exception e) {
-            ExceptionNotification.notify(this, e);
-            e.printStackTrace();
+    public void addPlayer(Boolean b){
+        if(b){
+            SectionsPageAdapter adapter = (SectionsPageAdapter) mViewPager.getAdapter();
+            Tab1Fragment test = (Tab1Fragment) adapter.getItem(0);
+            // create a new TableRow
+            try {
+                TableRow row = new TableRow(this);
+                // create a new TextView for showing xml data
+                TextView t = new TextView(this);
+                // set the text to "text xx"
+                t.setText( "Santner");
+                // add the TextView  to the new TableRow
+                row.addView(t);
+                test.addPlayer();
+            }
+            catch (Exception e) {
+                ExceptionNotification.notify(this, e);
+                e.printStackTrace();
+            }
         }
     }
-
-
-
 }

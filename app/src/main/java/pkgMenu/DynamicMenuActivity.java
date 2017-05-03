@@ -79,7 +79,7 @@ public class DynamicMenuActivity extends AppCompatActivity {
         //Activity die diese Methode ausführt, wird aus dem Menu entfernt
         menu.removeItem(classtoEnum(cl).ordinal());
         //Sprache hinzufügen
-        if(getResources().getConfiguration().locale.toString().indexOf("de") != -1){
+        if(getResources().getConfiguration().locale.toString().contains("de")){
             menu.add(0,DynamicMenuItem.ENGLISH.ordinal(),Menu.NONE, R.string.mniEnglish);
         }
         else{

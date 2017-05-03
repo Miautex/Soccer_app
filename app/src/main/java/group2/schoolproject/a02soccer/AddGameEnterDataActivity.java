@@ -15,8 +15,6 @@ import pkgTab.TabAddGameEnterData;
 
 public class AddGameEnterDataActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener {
 
-    private static final String TAG = "EnterData";
-
     private SectionsPageAdapter adapter = null;
     private ViewPager mViewPager = null;
     private TabLayout tablayout = null;
@@ -36,7 +34,7 @@ public class AddGameEnterDataActivity extends AppCompatActivity implements TabLa
                 throw new Exception("Please call activity with intent-extra 'game'");
             }
 
-            SectionsPageAdapter mSectionsPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
+            adapter = new SectionsPageAdapter(getSupportFragmentManager());
             setupViewPager(mViewPager);
             tablayout.setupWithViewPager(mViewPager);
             tablayout.setOnTabSelectedListener(this);
