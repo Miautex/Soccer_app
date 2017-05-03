@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity2" android:label= "MainActivity"
+        <activity android:name=".MainActivity" android:label= "MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
 
             <intent-filter>
@@ -42,10 +42,6 @@
         android:name="group2.schoolproject.a02soccer.TeamManagmentActivity"
         android:label="@string/title_activity_team_managment"/>
         <!-- android:theme="@style/AppTheme.NoActionBar"></activity> -->
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/title_activity_main2">
-            </activity>
     </application>
 
 </manifest>
