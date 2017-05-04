@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="group2.schoolproject.a02soccer.MainActivity">
+    tools:context="group2.schoolproject.a02soccer.MainActivity"
+    android:background="@drawable/background">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
