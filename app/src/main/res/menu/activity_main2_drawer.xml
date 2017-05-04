@@ -3,16 +3,16 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
+            android:id="@id/mniAddPlayer"
+            android:icon="@drawable/ic_penis"
             android:title="@string/mniAdd" />
         <item
             android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_penis"
             android:title="@string/mniAddGame" />
         <item
             android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_penis"
             android:title="@string/mniEdit" />
         <item
             android:id="@+id/nav_manage"
@@ -24,11 +24,11 @@
         <menu>
             <item
                 android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
+                android:icon="@drawable/ic_penis"
                 android:title="Share" />
             <item
                 android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
+                android:icon="@drawable/ic_penis"
                 android:title="Send" />
         </menu>
     </item>

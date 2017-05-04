@@ -63,16 +63,15 @@ public class MainActivity extends DynamicMenuActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.mniAddPlayer) {
             openActivity(AddPlayerActivity.class);
-
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_gallery) {
             openActivity(AddGameSelectPlayersActivity.class);
+        } else if (id == R.id.nav_slideshow) {
+            openActivity(EditPlayerActivity.class);
 
         } else if (id == R.id.nav_manage) {
-            openActivity(EditPlayerActivity.class);
+            openActivity(TeamManagmentActivity.class);
 
         } else if (id == R.id.nav_share) {
             openActivity(TeamManagmentActivity.class);
