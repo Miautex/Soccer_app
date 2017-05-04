@@ -87,9 +87,9 @@ public class AddGameSelectPlayersActivity extends DynamicMenuActivity implements
             txvId.setText(Integer.toString(p.getId()));
             txvId.setVisibility(View.GONE);
 
-            //Layout doesn't really work...
-            cb.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.5f));
-            txvId.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 2));
+            //Set layout like header
+            cb.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
+            txvName.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 2.5f));
 
             row.addView(cb);
             row.addView(txvName);

@@ -40,15 +40,16 @@
         <TableRow>
 
             <TextView
+                android:layout_width="0dp"
                 android:layout_column="0"
                 android:layout_weight="1"
                 android:text="@string/Participation"
                 android:textStyle="bold" />
 
             <TextView
-                android:layout_width="250dp"
+                android:layout_width="0dp"
                 android:layout_column="1"
-                android:layout_weight="1"
+                android:layout_weight="2.5"
                 android:text="@string/Name"
                 android:textStyle="bold" />
         </TableRow>
@@ -69,7 +70,7 @@
             android:id="@+id/table_Players"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:stretchColumns="*">
+            android:stretchColumns="0">
 
         </TableLayout>
     </ScrollView>

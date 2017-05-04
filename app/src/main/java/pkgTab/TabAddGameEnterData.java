@@ -25,7 +25,7 @@ import pkgData.Player;
 import pkgListeners.OnScoreChangedListener;
 
 
-public class TabAddGameEnterData extends Fragment {
+public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeListener {
     TableLayout table_PlayersData = null;
     private View view = null;
 
@@ -82,7 +82,7 @@ public class TabAddGameEnterData extends Fragment {
                     hmParticipations.put(p.getPlayer().getId(), p);
                 }
 
-                displayPlayersInTable(hmParticipations.values());
+                displayPlayersInTable(participations);
             }
             catch (Exception e) {
                 ExceptionNotification.notify(this.getContext(), e);
@@ -126,6 +126,9 @@ public class TabAddGameEnterData extends Fragment {
 
         for (int i=0; i<editTexts.length; i++) {
             editTexts[i] = (TextView) row.getChildAt(i+1);
+            if (editTexts[i].getText().length() == 0) {
+                editTexts[i].setText("0");
+            }
         }
 
         Participation p = new Participation();
@@ -162,6 +165,7 @@ public class TabAddGameEnterData extends Fragment {
                 et.setKeyListener(DigitsKeyListener.getInstance("0123456789"));
                 et.setLongClickable(false);
                 et.setGravity(Gravity.RIGHT);
+                et.setOnFocusChangeListener(this);
                 et.setRawInputType(InputType.TYPE_CLASS_NUMBER);
                 row.addView(et);
                 editTexts[i] = et;
@@ -220,5 +224,23 @@ public class TabAddGameEnterData extends Fragment {
         }
 
         return sum;
+    }
+
+    private void informOnScoreChangedListener(int newScore) {
+        if (scoreChangedListener != null) {
+            scoreChangedListener.onScoreUpdated(newScore, this);
+        }
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        EditText edt = (EditText) v;
+
+        if (!hasFocus) {
+            if (edt.getText().length() == 0) {
+                edt.setText("0");
+            }
+            informOnScoreChangedListener(calcuteSumOfGoals());
+        }
     }
 }

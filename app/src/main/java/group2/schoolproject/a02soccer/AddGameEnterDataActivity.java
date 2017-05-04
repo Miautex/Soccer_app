@@ -3,6 +3,7 @@ package group2.schoolproject.a02soccer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -23,8 +24,7 @@ import pkgListeners.OnScoreChangedListener;
 import pkgTab.SectionsPageAdapter;
 import pkgTab.TabAddGameEnterData;
 
-public class AddGameEnterDataActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener,
-        OnScoreChangedListener, View.OnClickListener {
+public class AddGameEnterDataActivity extends AppCompatActivity implements OnScoreChangedListener, View.OnClickListener {
 
     private SectionsPageAdapter adapter = null;
     private ViewPager mViewPager = null;
@@ -37,6 +37,8 @@ public class AddGameEnterDataActivity extends AppCompatActivity implements TabLa
 
     private Game tmpGame = null;
     private Database db = null;
+
+    TabAddGameEnterData[] tabs = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,14 +59,26 @@ public class AddGameEnterDataActivity extends AppCompatActivity implements TabLa
             adapter = new SectionsPageAdapter(getSupportFragmentManager());
             setupViewPager(mViewPager);
             tablayout.setupWithViewPager(mViewPager);
-            tablayout.setOnTabSelectedListener(this);
+
+            tabs = new TabAddGameEnterData[2];
+
+            tabs[0] = (TabAddGameEnterData) adapter.getItem(0);
+            tabs[1] = (TabAddGameEnterData) adapter.getItem(1);
+            tabs[0].setOnScoreChangedListener(this);
+            tabs[1].setOnScoreChangedListener(this);
+
+            //Initially display score
+            updateScoreDisplay(tmpGame.getScoreTeamA(), tmpGame.getScoreTeamB());
 
             //Handler to display first tab after 0.1sec
             new Handler().postDelayed(
                 new Runnable(){
                     @Override
                     public void run() {
-                        tablayout.getTabAt(0).select();
+                        TreeSet<Participation> tsp = new TreeSet<>(new ParticipationComparatorName());
+                        tsp.addAll(tmpGame.getParticipations());
+                        tabs[0].setParticipations(tsp);
+                        tabs[1].setParticipations(tsp);
                     }
                 }, 100);
         }
@@ -109,41 +123,8 @@ public class AddGameEnterDataActivity extends AppCompatActivity implements TabLa
     }
 
     @Override
-    public void onTabSelected(TabLayout.Tab tab) {
-        TabAddGameEnterData fragment = (TabAddGameEnterData) adapter.getItem(tab.getPosition());
-
-        /*if (tab.getPosition() == 0) {
-            fragment.setParticipations(getParticipationsOfTeam(Team.TEAM1));
-        }
-        else if (tab.getPosition() == 1) {
-            fragment.setParticipations(getParticipationsOfTeam(Team.TEAM2));
-        }*/
-
-        TreeSet<Participation> tsp = new TreeSet<>(new ParticipationComparatorName());
-        tsp.addAll(tmpGame.getParticipations());
-        fragment.setParticipations(tsp);
-        fragment.setOnScoreChangedListener(this);
-    }
-
-    @Override
-    public void onTabUnselected(TabLayout.Tab tab) {
-        TabAddGameEnterData fragment = (TabAddGameEnterData) adapter.getItem(tab.getPosition());
-        ArrayList<Participation> participationsFromTable = fragment.getParticipationsFromTable();
-
-        for (Participation p: participationsFromTable) {
-            tmpGame.removeParticipation(p);
-            tmpGame.addParticipation(p);
-        }
-    }
-
-    @Override
-    public void onTabReselected(TabLayout.Tab tab) {
-        onTabSelected(tab);
-    }
-
-    @Override
-    public void onScoreUpdated(int sumGoalsShot) {
-        if (tablayout.getTabAt(0).isSelected()) {
+    public void onScoreUpdated(int sumGoalsShot, Fragment fragment) {
+        if (tabs[0].equals(fragment)) {
             tmpGame.setScoreTeamA(sumGoalsShot);
         }
         else {
@@ -158,6 +139,14 @@ public class AddGameEnterDataActivity extends AppCompatActivity implements TabLa
 
     private void onBtnSaveClick() {
         try {
+
+            for (int i = 0; i < tabs.length; i++) {
+                for (Participation p : tabs[i].getParticipationsFromTable()) {
+                    tmpGame.removeParticipation(p);
+                    tmpGame.addParticipation(p);
+                }
+            }
+
             tmpGame.setRemark(edtRemark.getText().toString());
 
             db.insert(tmpGame);
