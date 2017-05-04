@@ -16,7 +16,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.TreeSet;
 
+import pkgComparator.PlayerComparatorName;
 import pkgData.Database;
 import pkgData.Game;
 import pkgData.Participation;
@@ -33,6 +35,7 @@ public class AddGameSelectPlayersActivity extends DynamicMenuActivity implements
     private Database db = null;
     private HashMap<Integer, Player> hmPlayers = null;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +51,10 @@ public class AddGameSelectPlayersActivity extends DynamicMenuActivity implements
 
             getAllViews();
             registrateEventHandlers();
-            displayPlayersInTable(hmPlayers.values());
+
+            TreeSet<Player> tsPlayers = new TreeSet<>(new PlayerComparatorName());
+            tsPlayers.addAll(hmPlayers.values());
+            displayPlayersInTable(tsPlayers);
 
         } catch (Exception ex) {
             ExceptionNotification.notify(this, ex);
@@ -81,10 +87,9 @@ public class AddGameSelectPlayersActivity extends DynamicMenuActivity implements
             txvId.setText(Integer.toString(p.getId()));
             txvId.setVisibility(View.GONE);
 
-            //Layout doesn't work...
-            TableRow.LayoutParams params = new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1);
-            cb.setLayoutParams(params);
-            txvId.setLayoutParams(params);
+            //Set layout like header
+            cb.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
+            txvName.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 2.5f));
 
             row.addView(cb);
             row.addView(txvName);
@@ -125,9 +130,9 @@ public class AddGameSelectPlayersActivity extends DynamicMenuActivity implements
 
     private ArrayList<Player> getSelectedPlayersFromTable() {
         ArrayList<Player> selectedPlayers = new ArrayList<Player>();
-        TableRow row = null;
-        CheckBox checkBox = null;
-        TextView textViewId = null;
+        TableRow row;
+        CheckBox checkBox;
+        TextView textViewId;
 
         for (int i = 0; i < tablePlayers.getChildCount(); i++) {
             row = (TableRow) tablePlayers.getChildAt(i);

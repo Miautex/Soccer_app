@@ -63,9 +63,6 @@ public final class Player implements Comparable, Serializable, Cloneable {
         if (name == null) {
             throw new Exception("name must not be null");
         }
-        if (name.isEmpty()) {
-            throw new Exception("name must not be empty");
-        }
         this.name = name;
     }
 
@@ -76,9 +73,6 @@ public final class Player implements Comparable, Serializable, Cloneable {
     public void setUsername(String username) throws Exception {
         if (username == null) {
             throw new Exception("username must not be null");
-        }
-        if (username.isEmpty()) {
-            throw new Exception("username must not be empty");
         }
         this.username = username.toLowerCase();
     }

@@ -52,7 +52,7 @@ public final class Game implements Serializable, Comparable<Game> {
         return id;
     }
 
-    private void setScoreTeamA(int scoreTeamA) {
+    public void setScoreTeamA(int scoreTeamA) {
         this.scoreTeamA = scoreTeamA;
     }
 
@@ -60,7 +60,7 @@ public final class Game implements Serializable, Comparable<Game> {
         return scoreTeamA;
     }
 
-    private void setScoreTeamB(int scoreTeamB) {
+    public void setScoreTeamB(int scoreTeamB) {
         this.scoreTeamB = scoreTeamB;
     }
 

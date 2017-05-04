@@ -3,119 +3,126 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/btnCancel"
+    <TextView
+        android:id="@+id/txvName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingBottom="20dp"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp"
-        android:paddingTop="20dp"
-        android:text="@string/btnCancel"
-        android:layout_toRightOf="@+id/ckbPosGoal"
-        android:layout_toEndOf="@+id/ckbPosGoal"
-        android:layout_alignBottom="@+id/btnSave" />
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="21dp"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/Name"
+        android:textSize="18sp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/edtUsername"
+        android:layout_toStartOf="@+id/edtUsername" />
 
-    <Button
-        android:id="@+id/btnSave"
+    <TextView
+        android:id="@+id/txvPositions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="48dp"
-        android:paddingBottom="20dp"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp"
-        android:paddingTop="20dp"
-        android:text="@string/btnSave"
-        android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/ckbPosAtk"
-        android:layout_toStartOf="@+id/ckbPosAtk" />
+        android:layout_below="@+id/textView14"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="49dp"
+        android:gravity="center"
+        android:text="@string/Positions"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/edtUsername"
+        android:layout_alignLeft="@+id/txvName"
+        android:layout_alignStart="@+id/txvName"
+        android:layout_below="@+id/edtName"
+        android:layout_toLeftOf="@+id/edtUsername"
+        android:layout_toStartOf="@+id/edtUsername"
+        android:gravity="center"
+        android:text="@string/Username"
+        android:textSize="18sp" />
 
     <EditText
         android:id="@+id/edtName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/ckbPosMid"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/edtUsername"
-        android:layout_toRightOf="@+id/txvName"
         android:ems="10"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:layout_alignBaseline="@+id/txvName"
+        android:layout_alignBottom="@+id/txvName"
+        android:layout_toRightOf="@+id/txvName"
+        android:layout_toEndOf="@+id/txvName" />
 
     <EditText
         android:id="@+id/edtUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/txvUsername"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/txvUsername"
-        android:layout_toRightOf="@+id/txvUsername"
         android:ems="10"
-        android:inputType="text" />
-
-    <TextView
-        android:id="@+id/txvName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/txvUsername"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/txvUsername"
-        android:layout_below="@+id/txvUsername"
-        android:padding="20dp"
-        android:text="@string/Name"
-        android:textSize="18sp" />
-
-    <TextView
-        android:id="@+id/txvUsername"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:padding="20dp"
-        android:text="@string/Username"
-        android:textSize="18sp" />
-
-    <CheckBox
-        android:id="@+id/ckbPosMid"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/ckbPosAtk"
-        android:layout_alignStart="@+id/ckbPosAtk"
+        android:inputType="textPersonName"
         android:layout_below="@+id/txvName"
-        android:layout_marginTop="59dp"
-        android:text="@string/PosMid"
-        android:textSize="30sp" />
-
-    <CheckBox
-        android:id="@+id/ckbPosGoal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/ckbPosMid"
-        android:layout_alignStart="@+id/ckbPosMid"
-        android:layout_below="@+id/ckbPosMid"
-        android:text="@string/PosGoal"
-        android:textSize="30sp" />
-
-    <CheckBox
-        android:id="@+id/ckbPosDef"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/ckbPosGoal"
-        android:layout_alignStart="@+id/ckbPosGoal"
-        android:layout_below="@+id/ckbPosGoal"
-        android:text="@string/PosDef"
-        android:textSize="30sp" />
+        android:layout_alignLeft="@+id/ckbPosAtk"
+        android:layout_alignStart="@+id/ckbPosAtk" />
 
     <CheckBox
         android:id="@+id/ckbPosAtk"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/PosAtk"
-        android:textSize="30sp"
+        android:textSize="18sp"
+        android:layout_marginTop="25dp"
+        android:layout_below="@+id/txvPositions"
+        android:layout_centerHorizontal="true" />
+
+    <CheckBox
+        android:id="@+id/ckbPosMid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/PosMid"
+        android:textSize="18sp"
+        android:layout_below="@+id/ckbPosAtk"
+        android:layout_alignLeft="@+id/ckbPosAtk"
+        android:layout_alignStart="@+id/ckbPosAtk" />
+
+    <CheckBox
+        android:id="@+id/ckbPosDef"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/PosDef"
+        android:textSize="18sp"
+        android:layout_alignLeft="@+id/ckbPosMid"
+        android:layout_alignStart="@+id/ckbPosMid"
+        android:layout_below="@+id/ckbPosMid" />
+
+    <CheckBox
+        android:id="@+id/ckbPosGoal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/PosGoal"
+        android:textSize="18sp"
         android:layout_below="@+id/ckbPosDef"
-        android:layout_toRightOf="@+id/txvName"
-        android:layout_toEndOf="@+id/txvName" />
+        android:layout_alignLeft="@+id/ckbPosDef"
+        android:layout_alignStart="@+id/ckbPosDef" />
+
+    <Button
+        android:id="@+id/btnCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="45dp"
+        android:layout_toLeftOf="@+id/edtUsername"
+        android:layout_toStartOf="@+id/edtUsername"
+        android:text="@string/btnCancel" />
+
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/btnCancel"
+        android:layout_toEndOf="@+id/ckbPosGoal"
+        android:layout_toRightOf="@+id/ckbPosGoal"
+        android:text="@string/btnSave" />
 
 </RelativeLayout>

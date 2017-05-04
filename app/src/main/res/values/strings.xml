@@ -8,6 +8,7 @@
     <string name="PosGoal">Goalie</string>
     <string name="PosDef">Defends</string>
     <string name="PosAtk">Attacker</string>
+    <string name="Positions">Positions</string>
     <string name="btnSave">Save</string>
     <string name="btnCancel">Cancel</string>
     <string name="mniMain">Main</string>
@@ -36,4 +37,9 @@
     <string name="GoalsGot">Goals Got</string>
     <string name="Nutmeg">Nutmeg</string>
     <string name="btnBack">Back</string>
+    <string name="title_activity_main2">MainActivity2</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <item name="mniAddPlayer" type="id">tst</item>
 </resources>

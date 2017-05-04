@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Raphael on 01.05.2017.
+ * Created by Raphael
  */
 
 public class SectionsPageAdapter extends FragmentPagerAdapter{

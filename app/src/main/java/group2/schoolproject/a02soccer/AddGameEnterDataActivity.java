@@ -1,26 +1,44 @@
 package group2.schoolproject.a02soccer;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.TreeSet;
 
+import pkgComparator.ParticipationComparatorName;
+import pkgData.Database;
 import pkgData.Game;
 import pkgData.Participation;
 import pkgData.Team;
+import pkgListeners.OnScoreChangedListener;
 import pkgTab.SectionsPageAdapter;
 import pkgTab.TabAddGameEnterData;
 
-public class AddGameEnterDataActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener {
-
-    private static final String TAG = "EnterData";
+public class AddGameEnterDataActivity extends AppCompatActivity implements OnScoreChangedListener, View.OnClickListener {
 
     private SectionsPageAdapter adapter = null;
     private ViewPager mViewPager = null;
     private TabLayout tablayout = null;
+
+    private TextView txtScore = null;
+    private EditText edtRemark = null;
+    private Button btnBack = null,
+                   btnSave = null;
+
     private Game tmpGame = null;
+    private Database db = null;
+
+    TabAddGameEnterData[] tabs = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,17 +47,40 @@ public class AddGameEnterDataActivity extends AppCompatActivity implements TabLa
 
         try {
             getAllViews();
+            registrateEventHandlers();
 
+            db = Database.getInstance();
             tmpGame = (Game) this.getIntent().getSerializableExtra("game");
 
             if (tmpGame == null) {
                 throw new Exception("Please call activity with intent-extra 'game'");
             }
 
-            SectionsPageAdapter mSectionsPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
+            adapter = new SectionsPageAdapter(getSupportFragmentManager());
             setupViewPager(mViewPager);
             tablayout.setupWithViewPager(mViewPager);
-            tablayout.setOnTabSelectedListener(this);
+
+            tabs = new TabAddGameEnterData[2];
+
+            tabs[0] = (TabAddGameEnterData) adapter.getItem(0);
+            tabs[1] = (TabAddGameEnterData) adapter.getItem(1);
+            tabs[0].setOnScoreChangedListener(this);
+            tabs[1].setOnScoreChangedListener(this);
+
+            //Initially display score
+            updateScoreDisplay(tmpGame.getScoreTeamA(), tmpGame.getScoreTeamB());
+
+            //Handler to display first tab after 0.1sec
+            new Handler().postDelayed(
+                new Runnable(){
+                    @Override
+                    public void run() {
+                        TreeSet<Participation> tsp = new TreeSet<>(new ParticipationComparatorName());
+                        tsp.addAll(tmpGame.getParticipations());
+                        tabs[0].setParticipations(tsp);
+                        tabs[1].setParticipations(tsp);
+                    }
+                }, 100);
         }
         catch (Exception ex) {
             ExceptionNotification.notify(this, ex);
@@ -50,6 +91,15 @@ public class AddGameEnterDataActivity extends AppCompatActivity implements TabLa
     private void getAllViews() {
         mViewPager = (ViewPager) findViewById(R.id.pager);
         tablayout = (TabLayout) findViewById(R.id.tabs);
+        txtScore = (TextView) findViewById(R.id.txtScore);
+        edtRemark = (EditText) findViewById(R.id.edtRemark);
+        btnBack = (Button) findViewById(R.id.btnBack);
+        btnSave = (Button) findViewById(R.id.btnSave);
+    }
+
+    private void registrateEventHandlers() {
+        btnBack.setOnClickListener(this);
+        btnSave.setOnClickListener(this);
     }
 
     private void setupViewPager(ViewPager viewPager){
@@ -73,31 +123,54 @@ public class AddGameEnterDataActivity extends AppCompatActivity implements TabLa
     }
 
     @Override
-    public void onTabSelected(TabLayout.Tab tab) {
-        TabAddGameEnterData fragment = (TabAddGameEnterData) adapter.getItem(tab.getPosition());
-
-        /*if (tab.getPosition() == 0) {
-            fragment.setParticipations(getParticipationsOfTeam(Team.TEAM1));
+    public void onScoreUpdated(int sumGoalsShot, Fragment fragment) {
+        if (tabs[0].equals(fragment)) {
+            tmpGame.setScoreTeamA(sumGoalsShot);
         }
-        else if (tab.getPosition() == 1) {
-            fragment.setParticipations(getParticipationsOfTeam(Team.TEAM2));
-        }*/
-        fragment.setParticipations(tmpGame.getParticipations());
+        else {
+            tmpGame.setScoreTeamB(sumGoalsShot);
+        }
+        updateScoreDisplay(tmpGame.getScoreTeamA(), tmpGame.getScoreTeamB());
+    }
+
+    private void updateScoreDisplay(int scoreTeamA, int scoreTeamB) {
+        txtScore.setText("A:B - " + scoreTeamA + ":" + scoreTeamB);
+    }
+
+    private void onBtnSaveClick() {
+        try {
+
+            for (int i = 0; i < tabs.length; i++) {
+                for (Participation p : tabs[i].getParticipationsFromTable()) {
+                    tmpGame.removeParticipation(p);
+                    tmpGame.addParticipation(p);
+                }
+            }
+
+            tmpGame.setRemark(edtRemark.getText().toString());
+
+            db.insert(tmpGame);
+
+            for (Participation p: tmpGame.getParticipations()) {
+                db.insert(p);
+            }
+        }
+        catch (Exception ex) {
+            ExceptionNotification.notify(this, ex);
+        }
     }
 
     @Override
-    public void onTabUnselected(TabLayout.Tab tab) {
-        TabAddGameEnterData fragment = (TabAddGameEnterData) adapter.getItem(tab.getPosition());
-        ArrayList<Participation> participationsFromTable = fragment.getParticipationsFromTable();
-
-        for (Participation p: participationsFromTable) {
-            tmpGame.removeParticipation(p);
-            tmpGame.addParticipation(p);
+    public void onClick(View v) {
+        try {
+            if (v.getId() == R.id.btnSave) {
+                onBtnSaveClick();
+            }
+            else if (v.getId() == R.id.btnBack) {
+                this.finish();
+            }
+        } catch (Exception e) {
+            Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
-    }
-
-    @Override
-    public void onTabReselected(TabLayout.Tab tab) {
-
     }
 }

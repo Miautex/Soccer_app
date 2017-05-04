@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent" android:layout_height="match_parent" android:background="@drawable/background">
 
     <TextView
         android:id="@+id/txvUsername"
@@ -63,6 +63,7 @@
         android:paddingLeft="30dp"
         android:paddingRight="30dp"
         android:paddingTop="20dp"
-        android:text="@string/btnLogin" />
+        android:text="@string/btnLogin"
+        style="@style/buttonStyle"/>
 
 </RelativeLayout>

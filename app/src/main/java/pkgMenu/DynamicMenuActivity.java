@@ -33,14 +33,12 @@ public class DynamicMenuActivity extends AppCompatActivity {
 }
 
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = this.getMenuInflater();
-        inflater.inflate(R.menu.menu_main, menu);
         return true;
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
         //Switch funktioniert zwar, es könnten aber fehler auftreten
-        if(item.getItemId() == DynamicMenuItem.MAIN.ordinal()){
+        /*if(item.getItemId() == DynamicMenuItem.MAIN.ordinal()){
             openActivity(MainActivity.class);
         }
         else if (item.getItemId() == DynamicMenuItem.ADD_PLAYER.ordinal()){
@@ -58,7 +56,7 @@ public class DynamicMenuActivity extends AppCompatActivity {
         else if(item.getItemId() == DynamicMenuItem.EDITTEAM.ordinal()){
             openActivity(TeamManagmentActivity.class);
         }
-        else if(item.getItemId() == DynamicMenuItem.GERMAN.ordinal()){
+        else*/ if(item.getItemId() == DynamicMenuItem.GERMAN.ordinal()){
             changeLanguage("de");
         }
         else if(item.getItemId() == DynamicMenuItem.ENGLISH.ordinal()){
@@ -69,7 +67,7 @@ public class DynamicMenuActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void openActivity(Class toOpen){
+    public void openActivity(Class toOpen){
         Intent myIntent = new Intent(this, toOpen);
         this.startActivity(myIntent);
     }
@@ -77,9 +75,9 @@ public class DynamicMenuActivity extends AppCompatActivity {
     //entfernt "überflüssige Menuitems" und entscheidet welche Sprache zum Wechsel angezeigt werden muss
     public boolean onPrepareOptionsMenu(Menu menu,Class cl) {
         //Activity die diese Methode ausführt, wird aus dem Menu entfernt
-        menu.removeItem(classtoEnum(cl).ordinal());
+        //menu.removeItem(classtoEnum(cl).ordinal());
         //Sprache hinzufügen
-        if(getResources().getConfiguration().locale.toString().indexOf("de") != -1){
+        if(getResources().getConfiguration().locale.toString().contains("de")){
             menu.add(0,DynamicMenuItem.ENGLISH.ordinal(),Menu.NONE, R.string.mniEnglish);
         }
         else{
@@ -90,12 +88,12 @@ public class DynamicMenuActivity extends AppCompatActivity {
 
     public boolean onPrepareOptionsMenu(Menu menu) {
         menu.clear();
-        menu.add(0,DynamicMenuItem.MAIN.ordinal(), Menu.NONE,R.string.mniMain);
-        menu.add(0, DynamicMenuItem.ADD_PLAYER.ordinal(), Menu.NONE, R.string.mniAdd);
-        menu.add(0,DynamicMenuItem.EDIT_PLAYER.ordinal(),Menu.NONE, R.string.mniEdit);
-        menu.add(0,DynamicMenuItem.ADD_GAME.ordinal(),Menu.NONE, R.string.mniAddGame);
-        menu.add(0,DynamicMenuItem.LOGIN.ordinal(),Menu.NONE, R.string.mniLogin);
-        menu.add(0,DynamicMenuItem.EDITTEAM.ordinal(),Menu.NONE,R.string.mniTeam);
+        //menu.add(0,DynamicMenuItem.MAIN.ordinal(), Menu.NONE,R.string.mniMain);
+        //menu.add(0, DynamicMenuItem.ADD_PLAYER.ordinal(), Menu.NONE, R.string.mniAdd);
+        //menu.add(0,DynamicMenuItem.EDIT_PLAYER.ordinal(),Menu.NONE, R.string.mniEdit);
+        //menu.add(0,DynamicMenuItem.ADD_GAME.ordinal(),Menu.NONE, R.string.mniAddGame);
+        //menu.add(0,DynamicMenuItem.LOGIN.ordinal(),Menu.NONE, R.string.mniLogin);
+        //menu.add(0,DynamicMenuItem.EDITTEAM.ordinal(),Menu.NONE,R.string.mniTeam);
         //menu.add(0,DynamicMenuItem."neue_activty_EnumWert".ordinal(),Menu.NONE, R.string."strings.xml value für die Activity bzw für Menuitem/eintrag")
         onPrepareOptionsMenu(menu, this.getClass());
         return true;

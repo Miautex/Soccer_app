@@ -40,15 +40,16 @@
         <TableRow>
 
             <TextView
+                android:layout_width="0dp"
                 android:layout_column="0"
                 android:layout_weight="1"
                 android:text="@string/Participation"
                 android:textStyle="bold" />
 
             <TextView
-                android:layout_width="250dp"
+                android:layout_width="0dp"
                 android:layout_column="1"
-                android:layout_weight="1"
+                android:layout_weight="2.5"
                 android:text="@string/Name"
                 android:textStyle="bold" />
         </TableRow>
@@ -91,7 +92,7 @@
         android:layout_height="wrap_content"
         android:text="@string/btnCancel"
         android:layout_below="@+id/table_PlayersHeader"
-        android:layout_marginTop="160dp"
+        android:layout_marginTop="170dp"
         android:layout_marginLeft="20dp"/>
 
     <Button
@@ -100,7 +101,7 @@
         android:layout_height="wrap_content"
         android:text="@string/btnContinue"
         android:layout_below="@+id/table_PlayersHeader"
-        android:layout_marginTop="160dp"
+        android:layout_marginTop="170dp"
         android:layout_marginLeft="250dp"/>
 
 </RelativeLayout>
