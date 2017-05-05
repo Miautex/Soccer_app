@@ -13,7 +13,7 @@ import group2.schoolproject.a02soccer.R;
  * Created by Raphael
  */
 
-public class Tab2Fragment extends Fragment {
+public class TeamDivisionTab2 extends Fragment {
 
     private View view = null;
     @Nullable

@@ -23,7 +23,7 @@ import pkgData.PlayerPosition;
  * The best Productowner
  */
 
-public class Tab1Fragment extends Fragment {
+public class TeamDivisionTab1 extends Fragment {
     private TableLayout table_PlayersData = null;
     private Spinner sItems = null;
     private View view = null;
@@ -44,13 +44,17 @@ public class Tab1Fragment extends Fragment {
 
         getAllViews();
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        sItems.setAdapter(adapter);
+        //sItems.setAdapter(adapter);
         return view;
+    }
+
+    private void setSpinnerOptions(Spinner s){
+        s.setAdapter(adapter);
     }
 
 
     private void getAllViews() {
-        sItems = (Spinner) view.findViewById(R.id.Team1Spinner);
+        //sItems = (Spinner) view.findViewById(R.id.Team1Spinner);
         table_PlayersData = (TableLayout) view.findViewById(R.id.tableTeam1);
     }
 
@@ -65,7 +69,7 @@ public class Tab1Fragment extends Fragment {
         row.addView(t);
         Spinner s = new Spinner(this.getContext());
         s.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT,1));
-        s.setAdapter(adapter);
+        setSpinnerOptions(s);
         row.addView(s);
         table_PlayersData.addView(row);
     }

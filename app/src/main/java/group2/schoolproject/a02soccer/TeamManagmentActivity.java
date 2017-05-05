@@ -8,8 +8,8 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import pkgTab.SectionsPageAdapter;
-import pkgTab.Tab1Fragment;
-import pkgTab.Tab2Fragment;
+import pkgTab.TeamDivisionTab1;
+import pkgTab.TeamDivisionTab2;
 
 public class TeamManagmentActivity extends AppCompatActivity {
 
@@ -33,15 +33,15 @@ public class TeamManagmentActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager){
         SectionsPageAdapter adapter = mSectionsPageAdapter;
-        adapter.addFragment(new Tab1Fragment(),"TEAM1");
-        adapter.addFragment(new Tab2Fragment(),"TEAM2");
+        adapter.addFragment(new TeamDivisionTab1(),"TEAM1");
+        adapter.addFragment(new TeamDivisionTab2(),"TEAM2");
         viewPager.setAdapter(adapter);
     }
 
     public void addPlayer(Boolean b){
         if(b){
             SectionsPageAdapter adapter = (SectionsPageAdapter) mViewPager.getAdapter();
-            Tab1Fragment test = (Tab1Fragment) adapter.getItem(0);
+            TeamDivisionTab1 test = (TeamDivisionTab1) adapter.getItem(0);
             // create a new TableRow
             try {
                 TableRow row = new TableRow(this);
