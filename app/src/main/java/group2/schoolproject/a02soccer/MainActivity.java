@@ -65,16 +65,16 @@ public class MainActivity extends DynamicMenuActivity
 
         if (id == R.id.mniAddPlayer) {
             openActivity(AddPlayerActivity.class);
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.mniAddGame) {
             openActivity(AddGameSelectPlayersActivity.class);
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.mniEditPlayer) {
             openActivity(EditPlayerActivity.class);
 
         } else if (id == R.id.nav_manage) {
             openActivity(TeamManagmentActivity.class);
 
-        } else if (id == R.id.nav_share) {
-            openActivity(TeamManagmentActivity.class);
+        } else if (id == R.id.mniLogin) {
+            openActivity(LoginActivity.class);
 
         } else if (id == R.id.nav_send) {
             //Nix daweil

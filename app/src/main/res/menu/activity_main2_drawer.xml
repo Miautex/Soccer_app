@@ -7,11 +7,11 @@
             android:icon="@drawable/ic_penis"
             android:title="@string/mniAdd" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/mniAddGame"
             android:icon="@drawable/ic_penis"
             android:title="@string/mniAddGame" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/mniEditPlayer"
             android:icon="@drawable/ic_penis"
             android:title="@string/mniEdit" />
         <item
@@ -23,9 +23,9 @@
     <item android:title="Communicate">
         <menu>
             <item
-                android:id="@+id/nav_share"
+                android:id="@+id/mniLogin"
                 android:icon="@drawable/ic_penis"
-                android:title="Share" />
+                android:title="@string/mniLogin" />
             <item
                 android:id="@+id/nav_send"
                 android:icon="@drawable/ic_penis"
