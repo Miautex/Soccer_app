@@ -1,6 +1,7 @@
 package pkgData;
 
 import java.io.Serializable;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -8,7 +9,7 @@ import java.util.HashSet;
 
 public final class Game implements Serializable, Comparable<Game> {
     private int id, scoreTeamA, scoreTeamB;
-    private Date date;
+    private String date;
     private String remark;
     private HashSet<Participation> participations;
 
@@ -29,11 +30,7 @@ public final class Game implements Serializable, Comparable<Game> {
     }
 
     public Game(Date date, int scoreA, int scoreB) {
-        this();
-        setId(id);
-        setDate(date);
-        setScoreTeamA(scoreA);
-        setScoreTeamB(scoreB);
+        this(-1, date, scoreA, scoreB);
     }
 
     public String getRemark() {
@@ -69,11 +66,21 @@ public final class Game implements Serializable, Comparable<Game> {
     }
 
     public void setDate(Date date) {
-        this.date = date;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        this.date = sdf.format(date);
     }
 
     public Date getDate() {
-        return date;
+        Date retVal = null;
+
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            retVal = sdf.parse(this.date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return retVal;
     }
 
     public ArrayList<Participation> getParticipations() {
@@ -87,8 +94,13 @@ public final class Game implements Serializable, Comparable<Game> {
 
         participations.add(p);
 
-        if (p.getGame()!= null && !p.getGame().equals(this)) {
-            p.setGame(this);
+        if (p != null) {
+            if (p.getGame() != null && !p.getGame().equals(this)) {
+                p.setGame(this);
+            }
+            else if (p.getGame() == null) {
+                p.setGame(this);
+            }
         }
     }
 

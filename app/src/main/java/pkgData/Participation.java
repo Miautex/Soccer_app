@@ -8,7 +8,7 @@ public final class Participation implements Comparable, Serializable {
     private Team team;
     private PlayerPosition position;
     private Player player;
-    private Game game;
+    private transient Game game;
 
     public Participation() {
         super();

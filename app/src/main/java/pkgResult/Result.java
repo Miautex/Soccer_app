@@ -4,7 +4,7 @@ public class Result {
 
 	private boolean success;
 	
-	private Error error;
+	private pkgError.Error error;
 	
 	public Result() {}
 
@@ -16,11 +16,11 @@ public class Result {
 		this.success = success;
 	}
 
-	public Error getError() {
+	public pkgError.Error getError() {
 		return error;
 	}
 
-	public void setError(Error error) {
+	public void setError(pkgError.Error error) {
 		this.error = error;
 	}
 	

@@ -75,10 +75,24 @@ public class AddGameEnterDataActivity extends AppCompatActivity implements OnSco
                 new Runnable(){
                     @Override
                     public void run() {
-                        TreeSet<Participation> tsp = new TreeSet<>(new ParticipationComparatorName());
-                        tsp.addAll(tmpGame.getParticipations());
-                        tabs[0].setParticipations(tsp);
-                        tabs[1].setParticipations(tsp);
+                        //Very temporary, until Team selection GUI is done
+                        TreeSet<Participation> tsp1 = new TreeSet<>(new ParticipationComparatorName());
+                        TreeSet<Participation> tsp2 = new TreeSet<>(new ParticipationComparatorName());
+                        ArrayList<Participation> participations = tmpGame.getParticipations();
+                        for (int i=0; i<participations.size(); i++) {
+                            if (i<(participations.size()/2)) {
+                                Participation p = participations.get(i);
+                                p.setTeam(Team.TEAM1);
+                                tsp1.add(p);
+                            }
+                            else {
+                                Participation p = participations.get(i);
+                                p.setTeam(Team.TEAM2);
+                                tsp2.add(p);
+                            }
+                        }
+                        tabs[0].setParticipations(tsp1);
+                        tabs[1].setParticipations(tsp2);
                     }
                 }, 100);
         }
@@ -142,6 +156,7 @@ public class AddGameEnterDataActivity extends AppCompatActivity implements OnSco
 
             for (int i = 0; i < tabs.length; i++) {
                 for (Participation p : tabs[i].getParticipationsFromTable()) {
+                    tabs[i].forceScoreRecalculation();
                     tmpGame.removeParticipation(p);
                     tmpGame.addParticipation(p);
                 }
@@ -149,14 +164,18 @@ public class AddGameEnterDataActivity extends AppCompatActivity implements OnSco
 
             tmpGame.setRemark(edtRemark.getText().toString());
 
-            db.insert(tmpGame);
+            Game remoteGame = db.insert(tmpGame);
+            tmpGame.setId(remoteGame.getId());      //set webservice-generated id for game
 
             for (Participation p: tmpGame.getParticipations()) {
                 db.insert(p);
             }
+
+            Toast.makeText(this, "Saved Game", Toast.LENGTH_SHORT).show();
         }
         catch (Exception ex) {
             ExceptionNotification.notify(this, ex);
+            ex.printStackTrace();
         }
     }
 

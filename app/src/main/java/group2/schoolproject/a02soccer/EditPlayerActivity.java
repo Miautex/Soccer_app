@@ -72,17 +72,22 @@ public class EditPlayerActivity extends DynamicMenuActivity implements View.OnCl
 
     private void initCheckboxes() {
         Player currPlayer = db.getCurrentlyLoggedInPlayer();
+        ArrayList<PlayerPosition> playerPositions = new ArrayList<>();
 
-        if (currPlayer.getPositions().contains(PlayerPosition.ATTACK)) {
+        for (PlayerPosition pos: currPlayer.getPositions()) {
+            playerPositions.add(pos);
+        }
+
+        if (playerPositions.contains(PlayerPosition.ATTACK)) {
             ckbPosAtk.setChecked(true);
         }
-        if (currPlayer.getPositions().contains(PlayerPosition.DEFENSE)) {
+        if (playerPositions.contains(PlayerPosition.DEFENSE)) {
             ckbPosDef.setChecked(true);
         }
-        if (currPlayer.getPositions().contains(PlayerPosition.GOAL)) {
+        if (playerPositions.contains(PlayerPosition.GOAL)) {
             ckbPosGoal.setChecked(true);
         }
-        if (currPlayer.getPositions().contains(PlayerPosition.MIDFIELD)) {
+        if (playerPositions.contains(PlayerPosition.MIDFIELD)) {
             ckbPosMid.setChecked(true);
         }
     }

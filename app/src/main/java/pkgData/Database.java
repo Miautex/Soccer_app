@@ -58,176 +58,7 @@ public class Database extends Application {
 
     public ArrayList<Player> getAllPlayers() throws Exception {
         ArrayList<Player> listPlayers = null;
-        //AccessorResponse response = Accessor.requestJSON(HttpMethod.GET, "player", null, null);
-
-        //Temporary for testing purposes
-        AccessorResponse response = new AccessorResponse(202, "{\n" +
-                "   \"type\": \"playerResult\",\n" +
-                "   \"success\": true,\n" +
-                "   \"content\":    [\n" +
-                "            {\n" +
-                "         \"admin\": false,\n" +
-                "         \"goalDifference\": 56,\n" +
-                "         \"id\": 1,\n" +
-                "         \"name\": \"Martin\",\n" +
-                "         \"numDefeats\": 0,\n" +
-                "         \"numDraws\": 0,\n" +
-                "         \"numWins\": 1,\n" +
-                "         \"username\": \"martin\"\n" +
-                "      },\n" +
-                "            {\n" +
-                "         \"admin\": false,\n" +
-                "         \"goalDifference\": 0,\n" +
-                "         \"id\": 2,\n" +
-                "         \"name\": \"Eliass\",\n" +
-                "         \"numDefeats\": 0,\n" +
-                "         \"numDraws\": 0,\n" +
-                "         \"numWins\": 0,\n" +
-                "         \"username\": \"elias\"\n" +
-                "      },\n" +
-                "            {\n" +
-                "         \"admin\": true,\n" +
-                "         \"goalDifference\": 0,\n" +
-                "         \"id\": 3,\n" +
-                "         \"name\": \"Marco\",\n" +
-                "         \"numDefeats\": 0,\n" +
-                "         \"numDraws\": 0,\n" +
-                "         \"numWins\": 0,\n" +
-                "         \"username\": \"marco\"\n" +
-                "      },\n" +
-                "            {\n" +
-                "         \"admin\": true,\n" +
-                "         \"goalDifference\": 0,\n" +
-                "         \"id\": 4,\n" +
-                "         \"name\": \"Marco\",\n" +
-                "         \"numDefeats\": 0,\n" +
-                "         \"numDraws\": 0,\n" +
-                "         \"numWins\": 0,\n" +
-                "         \"username\": \"marco1\"\n" +
-                "      },\n" +
-                "            {\n" +
-                "         \"admin\": true,\n" +
-                "         \"goalDifference\": 0,\n" +
-                "         \"id\": 5,\n" +
-                "         \"name\": \"Marco\",\n" +
-                "         \"numDefeats\": 0,\n" +
-                "         \"numDraws\": 0,\n" +
-                "         \"numWins\": 0,\n" +
-                "         \"username\": \"marco2\"\n" +
-                "      },\n" +
-                "            {\n" +
-                "         \"admin\": true,\n" +
-                "         \"goalDifference\": 0,\n" +
-                "         \"id\": 6,\n" +
-                "         \"name\": \"Marco\",\n" +
-                "         \"numDefeats\": 0,\n" +
-                "         \"numDraws\": 0,\n" +
-                "         \"numWins\": 0,\n" +
-                "         \"username\": \"marco3\"\n" +
-                "      },\n" +
-                "            {\n" +
-                "         \"admin\": true,\n" +
-                "         \"goalDifference\": 0,\n" +
-                "         \"id\": 7,\n" +
-                "         \"name\": \"Marco\",\n" +
-                "         \"numDefeats\": 0,\n" +
-                "         \"numDraws\": 0,\n" +
-                "         \"numWins\": 0,\n" +
-                "         \"username\": \"marco4\"\n" +
-                "      },\n" +
-                "            {\n" +
-                "         \"admin\": true,\n" +
-                "         \"goalDifference\": 0,\n" +
-                "         \"id\": 8,\n" +
-                "         \"name\": \"Marco\",\n" +
-                "         \"numDefeats\": 0,\n" +
-                "         \"numDraws\": 0,\n" +
-                "         \"numWins\": 0,\n" +
-                "         \"username\": \"marco5\"\n" +
-                "      },\n" +
-                "            {\n" +
-                "         \"admin\": true,\n" +
-                "         \"goalDifference\": 0,\n" +
-                "         \"id\": 9,\n" +
-                "         \"name\": \"Marco\",\n" +
-                "         \"numDefeats\": 0,\n" +
-                "         \"numDraws\": 0,\n" +
-                "         \"numWins\": 0,\n" +
-                "         \"username\": \"marco6\"\n" +
-                "      },\n" +
-                "            {\n" +
-                "         \"admin\": true,\n" +
-                "         \"goalDifference\": 0,\n" +
-                "         \"id\": 10,\n" +
-                "         \"name\": \"Marco\",\n" +
-                "         \"numDefeats\": 0,\n" +
-                "         \"numDraws\": 0,\n" +
-                "         \"numWins\": 0,\n" +
-                "         \"username\": \"marco7\"\n" +
-                "      },\n" +
-                "            {\n" +
-                "         \"admin\": true,\n" +
-                "         \"goalDifference\": 0,\n" +
-                "         \"id\": 11,\n" +
-                "         \"name\": \"Marco\",\n" +
-                "         \"numDefeats\": 0,\n" +
-                "         \"numDraws\": 0,\n" +
-                "         \"numWins\": 0,\n" +
-                "         \"username\": \"marco8\"\n" +
-                "      },\n" +
-                "            {\n" +
-                "         \"admin\": true,\n" +
-                "         \"goalDifference\": 0,\n" +
-                "         \"id\": 12,\n" +
-                "         \"name\": \"Marco\",\n" +
-                "         \"numDefeats\": 0,\n" +
-                "         \"numDraws\": 0,\n" +
-                "         \"numWins\": 0,\n" +
-                "         \"username\": \"marco9\"\n" +
-                "      },\n" +
-                "            {\n" +
-                "         \"admin\": true,\n" +
-                "         \"goalDifference\": 0,\n" +
-                "         \"id\": 13,\n" +
-                "         \"name\": \"Marco\",\n" +
-                "         \"numDefeats\": 0,\n" +
-                "         \"numDraws\": 0,\n" +
-                "         \"numWins\": 0,\n" +
-                "         \"username\": \"marco10\"\n" +
-                "      },\n" +
-                "            {\n" +
-                "         \"admin\": true,\n" +
-                "         \"goalDifference\": 0,\n" +
-                "         \"id\": 14,\n" +
-                "         \"name\": \"Marco\",\n" +
-                "         \"numDefeats\": 0,\n" +
-                "         \"numDraws\": 0,\n" +
-                "         \"numWins\": 0,\n" +
-                "         \"username\": \"marco11\"\n" +
-                "      },\n" +
-                "            {\n" +
-                "         \"admin\": true,\n" +
-                "         \"goalDifference\": 0,\n" +
-                "         \"id\": 15,\n" +
-                "         \"name\": \"Marco\",\n" +
-                "         \"numDefeats\": 0,\n" +
-                "         \"numDraws\": 0,\n" +
-                "         \"numWins\": 0,\n" +
-                "         \"username\": \"marco12\"\n" +
-                "      },\n" +
-                "            {\n" +
-                "         \"admin\": true,\n" +
-                "         \"goalDifference\": 0,\n" +
-                "         \"id\": 16,\n" +
-                "         \"name\": \"Marco\",\n" +
-                "         \"numDefeats\": 0,\n" +
-                "         \"numDraws\": 0,\n" +
-                "         \"numWins\": 0,\n" +
-                "         \"username\": \"marco13\"\n" +
-                "      }\n" +
-                "   ]\n" +
-                "}\n");
-
+        AccessorResponse response = Accessor.requestJSON(HttpMethod.GET, "player", null, null);
 
         if (response.getResponseCode() == 500) {
             throw new Exception(response.getJson());
@@ -282,7 +113,7 @@ public class Database extends Application {
             SinglePlayerResult spr = GsonSerializor.deserializeSinglePlayerResult(response.getJson());
 
             if (!spr.isSuccess()) {
-                throw new Exception(spr.getError());
+                throw new Exception(spr.getError().getErrorMessage());
             }
             else {
                 player = spr.getContent();
@@ -303,7 +134,7 @@ public class Database extends Application {
             SingleGameResult sgr = GsonSerializor.deserializeSingleGameResult(response.getJson());
 
             if (!sgr.isSuccess()) {
-                throw new Exception(sgr.getError());
+                throw new Exception(sgr.getError().getErrorMessage());
             }
             else {
                 game = sgr.getContent();
@@ -316,8 +147,8 @@ public class Database extends Application {
         Result r = null;
 
         AccessorResponse response = Accessor.requestJSON(HttpMethod.POST, "participation",
-                "idGame=" + p.getGame().getId() + "&idPlayer=" + p.getPlayer().getId()
-                , GsonSerializor.serializeParticipation(p));
+                "idGame=" + p.getGame().getId() + "&idPlayer=" + p.getPlayer().getId(),
+                GsonSerializor.serializeParticipation(p));
 
         if (response.getResponseCode() == 500) {
             throw new Exception(response.getJson());
@@ -380,11 +211,14 @@ public class Database extends Application {
             throw new Exception(response.getJson());
         }
         else {
-            String remote_pwEnc = response.getJson();
-            if (local_pwEnc.equals(remote_pwEnc)) {
-                isPWValid = true;
+            if (!response.getJson().isEmpty()) {
+                String remote_pwEnc = GsonSerializor.deserializePassword(response.getJson());
 
-                currentlyLoggedInPlayer = getPlayerByUsername(username);
+                if (local_pwEnc.equals(remote_pwEnc)) {
+                    isPWValid = true;
+
+                    currentlyLoggedInPlayer = getPlayerByUsername(username);
+                }
             }
         }
 
@@ -394,7 +228,8 @@ public class Database extends Application {
     public boolean setPassword(Player p, String pw) throws Exception {
         boolean isSuccess = false;
         String local_pwEnc = encryptPassword(pw);
-        AccessorResponse response = Accessor.requestJSON(HttpMethod.GET, "player/security/" + Integer.toString(p.getId()), null, null);
+        AccessorResponse response = Accessor.requestJSON(HttpMethod.PUT,
+                "player/security/" + Integer.toString(p.getId()), null, GsonSerializor.serializePassword(local_pwEnc));
 
         if (response.getResponseCode() == 500) {
             throw new Exception(response.getJson());

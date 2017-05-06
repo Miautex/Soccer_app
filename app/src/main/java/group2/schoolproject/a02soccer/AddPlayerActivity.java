@@ -56,10 +56,12 @@ public class AddPlayerActivity extends DynamicMenuActivity implements View.OnCli
             throw new Exception("Name, Username and Password may not be empty");
         }
 
-        Player newPlayer = new Player(edtName.getText().toString(), edtUsername.getText().toString(), ckbIsAdmin.isChecked());
+        Player newPlayer = new Player(edtUsername.getText().toString(), edtName.getText().toString(), ckbIsAdmin.isChecked());
 
         Player remote_newPlayer = db.insert(newPlayer);
         db.setPassword(remote_newPlayer, edtPassword.getText().toString());
+
+        Toast.makeText(this, remote_newPlayer.toString() + " added", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -73,6 +75,7 @@ public class AddPlayerActivity extends DynamicMenuActivity implements View.OnCli
             }
         } catch (Exception e) {
             Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
         }
     }
 }

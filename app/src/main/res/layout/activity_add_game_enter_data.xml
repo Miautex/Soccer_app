@@ -73,7 +73,6 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:width="250dp"
                 android:layout_marginRight="10dp"
                 android:layout_below="@+id/txtScore"
                 android:layout_alignParentRight="true"

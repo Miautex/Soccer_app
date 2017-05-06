@@ -56,37 +56,17 @@ public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeL
         scoreChangedListener = listener;
     }
 
-    public void updateParticipations(Collection<Participation> participations) throws Exception {
-        /*if (!participations.equals(hmParticipations.values())) {
-            throw new IllegalArgumentException("The passed participations are not " +
-                    "equal to to already displayed ones. Please use setParticipations");
-        }*/
-
-        Participation[] partArray = participations.toArray(new Participation[0]);
-
-        for (int i=0; i<partArray.length; i++) {
-            setParticipationForRow(i, partArray[i]);
-        }
-
-    }
-
     public void setParticipations(Collection<Participation> participations) {
         try {
-            updateParticipations(participations);
-        }
-        catch (Exception ex) {
-            ex.printStackTrace();
-            try {
-                hmParticipations.clear();
-                for (Participation p : participations) {
-                    hmParticipations.put(p.getPlayer().getId(), p);
-                }
+            hmParticipations.clear();
+            for (Participation p : participations) {
+                hmParticipations.put(p.getPlayer().getId(), p);
+            }
 
-                displayPlayersInTable(participations);
-            }
-            catch (Exception e) {
-                ExceptionNotification.notify(this.getContext(), e);
-            }
+            displayPlayersInTable(participations);
+        }
+        catch (Exception e) {
+            ExceptionNotification.notify(this.getContext(), e);
         }
     }
 
@@ -237,10 +217,21 @@ public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeL
         EditText edt = (EditText) v;
 
         if (!hasFocus) {
+            //if invalid/no text has been entered, set it to 0 on focus lost
             if (edt.getText().length() == 0) {
                 edt.setText("0");
             }
             informOnScoreChangedListener(calcuteSumOfGoals());
         }
+        else {
+            //if text==0, clear field on selection to make entering easier
+            if (edt.getText().toString().equals("0")) {
+                edt.setText("");
+            }
+        }
+    }
+
+    public void forceScoreRecalculation() {
+        informOnScoreChangedListener(calcuteSumOfGoals());
     }
 }

@@ -77,8 +77,8 @@ public final class Player implements Comparable, Serializable, Cloneable {
         this.username = username.toLowerCase();
     }
 
-    public ArrayList<PlayerPosition> getPositions() {
-        return new ArrayList<>(positions);
+    public PlayerPosition[] getPositions() {
+        return new ArrayList<>(positions).toArray(new PlayerPosition[0]);
     }
 
     public void addPosition(PlayerPosition position) throws Exception {
@@ -87,6 +87,14 @@ public final class Player implements Comparable, Serializable, Cloneable {
 
     public void removePosition(PlayerPosition position) throws Exception {
         positions.remove(position);
+    }
+
+    public void setPositions(PlayerPosition[] positions) {
+        this.positions.clear();
+
+        for (PlayerPosition pos: positions) {
+            this.positions.add(pos);
+        }
     }
 
     public int getNumWins() {

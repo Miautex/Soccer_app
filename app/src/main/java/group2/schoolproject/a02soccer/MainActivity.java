@@ -77,7 +77,7 @@ public class MainActivity extends DynamicMenuActivity
             openActivity(LoginActivity.class);
 
         } else if (id == R.id.nav_send) {
-            //Nix daweil
+            openActivity(LoginActivity.class);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
