@@ -39,6 +39,7 @@
         <activity
             android:name=".AddGameEnterDataActivity"
             android:label="@string/title_activity_add_game_enter_data"
+            android:windowSoftInputMode="adjustNothing"
             android:screenOrientation="portrait"/>
     </application>
 

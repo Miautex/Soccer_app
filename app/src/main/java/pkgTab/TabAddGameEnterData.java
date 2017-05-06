@@ -1,14 +1,17 @@
 package pkgTab;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
 import android.text.method.DigitsKeyListener;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -25,7 +28,7 @@ import pkgData.Player;
 import pkgListeners.OnScoreChangedListener;
 
 
-public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeListener {
+public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeListener, View.OnKeyListener {
     TableLayout table_PlayersData = null;
     private View view = null;
 
@@ -147,6 +150,7 @@ public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeL
                 et.setGravity(Gravity.RIGHT);
                 et.setOnFocusChangeListener(this);
                 et.setRawInputType(InputType.TYPE_CLASS_NUMBER);
+                et.setOnKeyListener(this);
                 row.addView(et);
                 editTexts[i] = et;
             }
@@ -233,5 +237,25 @@ public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeL
 
     public void forceScoreRecalculation() {
         informOnScoreChangedListener(calcuteSumOfGoals());
+    }
+
+    @Override
+    public boolean onKey(View v, int keyCode, KeyEvent event) {
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        if (event.getAction() == KeyEvent.ACTION_DOWN)
+        {
+            switch (keyCode)
+            {
+                case KeyEvent.KEYCODE_DPAD_CENTER:
+                case KeyEvent.KEYCODE_ENTER:
+                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                    forceScoreRecalculation();
+                    return true;
+                default:
+                    break;
+            }
+        }
+        return false;
     }
 }
