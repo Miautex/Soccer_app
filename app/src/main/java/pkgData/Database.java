@@ -10,6 +10,7 @@ import java.util.Locale;
 
 import pkgResult.GameResult;
 import pkgResult.PlayerResult;
+import pkgResult.PositionResult;
 import pkgResult.Result;
 import pkgResult.SingleGameResult;
 import pkgResult.SinglePlayerResult;
@@ -46,14 +47,7 @@ public class Database extends Application {
      * @return a COPY of the currently logged in player
      */
     public Player getCurrentlyLoggedInPlayer() {
-        Player returnPlayer = null;
-
-        try {
-            returnPlayer = (Player) currentlyLoggedInPlayer.clone();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
-        return returnPlayer;
+        return currentlyLoggedInPlayer;
     }
 
     public ArrayList<Player> getAllPlayers() throws Exception {
@@ -66,6 +60,12 @@ public class Database extends Application {
         else {
             PlayerResult ps = GsonSerializor.deserializePlayerResult(response.getJson());
             listPlayers = ps.getContent();
+
+            for (Player player : listPlayers) {
+                for (PlayerPosition pp : getPlayerPositions(player.getId())) {
+                    player.addPosition(pp);
+                }
+            }
         }
 
         return listPlayers;
@@ -81,11 +81,31 @@ public class Database extends Application {
         else {
             SinglePlayerResult spr = GsonSerializor.deserializeSinglePlayerResult(response.getJson());
             player = spr.getContent();
+            for (PlayerPosition pp : getPlayerPositions(player.getId())) {
+                player.addPosition(pp);
+            }
         }
 
         return player;
     }
 
+    private ArrayList<PlayerPosition> getPlayerPositions(int playerId) throws Exception {
+        ArrayList<PlayerPosition> positions = new ArrayList<>();
+
+        AccessorResponse response = Accessor.requestJSON(HttpMethod.GET, "player/positions/" + playerId, null, null);
+
+        if (response.getResponseCode() == 500) {
+            throw new Exception(response.getJson());
+        }
+        else {
+            PositionResult pr = GsonSerializor.deserializePositionResult(response.getJson());
+            if (pr.getContent() != null) {
+                positions = pr.getContent();
+            }
+        }
+
+        return positions;
+    }
 
     public ArrayList<Game> getAllGames() throws Exception {
         ArrayList<Game> listGames = null;
@@ -172,7 +192,22 @@ public class Database extends Application {
             isSuccess = r.isSuccess();
 
             if (isSuccess && p.equals(currentlyLoggedInPlayer)) {
-                currentlyLoggedInPlayer = p;
+                currentlyLoggedInPlayer = getPlayerByUsername(p.getUsername());
+            }
+
+            PlayerPositionRequest ppr = new PlayerPositionRequest();
+            ppr.setATTACK(p.getPositions().contains(PlayerPosition.ATTACK));
+            ppr.setDEFENSE(p.getPositions().contains(PlayerPosition.DEFENSE));
+            ppr.setGOAL(p.getPositions().contains(PlayerPosition.GOAL));
+            ppr.setMIDFIELD(p.getPositions().contains(PlayerPosition.MIDFIELD));
+
+            response = Accessor.requestJSON(HttpMethod.PUT, "player/positions/" + p.getId(),
+                    null, GsonSerializor.serializePlayerPositionRequest(ppr));
+
+            r = GsonSerializor.deserializeResult(response.getJson());
+
+            if (!r.isSuccess()) {
+                throw new Exception("Could not set positions");
             }
         }
 

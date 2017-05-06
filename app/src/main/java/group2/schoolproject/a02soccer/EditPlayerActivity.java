@@ -122,6 +122,7 @@ public class EditPlayerActivity extends DynamicMenuActivity implements View.OnCl
             }
         } catch (Exception e) {
             Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
         }
     }
 
@@ -134,18 +135,14 @@ public class EditPlayerActivity extends DynamicMenuActivity implements View.OnCl
             throw new Exception("Name and Username may not be empty");
         }
 
-        currPlayer.setUsername(edtUsername.getText().toString());
-        currPlayer.setName(edtName.getText().toString());
-
-        for (PlayerPosition pp : currPlayer.getPositions()) {
-            currPlayer.removePosition(pp);
-        }
+        Player updatedPlayer = new Player(currPlayer.getId(), edtUsername.getText().toString(),
+                edtName.getText().toString(), currPlayer.isAdmin());
 
         for (PlayerPosition pp : getCheckedPlayerPositions()) {
-            currPlayer.addPosition(pp);
+            updatedPlayer.addPosition(pp);
         }
 
-        isSuccess = db.update(currPlayer);
+        isSuccess = db.update(updatedPlayer);
 
         if (isSuccess) {
             msg = "Successfully updated userdata";

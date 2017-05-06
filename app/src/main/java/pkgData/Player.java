@@ -2,14 +2,13 @@ package pkgData;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 
 public final class Player implements Comparable, Serializable, Cloneable {
     private Integer id = null;
     private Boolean isAdmin = false;
     private String name = null,
                    username = null;
-    private HashSet<PlayerPosition> positions = null;
+    private ArrayList<PlayerPosition> positions = null;
     private Integer numWins = null,
                     numDefeats = null,
                     numDraws = null;
@@ -21,7 +20,7 @@ public final class Player implements Comparable, Serializable, Cloneable {
         isAdmin = false;
         name = null;
         username = null;
-        positions = new HashSet<>();
+        positions = new ArrayList<>();
     }
 
     public Player(int id, String username, String name, Boolean isAdmin) throws Exception {
@@ -77,8 +76,8 @@ public final class Player implements Comparable, Serializable, Cloneable {
         this.username = username.toLowerCase();
     }
 
-    public PlayerPosition[] getPositions() {
-        return new ArrayList<>(positions).toArray(new PlayerPosition[0]);
+    public ArrayList<PlayerPosition> getPositions() {
+        return positions;
     }
 
     public void addPosition(PlayerPosition position) throws Exception {
@@ -87,14 +86,6 @@ public final class Player implements Comparable, Serializable, Cloneable {
 
     public void removePosition(PlayerPosition position) throws Exception {
         positions.remove(position);
-    }
-
-    public void setPositions(PlayerPosition[] positions) {
-        this.positions.clear();
-
-        for (PlayerPosition pos: positions) {
-            this.positions.add(pos);
-        }
     }
 
     public int getNumWins() {

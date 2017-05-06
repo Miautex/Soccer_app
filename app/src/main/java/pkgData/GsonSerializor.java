@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import pkgResult.GameResult;
 import pkgResult.ParticipationResult;
 import pkgResult.PlayerResult;
+import pkgResult.PositionResult;
 import pkgResult.Result;
 import pkgResult.SingleGameResult;
 import pkgResult.SinglePlayerResult;
@@ -17,10 +18,32 @@ public class GsonSerializor {
 
     public static String serializePlayer(Player p) {
         String retVal = null;
+        JSONObject jsonObject = null;
 
-        retVal = gson.toJson(p);
+        try {
+            jsonObject = new JSONObject(gson.toJson(p));
+            jsonObject.remove("positions");
+            retVal = jsonObject.toString();
+            retVal = retVal.replace("isAdmin", "admin");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
-        System.out.println("--------------  " + retVal);
+        return retVal;
+    }
+
+    public static String serializePlayerPositionRequest(PlayerPositionRequest ppr) {
+        String retVal = null;
+
+        retVal = gson.toJson(ppr);
+
+        return retVal;
+    }
+
+    public static PositionResult deserializePositionResult(String pr) {
+        PositionResult retVal = null;
+
+        retVal = gson.fromJson(pr, PositionResult.class);
 
         return retVal;
     }
