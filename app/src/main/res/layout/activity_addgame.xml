@@ -92,10 +92,11 @@
         style="@style/buttonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/table_PlayersHeader"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="170dp"
-        android:text="@string/btnCancel" />
+        android:text="@string/btnCancel"
+        android:layout_alignBaseline="@+id/btnContinue"
+        android:layout_alignBottom="@+id/btnContinue"
+        android:layout_toRightOf="@+id/ScrollView01"
+        android:layout_toEndOf="@+id/ScrollView01" />
 
     <Button
         android:id="@+id/btnContinue"

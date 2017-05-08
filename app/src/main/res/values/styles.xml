@@ -15,6 +15,7 @@
         <item name="colorControlNormal">#BC4C31</item>
         <item name="colorControlActivated">#BC4C31</item>
         <item name="colorControlHighlight">#BC4C31</item>
+        <item name="android:button">@style/buttonStyle</item>
     </style>
 
     <style name="buttonStyle">
