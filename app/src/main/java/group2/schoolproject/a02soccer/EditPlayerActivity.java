@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import pkgData.Database;
 import pkgData.Player;
 import pkgData.PlayerPosition;
+import pkgException.DuplicateUsernameException;
 import pkgMenu.DynamicMenuActivity;
 
 /**
@@ -142,13 +143,18 @@ public class EditPlayerActivity extends DynamicMenuActivity implements View.OnCl
             updatedPlayer.addPosition(pp);
         }
 
-        isSuccess = db.update(updatedPlayer);
+        try {
+            isSuccess = db.update(updatedPlayer);
 
-        if (isSuccess) {
-            msg = "Successfully updated userdata";
+            if (isSuccess) {
+                msg = "Successfully updated userdata";
+            }
+            else {
+                msg = "Could not update userdata";
+            }
         }
-        else {
-            msg = "Could not update userdata";
+        catch (DuplicateUsernameException ex) {
+            msg = ex.getMessage();
         }
 
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();

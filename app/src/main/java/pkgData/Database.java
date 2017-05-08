@@ -8,6 +8,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import pkgException.DuplicateUsernameException;
 import pkgResult.GameResult;
 import pkgResult.PlayerResult;
 import pkgResult.PositionResult;
@@ -132,6 +133,10 @@ public class Database extends Application {
         else {
             SinglePlayerResult spr = GsonSerializor.deserializeSinglePlayerResult(response.getJson());
 
+            if (!spr.isSuccess() && spr.getError() != null && spr.getError().getErrorMessage().contains("MySQLIntegrityConstraintViolationException")) {
+                throw new DuplicateUsernameException("Could not update userdata! Username '" + p.getUsername() + "' already exists");
+            }
+
             if (!spr.isSuccess()) {
                 throw new Exception(spr.getError().getErrorMessage());
             }
@@ -190,6 +195,10 @@ public class Database extends Application {
         else {
             Result r = GsonSerializor.deserializeResult(response.getJson());
             isSuccess = r.isSuccess();
+
+            if (!isSuccess && r.getError() != null && r.getError().getErrorMessage().contains("MySQLIntegrityConstraintViolationException")) {
+                throw new DuplicateUsernameException("Could not update userdata! Username '" + p.getUsername() + "' already exists");
+            }
 
             if (isSuccess && p.equals(currentlyLoggedInPlayer)) {
                 currentlyLoggedInPlayer = getPlayerByUsername(p.getUsername());
