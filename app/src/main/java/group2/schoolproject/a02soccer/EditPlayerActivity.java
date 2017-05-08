@@ -136,6 +136,10 @@ public class EditPlayerActivity extends DynamicMenuActivity implements View.OnCl
             throw new Exception("Name and Username may not be empty");
         }
 
+        if (!ckbPosMid.isChecked() && !ckbPosGoal.isChecked() && !ckbPosAtk.isChecked() && !ckbPosDef.isChecked()) {
+            throw new Exception("At least one position must be selected");
+        }
+
         Player updatedPlayer = new Player(currPlayer.getId(), edtUsername.getText().toString(),
                 edtName.getText().toString(), currPlayer.isAdmin());
 

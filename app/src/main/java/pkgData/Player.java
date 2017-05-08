@@ -1,14 +1,14 @@
 package pkgData;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.TreeSet;
 
 public final class Player implements Comparable, Serializable, Cloneable {
     private Integer id = null;
     private Boolean isAdmin = false;
     private String name = null,
                    username = null;
-    private ArrayList<PlayerPosition> positions = null;
+    private TreeSet<PlayerPosition> positions = null;
     private Integer numWins = null,
                     numDefeats = null,
                     numDraws = null;
@@ -20,7 +20,7 @@ public final class Player implements Comparable, Serializable, Cloneable {
         isAdmin = false;
         name = null;
         username = null;
-        positions = new ArrayList<>();
+        positions = new TreeSet<>();
     }
 
     public Player(int id, String username, String name, Boolean isAdmin) throws Exception {
@@ -76,7 +76,7 @@ public final class Player implements Comparable, Serializable, Cloneable {
         this.username = username.toLowerCase();
     }
 
-    public ArrayList<PlayerPosition> getPositions() {
+    public TreeSet<PlayerPosition> getPositions() {
         return positions;
     }
 
