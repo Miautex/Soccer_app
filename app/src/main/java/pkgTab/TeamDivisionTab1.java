@@ -1,20 +1,27 @@
 package pkgTab;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import group2.schoolproject.a02soccer.ExceptionNotification;
 import group2.schoolproject.a02soccer.R;
 import pkgData.PlayerPosition;
 
@@ -23,11 +30,11 @@ import pkgData.PlayerPosition;
  * The best Productowner
  */
 
-public class TeamDivisionTab1 extends Fragment {
-    private TableLayout table_PlayersData = null;
+public class TeamDivisionTab1 extends Fragment implements View.OnClickListener{
+    private TableLayout tableAllPlayers = null;
     private Spinner sItems = null;
     private View view = null;
-    private  ArrayAdapter<String> adapter= null;
+    private  ArrayAdapter<String> spinnerAdapter = null;
 
     @Nullable
     @Override
@@ -40,25 +47,56 @@ public class TeamDivisionTab1 extends Fragment {
             spinnerArray.add(p.toString());
         }
 
-        adapter = new ArrayAdapter<>(getContext(),android.R.layout.simple_spinner_dropdown_item,spinnerArray);
+        spinnerAdapter = new ArrayAdapter<>(getContext(),android.R.layout.simple_spinner_dropdown_item,spinnerArray);
 
         getAllViews();
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //sItems.setAdapter(adapter);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //sItems.setAdapter(spinnerAdapter);
         return view;
     }
 
     private void setSpinnerOptions(Spinner s){
-        s.setAdapter(adapter);
+        s.setAdapter(spinnerAdapter);
     }
 
 
     private void getAllViews() {
         //sItems = (Spinner) view.findViewById(R.id.Team1Spinner);
-        table_PlayersData = (TableLayout) view.findViewById(R.id.tableTeam1);
+        tableAllPlayers = (TableLayout) view.findViewById(R.id.tableAllPlayers1);
+    }
+
+    public void onClick(View arg0) {
+        try {
+            System.out.println("dddddddddddddddddd");
+        } catch (Exception e) {
+        }
     }
 
     public void addPlayer() {
+        TableRow row = new TableRow(this.getContext());
+        /*CheckBox chBox = new CheckBox(this.getContext());
+        chBox.setLayoutParams(new TableRow.LayoutParams(10, ViewGroup.LayoutParams.MATCH_PARENT,0.2f));
+        chBox.setOnClickListener(this);
+        row.addView(chBox);*/
+        // create a new TextView for showing xml data
+        TextView txtName = new TextView(this.getContext());
+        txtName.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT,1));
+        txtName.setGravity(Gravity.CENTER_VERTICAL);
+        txtName.setTextSize(16);
+        txtName.setTextColor(Color.BLACK);
+        // set the text to "text xx"
+        txtName.setText("Marco Wilscher");
+        // add the TextView  to the new TableRow
+        row.addView(txtName);
+        Spinner spinnerPosition = new Spinner(this.getContext());
+        spinnerPosition.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT,1));
+        setSpinnerOptions(spinnerPosition);
+        row.addView(spinnerPosition);
+        tableAllPlayers.addView(row);
+    }
+
+    public void addPlayerToTeam1() {
+        tableAllPlayers = (TableLayout) view.findViewById(R.id.tableTeam1);
         TableRow row = new TableRow(this.getContext());
         // create a new TextView for showing xml data
         TextView t = new TextView(this.getContext());
@@ -71,7 +109,7 @@ public class TeamDivisionTab1 extends Fragment {
         s.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT,1));
         setSpinnerOptions(s);
         row.addView(s);
-        table_PlayersData.addView(row);
+        tableAllPlayers.addView(row);
     }
 
     @Override

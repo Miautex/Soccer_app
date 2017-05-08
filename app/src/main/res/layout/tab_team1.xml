@@ -8,7 +8,7 @@
         android:layout_height="155dp">
 
         <TableLayout
-            android:id="@+id/tableTeam1"
+            android:id="@+id/tableAllPlayers1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -53,6 +53,7 @@
         android:layout_height="155dp">
 
         <TableLayout
+            android:id="@+id/tableTeam1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
