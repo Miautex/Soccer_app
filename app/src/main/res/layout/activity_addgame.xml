@@ -7,24 +7,24 @@
 
     <DatePicker
         android:id="@+id/datePicker"
-        android:calendarViewShown="false"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:datePickerMode="spinner"
+        android:layout_alignEnd="@+id/table_PlayersHeader"
         android:layout_alignParentTop="true"
         android:layout_alignRight="@+id/table_PlayersHeader"
-        android:layout_alignEnd="@+id/table_PlayersHeader" />
+        android:calendarViewShown="false"
+        android:datePickerMode="spinner"/>
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/SelectPlayersForGame"
-        android:textSize="24sp"
-        android:layout_marginTop="11dp"
-        android:layout_below="@+id/datePicker"
         android:layout_alignLeft="@+id/table_PlayersHeader"
-        android:layout_alignStart="@+id/table_PlayersHeader" />
+        android:layout_alignStart="@+id/table_PlayersHeader"
+        android:layout_below="@+id/datePicker"
+        android:layout_marginTop="11dp"
+        android:text="@string/SelectPlayersForGame"
+        android:textSize="24sp" />
 
     <TableLayout
         android:layout_width="fill_parent"
@@ -89,20 +89,22 @@
 
     <Button
         android:id="@+id/btnCancel"
+        style="@style/buttonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/btnCancel"
         android:layout_below="@+id/table_PlayersHeader"
+        android:layout_marginLeft="20dp"
         android:layout_marginTop="170dp"
-        android:layout_marginLeft="20dp"/>
+        android:text="@string/btnCancel" />
 
     <Button
         android:id="@+id/btnContinue"
+        style="@style/buttonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/btnContinue"
         android:layout_below="@+id/table_PlayersHeader"
+        android:layout_marginLeft="250dp"
         android:layout_marginTop="170dp"
-        android:layout_marginLeft="250dp"/>
+        android:text="@string/btnContinue" />
 
 </RelativeLayout>

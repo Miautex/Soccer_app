@@ -109,6 +109,7 @@
 
     <Button
         android:id="@+id/btnCancel"
+        style="@style/buttonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -119,9 +120,11 @@
 
     <Button
         android:id="@+id/btnSave"
+        style="@style/buttonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/btnCancel"
+        android:layout_alignBaseline="@+id/btnCancel"
+        android:layout_alignBottom="@+id/btnCancel"
         android:layout_toEndOf="@+id/ckbPosGoal"
         android:layout_toRightOf="@+id/ckbPosGoal"
         android:text="@string/btnSave" />

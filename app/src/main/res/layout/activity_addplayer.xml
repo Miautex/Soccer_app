@@ -72,12 +72,12 @@
         android:id="@+id/txvUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:padding="20dp"
         android:text="@string/Username"
-        android:textSize="18sp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:textSize="18sp" />
 
     <CheckBox
         android:id="@+id/ckbIsAdmin"
@@ -91,20 +91,26 @@
 
     <Button
         android:id="@+id/btnCancel"
+        style="@style/buttonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="64dp"
         android:text="@string/btnCancel"
-        android:layout_below="@+id/ckbIsAdmin"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="200dp"/>
+        android:layout_alignBaseline="@+id/btnAdd"
+        android:layout_alignBottom="@+id/btnAdd"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="64dp" />
 
     <Button
         android:id="@+id/btnAdd"
+        style="@style/buttonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="45dp"
         android:text="@string/btnAdd"
-        android:layout_below="@+id/ckbIsAdmin"
-        android:layout_marginLeft="220dp"
-        android:layout_marginTop="200dp" />
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/ckbIsAdmin"
+        android:layout_toEndOf="@+id/ckbIsAdmin" />
 
 </RelativeLayout>
