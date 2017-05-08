@@ -142,6 +142,14 @@ public class Database extends Application {
             }
             else {
                 player = spr.getContent();
+
+                //set Positions
+                p.setId(player.getId());        //set id for old player for setPlayerPositions to work
+                Result r = setPlayerPositions(p);
+
+                if (!r.isSuccess()) {
+                    throw new Exception("Could not set positions");
+                }
             }
         }
 
@@ -200,27 +208,33 @@ public class Database extends Application {
                 throw new DuplicateUsernameException("Could not update userdata! Username '" + p.getUsername() + "' already exists");
             }
 
-            if (isSuccess && p.equals(currentlyLoggedInPlayer)) {
-                currentlyLoggedInPlayer = getPlayerByUsername(p.getUsername());
-            }
-
-            PlayerPositionRequest ppr = new PlayerPositionRequest();
-            ppr.setATTACK(p.getPositions().contains(PlayerPosition.ATTACK));
-            ppr.setDEFENSE(p.getPositions().contains(PlayerPosition.DEFENSE));
-            ppr.setGOAL(p.getPositions().contains(PlayerPosition.GOAL));
-            ppr.setMIDFIELD(p.getPositions().contains(PlayerPosition.MIDFIELD));
-
-            response = Accessor.requestJSON(HttpMethod.PUT, "player/positions/" + p.getId(),
-                    null, GsonSerializor.serializePlayerPositionRequest(ppr));
-
-            r = GsonSerializor.deserializeResult(response.getJson());
+            r = setPlayerPositions(p);
 
             if (!r.isSuccess()) {
                 throw new Exception("Could not set positions");
             }
+
+            if (isSuccess && p.equals(currentlyLoggedInPlayer)) {
+                currentlyLoggedInPlayer = getPlayerByUsername(p.getUsername());
+            }
         }
 
         return isSuccess;
+    }
+
+    private Result setPlayerPositions(Player p) throws Exception {
+        AccessorResponse response;
+        PlayerPositionRequest ppr = new PlayerPositionRequest();
+
+        ppr.setATTACK(p.getPositions().contains(PlayerPosition.ATTACK));
+        ppr.setDEFENSE(p.getPositions().contains(PlayerPosition.DEFENSE));
+        ppr.setGOAL(p.getPositions().contains(PlayerPosition.GOAL));
+        ppr.setMIDFIELD(p.getPositions().contains(PlayerPosition.MIDFIELD));
+
+        response = Accessor.requestJSON(HttpMethod.PUT, "player/positions/" + p.getId(),
+                null, GsonSerializor.serializePlayerPositionRequest(ppr));
+
+        return GsonSerializor.deserializeResult(response.getJson());
     }
 
     public boolean remove(Player p) throws Exception {

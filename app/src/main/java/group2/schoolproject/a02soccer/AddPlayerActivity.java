@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import pkgData.Database;
 import pkgData.Player;
+import pkgData.PlayerPosition;
 import pkgMenu.DynamicMenuActivity;
 
 
@@ -57,6 +58,10 @@ public class AddPlayerActivity extends DynamicMenuActivity implements View.OnCli
         }
 
         Player newPlayer = new Player(edtUsername.getText().toString(), edtName.getText().toString(), ckbIsAdmin.isChecked());
+        newPlayer.addPosition(PlayerPosition.ATTACK);
+        newPlayer.addPosition(PlayerPosition.DEFENSE);
+        newPlayer.addPosition(PlayerPosition.MIDFIELD);
+        newPlayer.addPosition(PlayerPosition.GOAL);
 
         Player remote_newPlayer = db.insert(newPlayer);
         db.setPassword(remote_newPlayer, edtPassword.getText().toString());
