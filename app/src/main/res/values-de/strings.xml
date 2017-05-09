@@ -41,4 +41,18 @@
 
     <string name="navigation_drawer_open">Navigation öffnen</string>
     <string name="navigation_drawer_close">Navigation schließen</string>
+
+    <string name="Error">Fehler</string>
+    <string name="msg_SelectMinNumOfPlayers">Es müssen mindestens %d Spieler ausgewählt werden, um ein Spiel zu spielen</string>
+    <string name="msg_SavedGame">Spiel gespeichert</string>
+    <string name="msg_EnterNameUsernamePassword">Name, Benutzername und Passwort dürfen nicht leer sein</string>
+    <string name="msg_EnterNameUsername">Name und Benutzername dürfen nicht leer sein</string>
+    <string name="msg_PlayerAdded">Spieler \'%s\' hinzugefügt</string>
+    <string name="msg_SelectMinNumOfPositions">Es muss zumindest eine Position ausgewählt sein</string>
+    <string name="msg_UpdatedUserData">Benutzerdaten erfolgreich aktualisiert</string>
+    <string name="msg_CouldNotUpdateUserData">Benutzerdaten konnten nicht aktualisiert werden</string>
+    <string name="msg_EnterUsernamePassword">Bitte Benutzername und Passwort eintragen</string>
+    <string name="msg_UsernameOrPasswordInvalid">Benutzername oder Passwort ungültig</string>
+    <string name="msg_UsernameNotAvailable">Benutzername \'%s\' existiert bereits</string>
+    <string name="msg_CouldNotSetPositons">Positionen konnten nicht gesetzt werden</string>
 </resources>

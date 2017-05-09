@@ -42,4 +42,18 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <item name="mniAddPlayer" type="id">tst</item>
+
+    <string name="Error">Error</string>
+    <string name="msg_SelectMinNumOfPlayers">At least %d players must be selected to play a game</string>
+    <string name="msg_SavedGame">Saved game</string>
+    <string name="msg_EnterNameUsernamePassword">Name, Username and Password may not be empty</string>
+    <string name="msg_EnterNameUsername">Name and Username may not be empty</string>
+    <string name="msg_PlayerAdded">Player \'%s\' added</string>
+    <string name="msg_SelectMinNumOfPositions">At least one position must be selected</string>
+    <string name="msg_UpdatedUserData">Successfully updated userdata</string>
+    <string name="msg_CouldNotUpdateUserData">Could not update userdata</string>
+    <string name="msg_EnterUsernamePassword">Please enter Username and Password</string>
+    <string name="msg_UsernameOrPasswordInvalid">Username or Password invalid</string>
+    <string name="msg_UsernameNotAvailable">Username \'%s\' already exists</string>
+    <string name="msg_CouldNotSetPositons">Could not set positions</string>
 </resources>

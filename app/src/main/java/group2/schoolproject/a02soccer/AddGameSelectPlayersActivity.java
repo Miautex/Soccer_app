@@ -11,6 +11,7 @@ import android.widget.DatePicker;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -26,6 +27,8 @@ import pkgData.Player;
 import pkgMenu.DynamicMenuActivity;
 
 public class AddGameSelectPlayersActivity extends DynamicMenuActivity implements View.OnClickListener {
+    private static final int MIN_PLAYERS_REQUIRED = 4;
+
     private DatePicker datePicker = null;
     private TableLayout tablePlayers = null;
     private TableLayout tablePlayersHeader = null;
@@ -149,7 +152,13 @@ public class AddGameSelectPlayersActivity extends DynamicMenuActivity implements
     }
 
     private void onBtnContinue() throws Exception {
-        Game result = getGameWithParticipations(getSelectedPlayersFromTable());
+        ArrayList<Player> selectedPlayers = getSelectedPlayersFromTable();
+
+        if (selectedPlayers.size() < MIN_PLAYERS_REQUIRED) {
+            throw new Exception(String.format(getString(R.string.msg_SelectMinNumOfPlayers), MIN_PLAYERS_REQUIRED));
+        }
+
+        Game result = getGameWithParticipations(selectedPlayers);
 
         //Intent myIntent = new Intent(this, TeamManagmentActivity.class);
         Intent myIntent = new Intent(this, AddGameEnterDataActivity.class);
@@ -167,112 +176,8 @@ public class AddGameSelectPlayersActivity extends DynamicMenuActivity implements
                 this.finish();
             }
         } catch (Exception e) {
-            ExceptionNotification.notify(getApplicationContext(), e);
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
     }
 }
-/*
-import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
-
-import java.util.Calendar;
-import java.util.HashMap;
-
-import pkgData.Database;
-import pkgData.Game;
-import pkgData.Participation;
-import pkgData.Player;
-import pkgListener.AddGame_FragmentEventListener;
-
-public class AddGameSelectPlayersActivity extends DynamicMenuActivity implements AddGame_FragmentEventListener {
-    private Database db = null;
-    private HashMap<Integer, Player> hmPlayers = null;
-    private Game tmpGame = null;
-
-    private PagerAdapter adapter = null;
-    private ViewPager viewPager = null;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_addgame);
-
-        try {
-            db = Database.getInstance();
-            hmPlayers = new HashMap<>();
-            tmpGame = new Game(Calendar.getInstance().getTime(), 0, 0);
-
-            for (Player p : db.getAllPlayers()) {
-                Participation part = new Participation();
-                part.setPlayer(p);
-                tmpGame.addParticipation(part);
-            }
-
-            initTabView();
-        }
-        catch (Exception ex) {
-            ExceptionNotification.notify(this, ex);
-            ex.printStackTrace();
-        }
-    }
-
-    private void initTabView() {
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        tabLayout.addTab(tabLayout.newTab().setText("Tab 1"));
-        tabLayout.addTab(tabLayout.newTab().setText("Tab 2"));
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-
-        viewPager = (ViewPager) findViewById(R.id.pager);
-        adapter = new PagerAdapter (getSupportFragmentManager(), tabLayout.getTabCount());
-
-        viewPager.setAdapter(adapter);
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                if (tab.getPosition() == 0) {
-                    adapter.getItem(0);
-                    //TODO:
-                    //Interface for saving method in all three Tabs
-                    //Once tab is unselected, saving occours and AddGameSelectPlayersActivity (this)
-                    //has updated data of game+participations
-                }
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-    }
-
-    @Override
-    public void onBtnContinueClicked(Fragment sender) {
-    }
-
-    @Override
-    public void onBtnCancelClicked(Fragment sender) {
-        if (sender.getClass().equals(TabFragment_AddGame1.class)) {
-            this.finish();
-        }
-    }
-
-    @Override
-    public void onBtnBackClicked(Fragment sender) {
-
-    }
-
-    @Override
-    public void onBtnSaveClicked(Fragment sender) {
-
-    }
-}
-*/

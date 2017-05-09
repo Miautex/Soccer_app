@@ -8,6 +8,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import group2.schoolproject.a02soccer.R;
 import pkgException.DuplicateUsernameException;
 import pkgResult.GameResult;
 import pkgResult.PlayerResult;
@@ -134,7 +135,7 @@ public class Database extends Application {
             SinglePlayerResult spr = GsonSerializor.deserializeSinglePlayerResult(response.getJson());
 
             if (!spr.isSuccess() && spr.getError() != null && spr.getError().getErrorMessage().contains("MySQLIntegrityConstraintViolationException")) {
-                throw new DuplicateUsernameException("Could not update userdata! Username '" + p.getUsername() + "' already exists");
+                throw new DuplicateUsernameException(String.format(getString(R.string.msg_UsernameNotAvailable), p.getUsername()));
             }
 
             if (!spr.isSuccess()) {
@@ -148,7 +149,7 @@ public class Database extends Application {
                 Result r = setPlayerPositions(p);
 
                 if (!r.isSuccess()) {
-                    throw new Exception("Could not set positions");
+                    throw new Exception(getString(R.string.msg_CouldNotSetPositons));
                 }
             }
         }
@@ -205,13 +206,13 @@ public class Database extends Application {
             isSuccess = r.isSuccess();
 
             if (!isSuccess && r.getError() != null && r.getError().getErrorMessage().contains("MySQLIntegrityConstraintViolationException")) {
-                throw new DuplicateUsernameException("Could not update userdata! Username '" + p.getUsername() + "' already exists");
+                throw new DuplicateUsernameException(String.format(getString(R.string.msg_UsernameNotAvailable), p.getUsername()));
             }
 
             r = setPlayerPositions(p);
 
             if (!r.isSuccess()) {
-                throw new Exception("Could not set positions");
+                throw new Exception(getString(R.string.msg_CouldNotSetPositons));
             }
 
             if (isSuccess && p.equals(currentlyLoggedInPlayer)) {

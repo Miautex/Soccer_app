@@ -33,7 +33,7 @@ public class MainActivity extends DynamicMenuActivity
             //displayGames();
         }
         catch (Exception ex) {
-            Toast.makeText(this, "Error: " + ex.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.Error) + ": " + ex.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

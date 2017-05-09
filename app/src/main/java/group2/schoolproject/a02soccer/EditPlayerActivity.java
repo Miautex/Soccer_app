@@ -44,7 +44,7 @@ public class EditPlayerActivity extends DynamicMenuActivity implements View.OnCl
             initCheckboxes();
         }
         catch (Exception ex) {
-            Toast.makeText(this, "Error: " + ex.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.Error) + ": " + ex.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -122,7 +122,7 @@ public class EditPlayerActivity extends DynamicMenuActivity implements View.OnCl
                 this.finish();
             }
         } catch (Exception e) {
-            Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.Error) + ": " + e.getMessage(), Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
     }
@@ -133,11 +133,11 @@ public class EditPlayerActivity extends DynamicMenuActivity implements View.OnCl
         String msg = null;
 
         if (edtName.getText().toString().isEmpty() || edtUsername.getText().toString().isEmpty()) {
-            throw new Exception("Name and Username may not be empty");
+            throw new Exception(getString(R.string.msg_EnterNameUsername));
         }
 
         if (!ckbPosMid.isChecked() && !ckbPosGoal.isChecked() && !ckbPosAtk.isChecked() && !ckbPosDef.isChecked()) {
-            throw new Exception("At least one position must be selected");
+            throw new Exception(getString(R.string.msg_SelectMinNumOfPositions));
         }
 
         Player updatedPlayer = new Player(currPlayer.getId(), edtUsername.getText().toString(),
@@ -151,10 +151,10 @@ public class EditPlayerActivity extends DynamicMenuActivity implements View.OnCl
             isSuccess = db.update(updatedPlayer);
 
             if (isSuccess) {
-                msg = "Successfully updated userdata";
+                msg = getString(R.string.msg_UpdatedUserData);
             }
             else {
-                msg = "Could not update userdata";
+                msg = getString(R.string.msg_CouldNotUpdateUserData);
             }
         }
         catch (DuplicateUsernameException ex) {

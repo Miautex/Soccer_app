@@ -171,7 +171,7 @@ public class AddGameEnterDataActivity extends AppCompatActivity implements OnSco
                 db.insert(p);
             }
 
-            Toast.makeText(this, "Saved Game", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.msg_SavedGame), Toast.LENGTH_SHORT).show();
         }
         catch (Exception ex) {
             ExceptionNotification.notify(this, ex);
@@ -189,7 +189,7 @@ public class AddGameEnterDataActivity extends AppCompatActivity implements OnSco
                 this.finish();
             }
         } catch (Exception e) {
-            Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.Error) + ": " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 }

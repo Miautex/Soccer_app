@@ -34,7 +34,7 @@ public class AddPlayerActivity extends DynamicMenuActivity implements View.OnCli
             db = Database.getInstance();
         }
         catch (Exception ex) {
-            Toast.makeText(this, "Error: " + ex.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.Error) + ": " + ex.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -54,7 +54,7 @@ public class AddPlayerActivity extends DynamicMenuActivity implements View.OnCli
 
     private void onBtnAddClick() throws Exception {
         if (edtName.getText().toString().isEmpty() || edtUsername.getText().toString().isEmpty() || edtPassword.getText().toString().isEmpty()) {
-            throw new Exception("Name, Username and Password may not be empty");
+            throw new Exception(getString(R.string.msg_EnterNameUsernamePassword));
         }
 
         Player newPlayer = new Player(edtUsername.getText().toString(), edtName.getText().toString(), ckbIsAdmin.isChecked());
@@ -66,7 +66,7 @@ public class AddPlayerActivity extends DynamicMenuActivity implements View.OnCli
         Player remote_newPlayer = db.insert(newPlayer);
         db.setPassword(remote_newPlayer, edtPassword.getText().toString());
 
-        Toast.makeText(this, remote_newPlayer.toString() + " added", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, String.format(getString(R.string.msg_PlayerAdded), remote_newPlayer.getName()), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -79,7 +79,7 @@ public class AddPlayerActivity extends DynamicMenuActivity implements View.OnCli
                 this.finish();
             }
         } catch (Exception e) {
-            Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.Error) + ": " + e.getMessage(), Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
     }
