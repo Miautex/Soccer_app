@@ -23,6 +23,10 @@ public final class Player implements Comparable, Serializable, Cloneable {
         positions = new TreeSet<>();
     }
 
+    public Player(int id){
+        setId(id);
+    }
+
     public Player(int id, String username, String name, Boolean isAdmin) throws Exception {
         this();
         setId(id);
@@ -167,9 +171,10 @@ public final class Player implements Comparable, Serializable, Cloneable {
 
     @Override
     public int compareTo(Object o) {
-        int cp;
+        //int cp;
         Player tmpP = (Player) o;
-        cp = getName().compareTo(tmpP.getName());
-        return cp;
+        //cp = getName().compareTo(tmpP.getName());
+        //return cp;
+        return id-tmpP.getId();
     }
 }
