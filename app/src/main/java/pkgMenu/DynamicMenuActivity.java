@@ -4,23 +4,18 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.annotation.DrawableRes;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import java.util.Locale;
 
 import group2.schoolproject.a02soccer.AddGameSelectPlayersActivity;
 import group2.schoolproject.a02soccer.AddPlayerActivity;
-import group2.schoolproject.a02soccer.EditPlayerActivity;
-import group2.schoolproject.a02soccer.LoginActivity;
-import group2.schoolproject.a02soccer.MainActivity;
+import group2.schoolproject.a02soccer.EditPlayerOwnActivity;
 import group2.schoolproject.a02soccer.R;
 import pkgData.Database;
-import group2.schoolproject.a02soccer.TeamManagmentActivity;
 
 /**
  * Created by Raphael on 28.04.2017.
@@ -46,7 +41,7 @@ public class DynamicMenuActivity extends AppCompatActivity {
             openActivity(AddPlayerActivity.class);
         }
         else if(item.getItemId() == DynamicMenuItem.EDIT_PLAYER.ordinal()){
-            openActivity(EditPlayerActivity.class);
+            openActivity(EditPlayerOwnActivity.class);
         }
         else if(item.getItemId() == DynamicMenuItem.LOGIN.ordinal()){
             openActivity(LoginActivity.class);
@@ -105,7 +100,7 @@ public class DynamicMenuActivity extends AppCompatActivity {
         if (cl == AddPlayerActivity.class) {
             dmi= DynamicMenuItem.ADD_PLAYER;
         }
-        else if (cl == EditPlayerActivity.class) {
+        else if (cl == EditPlayerOwnActivity.class) {
             dmi = DynamicMenuItem.EDIT_PLAYER;
         }
         else if (cl == AddGameSelectPlayersActivity.class) {

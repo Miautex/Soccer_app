@@ -10,6 +10,7 @@ import android.widget.Toast;
 import pkgData.Database;
 import pkgData.Player;
 import pkgData.PlayerPosition;
+import pkgException.DuplicateUsernameException;
 import pkgMenu.DynamicMenuActivity;
 
 
@@ -43,7 +44,7 @@ public class AddPlayerActivity extends DynamicMenuActivity implements View.OnCli
         btnCancel = (Button) findViewById(R.id.btnCancel);
         edtName = (EditText) findViewById(R.id.edtName);
         edtUsername = (EditText) findViewById(R.id.edtUsername);
-        edtPassword = (EditText) findViewById(R.id.edtPassword);
+        edtPassword = (EditText) findViewById(R.id.edtNewPassword);
         ckbIsAdmin = (CheckBox) findViewById(R.id.ckbIsAdmin);
     }
 
@@ -63,10 +64,14 @@ public class AddPlayerActivity extends DynamicMenuActivity implements View.OnCli
         newPlayer.addPosition(PlayerPosition.MIDFIELD);
         newPlayer.addPosition(PlayerPosition.GOAL);
 
-        Player remote_newPlayer = db.insert(newPlayer);
-        db.setPassword(remote_newPlayer, edtPassword.getText().toString());
-
-        Toast.makeText(this, String.format(getString(R.string.msg_PlayerAdded), remote_newPlayer.getName()), Toast.LENGTH_SHORT).show();
+        try {
+            Player remote_newPlayer = db.insert(newPlayer);
+            db.setPassword(remote_newPlayer, edtPassword.getText().toString());
+            Toast.makeText(this, String.format(getString(R.string.msg_PlayerAdded), remote_newPlayer.getName()), Toast.LENGTH_SHORT).show();
+        }
+        catch (DuplicateUsernameException ex) {
+            throw new DuplicateUsernameException(String.format(getString(R.string.msg_UsernameNotAvailable), newPlayer.getUsername()));
+        }
     }
 
     @Override

@@ -50,7 +50,7 @@ public final class Player implements Comparable, Serializable, Cloneable {
         return isAdmin;
     }
 
-    private void setAdmin(boolean admin) {
+    public void setAdmin(boolean admin) {
         isAdmin = admin;
     }
 
@@ -157,7 +157,7 @@ public final class Player implements Comparable, Serializable, Cloneable {
 
     @Override
     public String toString() {
-        return "Player (#" + getId() + " - " + getUsername() + ") " + getUsername();
+        return getName() + " (" + getUsername() + ")";
     }
 
     @Override

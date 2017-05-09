@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import pkgData.Database;
 import pkgData.Player;
 import pkgData.PlayerPosition;
+import pkgException.CouldNotSetPlayerPositionsException;
 import pkgException.DuplicateUsernameException;
 import pkgMenu.DynamicMenuActivity;
 
@@ -19,7 +20,7 @@ import pkgMenu.DynamicMenuActivity;
  * Created by Martin on 28.03.2017.
  */
 
-public class EditPlayerActivity extends DynamicMenuActivity implements View.OnClickListener {
+public class EditPlayerOwnActivity extends DynamicMenuActivity implements View.OnClickListener {
     Button btnSave = null;
     Button btnCancel = null;
     EditText edtName = null;
@@ -34,7 +35,7 @@ public class EditPlayerActivity extends DynamicMenuActivity implements View.OnCl
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_editplayer);
+        setContentView(R.layout.activity_editplayer_own);
         getAllViews();
         registrateEventHandlers();
 
@@ -158,7 +159,10 @@ public class EditPlayerActivity extends DynamicMenuActivity implements View.OnCl
             }
         }
         catch (DuplicateUsernameException ex) {
-            msg = ex.getMessage();
+            msg = String.format(getString(R.string.msg_UsernameNotAvailable), updatedPlayer.getUsername());
+        }
+        catch (CouldNotSetPlayerPositionsException ex) {
+            msg = getApplicationContext().getString(R.string.msg_CouldNotSetPositions);
         }
 
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();

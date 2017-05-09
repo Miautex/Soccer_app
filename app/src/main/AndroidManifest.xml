@@ -22,20 +22,23 @@
         </activity>
         <activity
             android:name=".LoginActivity"
-            android:label="@string/app_name" />
+            android:label="@string/title_activity_login" />
         <activity
-            android:name=".EditPlayerActivity"
-            android:label="@string/app_name" />
+            android:name=".EditPlayerOwnActivity"
+            android:label="@string/title_activity_edit_player_own" />
+        <activity
+            android:name=".EditPlayerAdminActivity"
+            android:label="@string/title_activity_edit_player_admin" />
         <activity
             android:name=".AddPlayerActivity"
-            android:label="@string/app_name" />
+            android:label="@string/title_activity_add_player" />
         <activity
             android:name=".TeamManagmentActivity"
-            android:label="@string/title_activity_team_managment" />
+            android:label="@string/title_activity_team_management" />
         <!-- android:theme="@style/AppTheme.NoActionBar"></activity> -->
         <activity
             android:name=".AddGameSelectPlayersActivity"
-            android:label="@string/app_name" />
+            android:label="@string/title_activity_add_game_select_players" />
         <activity
             android:name=".AddGameEnterDataActivity"
             android:label="@string/title_activity_add_game_enter_data"

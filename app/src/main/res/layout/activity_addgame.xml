@@ -95,8 +95,8 @@
         android:text="@string/btnCancel"
         android:layout_alignBaseline="@+id/btnContinue"
         android:layout_alignBottom="@+id/btnContinue"
-        android:layout_toRightOf="@+id/ScrollView01"
-        android:layout_toEndOf="@+id/ScrollView01" />
+        android:layout_toLeftOf="@+id/datePicker"
+        android:layout_toStartOf="@+id/datePicker" />
 
     <Button
         android:id="@+id/btnContinue"

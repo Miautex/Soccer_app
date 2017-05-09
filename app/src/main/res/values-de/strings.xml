@@ -1,5 +1,13 @@
 <resources>
     <string name="app_name">Fußball</string>
+    <string name="title_activity_add_game_select_players">Spieler auswählen</string>
+    <string name="title_activity_team_management">Team Verwaltung</string>
+    <string name="title_activity_add_game_enter_data">Daten eingeben</string>
+    <string name="title_activity_login">Anmelden</string>
+    <string name="title_activity_edit_player_own">Eigene Daten bearbeiten</string>
+    <string name="title_activity_edit_player_admin">Spieler bearbeiten</string>
+    <string name="title_activity_add_player">Spieler hinzufügen</string>
+
     <string name="btnLogin">Anmelden</string>
     <string name="Password">Passwort</string>
     <string name="Username">Benutzername</string>
@@ -18,17 +26,15 @@
     <string name="mniLogin">Anmelden</string>
     <string name="mniAdd">Spieler hinzufügen</string>
     <string name="mniEdit">Spieler bearbeiten</string>
-    <string name="ckbIsAdmin">ist Admin</string>
+    <string name="ckbIsAdmin">Admin</string>
     <string name="btnAdd">Hinzufügen</string>
     <string name="Date">Datum</string>
     <string name="SelectPlayersForGame">Spieler für Spiel auswählen</string>
     <string name="mniAddGame">Spiel hinzufügen</string>
     <string name="Participation">Teilnahme</string>
     <string name="btnContinue">Weiter</string>
-    <string name="title_activity_team_managment">Team Managment</string>
     <string name="action_settings">Einstellungen</string>
     <string name="section_format">Hello World from section: %1$d</string>
-    <string name="title_activity_add_game_enter_data">Daten eingeben</string>
     <string name="Remark">Bemerkung</string>
     <string name="GoalsShotDefault">Tore geschossen</string>
     <string name="GoalsShotHead">Tore geschossen (Kopf)</string>
@@ -37,7 +43,7 @@
     <string name="GoalsGot">Tore bekommen</string>
     <string name="Nutmeg">Gurken</string>
     <string name="btnBack">Zurück</string>
-    <string name="title_activity_main2">MainActivity2</string>
+    <string name="ckbUpdatePassword">Passwort ändern</string>
 
     <string name="navigation_drawer_open">Navigation öffnen</string>
     <string name="navigation_drawer_close">Navigation schließen</string>
@@ -54,5 +60,11 @@
     <string name="msg_EnterUsernamePassword">Bitte Benutzername und Passwort eintragen</string>
     <string name="msg_UsernameOrPasswordInvalid">Benutzername oder Passwort ungültig</string>
     <string name="msg_UsernameNotAvailable">Benutzername \'%s\' existiert bereits</string>
-    <string name="msg_CouldNotSetPositons">Positionen konnten nicht gesetzt werden</string>
+    <string name="msg_CouldNotSetPositions">Positionen konnten nicht gesetzt werden</string>
+    <string name="msg_CouldNotDeletePlayer">Spieler konnte nicht gelöscht werden</string>
+    <string name="msg_NoActionsOnOwnPlayer">Keine Aktionen auf eigenen Spieler anwendbar</string>
+    <string name="msg_EnterPassword">Bitte neues Passwort eintragen</string>
+
+    <string name="ctxMniEditPlayer">Bearbeiten</string>
+    <string name="ctxMniDeletePlayer">Löschen</string>
 </resources>

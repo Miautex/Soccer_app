@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import group2.schoolproject.a02soccer.R;
+import pkgException.CouldNotDeletePlayerException;
+import pkgException.CouldNotSetPlayerPositionsException;
 import pkgException.DuplicateUsernameException;
 import pkgResult.GameResult;
 import pkgResult.PlayerResult;
@@ -135,7 +137,7 @@ public class Database extends Application {
             SinglePlayerResult spr = GsonSerializor.deserializeSinglePlayerResult(response.getJson());
 
             if (!spr.isSuccess() && spr.getError() != null && spr.getError().getErrorMessage().contains("MySQLIntegrityConstraintViolationException")) {
-                throw new DuplicateUsernameException(String.format(getString(R.string.msg_UsernameNotAvailable), p.getUsername()));
+                throw new DuplicateUsernameException();
             }
 
             if (!spr.isSuccess()) {
@@ -149,7 +151,7 @@ public class Database extends Application {
                 Result r = setPlayerPositions(p);
 
                 if (!r.isSuccess()) {
-                    throw new Exception(getString(R.string.msg_CouldNotSetPositons));
+                    throw new CouldNotSetPlayerPositionsException();
                 }
             }
         }
@@ -206,13 +208,13 @@ public class Database extends Application {
             isSuccess = r.isSuccess();
 
             if (!isSuccess && r.getError() != null && r.getError().getErrorMessage().contains("MySQLIntegrityConstraintViolationException")) {
-                throw new DuplicateUsernameException(String.format(getString(R.string.msg_UsernameNotAvailable), p.getUsername()));
+                throw new DuplicateUsernameException();
             }
 
             r = setPlayerPositions(p);
 
             if (!r.isSuccess()) {
-                throw new Exception(getString(R.string.msg_CouldNotSetPositons));
+                throw new Exception(getApplicationContext().getString(R.string.msg_CouldNotSetPositions));
             }
 
             if (isSuccess && p.equals(currentlyLoggedInPlayer)) {
@@ -243,7 +245,7 @@ public class Database extends Application {
         AccessorResponse response = Accessor.requestJSON(HttpMethod.DELETE, "player/" + p.getId(), null, null);
 
         if (response.getResponseCode() == 500) {
-            throw new Exception(response.getJson());
+            throw new CouldNotDeletePlayerException();
         }
         else {
             Result r = GsonSerializor.deserializeResult(response.getJson());

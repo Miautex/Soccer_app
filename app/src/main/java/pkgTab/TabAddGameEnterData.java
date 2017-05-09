@@ -138,6 +138,7 @@ public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeL
             row.addView(txvName);
             txvName.setLayoutParams(lptr);
             txvName.setText(p.getPlayer().getName());
+            txvName.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 2));
 
             EditText[] editTexts = new EditText[7];
 

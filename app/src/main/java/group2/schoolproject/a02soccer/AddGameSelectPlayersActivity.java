@@ -44,6 +44,9 @@ public class AddGameSelectPlayersActivity extends DynamicMenuActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addgame);
 
+        getAllViews();
+        registrateEventHandlers();
+
         try {
             db = Database.getInstance();
             hmPlayers = new HashMap<>();
@@ -51,9 +54,6 @@ public class AddGameSelectPlayersActivity extends DynamicMenuActivity implements
             for (Player p: db.getAllPlayers()) {
                 hmPlayers.put(p.getId(), p);
             }
-
-            getAllViews();
-            registrateEventHandlers();
 
             TreeSet<Player> tsPlayers = new TreeSet<>(new PlayerComparatorName());
             tsPlayers.addAll(hmPlayers.values());

@@ -1,5 +1,13 @@
 <resources>
     <string name="app_name">Soccer</string>
+    <string name="title_activity_add_game_select_players">Select Players</string>
+    <string name="title_activity_team_management">Team Managment</string>
+    <string name="title_activity_add_game_enter_data">Enter Data</string>
+    <string name="title_activity_login">Login</string>
+    <string name="title_activity_edit_player_own">Edit own data</string>
+    <string name="title_activity_edit_player_admin">Edit player</string>
+    <string name="title_activity_add_player">Add player</string>
+
     <string name="btnLogin">Login</string>
     <string name="Password">Password</string>
     <string name="Username">Username</string>
@@ -18,17 +26,15 @@
     <string name="mniLogin">Login</string>
     <string name="mniAdd">Add Player</string>
     <string name="mniEdit">Edit Player</string>
-    <string name="ckbIsAdmin">Is Admin</string>
+    <string name="ckbIsAdmin">Admin</string>
     <string name="btnAdd">Add</string>
     <string name="Date">Date</string>
     <string name="SelectPlayersForGame">Select Players for the Game</string>
     <string name="mniAddGame">Add Game</string>
     <string name="Participation">Participation</string>
     <string name="btnContinue">Continue</string>
-    <string name="title_activity_team_managment">Team Managment</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
-    <string name="title_activity_add_game_enter_data">Enter Data</string>
     <string name="Remark">Remark</string>
     <string name="GoalsShotDefault">Goals Shot</string>
     <string name="GoalsShotHead">Goals Shot (Head)</string>
@@ -37,7 +43,7 @@
     <string name="GoalsGot">Goals Got</string>
     <string name="Nutmeg">Nutmeg</string>
     <string name="btnBack">Back</string>
-    <string name="title_activity_main2">MainActivity2</string>
+    <string name="ckbUpdatePassword">Update Password</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -55,5 +61,12 @@
     <string name="msg_EnterUsernamePassword">Please enter Username and Password</string>
     <string name="msg_UsernameOrPasswordInvalid">Username or Password invalid</string>
     <string name="msg_UsernameNotAvailable">Username \'%s\' already exists</string>
-    <string name="msg_CouldNotSetPositons">Could not set positions</string>
+    <string name="msg_CouldNotSetPositions">Could not set positions</string>
+    <string name="msg_CouldNotDeletePlayer">Could not delete player</string>
+    <string name="msg_NoActionsOnOwnPlayer">No actions on own Player possible</string>
+    <string name="msg_EnterPassword">Please enter a new password</string>
+
+
+    <string name="ctxMniEditPlayer">Edit</string>
+    <string name="ctxMniDeletePlayer">Delete</string>
 </resources>
