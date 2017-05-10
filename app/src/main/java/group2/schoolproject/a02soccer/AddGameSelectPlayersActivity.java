@@ -38,7 +38,6 @@ public class AddGameSelectPlayersActivity extends DynamicMenuActivity implements
     private Database db = null;
     private HashMap<Integer, Player> hmPlayers = null;
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -37,7 +37,7 @@ public class MainActivity extends DynamicMenuActivity
 
         try {
             db = Database.getInstance();
-            //displayPlayers();     //remove comment to
+            //displayPlayers();     //remove comment to display players
         }
         catch (Exception ex) {
             Toast.makeText(this, getString(R.string.Error) + ": " + ex.getMessage(), Toast.LENGTH_SHORT).show();
