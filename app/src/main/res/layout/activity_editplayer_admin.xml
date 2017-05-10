@@ -15,7 +15,8 @@
         android:layout_toEndOf="@+id/txtName"
         android:layout_toRightOf="@+id/txtName"
         android:ems="10"
-        android:inputType="textPersonName" />
+        android:enabled="false"
+        android:inputType="textPassword" />
 
     <EditText
         android:id="@+id/edtUsername"
@@ -36,24 +37,24 @@
         android:padding="20dp"
         android:text="@string/Name"
         android:textSize="18sp"
-        android:layout_below="@+id/txtPassword"
+        android:layout_below="@+id/ckbUpdatePassword"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/txtPassword"
-        android:layout_alignEnd="@+id/txtPassword" />
+        android:layout_alignRight="@+id/ckbUpdatePassword"
+        android:layout_alignEnd="@+id/ckbUpdatePassword" />
 
-    <TextView
-        android:id="@+id/txtPassword"
+    <CheckBox
+        android:id="@+id/ckbUpdatePassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/txvUsername"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/txvUsername"
         android:layout_below="@+id/txvUsername"
         android:padding="20dp"
-        android:text="@string/Password"
-        android:textSize="18sp" />
+        android:text="@string/ckbUpdatePassword"
+        android:textSize="18sp"
+        android:layout_toLeftOf="@+id/edtUsername"
+        android:layout_toStartOf="@+id/edtUsername" />
 
     <EditText
         android:id="@+id/edtName"
@@ -85,7 +86,7 @@
         android:layout_height="wrap_content"
         android:text="@string/ckbIsAdmin"
         android:textSize="18sp"
-        android:layout_below="@+id/txtName"
+        android:layout_below="@+id/edtName"
         android:layout_toRightOf="@+id/txtName"
         android:layout_toEndOf="@+id/txtName" />
 
@@ -94,21 +95,21 @@
         style="@style/buttonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="64dp"
-        android:text="@string/btnCancel"
-        android:layout_alignBaseline="@+id/btnAdd"
-        android:layout_alignBottom="@+id/btnAdd"
+        android:layout_alignBaseline="@+id/btnSave"
+        android:layout_alignBottom="@+id/btnSave"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="64dp" />
+        android:layout_marginLeft="64dp"
+        android:layout_marginStart="64dp"
+        android:text="@string/btnCancel" />
 
     <Button
-        android:id="@+id/btnAdd"
+        android:id="@+id/btnSave"
         style="@style/buttonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="45dp"
-        android:text="@string/btnAdd"
+        android:text="@string/btnSave"
         android:layout_alignParentBottom="true"
         android:layout_toRightOf="@+id/ckbIsAdmin"
         android:layout_toEndOf="@+id/ckbIsAdmin" />

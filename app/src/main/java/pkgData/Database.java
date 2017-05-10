@@ -8,6 +8,10 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import group2.schoolproject.a02soccer.R;
+import pkgException.CouldNotDeletePlayerException;
+import pkgException.CouldNotSetPlayerPositionsException;
+import pkgException.DuplicateUsernameException;
 import pkgResult.GameResult;
 import pkgResult.PlayerResult;
 import pkgResult.PositionResult;
@@ -132,11 +136,23 @@ public class Database extends Application {
         else {
             SinglePlayerResult spr = GsonSerializor.deserializeSinglePlayerResult(response.getJson());
 
+            if (!spr.isSuccess() && spr.getError() != null && spr.getError().getErrorMessage().contains("MySQLIntegrityConstraintViolationException")) {
+                throw new DuplicateUsernameException();
+            }
+
             if (!spr.isSuccess()) {
                 throw new Exception(spr.getError().getErrorMessage());
             }
             else {
                 player = spr.getContent();
+
+                //set Positions
+                p.setId(player.getId());        //set id for old player for setPlayerPositions to work
+                Result r = setPlayerPositions(p);
+
+                if (!r.isSuccess()) {
+                    throw new CouldNotSetPlayerPositionsException();
+                }
             }
         }
 
@@ -191,27 +207,37 @@ public class Database extends Application {
             Result r = GsonSerializor.deserializeResult(response.getJson());
             isSuccess = r.isSuccess();
 
-            if (isSuccess && p.equals(currentlyLoggedInPlayer)) {
-                currentlyLoggedInPlayer = getPlayerByUsername(p.getUsername());
+            if (!isSuccess && r.getError() != null && r.getError().getErrorMessage().contains("MySQLIntegrityConstraintViolationException")) {
+                throw new DuplicateUsernameException();
             }
 
-            PlayerPositionRequest ppr = new PlayerPositionRequest();
-            ppr.setATTACK(p.getPositions().contains(PlayerPosition.ATTACK));
-            ppr.setDEFENSE(p.getPositions().contains(PlayerPosition.DEFENSE));
-            ppr.setGOAL(p.getPositions().contains(PlayerPosition.GOAL));
-            ppr.setMIDFIELD(p.getPositions().contains(PlayerPosition.MIDFIELD));
-
-            response = Accessor.requestJSON(HttpMethod.PUT, "player/positions/" + p.getId(),
-                    null, GsonSerializor.serializePlayerPositionRequest(ppr));
-
-            r = GsonSerializor.deserializeResult(response.getJson());
+            r = setPlayerPositions(p);
 
             if (!r.isSuccess()) {
-                throw new Exception("Could not set positions");
+                throw new Exception(getApplicationContext().getString(R.string.msg_CouldNotSetPositions));
+            }
+
+            if (isSuccess && p.equals(currentlyLoggedInPlayer)) {
+                currentlyLoggedInPlayer = getPlayerByUsername(p.getUsername());
             }
         }
 
         return isSuccess;
+    }
+
+    private Result setPlayerPositions(Player p) throws Exception {
+        AccessorResponse response;
+        PlayerPositionRequest ppr = new PlayerPositionRequest();
+
+        ppr.setATTACK(p.getPositions().contains(PlayerPosition.ATTACK));
+        ppr.setDEFENSE(p.getPositions().contains(PlayerPosition.DEFENSE));
+        ppr.setGOAL(p.getPositions().contains(PlayerPosition.GOAL));
+        ppr.setMIDFIELD(p.getPositions().contains(PlayerPosition.MIDFIELD));
+
+        response = Accessor.requestJSON(HttpMethod.PUT, "player/positions/" + p.getId(),
+                null, GsonSerializor.serializePlayerPositionRequest(ppr));
+
+        return GsonSerializor.deserializeResult(response.getJson());
     }
 
     public boolean remove(Player p) throws Exception {
@@ -219,7 +245,7 @@ public class Database extends Application {
         AccessorResponse response = Accessor.requestJSON(HttpMethod.DELETE, "player/" + p.getId(), null, null);
 
         if (response.getResponseCode() == 500) {
-            throw new Exception(response.getJson());
+            throw new CouldNotDeletePlayerException();
         }
         else {
             Result r = GsonSerializor.deserializeResult(response.getJson());

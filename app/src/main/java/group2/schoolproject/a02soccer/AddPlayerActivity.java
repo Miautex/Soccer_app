@@ -9,6 +9,8 @@ import android.widget.Toast;
 
 import pkgData.Database;
 import pkgData.Player;
+import pkgData.PlayerPosition;
+import pkgException.DuplicateUsernameException;
 import pkgMenu.DynamicMenuActivity;
 
 
@@ -33,7 +35,7 @@ public class AddPlayerActivity extends DynamicMenuActivity implements View.OnCli
             db = Database.getInstance();
         }
         catch (Exception ex) {
-            Toast.makeText(this, "Error: " + ex.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.Error) + ": " + ex.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -42,7 +44,7 @@ public class AddPlayerActivity extends DynamicMenuActivity implements View.OnCli
         btnCancel = (Button) findViewById(R.id.btnCancel);
         edtName = (EditText) findViewById(R.id.edtName);
         edtUsername = (EditText) findViewById(R.id.edtUsername);
-        edtPassword = (EditText) findViewById(R.id.edtPassword);
+        edtPassword = (EditText) findViewById(R.id.edtNewPassword);
         ckbIsAdmin = (CheckBox) findViewById(R.id.ckbIsAdmin);
     }
 
@@ -53,15 +55,23 @@ public class AddPlayerActivity extends DynamicMenuActivity implements View.OnCli
 
     private void onBtnAddClick() throws Exception {
         if (edtName.getText().toString().isEmpty() || edtUsername.getText().toString().isEmpty() || edtPassword.getText().toString().isEmpty()) {
-            throw new Exception("Name, Username and Password may not be empty");
+            throw new Exception(getString(R.string.msg_EnterNameUsernamePassword));
         }
 
         Player newPlayer = new Player(edtUsername.getText().toString(), edtName.getText().toString(), ckbIsAdmin.isChecked());
+        newPlayer.addPosition(PlayerPosition.ATTACK);
+        newPlayer.addPosition(PlayerPosition.DEFENSE);
+        newPlayer.addPosition(PlayerPosition.MIDFIELD);
+        newPlayer.addPosition(PlayerPosition.GOAL);
 
-        Player remote_newPlayer = db.insert(newPlayer);
-        db.setPassword(remote_newPlayer, edtPassword.getText().toString());
-
-        Toast.makeText(this, remote_newPlayer.toString() + " added", Toast.LENGTH_SHORT).show();
+        try {
+            Player remote_newPlayer = db.insert(newPlayer);
+            db.setPassword(remote_newPlayer, edtPassword.getText().toString());
+            Toast.makeText(this, String.format(getString(R.string.msg_PlayerAdded), remote_newPlayer.getName()), Toast.LENGTH_SHORT).show();
+        }
+        catch (DuplicateUsernameException ex) {
+            throw new DuplicateUsernameException(String.format(getString(R.string.msg_UsernameNotAvailable), newPlayer.getUsername()));
+        }
     }
 
     @Override
@@ -74,7 +84,7 @@ public class AddPlayerActivity extends DynamicMenuActivity implements View.OnCli
                 this.finish();
             }
         } catch (Exception e) {
-            Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.Error) + ": " + e.getMessage(), Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
     }

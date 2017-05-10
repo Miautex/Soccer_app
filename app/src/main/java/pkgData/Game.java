@@ -108,6 +108,10 @@ public final class Game implements Serializable, Comparable<Game> {
         participations.remove(p);
     }
 
+    public void removeAllParticipations(){
+        participations.clear();
+    }
+
     @Override
     public int hashCode() {
         return id;

@@ -1,14 +1,14 @@
 package pkgData;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.TreeSet;
 
 public final class Player implements Comparable, Serializable, Cloneable {
     private Integer id = null;
     private Boolean isAdmin = false;
     private String name = null,
                    username = null;
-    private ArrayList<PlayerPosition> positions = null;
+    private TreeSet<PlayerPosition> positions = null;
     private Integer numWins = null,
                     numDefeats = null,
                     numDraws = null;
@@ -20,7 +20,11 @@ public final class Player implements Comparable, Serializable, Cloneable {
         isAdmin = false;
         name = null;
         username = null;
-        positions = new ArrayList<>();
+        positions = new TreeSet<>();
+    }
+
+    public Player(int id){
+        setId(id);
     }
 
     public Player(int id, String username, String name, Boolean isAdmin) throws Exception {
@@ -50,7 +54,7 @@ public final class Player implements Comparable, Serializable, Cloneable {
         return isAdmin;
     }
 
-    private void setAdmin(boolean admin) {
+    public void setAdmin(boolean admin) {
         isAdmin = admin;
     }
 
@@ -76,7 +80,7 @@ public final class Player implements Comparable, Serializable, Cloneable {
         this.username = username.toLowerCase();
     }
 
-    public ArrayList<PlayerPosition> getPositions() {
+    public TreeSet<PlayerPosition> getPositions() {
         return positions;
     }
 
@@ -157,7 +161,7 @@ public final class Player implements Comparable, Serializable, Cloneable {
 
     @Override
     public String toString() {
-        return "Player (#" + getId() + " - " + getUsername() + ") " + getUsername();
+        return getName() + " (" + getUsername() + ")";
     }
 
     @Override
@@ -167,9 +171,10 @@ public final class Player implements Comparable, Serializable, Cloneable {
 
     @Override
     public int compareTo(Object o) {
-        int cp;
+        //int cp;
         Player tmpP = (Player) o;
-        cp = getName().compareTo(tmpP.getName());
-        return cp;
+        //cp = getName().compareTo(tmpP.getName());
+        //return cp;
+        return id-tmpP.getId();
     }
 }

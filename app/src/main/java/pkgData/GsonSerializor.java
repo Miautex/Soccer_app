@@ -23,8 +23,9 @@ public class GsonSerializor {
         try {
             jsonObject = new JSONObject(gson.toJson(p));
             jsonObject.remove("positions");
+            jsonObject.put("admin", jsonObject.get("isAdmin"));     //it's "admin" and not "isAdmin" for webservice for some reason...
+            jsonObject.remove("isAdmin");
             retVal = jsonObject.toString();
-            retVal = retVal.replace("isAdmin", "admin");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -99,12 +100,14 @@ public class GsonSerializor {
     }
 
     public static PlayerResult deserializePlayerResult(String strPlayerResult) {
+        strPlayerResult = strPlayerResult.replaceAll("\"admin\":", "\"isAdmin\":");            //it's "admin" and not "isAdmin" for webservice for some reason...
         PlayerResult pr = gson.fromJson(strPlayerResult, PlayerResult.class);
 
         return pr;
     }
 
     public static SinglePlayerResult deserializeSinglePlayerResult(String strSinglePlayerResult) {
+        strSinglePlayerResult = strSinglePlayerResult.replace("\"admin\":", "\"isAdmin\":");             //it's "admin" and not "isAdmin" for webservice for some reason...
         SinglePlayerResult spr = gson.fromJson(strSinglePlayerResult, SinglePlayerResult.class);
 
         return spr;

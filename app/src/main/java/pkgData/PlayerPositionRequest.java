@@ -3,6 +3,17 @@ package pkgData;
 public class PlayerPositionRequest {
     private boolean GOAL, MIDFIELD, ATTACK, DEFENSE;
 
+    public PlayerPositionRequest() {
+        super();
+    }
+
+    public PlayerPositionRequest(boolean isGoal, boolean isMidfield, boolean isAttack, boolean isDefense) {
+        setGOAL(isGoal);
+        setMIDFIELD(isMidfield);
+        setATTACK(isAttack);
+        setDEFENSE(isDefense);
+    }
+
     public boolean isGOAL() {
         return GOAL;
     }

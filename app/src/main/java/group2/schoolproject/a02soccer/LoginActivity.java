@@ -31,7 +31,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
             db = Database.getInstance();
         }
         catch (Exception ex) {
-            Toast.makeText(this, "Error: " + ex.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.Error) + ": " + ex.getMessage(), Toast.LENGTH_SHORT).show();
             ExceptionNotification.notify(this, ex);
         }
     }
@@ -71,20 +71,20 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
                 tryLogin();
             }
         } catch (Exception e) {
-            Toast.makeText(this, "Error with onClick", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.Error) + ": " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
     private void tryLogin() {
         try {
             if (edtUsername.getText().toString().isEmpty() || edtPassword.getText().toString().isEmpty()) {
-                throw new Exception("Please enter Username and Password");
+                throw new Exception(getString(R.string.msg_EnterUsernamePassword));
             }
             else if (db.login(edtUsername.getText().toString(), edtPassword.getText().toString())) {
                 openMainActivity();
             }
             else {
-                throw new Exception("Username or Password invalid");
+                throw new Exception(getString(R.string.msg_UsernameOrPasswordInvalid));
             }
         }
         catch (Exception ex) {
