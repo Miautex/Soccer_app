@@ -12,18 +12,25 @@ import android.widget.Toast;
 
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
+import java.util.Collection;
 
 import pkgData.Database;
+import pkgData.Game;
+import pkgData.Player;
 import pkgException.InvalidLoginDataException;
+import pkgListeners.OnLoadAllGamesListener;
+import pkgListeners.OnLoadAllPlayersListener;
 import pkgListeners.OnLoginListener;
 
-public class LoginActivity extends AppCompatActivity implements OnClickListener, OnLoginListener {
+public class LoginActivity extends AppCompatActivity implements OnClickListener, OnLoginListener, OnLoadAllPlayersListener, OnLoadAllGamesListener {
 
     Button btnLogin = null;
     EditText edtPassword = null;
     EditText edtUsername = null;
 
     Database db = null;
+    Boolean arePlayersLoaded = false,
+            areGamesLoaded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,12 +93,12 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
                 throw new Exception(getString(R.string.msg_EnterUsernamePassword));
             }
             else {
-                toggleLoginButton(false);
+                toggleLoginInputs(false);
                 db.login(edtUsername.getText().toString(), edtPassword.getText().toString(), this);
             }
         }
         catch (Exception ex) {
-            toggleLoginButton(true);
+            toggleLoginInputs(true);
             Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
@@ -104,26 +111,33 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
         startActivity(intent);
     }
 
-    private void toggleLoginButton(final boolean isEnabled) {
+    private void toggleLoginInputs(final boolean isEnabled) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 btnLogin.setEnabled(isEnabled);
+                edtUsername.setEnabled(isEnabled);
+                edtPassword.setEnabled(isEnabled);
             }
         });
     }
 
     @Override
     public void loginSuccessful() {
-        toggleLoginButton(true);
-        openMainActivity();
+        try {
+            db.loadAllPlayers(this);
+            db.loadAllGames(this);
+        }
+        catch (Exception ex) {
+            loadPlayersFailed(ex);
+        }
     }
 
     @Override
     public void loginFailed(Exception ex) {
         String msg = null;
 
-        toggleLoginButton(true);
+        toggleLoginInputs(true);
 
         try {
             throw ex;
@@ -143,5 +157,41 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
         finally {
             runOnUiThread(new ShowToastRunnable(getApplicationContext(), msg));
         }
+    }
+
+    @Override
+    public void loadPlayersSuccessful(Collection<Player> players) {
+        if (areGamesLoaded) {
+            toggleLoginInputs(true);
+            openMainActivity();
+        }
+        else {
+            arePlayersLoaded = true;
+        }
+    }
+
+    @Override
+    public void loadPlayersFailed(Exception ex) {
+        toggleLoginInputs(true);
+        runOnUiThread(new ShowToastRunnable(getApplicationContext(), ex.getMessage()));
+        ex.printStackTrace();
+    }
+
+    @Override
+    public void loadGamesSuccessful(Collection<Game> games) {
+        if (arePlayersLoaded) {
+            toggleLoginInputs(true);
+            openMainActivity();
+        }
+        else {
+            areGamesLoaded = true;
+        }
+    }
+
+    @Override
+    public void loadGamesFailed(Exception ex) {
+        toggleLoginInputs(true);
+        runOnUiThread(new ShowToastRunnable(getApplicationContext(), ex.getMessage()));
+        ex.printStackTrace();
     }
 }

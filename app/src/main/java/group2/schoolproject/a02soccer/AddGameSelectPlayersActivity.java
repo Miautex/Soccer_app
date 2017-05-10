@@ -85,7 +85,7 @@ public class AddGameSelectPlayersActivity extends DynamicMenuActivity implements
             TextView txvId = new TextView(this);
 
             cb.setChecked(true);
-            txvName.setText(p.getName());
+            txvName.setText(p.toString());
             txvId.setText(Integer.toString(p.getId()));
             txvId.setVisibility(View.GONE);
 

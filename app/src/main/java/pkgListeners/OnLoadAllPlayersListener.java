@@ -1,6 +1,10 @@
 package pkgListeners;
 
+import java.util.Collection;
+
+import pkgData.Player;
+
 public interface OnLoadAllPlayersListener {
-    void done();
-    void failed(Exception ex);
+    void loadPlayersSuccessful(Collection<Player> players);
+    void loadPlayersFailed(Exception ex);
 }

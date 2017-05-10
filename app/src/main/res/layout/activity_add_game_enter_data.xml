@@ -26,19 +26,11 @@
                 android:layout_height="wrap_content" />
         </android.support.design.widget.AppBarLayout>
 
-
-        <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/pager"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:layout_weight="0.5"
-            android:layout_below="@+id/appbar"></android.support.v4.view.ViewPager>
-
         <RelativeLayout
             android:id="@+id/layout_common_data"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/pager">
+            android:layout_below="@+id/appbar">
 
             <TextView
                 android:id="@+id/txtScore"
@@ -79,11 +71,18 @@
                 android:layout_alignParentEnd="true" />
         </RelativeLayout>
 
+        <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_weight="0.5"
+            android:layout_below="@+id/layout_common_data"></android.support.v4.view.ViewPager>
+
         <RelativeLayout
             android:id="@+id/layout_buttons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/layout_common_data">
+            android:layout_below="@+id/pager">
 
             <Button
                 android:id="@+id/btnBack"

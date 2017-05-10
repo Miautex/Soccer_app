@@ -6,6 +6,7 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Locale;
 
 import group2.schoolproject.a02soccer.R;
@@ -13,9 +14,11 @@ import pkgException.CouldNotDeletePlayerException;
 import pkgException.CouldNotSetPlayerPositionsException;
 import pkgException.DuplicateUsernameException;
 import pkgException.InvalidLoginDataException;
+import pkgHandlers.LoadAllGamesHandler;
+import pkgHandlers.LoadAllPlayersHandler;
+import pkgListeners.OnLoadAllGamesListener;
+import pkgListeners.OnLoadAllPlayersListener;
 import pkgListeners.OnLoginListener;
-import pkgResult.GameResult;
-import pkgResult.PlayerResult;
 import pkgResult.PositionResult;
 import pkgResult.Result;
 import pkgResult.SingleGameResult;
@@ -25,11 +28,12 @@ import pkgWSA.AccessorResponse;
 import pkgWSA.AccessorRunListener;
 import pkgWSA.HttpMethod;
 
-public class Database extends Application {
+public class Database extends Application implements OnLoadAllPlayersListener, OnLoadAllGamesListener {
     private static Database instance = null;
     private Player currentlyLoggedInPlayer = null;
     private Locale locale;
     private ArrayList<Player> allPlayers = new ArrayList<>();
+    private ArrayList<Game> allGames = new ArrayList<>();
 
     public void setLocale(Locale loc){
         locale = loc;
@@ -58,25 +62,17 @@ public class Database extends Application {
         return currentlyLoggedInPlayer;
     }
 
+    public void loadAllPlayers(OnLoadAllPlayersListener listener) throws Exception {
+        ArrayList<OnLoadAllPlayersListener> listeners = new ArrayList<>();
+        listeners.add(listener);
+        listeners.add(this);
+
+        Accessor.requestJSONAsync(HttpMethod.GET, "player",
+                null, null, new LoadAllPlayersHandler(listeners));
+    }
+
     public ArrayList<Player> getAllPlayers() throws Exception {
-        ArrayList<Player> listPlayers = null;
-        AccessorResponse response = Accessor.requestJSON(HttpMethod.GET, "player", null, null);
-
-        if (response.getResponseCode() == 500) {
-            throw new Exception(response.getJson());
-        }
-        else {
-            PlayerResult ps = GsonSerializor.deserializePlayerResult(response.getJson());
-            listPlayers = ps.getContent();
-
-            for (Player player : listPlayers) {
-                for (PlayerPosition pp : getPlayerPositions(player.getId())) {
-                    player.addPosition(pp);
-                }
-            }
-        }
-
-        return listPlayers;
+        return allPlayers;
     }
 
     public Player getPlayerByUsername(String username) throws Exception {
@@ -97,7 +93,7 @@ public class Database extends Application {
         return player;
     }
 
-    private ArrayList<PlayerPosition> getPlayerPositions(int playerId) throws Exception {
+    public ArrayList<PlayerPosition> getPlayerPositions(int playerId) throws Exception {
         ArrayList<PlayerPosition> positions = new ArrayList<>();
 
         AccessorResponse response = Accessor.requestJSON(HttpMethod.GET, "player/positions/" + playerId, null, null);
@@ -115,20 +111,19 @@ public class Database extends Application {
         return positions;
     }
 
-    public ArrayList<Game> getAllGames() throws Exception {
-        ArrayList<Game> listGames = null;
-        AccessorResponse response = Accessor.requestJSON(HttpMethod.GET, "game", null, null);
+    public void loadAllGames(OnLoadAllGamesListener listener) throws Exception {
+        ArrayList<OnLoadAllGamesListener> listeners = new ArrayList<>();
+        listeners.add(listener);
+        listeners.add(this);
 
-        if (response.getResponseCode() == 500) {
-            throw new Exception(response.getJson());
-        }
-        else {
-            GameResult gs = GsonSerializor.deserializeGameResult(response.getJson());
-            listGames = gs.getContent();
-        }
-
-        return listGames;
+        Accessor.requestJSONAsync(HttpMethod.GET, "game",
+                null, null, new LoadAllGamesHandler(listeners));
     }
+
+    public ArrayList<Game> getAllGames() throws Exception {
+        return allGames;
+    }
+
 
     public Player insert(Player p) throws Exception {
         Player player = null;
@@ -267,7 +262,7 @@ public class Database extends Application {
      * @param  local_pw_Unencrypted the unencrypted password
      * @return true, if the username and password are correct
      */
-    public void login(final String username, final String local_pw_Unencrypted, final OnLoginListener listener) throws Exception {
+    public void login(String username, String local_pw_Unencrypted, OnLoginListener listener) throws Exception {
         String local_pwEnc = encryptPassword(local_pw_Unencrypted);
 
         Accessor.requestJSONAsync(HttpMethod.GET, "player/security/" + username,
@@ -303,6 +298,33 @@ public class Database extends Application {
         return hash;
     }
 
+    @Override
+    public void loadPlayersSuccessful(Collection<Player> players) {
+        allPlayers.clear();
+
+        for (Player p: players) {
+            allPlayers.add(p);
+        }
+    }
+
+    @Override
+    public void loadPlayersFailed(Exception ex) {
+        System.out.println("-------------LOAD PLAYERS FAILED");
+    }
+
+    @Override
+    public void loadGamesSuccessful(Collection<Game> games) {
+        allGames.clear();
+
+        for (Game g: games) {
+            allGames.add(g);
+        }
+    }
+
+    @Override
+    public void loadGamesFailed(Exception ex) {
+        System.out.println("-------------LOAD GAMES FAILED");
+    }
 
 
 
@@ -320,7 +342,6 @@ public class Database extends Application {
 
         @Override
         public void done(AccessorResponse response) {
-            System.out.println("--------IN DONE");
             try {
                 if (response.getResponseCode() == 500) {
                     throw new Exception(response.getJson());

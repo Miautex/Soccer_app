@@ -13,9 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.TreeSet;
 
-import pkgComparator.ParticipationComparatorName;
 import pkgData.Database;
 import pkgData.Game;
 import pkgData.Participation;
@@ -75,24 +73,8 @@ public class AddGameEnterDataActivity extends AppCompatActivity implements OnSco
                 new Runnable(){
                     @Override
                     public void run() {
-                        //Very temporary, until Team selection GUI is done
-                        TreeSet<Participation> tsp1 = new TreeSet<>(new ParticipationComparatorName());
-                        TreeSet<Participation> tsp2 = new TreeSet<>(new ParticipationComparatorName());
-                        ArrayList<Participation> participations = tmpGame.getParticipations();
-                        for (int i=0; i<participations.size(); i++) {
-                            if (i<(participations.size()/2)) {
-                                Participation p = participations.get(i);
-                                p.setTeam(Team.TEAM1);
-                                tsp1.add(p);
-                            }
-                            else {
-                                Participation p = participations.get(i);
-                                p.setTeam(Team.TEAM2);
-                                tsp2.add(p);
-                            }
-                        }
-                        tabs[0].setParticipations(tsp1);
-                        tabs[1].setParticipations(tsp2);
+                        tabs[0].setParticipations(getParticipationsOfTeam(Team.TEAM1));
+                        tabs[1].setParticipations(getParticipationsOfTeam(Team.TEAM2));
                     }
                 }, 100);
         }
@@ -184,6 +166,7 @@ public class AddGameEnterDataActivity extends AppCompatActivity implements OnSco
         try {
             if (v.getId() == R.id.btnSave) {
                 onBtnSaveClick();
+                this.finish();
             }
             else if (v.getId() == R.id.btnBack) {
                 this.finish();
