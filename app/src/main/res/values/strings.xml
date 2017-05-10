@@ -65,6 +65,8 @@
     <string name="msg_CouldNotDeletePlayer">Could not delete player</string>
     <string name="msg_NoActionsOnOwnPlayer">No actions on own Player possible</string>
     <string name="msg_EnterPassword">Please enter a new password</string>
+    <string name="msg_ConnectionTimeout">Connection to server timed out</string>
+    <string name="msg_NetworkUnreachable">Internet is disabled</string>
 
 
     <string name="ctxMniEditPlayer">Edit</string>

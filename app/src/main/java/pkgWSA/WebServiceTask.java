@@ -42,6 +42,7 @@ final class WebServiceTask extends AsyncTask<TaskParams, Void, AccessorResponse>
                 url = new URL(strUrl);
                 con = (HttpURLConnection) url.openConnection();
 
+                con.setConnectTimeout(5000);
                 con.setRequestMethod(params.getMethod().toString());
                 con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
                 con.setRequestProperty("Accept", "application/json; charset=UTF-8");

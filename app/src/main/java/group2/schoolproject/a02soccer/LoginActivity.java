@@ -10,9 +10,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import pkgData.Database;
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
 
-public class LoginActivity extends AppCompatActivity implements OnClickListener {
+import pkgData.Database;
+import pkgException.InvalidLoginDataException;
+import pkgListeners.OnLoginListener;
+
+public class LoginActivity extends AppCompatActivity implements OnClickListener, OnLoginListener {
 
     Button btnLogin = null;
     EditText edtPassword = null;
@@ -80,14 +85,13 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
             if (edtUsername.getText().toString().isEmpty() || edtPassword.getText().toString().isEmpty()) {
                 throw new Exception(getString(R.string.msg_EnterUsernamePassword));
             }
-            else if (db.login(edtUsername.getText().toString(), edtPassword.getText().toString())) {
-                openMainActivity();
-            }
             else {
-                throw new Exception(getString(R.string.msg_UsernameOrPasswordInvalid));
+                toggleLoginButton(false);
+                db.login(edtUsername.getText().toString(), edtPassword.getText().toString(), this);
             }
         }
         catch (Exception ex) {
+            toggleLoginButton(true);
             Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
@@ -98,5 +102,46 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
     private void openMainActivity(){
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
+    }
+
+    private void toggleLoginButton(final boolean isEnabled) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                btnLogin.setEnabled(isEnabled);
+            }
+        });
+    }
+
+    @Override
+    public void loginSuccessful() {
+        toggleLoginButton(true);
+        openMainActivity();
+    }
+
+    @Override
+    public void loginFailed(Exception ex) {
+        String msg = null;
+
+        toggleLoginButton(true);
+
+        try {
+            throw ex;
+        }
+        catch (SocketTimeoutException e) {
+            msg = getString(R.string.msg_ConnectionTimeout);
+        }
+        catch (ConnectException e) {
+            msg = getString(R.string.msg_NetworkUnreachable);
+        }
+        catch (InvalidLoginDataException e) {
+            msg = getString(R.string.msg_UsernameOrPasswordInvalid);
+        }
+        catch (Exception e) {
+            msg = e.getMessage();
+        }
+        finally {
+            runOnUiThread(new ShowToastRunnable(getApplicationContext(), msg));
+        }
     }
 }

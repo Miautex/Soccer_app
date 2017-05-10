@@ -12,6 +12,8 @@ import group2.schoolproject.a02soccer.R;
 import pkgException.CouldNotDeletePlayerException;
 import pkgException.CouldNotSetPlayerPositionsException;
 import pkgException.DuplicateUsernameException;
+import pkgException.InvalidLoginDataException;
+import pkgListeners.OnLoginListener;
 import pkgResult.GameResult;
 import pkgResult.PlayerResult;
 import pkgResult.PositionResult;
@@ -20,12 +22,14 @@ import pkgResult.SingleGameResult;
 import pkgResult.SinglePlayerResult;
 import pkgWSA.Accessor;
 import pkgWSA.AccessorResponse;
+import pkgWSA.AccessorRunListener;
 import pkgWSA.HttpMethod;
 
 public class Database extends Application {
     private static Database instance = null;
     private Player currentlyLoggedInPlayer = null;
     private Locale locale;
+    private ArrayList<Player> allPlayers = new ArrayList<>();
 
     public void setLocale(Locale loc){
         locale = loc;
@@ -263,27 +267,11 @@ public class Database extends Application {
      * @param  local_pw_Unencrypted the unencrypted password
      * @return true, if the username and password are correct
      */
-    public boolean login(String username, String local_pw_Unencrypted) throws Exception {
-        boolean isPWValid = false;
+    public void login(final String username, final String local_pw_Unencrypted, final OnLoginListener listener) throws Exception {
         String local_pwEnc = encryptPassword(local_pw_Unencrypted);
-        AccessorResponse response = Accessor.requestJSON(HttpMethod.GET, "player/security/" + username, null, null);
 
-        if (response.getResponseCode() == 500) {
-            throw new Exception(response.getJson());
-        }
-        else {
-            if (!response.getJson().isEmpty()) {
-                String remote_pwEnc = GsonSerializor.deserializePassword(response.getJson());
-
-                if (local_pwEnc.equals(remote_pwEnc)) {
-                    isPWValid = true;
-
-                    currentlyLoggedInPlayer = getPlayerByUsername(username);
-                }
-            }
-        }
-
-        return isPWValid;
+        Accessor.requestJSONAsync(HttpMethod.GET, "player/security/" + username,
+                null, null, new LoginHandler(username, local_pwEnc, listener));
     }
 
     public boolean setPassword(Player p, String pw) throws Exception {
@@ -313,5 +301,52 @@ public class Database extends Application {
         } catch (NoSuchAlgorithmException e) { e.printStackTrace(); }
 
         return hash;
+    }
+
+
+
+
+
+    private class LoginHandler implements AccessorRunListener {
+        private OnLoginListener listener;
+        private String local_pwEnc,
+                username;
+
+        public LoginHandler(String username, String local_pwEnc, OnLoginListener listener) {
+            this.listener = listener;
+            this.local_pwEnc = local_pwEnc;
+            this.username = username;
+        }
+
+        @Override
+        public void done(AccessorResponse response) {
+            System.out.println("--------IN DONE");
+            try {
+                if (response.getResponseCode() == 500) {
+                    throw new Exception(response.getJson());
+                } else {
+                    if (!response.getJson().isEmpty()) {
+                        String remote_pwEnc = GsonSerializor.deserializePassword(response.getJson());
+
+                        if (local_pwEnc.equals(remote_pwEnc)) {
+                            //Class is in Database-class because otherwise the bottom line would be much more complicated
+                            currentlyLoggedInPlayer = getPlayerByUsername(username);
+                            listener.loginSuccessful();
+                        }
+                        else {
+                            failed(new InvalidLoginDataException());
+                        }
+                    }
+                }
+            }
+            catch (Exception ex) {
+                failed(ex);
+            }
+        }
+
+        @Override
+        public void failed(Exception ex) {
+            listener.loginFailed(ex);
+        }
     }
 }

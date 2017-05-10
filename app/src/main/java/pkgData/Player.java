@@ -70,7 +70,17 @@ public final class Player implements Comparable, Serializable, Cloneable {
     }
 
     public String getUsername() {
-        return username;
+        String retVal = null;
+
+        //if username is deactivated (contains '~'), return deactivated
+        if (username.contains("~")) {
+            retVal = "deactivated";
+        }
+        else {
+            retVal = username;
+        }
+
+        return retVal;
     }
 
     public void setUsername(String username) throws Exception {
