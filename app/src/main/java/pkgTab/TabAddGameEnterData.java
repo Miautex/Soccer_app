@@ -13,9 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,9 +30,16 @@ import pkgData.Player;
 import pkgListeners.OnScoreChangedListener;
 
 
-public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeListener, View.OnKeyListener {
+public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeListener, View.OnKeyListener, View.OnClickListener {
     TableLayout table_PlayersData = null;
     private View view = null;
+
+    private ImageButton icGoalShot = null;
+    private ImageButton icGoalGot = null;
+    private ImageButton icPenalty = null;
+    private ImageButton icGoalHead = null;
+    private ImageButton icGoalSnow = null;
+    private ImageButton icNutmeg = null;
 
     OnScoreChangedListener scoreChangedListener = null;
 
@@ -47,12 +56,27 @@ public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeL
 
         hmParticipations = new HashMap<>();
         getAllViews();
-
+        registrateEventHandlers();
         return view;
     }
 
     private void getAllViews() {
         table_PlayersData = (TableLayout) view.findViewById(R.id.table_PlayersData);
+        icGoalShot = (ImageButton) view.findViewById(R.id.icGoalShot);
+        icGoalGot = (ImageButton) view.findViewById(R.id.icGoalGot);
+        icGoalHead = (ImageButton) view.findViewById(R.id.icGoalHead);
+        icGoalSnow = (ImageButton) view.findViewById(R.id.icGoalSnow);
+        icPenalty = (ImageButton) view.findViewById(R.id.icPenalty);
+        icNutmeg = (ImageButton) view.findViewById(R.id.icNutmeg);
+    }
+
+    private void registrateEventHandlers(){
+        icGoalShot.setOnClickListener(this);
+        icGoalGot.setOnClickListener(this);
+        icGoalHead.setOnClickListener(this);
+        icGoalSnow.setOnClickListener(this);
+        icPenalty.setOnClickListener(this);
+        icNutmeg.setOnClickListener(this);
     }
 
     public void setOnScoreChangedListener(OnScoreChangedListener listener) {
@@ -258,5 +282,26 @@ public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeL
             }
         }
         return false;
+    }
+
+    @Override
+    public void onClick(View v) {
+        try {
+            if (v.getId() == R.id.icGoalShot) {
+                Toast.makeText(view.getContext(), "shot a goal", Toast.LENGTH_SHORT).show();
+            } else if(v.getId() == R.id.icGoalGot){
+                Toast.makeText(view.getContext(), "got a goal", Toast.LENGTH_SHORT).show();
+            } else if(v.getId() == R.id.icGoalHead){
+                Toast.makeText(view.getContext(), "shot a goal(head)", Toast.LENGTH_SHORT).show();
+            } else if(v.getId() == R.id.icGoalSnow){
+                Toast.makeText(view.getContext(), "shot a goal (head+snow)", Toast.LENGTH_SHORT).show();
+            } else if(v.getId() == R.id.icPenalty){
+                Toast.makeText(view.getContext(), "penalty goal", Toast.LENGTH_SHORT).show();
+            } else if(v.getId() == R.id.icNutmeg){
+                Toast.makeText(view.getContext(), "nutmeg", Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            Toast.makeText(view.getContext(), getString(R.string.Error) + ": " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 }
