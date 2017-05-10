@@ -20,7 +20,9 @@ public final class Accessor {
     }
 
     public static void requestJSONAsync(HttpMethod method, String servicePath, String serviceQuery, String body, AccessorRunListener listener) throws Exception {
-        new AccessorRun(method, servicePath, serviceQuery, body, listener).run();
+        AccessorRun run = new AccessorRun(method, servicePath, serviceQuery, body, listener);
+        Thread trd = new Thread(run);
+        trd.start();
     }
 
     public static void setServerUrl (String serverUrl) {
