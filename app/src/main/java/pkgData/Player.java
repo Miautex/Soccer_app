@@ -3,6 +3,8 @@ package pkgData;
 import java.io.Serializable;
 import java.util.TreeSet;
 
+import pkgMisc.UsernameValidator;
+
 public final class Player implements Comparable, Serializable, Cloneable {
     private Integer id = null;
     private Boolean isAdmin = false;
@@ -87,7 +89,11 @@ public final class Player implements Comparable, Serializable, Cloneable {
         if (username == null) {
             throw new Exception("username must not be null");
         }
-        this.username = username.toLowerCase();
+        if (!UsernameValidator.validate(username)) {
+            throw new IllegalArgumentException("username must only contain letters and numbers");
+        }
+
+        this.username = username;
     }
 
     public TreeSet<PlayerPosition> getPositions() {

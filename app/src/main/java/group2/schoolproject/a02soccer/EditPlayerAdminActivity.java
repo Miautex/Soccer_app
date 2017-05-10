@@ -104,11 +104,11 @@ public class EditPlayerAdminActivity extends DynamicMenuActivity implements View
             throw new Exception(getString(R.string.msg_EnterPassword));
         }
 
-        playerToEdit.setName(edtName.getText().toString());
-        playerToEdit.setUsername(edtUsername.getText().toString());
-        playerToEdit.setAdmin(ckbIsAdmin.isChecked());
-
         try {
+            playerToEdit.setName(edtName.getText().toString());
+            playerToEdit.setUsername(edtUsername.getText().toString());
+            playerToEdit.setAdmin(ckbIsAdmin.isChecked());
+
             isSuccess = db.update(playerToEdit);
 
             if (isSuccess) {
@@ -124,6 +124,9 @@ public class EditPlayerAdminActivity extends DynamicMenuActivity implements View
         }
         catch (DuplicateUsernameException ex) {
             msg = String.format(getString(R.string.msg_UsernameNotAvailable), playerToEdit.getUsername());
+        }
+        catch (IllegalArgumentException ex) {
+            throw new IllegalArgumentException(getString(R.string.msg_IllegalUsername));
         }
 
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();

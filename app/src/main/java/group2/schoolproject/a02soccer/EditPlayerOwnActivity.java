@@ -129,7 +129,8 @@ public class EditPlayerOwnActivity extends DynamicMenuActivity implements View.O
     }
 
     private void onBtnSaveClick() throws Exception {
-        Player currPlayer = db.getCurrentlyLoggedInPlayer();
+        Player currPlayer = db.getCurrentlyLoggedInPlayer(),
+                updatedPlayer = null;
         boolean isSuccess = false;
         String msg = null;
 
@@ -141,14 +142,15 @@ public class EditPlayerOwnActivity extends DynamicMenuActivity implements View.O
             throw new Exception(getString(R.string.msg_SelectMinNumOfPositions));
         }
 
-        Player updatedPlayer = new Player(currPlayer.getId(), edtUsername.getText().toString(),
-                edtName.getText().toString(), currPlayer.isAdmin());
-
-        for (PlayerPosition pp : getCheckedPlayerPositions()) {
-            updatedPlayer.addPosition(pp);
-        }
-
         try {
+            updatedPlayer = new Player(currPlayer.getId(), edtUsername.getText().toString(),
+                    edtName.getText().toString(), currPlayer.isAdmin());
+
+            for (PlayerPosition pp : getCheckedPlayerPositions()) {
+                updatedPlayer.addPosition(pp);
+            }
+
+
             isSuccess = db.update(updatedPlayer);
 
             if (isSuccess) {
@@ -163,6 +165,9 @@ public class EditPlayerOwnActivity extends DynamicMenuActivity implements View.O
         }
         catch (CouldNotSetPlayerPositionsException ex) {
             msg = getApplicationContext().getString(R.string.msg_CouldNotSetPositions);
+        }
+        catch (IllegalArgumentException ex) {
+            throw new IllegalArgumentException(getString(R.string.msg_IllegalUsername));
         }
 
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();

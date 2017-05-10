@@ -54,23 +54,28 @@ public class AddPlayerActivity extends DynamicMenuActivity implements View.OnCli
     }
 
     private void onBtnAddClick() throws Exception {
+        Player newPlayer = null;
+
         if (edtName.getText().toString().isEmpty() || edtUsername.getText().toString().isEmpty() || edtPassword.getText().toString().isEmpty()) {
             throw new Exception(getString(R.string.msg_EnterNameUsernamePassword));
         }
 
-        Player newPlayer = new Player(edtUsername.getText().toString(), edtName.getText().toString(), ckbIsAdmin.isChecked());
-        newPlayer.addPosition(PlayerPosition.ATTACK);
-        newPlayer.addPosition(PlayerPosition.DEFENSE);
-        newPlayer.addPosition(PlayerPosition.MIDFIELD);
-        newPlayer.addPosition(PlayerPosition.GOAL);
-
         try {
+            newPlayer = new Player(edtUsername.getText().toString(), edtName.getText().toString(), ckbIsAdmin.isChecked());
+            newPlayer.addPosition(PlayerPosition.ATTACK);
+            newPlayer.addPosition(PlayerPosition.DEFENSE);
+            newPlayer.addPosition(PlayerPosition.MIDFIELD);
+            newPlayer.addPosition(PlayerPosition.GOAL);
+
             Player remote_newPlayer = db.insert(newPlayer);
             db.setPassword(remote_newPlayer, edtPassword.getText().toString());
             Toast.makeText(this, String.format(getString(R.string.msg_PlayerAdded), remote_newPlayer.getName()), Toast.LENGTH_SHORT).show();
         }
         catch (DuplicateUsernameException ex) {
             throw new DuplicateUsernameException(String.format(getString(R.string.msg_UsernameNotAvailable), newPlayer.getUsername()));
+        }
+        catch (IllegalArgumentException ex) {
+            throw new IllegalArgumentException(getString(R.string.msg_IllegalUsername));
         }
     }
 

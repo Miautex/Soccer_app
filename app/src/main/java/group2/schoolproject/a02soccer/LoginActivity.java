@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.net.ConnectException;
@@ -27,6 +28,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
     Button btnLogin = null;
     EditText edtPassword = null;
     EditText edtUsername = null;
+    ProgressBar progressIndicator = null;
 
     Database db = null;
     Boolean arePlayersLoaded = false,
@@ -55,6 +57,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
         btnLogin = (Button) findViewById(R.id.btnLogin);
         edtPassword = (EditText) findViewById(R.id.edtName);
         edtUsername = (EditText) findViewById(R.id.edtUsername);
+        progressIndicator = (ProgressBar) findViewById(R.id.progressIndicator);
     }
 
     /**
@@ -111,13 +114,19 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
         startActivity(intent);
     }
 
-    private void toggleLoginInputs(final boolean isEnabled) {
+    private void toggleLoginInputs(final boolean setEnabled) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                btnLogin.setEnabled(isEnabled);
-                edtUsername.setEnabled(isEnabled);
-                edtPassword.setEnabled(isEnabled);
+                btnLogin.setEnabled(setEnabled);
+                edtUsername.setEnabled(setEnabled);
+                edtPassword.setEnabled(setEnabled);
+                if (setEnabled) {
+                    progressIndicator.setVisibility(View.GONE);
+                }
+                else {
+                    progressIndicator.setVisibility(View.VISIBLE);
+                }
             }
         });
     }

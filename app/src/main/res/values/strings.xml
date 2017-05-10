@@ -67,6 +67,7 @@
     <string name="msg_EnterPassword">Please enter a new password</string>
     <string name="msg_ConnectionTimeout">Connection to server timed out</string>
     <string name="msg_NetworkUnreachable">Internet is disabled</string>
+    <string name="msg_IllegalUsername">Username must only contain letters and numbers</string>
 
 
     <string name="ctxMniEditPlayer">Edit</string>
