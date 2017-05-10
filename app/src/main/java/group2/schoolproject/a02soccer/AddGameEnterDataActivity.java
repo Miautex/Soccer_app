@@ -54,6 +54,11 @@ public class AddGameEnterDataActivity extends AppCompatActivity implements OnSco
                 throw new Exception("Please call activity with intent-extra 'game'");
             }
 
+            //DEBUG
+            for (Participation p: tmpGame.getParticipations()) {
+                System.out.println("---- " + p.getTeam());
+            }
+
             adapter = new SectionsPageAdapter(getSupportFragmentManager());
             setupViewPager(mViewPager);
             tablayout.setupWithViewPager(mViewPager);

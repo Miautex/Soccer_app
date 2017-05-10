@@ -19,10 +19,13 @@ import android.widget.Toast;
 import pkgData.Database;
 import pkgData.Player;
 import pkgException.CouldNotDeletePlayerException;
+import pkgListeners.OnGamesUpdatedListener;
+import pkgListeners.OnPlayersUpdatedListener;
 import pkgMenu.DynamicMenuActivity;
 
 public class MainActivity extends DynamicMenuActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, OnPlayersUpdatedListener,
+        OnGamesUpdatedListener {
     ListView lsvEditableGames = null;
     Database db = null;
 
@@ -37,7 +40,9 @@ public class MainActivity extends DynamicMenuActivity
 
         try {
             db = Database.getInstance();
-            displayPlayers();     //remove comment to display players
+            db.addOnPlayersUpdatedListener(this);
+            db.addOnGamesUpdatedListener(this);
+            displayPlayers();
         }
         catch (Exception ex) {
             Toast.makeText(this, getString(R.string.Error) + ": " + ex.getMessage(), Toast.LENGTH_SHORT).show();
@@ -101,12 +106,18 @@ public class MainActivity extends DynamicMenuActivity
     }
 
     public void displayPlayers() throws Exception {
-        ArrayAdapter<Player> lsvAdapter = new ArrayAdapter<Player>(this, android.R.layout.simple_list_item_1);
+        final ArrayAdapter<Player> lsvAdapter = new ArrayAdapter<Player>(this, android.R.layout.simple_list_item_1);
         lsvAdapter.addAll(db.getAllPlayers());
-        lsvEditableGames.setAdapter(lsvAdapter);
+
+        //because otherwise crash if app is closed
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                lsvEditableGames.setAdapter(lsvAdapter);
+            }
+        });
     }
 
-    //
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
@@ -122,10 +133,10 @@ public class MainActivity extends DynamicMenuActivity
         Player selectedPlayer = (Player) lsvEditableGames.getAdapter().getItem(info.position);
 
         try {
-            /*//Player cannot delete his own player
+            //Player cannot delete his own player
             if (db.getCurrentlyLoggedInPlayer().equals(selectedPlayer)) {
                 throw new Exception(getString(R.string.msg_NoActionsOnOwnPlayer));
-            }*/
+            }
 
             switch (item.getItemId()) {
                 case R.id.edit:
@@ -159,6 +170,19 @@ public class MainActivity extends DynamicMenuActivity
         }
         catch (CouldNotDeletePlayerException ex) {
             throw new CouldNotDeletePlayerException(getString(R.string.msg_CouldNotDeletePlayer));
+        }
+    }
+
+    @Override
+    public void gamesChanged() {
+    }
+
+    @Override
+    public void playersChanged() {
+        try {
+            displayPlayers();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

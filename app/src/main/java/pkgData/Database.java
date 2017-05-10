@@ -16,9 +16,11 @@ import pkgException.DuplicateUsernameException;
 import pkgException.InvalidLoginDataException;
 import pkgHandlers.LoadAllGamesHandler;
 import pkgHandlers.LoadAllPlayersHandler;
+import pkgListeners.OnGamesUpdatedListener;
 import pkgListeners.OnLoadAllGamesListener;
 import pkgListeners.OnLoadAllPlayersListener;
 import pkgListeners.OnLoginListener;
+import pkgListeners.OnPlayersUpdatedListener;
 import pkgResult.PositionResult;
 import pkgResult.Result;
 import pkgResult.SingleGameResult;
@@ -32,8 +34,11 @@ public class Database extends Application implements OnLoadAllPlayersListener, O
     private static Database instance = null;
     private Player currentlyLoggedInPlayer = null;
     private Locale locale;
-    private ArrayList<Player> allPlayers = new ArrayList<>();
-    private ArrayList<Game> allGames = new ArrayList<>();
+    private ArrayList<Player> allPlayers = null;
+    private ArrayList<Game> allGames = null;
+
+    private ArrayList<OnPlayersUpdatedListener> playersChangedListener = null;
+    private ArrayList<OnGamesUpdatedListener> gamesChangedListener = null;
 
     public void setLocale(Locale loc){
         locale = loc;
@@ -44,7 +49,10 @@ public class Database extends Application implements OnLoadAllPlayersListener, O
     }
 
     private Database()  {
-
+        allPlayers = new ArrayList<>();
+        allGames = new ArrayList<>();
+        playersChangedListener = new ArrayList<>();
+        gamesChangedListener = new ArrayList<>();
     }
 
     public static Database getInstance()  {
@@ -52,6 +60,44 @@ public class Database extends Application implements OnLoadAllPlayersListener, O
             instance = new Database();
         }
         return instance;
+    }
+
+    public void addOnPlayersUpdatedListener(OnPlayersUpdatedListener listener) {
+        if (listener == null) {
+            throw new IllegalArgumentException("listener must not be null");
+        }
+        if (playersChangedListener.contains(listener)) {
+            throw new IllegalArgumentException("listener already registered");
+        }
+
+        playersChangedListener.add(listener);
+    }
+
+    public void addOnGamesUpdatedListener(OnGamesUpdatedListener listener) {
+        if (listener == null) {
+            throw new IllegalArgumentException("listener must not be null");
+        }
+        if (gamesChangedListener.contains(listener)) {
+            throw new IllegalArgumentException("listener already registered");
+        }
+
+        gamesChangedListener.add(listener);
+    }
+
+    private void notifyOnPlayersUpdatedListener() {
+        for (OnPlayersUpdatedListener listener: playersChangedListener) {
+            if (listener != null) {
+                listener.playersChanged();
+            }
+        }
+    }
+
+    private void notifyOnGamesUpdatedListener() {
+        for (OnGamesUpdatedListener listener: gamesChangedListener) {
+            if (listener != null) {
+                listener.gamesChanged();
+            }
+        }
     }
 
     /**
@@ -145,9 +191,15 @@ public class Database extends Application implements OnLoadAllPlayersListener, O
             else {
                 player = spr.getContent();
 
+                for (PlayerPosition pos: p.getPositions()) {
+                    player.addPosition(pos);
+                }
+
                 //set Positions
-                p.setId(player.getId());        //set id for old player for setPlayerPositions to work
-                Result r = setPlayerPositions(p);
+                Result r = setPlayerPositions(player);
+
+                allPlayers.add(player);
+                notifyOnPlayersUpdatedListener();
 
                 if (!r.isSuccess()) {
                     throw new CouldNotSetPlayerPositionsException();
@@ -173,6 +225,8 @@ public class Database extends Application implements OnLoadAllPlayersListener, O
             }
             else {
                 game = sgr.getContent();
+                allGames.add(game);
+                notifyOnGamesUpdatedListener();
             }
         }
         return game;
@@ -209,6 +263,10 @@ public class Database extends Application implements OnLoadAllPlayersListener, O
             if (!isSuccess && r.getError() != null && r.getError().getErrorMessage().contains("MySQLIntegrityConstraintViolationException")) {
                 throw new DuplicateUsernameException();
             }
+
+            allPlayers.remove(p);
+            allPlayers.add(p);
+            notifyOnPlayersUpdatedListener();
 
             r = setPlayerPositions(p);
 
@@ -249,6 +307,8 @@ public class Database extends Application implements OnLoadAllPlayersListener, O
         else {
             Result r = GsonSerializor.deserializeResult(response.getJson());
             isSuccess = r.isSuccess();
+            allPlayers.remove(p);
+            notifyOnPlayersUpdatedListener();
         }
 
         return isSuccess;
@@ -305,6 +365,8 @@ public class Database extends Application implements OnLoadAllPlayersListener, O
         for (Player p: players) {
             allPlayers.add(p);
         }
+
+        notifyOnPlayersUpdatedListener();
     }
 
     @Override
@@ -319,6 +381,8 @@ public class Database extends Application implements OnLoadAllPlayersListener, O
         for (Game g: games) {
             allGames.add(g);
         }
+
+        notifyOnGamesUpdatedListener();
     }
 
     @Override
@@ -345,7 +409,11 @@ public class Database extends Application implements OnLoadAllPlayersListener, O
             try {
                 if (response.getResponseCode() == 500) {
                     throw new Exception(response.getJson());
-                } else {
+                }
+                else if (response.getResponseCode() == 204) {       //if user doesn't exist
+                    failed(new InvalidLoginDataException());
+                }
+                else {
                     if (!response.getJson().isEmpty()) {
                         String remote_pwEnc = GsonSerializor.deserializePassword(response.getJson());
 

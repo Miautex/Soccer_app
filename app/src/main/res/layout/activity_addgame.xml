@@ -40,17 +40,19 @@
 
         <TableRow>
 
-            <TextView
+            <CheckBox
+                android:id="@+id/ckbParticipationHeader"
                 android:layout_width="0dp"
                 android:layout_column="0"
-                android:layout_weight="1"
+                android:layout_weight="1.1"
+                android:checked="true"
                 android:text="@string/Participation"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_column="1"
-                android:layout_weight="2.5"
+                android:layout_weight="2"
                 android:text="@string/Name"
                 android:textStyle="bold" />
         </TableRow>

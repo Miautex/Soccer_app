@@ -288,17 +288,17 @@ public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeL
     public void onClick(View v) {
         try {
             if (v.getId() == R.id.icGoalShot) {
-                Toast.makeText(view.getContext(), "shot a goal", Toast.LENGTH_SHORT).show();
+                Toast.makeText(view.getContext(), getString(R.string.GoalsShotDefault), Toast.LENGTH_SHORT).show();
             } else if(v.getId() == R.id.icGoalGot){
-                Toast.makeText(view.getContext(), "got a goal", Toast.LENGTH_SHORT).show();
+                Toast.makeText(view.getContext(), getString(R.string.GoalsGot), Toast.LENGTH_SHORT).show();
             } else if(v.getId() == R.id.icGoalHead){
-                Toast.makeText(view.getContext(), "shot a goal(head)", Toast.LENGTH_SHORT).show();
+                Toast.makeText(view.getContext(), getString(R.string.GoalsShotHead), Toast.LENGTH_SHORT).show();
             } else if(v.getId() == R.id.icGoalSnow){
-                Toast.makeText(view.getContext(), "shot a goal (head+snow)", Toast.LENGTH_SHORT).show();
+                Toast.makeText(view.getContext(), getString(R.string.GoalsShotHeadSnow), Toast.LENGTH_SHORT).show();
             } else if(v.getId() == R.id.icPenalty){
-                Toast.makeText(view.getContext(), "penalty goal", Toast.LENGTH_SHORT).show();
+                Toast.makeText(view.getContext(), getString(R.string.GoalsShotPenalty), Toast.LENGTH_SHORT).show();
             } else if(v.getId() == R.id.icNutmeg){
-                Toast.makeText(view.getContext(), "nutmeg", Toast.LENGTH_SHORT).show();
+                Toast.makeText(view.getContext(), getString(R.string.Nutmeg), Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e) {
             Toast.makeText(view.getContext(), getString(R.string.Error) + ": " + e.getMessage(), Toast.LENGTH_SHORT).show();

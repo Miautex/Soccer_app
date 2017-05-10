@@ -22,7 +22,6 @@ import java.util.TreeSet;
 import pkgComparator.PlayerComparatorName;
 import pkgData.Database;
 import pkgData.Game;
-import pkgData.Participation;
 import pkgData.Player;
 import pkgMenu.DynamicMenuActivity;
 
@@ -34,9 +33,12 @@ public class AddGameSelectPlayersActivity extends DynamicMenuActivity implements
     private TableLayout tablePlayersHeader = null;
     private Button btnContinue = null,
             btnCancel = null;
+    private CheckBox ckbParticipationHeader = null;
 
     private Database db = null;
     private HashMap<Integer, Player> hmPlayers = null;
+
+    private int numSelectedCheckboxes = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,14 +50,14 @@ public class AddGameSelectPlayersActivity extends DynamicMenuActivity implements
 
         try {
             db = Database.getInstance();
-            hmPlayers = new HashMap<>();
+            hmPlayers = new HashMap<>();        //for easier access to players by id
 
             for (Player p: db.getAllPlayers()) {
                 hmPlayers.put(p.getId(), p);
             }
 
-            TreeSet<Player> tsPlayers = new TreeSet<>(new PlayerComparatorName());
-            tsPlayers.addAll(hmPlayers.values());
+            TreeSet<Player> tsPlayers = new TreeSet<>(new PlayerComparatorName());      //for sorting
+            tsPlayers.addAll(db.getAllPlayers());
             displayPlayersInTable(tsPlayers);
 
         } catch (Exception ex) {
@@ -70,11 +72,13 @@ public class AddGameSelectPlayersActivity extends DynamicMenuActivity implements
         tablePlayersHeader = (TableLayout) findViewById(R.id.table_PlayersHeader);
         btnContinue = (Button) findViewById(R.id.btnContinue);
         btnCancel = (Button) findViewById(R.id.btnCancel);
+        ckbParticipationHeader = (CheckBox) findViewById(R.id.ckbParticipationHeader);
     }
 
     private void registrateEventHandlers() {
         btnContinue.setOnClickListener(this);
         btnCancel.setOnClickListener(this);
+        ckbParticipationHeader.setOnClickListener(this);
     }
 
     private void displayPlayersInTable(Collection<Player> players) throws Exception {
@@ -85,9 +89,12 @@ public class AddGameSelectPlayersActivity extends DynamicMenuActivity implements
             TextView txvId = new TextView(this);
 
             cb.setChecked(true);
+            cb.setOnClickListener(this);
             txvName.setText(p.toString());
             txvId.setText(Integer.toString(p.getId()));
             txvId.setVisibility(View.GONE);
+
+            numSelectedCheckboxes++;
 
             //Set layout like header
             cb.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
@@ -101,17 +108,6 @@ public class AddGameSelectPlayersActivity extends DynamicMenuActivity implements
                     TableLayout.LayoutParams.WRAP_CONTENT));
 
         }
-    }
-    private Game getGameWithParticipations(Collection<Player> players) {
-        Game tmpGame = new Game(getDateFromDatePicker(datePicker), 0, 0);
-
-        for (Player p : players) {
-            Participation part = new Participation();
-            part.setPlayer(p);
-            tmpGame.addParticipation(part);
-        }
-
-        return tmpGame;
     }
 
     /**
@@ -174,8 +170,44 @@ public class AddGameSelectPlayersActivity extends DynamicMenuActivity implements
         try {
             if (v.getId() == R.id.btnContinue) {
                 onBtnContinue();
-            } else if (v.getId() == R.id.btnCancel) {
+            }
+            else if (v.getId() == R.id.btnCancel) {
                 this.finish();
+            }
+            else if (v.getId() == R.id.ckbParticipationHeader) {
+                TableRow row = null;
+                CheckBox checkBox = null;
+
+                for (int i = 0; i < tablePlayers.getChildCount(); i++) {
+                    row = (TableRow) tablePlayers.getChildAt(i);
+
+                    checkBox = (CheckBox) row.getChildAt(0);
+                    checkBox.setChecked(ckbParticipationHeader.isChecked());
+                }
+
+                if (ckbParticipationHeader.isChecked()) {
+                    numSelectedCheckboxes = tablePlayers.getChildCount();
+                }
+                else  {
+                    numSelectedCheckboxes = 0;
+                }
+            }
+            else if (v.getClass().equals(CheckBox.class)) {
+                CheckBox ckb = (CheckBox) v;
+                if (ckb.isChecked()) {
+                    numSelectedCheckboxes++;
+                }
+                else {
+                    numSelectedCheckboxes--;
+                }
+
+                //if all ckbs are selected select top one
+                if (numSelectedCheckboxes == tablePlayers.getChildCount()) {
+                    ckbParticipationHeader.setChecked(true);
+                }
+                else {
+                    ckbParticipationHeader.setChecked(false);
+                }
             }
         } catch (Exception e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();

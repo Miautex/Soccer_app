@@ -28,44 +28,50 @@
 
             <ImageButton
                 android:id="@+id/icGoalShot"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@null"
+                android:layout_weight="1"
                 app:srcCompat="@drawable/ic_goalshot" />
 
             <ImageButton
                 android:id="@+id/icGoalHead"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@null"
+                android:layout_weight="1"
                 app:srcCompat="@drawable/ic_headgoal" />
 
             <ImageButton
                 android:id="@+id/icGoalSnow"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@null"
+                android:layout_weight="1"
                 app:srcCompat="@drawable/ic_headgoal_snow" />
 
             <ImageButton
                 android:id="@+id/icPenalty"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@null"
+                android:layout_weight="1"
                 app:srcCompat="@drawable/ic_penalty" />
 
             <ImageButton
                 android:id="@+id/icGoalGot"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@null"
+                android:layout_weight="1"
                 app:srcCompat="@drawable/ic_goalgot" />
 
             <ImageButton
                 android:id="@+id/icNutmeg"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@null"
+                android:layout_weight="1"
                 app:srcCompat="@drawable/ic_nutmeg" />
 
         </TableRow>
