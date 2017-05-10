@@ -1,16 +1,21 @@
 package group2.schoolproject.a02soccer;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 import pkgData.Game;
@@ -20,17 +25,14 @@ import pkgData.Team;
 import pkgListeners.OnTeamChangedListener;
 import pkgTab.SectionsPageAdapter;
 import pkgTab.TeamDivisionTab1;
-import pkgTab.TeamDivisionTab2;
 
-public class TeamManagmentActivity extends AppCompatActivity implements OnTeamChangedListener {
+public class TeamManagmentActivity extends AppCompatActivity implements OnTeamChangedListener, View.OnClickListener {
 
     private SectionsPageAdapter mSectionsPageAdapter;
     private ViewPager mViewPager;
     private Game game = null;
-    private ArrayList<Participation> temp = null;
-    private TreeSet<Player> allPlayers = null;
-    private TreeSet<Player> team1 = null;
-    private TreeSet<Player> team2 = null;
+    private ArrayList<Participation> participations = null;
+    private TreeMap<Integer,Player> allPlayers = null;
     private OnTeamChangedListener[] listener = new OnTeamChangedListener[2];
 
 
@@ -38,12 +40,19 @@ public class TeamManagmentActivity extends AppCompatActivity implements OnTeamCh
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        game = (Game)this.getIntent().getSerializableExtra("game");
+        allPlayers = new TreeMap<>();
+        ArrayList<Player> temp = (ArrayList<Player>) getIntent().getSerializableExtra("players");
+        for(Player p : temp){
+            allPlayers.put(p.getId(),p);
+        }
         setContentView(R.layout.activity_team_managment);
         // get Game
         //get Participations in List
         mSectionsPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.container);
         setupViewPager(mViewPager);
+        ((Button)this.findViewById(R.id.btnSave)).setOnClickListener(this);
 
         TabLayout tablayout = (TabLayout) findViewById(R.id.tabs);
         tablayout.setupWithViewPager(mViewPager);
@@ -53,8 +62,17 @@ public class TeamManagmentActivity extends AppCompatActivity implements OnTeamCh
     }
 
     private void getPlayersFromParticipations(){
-        for (Participation p : temp){
-            allPlayers.add(p.getPlayer());
+        /*for (Participation p : temp){
+            Player player = p.getPlayer();
+            allPlayers.put(player.getId(),player);
+        }*/
+        try {
+
+            allPlayers.put(1, new Player(1, "a", "andererPlayer", true));
+            allPlayers.put(2, new Player(2, "a", "q", true));
+        }
+        catch (Exception e){
+            e.printStackTrace();
         }
     }
 
@@ -79,9 +97,68 @@ public class TeamManagmentActivity extends AppCompatActivity implements OnTeamCh
         viewPager.setAdapter(adapter);
     }
 
+    public ArrayList<Participation> createParticipations() throws Exception {
+        //getPlayersFromParticipations();
+        ArrayList<Participation> list1 = ((TeamDivisionTab1) mSectionsPageAdapter.getItem(0)).getPlayersInTeam();
+        ArrayList<Participation> list2 = ((TeamDivisionTab1) mSectionsPageAdapter.getItem(1)).getPlayersInTeam();
+        if (list1.size() + list2.size() != allPlayers.size()) {
+            //try {
+                throw new Exception("there are players without team");
+            //} catch (Exception e) {
+              //  Toast.makeText(this,e.getMessage(),Toast.LENGTH_SHORT);
+            //}
+        }
+        list1.addAll(list2);
+        participations = list1;
+        return participations;
+    }
+
+
     @Override
-    public void onTeamUpdated(Player p, Team t) {
-        listener[0].onTeamUpdated(p,t);
+    public void onTeamUpdated(Player p, Team t, boolean remove) {
+        try {
+            int id = p.getId();
+            allPlayers.put(id,p);
+            if(remove == true) {
+                if (t == Team.TEAM1) {
+                    listener[1].onTeamUpdated(p, t, remove);
+                } else if (t == Team.TEAM2) {
+                    listener[0].onTeamUpdated(p, t, remove);
+                }
+            }
+            else{
+                if (t == Team.TEAM1) {
+                    listener[1].onTeamUpdated(p, t, remove);
+                } else if (t == Team.TEAM2) {
+                    listener[0].onTeamUpdated(p, t, remove);
+                }
+            }
+        }
+        catch (Exception e){
+            Toast.makeText(this,e.getMessage(),Toast.LENGTH_SHORT);
+        }
+
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(v.getId() == R.id.btnSave){
+            try {
+                createParticipations();
+                for(Participation p : participations){
+                    game.addParticipation(p);
+                }
+                Intent myIntent = new Intent(this, AddGameEnterDataActivity.class);
+                myIntent.putExtra("game", game);
+
+                this.startActivity(myIntent);
+            }
+            catch (Exception e){
+                Toast.makeText(this,e.getMessage(),Toast.LENGTH_SHORT).show();
+            }
+
+        }
     }
 }
 

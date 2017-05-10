@@ -13,7 +13,7 @@
             android:layout_height="wrap_content">
 
             <TableRow
-                android:id="@+id/rowTeam1Header"
+                android:id="@+id/rowAllPlayerHeader"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -39,12 +39,6 @@
 
             </TableRow>
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            </TableRow>
-
         </TableLayout>
     </ScrollView>
 
@@ -56,6 +50,33 @@
             android:id="@+id/tableTeam1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+            <TableRow
+                android:id="@+id/rowTeam1Header"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Name" />
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Position" />
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+            </TableRow>
 
         </TableLayout>
     </ScrollView>

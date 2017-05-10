@@ -10,5 +10,5 @@ import pkgData.Team;
  */
 
 public interface OnTeamChangedListener {
-    public void onTeamUpdated(Player p, Team t);
+    public void onTeamUpdated(Player p, Team t, boolean remove);
 }
