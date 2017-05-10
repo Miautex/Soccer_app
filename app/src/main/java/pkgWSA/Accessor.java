@@ -7,7 +7,7 @@ package pkgWSA;
 public final class Accessor {
     private static String serverUrl = "http://10.0.0.4:51246/team02/services/";//"http://192.168.194.27:8080/team02/services/";
 
-    public static AccessorResponse requestJSON(HttpMethod method, String servicePath, String serviceQuery, String body) throws Exception {       
+    public static AccessorResponse requestJSON(HttpMethod method, String servicePath, String serviceQuery, String body) throws Exception {
         AccessorResponse response;
         WebServiceTask task = new WebServiceTask();
 
@@ -17,5 +17,17 @@ public final class Accessor {
             throw response.getException();
         }
         return response;
+    }
+
+    public static void requestJSONAsync(HttpMethod method, String servicePath, String serviceQuery, String body, AccessorRunListener listener) throws Exception {
+        new AccessorRun(method, servicePath, serviceQuery, body, listener).run();
+    }
+
+    public static void setServerUrl (String serverUrl) {
+        Accessor.serverUrl = serverUrl;
+    }
+
+    public static String getServerUrl () {
+        return serverUrl;
     }
 }
