@@ -1,28 +1,23 @@
 package pkgWSA;
 
 /**
- * Created by Wilscher Marco
+ * @author Marco Wilscher
  */
 
 public final class Accessor {
-    private static String serverUrl = "http://192.168.196.82:51246/team02/services/";//"http://192.168.196.82:8080/team02/services/";
+    private static String serverUrl = "http://192.168.196.82:51246/team02/services/";
 
-    public static AccessorResponse requestJSON(HttpMethod method, String servicePath, String serviceQuery, String body) throws Exception {
-        AccessorResponse response;
-        WebServiceTask task = new WebServiceTask();
-
-        task.execute(new TaskParams(serverUrl, method, servicePath, serviceQuery, body));
-        response = task.get();
-        if (response.getException() != null) {
-            throw response.getException();
-        }
-        return response;
+    public static void runRequestAsync(HttpMethod httpMethod, String uriPath, String uriQuery, String requetsBody, WebRequestTaskListener listener) throws Exception {
+        RequestParameter parameter = new RequestParameter(serverUrl, httpMethod, uriPath, uriQuery, requetsBody, true, listener);
+        WebRequestTask requestTask = new WebRequestTask();
+        requestTask.execute(parameter);
     }
 
-    public static void requestJSONAsync(HttpMethod method, String servicePath, String serviceQuery, String body, AccessorRunListener listener) throws Exception {
-        AccessorRun run = new AccessorRun(method, servicePath, serviceQuery, body, listener);
-        Thread trd = new Thread(run);
-        trd.start();
+    public static AccessorResponse runRequestSync(HttpMethod httpMethod, String uriPath, String uriQuery, String requetsBody) throws Exception {
+        RequestParameter parameter = new RequestParameter(serverUrl, httpMethod, uriPath, uriQuery, requetsBody);
+        WebRequestTask requestTask = new WebRequestTask();
+        requestTask.execute(parameter);
+        return requestTask.get();
     }
 
     public static void setServerUrl (String serverUrl) {

@@ -1,7 +1,7 @@
 package pkgWSA;
 
 /**
- * Created by Wilscher Marco
+ * @author Wilscher Marco
  */
 
 public enum HttpMethod {

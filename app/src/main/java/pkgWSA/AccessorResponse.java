@@ -1,7 +1,7 @@
 package pkgWSA;
 
 /**
- * Created by Wilscher Marco
+ * @author Wilscher Marco
  */
 
 public final class AccessorResponse {
@@ -12,7 +12,9 @@ public final class AccessorResponse {
     public AccessorResponse() {
         super();
     }
+
     public AccessorResponse(int responseCode, String responseData) {
+        super();
         code = responseCode;
         json = responseData;
     }
@@ -20,9 +22,11 @@ public final class AccessorResponse {
     protected void setCode (int code) {
         this.code = code;
     }
+
     protected void setJson (String json) {
         this.json = json;
     }
+
     protected void setException (Exception exception) {
         this.exception = exception;
     }
@@ -30,10 +34,12 @@ public final class AccessorResponse {
     public int getResponseCode () {
         return code;
     }
+
     public String getJson () {
         return json;
     }
-    protected Exception getException () {
+
+    public Exception getException () {
         return exception;
     }
 }
