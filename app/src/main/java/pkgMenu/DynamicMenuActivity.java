@@ -15,7 +15,7 @@ import group2.schoolproject.a02soccer.AddGameSelectPlayersActivity;
 import group2.schoolproject.a02soccer.AddPlayerActivity;
 import group2.schoolproject.a02soccer.EditPlayerOwnActivity;
 import group2.schoolproject.a02soccer.R;
-import pkgData.Database;
+import pkgDatabase.Database;
 
 /**
  * Created by Raphael on 28.04.2017.

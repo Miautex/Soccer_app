@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import pkgData.Database;
+import pkgDatabase.Database;
 import pkgData.Game;
 import pkgData.Participation;
 import pkgData.Team;

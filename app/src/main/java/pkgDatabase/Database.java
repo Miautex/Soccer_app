@@ -1,4 +1,4 @@
-package pkgData;
+package pkgDatabase;
 
 import android.app.Application;
 
@@ -10,27 +10,31 @@ import java.util.Collection;
 import java.util.Locale;
 
 import group2.schoolproject.a02soccer.R;
+import pkgData.Game;
+import pkgData.GsonSerializor;
+import pkgData.Participation;
+import pkgData.Player;
+import pkgData.PlayerPosition;
+import pkgData.PlayerPositionRequest;
+import pkgDatabase.pkgListener.OnGamesUpdatedListener;
+import pkgDatabase.pkgListener.OnLoadAllGamesListener;
+import pkgDatabase.pkgListener.OnLoadAllPlayersListener;
+import pkgDatabase.pkgListener.OnLoginListener;
+import pkgDatabase.pkgListener.OnPlayersUpdatedListener;
 import pkgException.CouldNotDeletePlayerException;
 import pkgException.CouldNotSetPlayerPositionsException;
 import pkgException.DuplicateUsernameException;
-import pkgException.InvalidLoginDataException;
-import pkgHandlers.LoadAllGamesHandler;
-import pkgHandlers.LoadAllPlayersHandler;
-import pkgListeners.OnGamesUpdatedListener;
-import pkgListeners.OnLoadAllGamesListener;
-import pkgListeners.OnLoadAllPlayersListener;
-import pkgListeners.OnLoginListener;
-import pkgListeners.OnPlayersUpdatedListener;
 import pkgResult.PositionResult;
 import pkgResult.Result;
 import pkgResult.SingleGameResult;
 import pkgResult.SinglePlayerResult;
 import pkgWSA.Accessor;
 import pkgWSA.AccessorResponse;
-import pkgWSA.AccessorRunListener;
 import pkgWSA.HttpMethod;
 
-public class Database extends Application implements OnLoadAllPlayersListener, OnLoadAllGamesListener {
+public class Database extends Application implements OnLoginListener, OnLoadAllPlayersListener,
+        OnLoadAllGamesListener {
+
     private static Database instance = null;
     private Player currentlyLoggedInPlayer = null;
     private Locale locale;
@@ -40,22 +44,22 @@ public class Database extends Application implements OnLoadAllPlayersListener, O
     private ArrayList<OnPlayersUpdatedListener> playersChangedListener = null;
     private ArrayList<OnGamesUpdatedListener> gamesChangedListener = null;
 
-    public void setLocale(Locale loc){
+    public void setLocale(Locale loc) {
         locale = loc;
     }
 
-    public Locale getLocale(){
+    public Locale getLocale() {
         return locale;
     }
 
-    private Database()  {
+    private Database() {
         allPlayers = new ArrayList<>();
         allGames = new ArrayList<>();
         playersChangedListener = new ArrayList<>();
         gamesChangedListener = new ArrayList<>();
     }
 
-    public static Database getInstance()  {
+    public static Database getInstance() {
         if (instance == null) {
             instance = new Database();
         }
@@ -85,7 +89,7 @@ public class Database extends Application implements OnLoadAllPlayersListener, O
     }
 
     private void notifyOnPlayersUpdatedListener() {
-        for (OnPlayersUpdatedListener listener: playersChangedListener) {
+        for (OnPlayersUpdatedListener listener : playersChangedListener) {
             if (listener != null) {
                 listener.playersChanged();
             }
@@ -93,7 +97,7 @@ public class Database extends Application implements OnLoadAllPlayersListener, O
     }
 
     private void notifyOnGamesUpdatedListener() {
-        for (OnGamesUpdatedListener listener: gamesChangedListener) {
+        for (OnGamesUpdatedListener listener : gamesChangedListener) {
             if (listener != null) {
                 listener.gamesChanged();
             }
@@ -102,6 +106,7 @@ public class Database extends Application implements OnLoadAllPlayersListener, O
 
     /**
      * Returns a copy of the currently logged in player
+     *
      * @return a COPY of the currently logged in player
      */
     public Player getCurrentlyLoggedInPlayer() {
@@ -127,8 +132,7 @@ public class Database extends Application implements OnLoadAllPlayersListener, O
 
         if (response.getResponseCode() == 500) {
             throw new Exception(response.getJson());
-        }
-        else {
+        } else {
             SinglePlayerResult spr = GsonSerializor.deserializeSinglePlayerResult(response.getJson());
             player = spr.getContent();
             for (PlayerPosition pp : getPlayerPositions(player.getId())) {
@@ -146,8 +150,7 @@ public class Database extends Application implements OnLoadAllPlayersListener, O
 
         if (response.getResponseCode() == 500) {
             throw new Exception(response.getJson());
-        }
-        else {
+        } else {
             PositionResult pr = GsonSerializor.deserializePositionResult(response.getJson());
             if (pr.getContent() != null) {
                 positions = pr.getContent();
@@ -177,8 +180,7 @@ public class Database extends Application implements OnLoadAllPlayersListener, O
 
         if (response.getResponseCode() == 500) {
             throw new Exception(response.getJson());
-        }
-        else {
+        } else {
             SinglePlayerResult spr = GsonSerializor.deserializeSinglePlayerResult(response.getJson());
 
             if (!spr.isSuccess() && spr.getError() != null && spr.getError().getErrorMessage().contains("MySQLIntegrityConstraintViolationException")) {
@@ -187,11 +189,10 @@ public class Database extends Application implements OnLoadAllPlayersListener, O
 
             if (!spr.isSuccess()) {
                 throw new Exception(spr.getError().getErrorMessage());
-            }
-            else {
+            } else {
                 player = spr.getContent();
 
-                for (PlayerPosition pos: p.getPositions()) {
+                for (PlayerPosition pos : p.getPositions()) {
                     player.addPosition(pos);
                 }
 
@@ -216,14 +217,12 @@ public class Database extends Application implements OnLoadAllPlayersListener, O
 
         if (response.getResponseCode() == 500) {
             throw new Exception(response.getJson());
-        }
-        else {
+        } else {
             SingleGameResult sgr = GsonSerializor.deserializeSingleGameResult(response.getJson());
 
             if (!sgr.isSuccess()) {
                 throw new Exception(sgr.getError().getErrorMessage());
-            }
-            else {
+            } else {
                 game = sgr.getContent();
                 allGames.add(game);
                 notifyOnGamesUpdatedListener();
@@ -241,9 +240,8 @@ public class Database extends Application implements OnLoadAllPlayersListener, O
 
         if (response.getResponseCode() == 500) {
             throw new Exception(response.getJson());
-        }
-        else {
-             r = GsonSerializor.deserializeResult(response.getJson());
+        } else {
+            r = GsonSerializor.deserializeResult(response.getJson());
         }
 
         return r.isSuccess();
@@ -255,8 +253,7 @@ public class Database extends Application implements OnLoadAllPlayersListener, O
 
         if (response.getResponseCode() == 500) {
             throw new Exception(response.getJson());
-        }
-        else {
+        } else {
             Result r = GsonSerializor.deserializeResult(response.getJson());
             isSuccess = r.isSuccess();
 
@@ -303,8 +300,7 @@ public class Database extends Application implements OnLoadAllPlayersListener, O
 
         if (response.getResponseCode() == 500) {
             throw new CouldNotDeletePlayerException();
-        }
-        else {
+        } else {
             Result r = GsonSerializor.deserializeResult(response.getJson());
             isSuccess = r.isSuccess();
             allPlayers.remove(p);
@@ -318,15 +314,18 @@ public class Database extends Application implements OnLoadAllPlayersListener, O
      * Checks whether the passed username and password are valid or not
      * If username and password are correct, this user is set to currentlyLoggedInUser
      *
-     * @param  username the username
-     * @param  local_pw_Unencrypted the unencrypted password
-     * @return true, if the username and password are correct
+     * @param username             the username
+     * @param local_pw_Unencrypted the unencrypted password
+     * @param listener             listener, which is called once the login is done or failed
      */
     public void login(String username, String local_pw_Unencrypted, OnLoginListener listener) throws Exception {
         String local_pwEnc = encryptPassword(local_pw_Unencrypted);
+        ArrayList<OnLoginListener> listeners = new ArrayList<>();
+        listeners.add(listener);
+        listeners.add(this);
 
         Accessor.requestJSONAsync(HttpMethod.GET, "player/security/" + username,
-                null, null, new LoginHandler(username, local_pwEnc, listener));
+                null, null, new LoginHandler(username, local_pwEnc, listeners));
     }
 
     public boolean setPassword(Player p, String pw) throws Exception {
@@ -337,8 +336,7 @@ public class Database extends Application implements OnLoadAllPlayersListener, O
 
         if (response.getResponseCode() == 500) {
             throw new Exception(response.getJson());
-        }
-        else {
+        } else {
             Result r = GsonSerializor.deserializeResult(response.getJson());
             isSuccess = r.isSuccess();
         }
@@ -348,12 +346,14 @@ public class Database extends Application implements OnLoadAllPlayersListener, O
 
     private String encryptPassword(String pwInput) {
         String hash = null;
-        MessageDigest m= null;
+        MessageDigest m = null;
         try {
             m = MessageDigest.getInstance("MD5");
             m.update(pwInput.getBytes(), 0, pwInput.length());
-            hash = new BigInteger(1,m.digest()).toString(16);
-        } catch (NoSuchAlgorithmException e) { e.printStackTrace(); }
+            hash = new BigInteger(1, m.digest()).toString(16);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
 
         return hash;
     }
@@ -362,7 +362,7 @@ public class Database extends Application implements OnLoadAllPlayersListener, O
     public void loadPlayersSuccessful(Collection<Player> players) {
         allPlayers.clear();
 
-        for (Player p: players) {
+        for (Player p : players) {
             allPlayers.add(p);
         }
 
@@ -372,13 +372,14 @@ public class Database extends Application implements OnLoadAllPlayersListener, O
     @Override
     public void loadPlayersFailed(Exception ex) {
         System.out.println("-------------LOAD PLAYERS FAILED");
+        ex.printStackTrace();
     }
 
     @Override
     public void loadGamesSuccessful(Collection<Game> games) {
         allGames.clear();
 
-        for (Game g: games) {
+        for (Game g : games) {
             allGames.add(g);
         }
 
@@ -388,54 +389,21 @@ public class Database extends Application implements OnLoadAllPlayersListener, O
     @Override
     public void loadGamesFailed(Exception ex) {
         System.out.println("-------------LOAD GAMES FAILED");
+        ex.printStackTrace();
     }
 
-
-
-
-    private class LoginHandler implements AccessorRunListener {
-        private OnLoginListener listener;
-        private String local_pwEnc,
-                username;
-
-        public LoginHandler(String username, String local_pwEnc, OnLoginListener listener) {
-            this.listener = listener;
-            this.local_pwEnc = local_pwEnc;
-            this.username = username;
+    @Override
+    public void loginSuccessful(String username) {
+        try {
+            currentlyLoggedInPlayer = getPlayerByUsername(username);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+    }
 
-        @Override
-        public void done(AccessorResponse response) {
-            try {
-                if (response.getResponseCode() == 500) {
-                    throw new Exception(response.getJson());
-                }
-                else if (response.getResponseCode() == 204) {       //if user doesn't exist
-                    failed(new InvalidLoginDataException());
-                }
-                else {
-                    if (!response.getJson().isEmpty()) {
-                        String remote_pwEnc = GsonSerializor.deserializePassword(response.getJson());
-
-                        if (local_pwEnc.equals(remote_pwEnc)) {
-                            //Class is in Database-class because otherwise the bottom line would be much more complicated
-                            currentlyLoggedInPlayer = getPlayerByUsername(username);
-                            listener.loginSuccessful();
-                        }
-                        else {
-                            failed(new InvalidLoginDataException());
-                        }
-                    }
-                }
-            }
-            catch (Exception ex) {
-                failed(ex);
-            }
-        }
-
-        @Override
-        public void failed(Exception ex) {
-            listener.loginFailed(ex);
-        }
+    @Override
+    public void loginFailed(Exception ex) {
+        System.out.println("-------------LOGIN FAILED");
+        ex.printStackTrace();
     }
 }

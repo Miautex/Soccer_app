@@ -16,11 +16,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import pkgData.Database;
+import pkgDatabase.Database;
 import pkgData.Player;
 import pkgException.CouldNotDeletePlayerException;
-import pkgListeners.OnGamesUpdatedListener;
-import pkgListeners.OnPlayersUpdatedListener;
+import pkgDatabase.pkgListener.OnGamesUpdatedListener;
+import pkgDatabase.pkgListener.OnPlayersUpdatedListener;
 import pkgMenu.DynamicMenuActivity;
 
 public class MainActivity extends DynamicMenuActivity

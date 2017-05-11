@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.TreeSet;
 
 import pkgComparator.PlayerComparatorName;
-import pkgData.Database;
+import pkgDatabase.Database;
 import pkgData.Game;
 import pkgData.Player;
 import pkgMenu.DynamicMenuActivity;

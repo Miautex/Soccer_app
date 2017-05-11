@@ -1,12 +1,11 @@
-package pkgHandlers;
+package pkgDatabase;
 
 import java.util.ArrayList;
 
-import pkgData.Database;
 import pkgData.GsonSerializor;
 import pkgData.Player;
 import pkgData.PlayerPosition;
-import pkgListeners.OnLoadAllPlayersListener;
+import pkgDatabase.pkgListener.OnLoadAllPlayersListener;
 import pkgResult.PlayerResult;
 import pkgWSA.AccessorResponse;
 import pkgWSA.AccessorRunListener;
@@ -15,7 +14,7 @@ import pkgWSA.AccessorRunListener;
 public class LoadAllPlayersHandler implements AccessorRunListener {
     private ArrayList<OnLoadAllPlayersListener> listeners;
 
-    public LoadAllPlayersHandler(ArrayList<OnLoadAllPlayersListener> listeners) {
+    protected LoadAllPlayersHandler(ArrayList<OnLoadAllPlayersListener> listeners) {
         this.listeners = listeners;
     }
 

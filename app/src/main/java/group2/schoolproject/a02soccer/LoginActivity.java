@@ -15,13 +15,13 @@ import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.util.Collection;
 
-import pkgData.Database;
+import pkgDatabase.Database;
 import pkgData.Game;
 import pkgData.Player;
 import pkgException.InvalidLoginDataException;
-import pkgListeners.OnLoadAllGamesListener;
-import pkgListeners.OnLoadAllPlayersListener;
-import pkgListeners.OnLoginListener;
+import pkgDatabase.pkgListener.OnLoadAllGamesListener;
+import pkgDatabase.pkgListener.OnLoadAllPlayersListener;
+import pkgDatabase.pkgListener.OnLoginListener;
 
 public class LoginActivity extends AppCompatActivity implements OnClickListener, OnLoginListener, OnLoadAllPlayersListener, OnLoadAllGamesListener {
 
@@ -132,7 +132,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
     }
 
     @Override
-    public void loginSuccessful() {
+    public void loginSuccessful(String username) {
         try {
             db.loadAllPlayers(this);
             db.loadAllGames(this);

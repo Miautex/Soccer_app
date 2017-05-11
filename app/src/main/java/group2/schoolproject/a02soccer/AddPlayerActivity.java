@@ -7,7 +7,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import pkgData.Database;
+import pkgDatabase.Database;
 import pkgData.Player;
 import pkgData.PlayerPosition;
 import pkgException.DuplicateUsernameException;
