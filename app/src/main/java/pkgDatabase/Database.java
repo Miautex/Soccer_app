@@ -19,12 +19,12 @@ import pkgData.PlayerPositionRequest;
 import pkgDatabase.pkgListener.OnGamesUpdatedListener;
 import pkgDatabase.pkgListener.OnLoadAllGamesListener;
 import pkgDatabase.pkgListener.OnLoadAllPlayersListener;
+import pkgDatabase.pkgListener.OnLoadPlayerPositionsListener;
 import pkgDatabase.pkgListener.OnLoginListener;
 import pkgDatabase.pkgListener.OnPlayersUpdatedListener;
 import pkgException.CouldNotDeletePlayerException;
 import pkgException.CouldNotSetPlayerPositionsException;
 import pkgException.DuplicateUsernameException;
-import pkgResult.PositionResult;
 import pkgResult.Result;
 import pkgResult.SingleGameResult;
 import pkgResult.SinglePlayerResult;
@@ -118,7 +118,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         listeners.add(listener);
         listeners.add(this);
 
-        Accessor.requestJSONAsync(HttpMethod.GET, "player",
+        Accessor.runRequestAsync(HttpMethod.GET, "player",
                 null, null, new LoadAllPlayersHandler(listeners));
     }
 
@@ -126,38 +126,37 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         return allPlayers;
     }
 
-    public Player getPlayerByUsername(String username) throws Exception {
+    public Player getPlayerByUsername(String username) {
         Player player = null;
-        AccessorResponse response = Accessor.requestJSON(HttpMethod.GET, "player/" + username, null, null);
+        /*AccessorResponse response = Accessor.runRequestSync(HttpMethod.GET, "player/" + username, null, null);
 
         if (response.getResponseCode() == 500) {
             throw new Exception(response.getJson());
         } else {
             SinglePlayerResult spr = GsonSerializor.deserializeSinglePlayerResult(response.getJson());
             player = spr.getContent();
-            for (PlayerPosition pp : getPlayerPositions(player.getId())) {
+            for (PlayerPosition pp : getPlayerPositions(player.getId(), null)) {
                 player.addPosition(pp);
+            }
+        }*/
+
+        for (int i=0; i<allPlayers.size() && player==null; i++) {
+            if (allPlayers.get(i).getUsername().equals(username)) {
+                player = allPlayers.get(i);
             }
         }
 
         return player;
+
     }
 
-    public ArrayList<PlayerPosition> getPlayerPositions(int playerId) throws Exception {
+    public void getPlayerPositions(int playerId, OnLoadPlayerPositionsListener listener) throws Exception {
         ArrayList<PlayerPosition> positions = new ArrayList<>();
+        ArrayList<OnLoadPlayerPositionsListener> listeners = new ArrayList<>();
+        listeners.add(listener);
 
-        AccessorResponse response = Accessor.requestJSON(HttpMethod.GET, "player/positions/" + playerId, null, null);
-
-        if (response.getResponseCode() == 500) {
-            throw new Exception(response.getJson());
-        } else {
-            PositionResult pr = GsonSerializor.deserializePositionResult(response.getJson());
-            if (pr.getContent() != null) {
-                positions = pr.getContent();
-            }
-        }
-
-        return positions;
+        Accessor.runRequestAsync(HttpMethod.GET, "player/positions/" + playerId,
+                null, null, new LoadPlayerPositionsHandler(playerId, listeners));
     }
 
     public void loadAllGames(OnLoadAllGamesListener listener) throws Exception {
@@ -165,7 +164,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         listeners.add(listener);
         listeners.add(this);
 
-        Accessor.requestJSONAsync(HttpMethod.GET, "game",
+        Accessor.runRequestAsync(HttpMethod.GET, "game",
                 null, null, new LoadAllGamesHandler(listeners));
     }
 
@@ -176,7 +175,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
 
     public Player insert(Player p) throws Exception {
         Player player = null;
-        AccessorResponse response = Accessor.requestJSON(HttpMethod.POST, "player", null, GsonSerializor.serializePlayer(p));
+        AccessorResponse response = Accessor.runRequestSync(HttpMethod.POST, "player", null, GsonSerializor.serializePlayer(p));
 
         if (response.getResponseCode() == 500) {
             throw new Exception(response.getJson());
@@ -213,7 +212,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
 
     public Game insert(Game g) throws Exception {
         Game game = null;
-        AccessorResponse response = Accessor.requestJSON(HttpMethod.POST, "game", null, GsonSerializor.serializeGame(g));
+        AccessorResponse response = Accessor.runRequestSync(HttpMethod.POST, "game", null, GsonSerializor.serializeGame(g));
 
         if (response.getResponseCode() == 500) {
             throw new Exception(response.getJson());
@@ -234,7 +233,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
     public boolean insert(Participation p) throws Exception {
         Result r = null;
 
-        AccessorResponse response = Accessor.requestJSON(HttpMethod.POST, "participation",
+        AccessorResponse response = Accessor.runRequestSync(HttpMethod.POST, "participation",
                 "idGame=" + p.getGame().getId() + "&idPlayer=" + p.getPlayer().getId(),
                 GsonSerializor.serializeParticipation(p));
 
@@ -249,7 +248,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
 
     public boolean update(Player p) throws Exception {
         boolean isSuccess = false;
-        AccessorResponse response = Accessor.requestJSON(HttpMethod.PUT, "player", null, GsonSerializor.serializePlayer(p));
+        AccessorResponse response = Accessor.runRequestSync(HttpMethod.PUT, "player", null, GsonSerializor.serializePlayer(p));
 
         if (response.getResponseCode() == 500) {
             throw new Exception(response.getJson());
@@ -288,7 +287,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         ppr.setGOAL(p.getPositions().contains(PlayerPosition.GOAL));
         ppr.setMIDFIELD(p.getPositions().contains(PlayerPosition.MIDFIELD));
 
-        response = Accessor.requestJSON(HttpMethod.PUT, "player/positions/" + p.getId(),
+        response = Accessor.runRequestSync(HttpMethod.PUT, "player/positions/" + p.getId(),
                 null, GsonSerializor.serializePlayerPositionRequest(ppr));
 
         return GsonSerializor.deserializeResult(response.getJson());
@@ -296,7 +295,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
 
     public boolean remove(Player p) throws Exception {
         boolean isSuccess = false;
-        AccessorResponse response = Accessor.requestJSON(HttpMethod.DELETE, "player/" + p.getId(), null, null);
+        AccessorResponse response = Accessor.runRequestSync(HttpMethod.DELETE, "player/" + p.getId(), null, null);
 
         if (response.getResponseCode() == 500) {
             throw new CouldNotDeletePlayerException();
@@ -324,14 +323,14 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         listeners.add(listener);
         listeners.add(this);
 
-        Accessor.requestJSONAsync(HttpMethod.GET, "player/security/" + username,
+        Accessor.runRequestAsync(HttpMethod.GET, "player/security/" + username,
                 null, null, new LoginHandler(username, local_pwEnc, listeners));
     }
 
     public boolean setPassword(Player p, String pw) throws Exception {
         boolean isSuccess = false;
         String local_pwEnc = encryptPassword(pw);
-        AccessorResponse response = Accessor.requestJSON(HttpMethod.PUT,
+        AccessorResponse response = Accessor.runRequestSync(HttpMethod.PUT,
                 "player/security/" + Integer.toString(p.getId()), null, GsonSerializor.serializePassword(local_pwEnc));
 
         if (response.getResponseCode() == 500) {
@@ -366,6 +365,8 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
             allPlayers.add(p);
         }
 
+        currentlyLoggedInPlayer = getPlayerByUsername(currentlyLoggedInPlayer.getUsername());
+
         notifyOnPlayersUpdatedListener();
     }
 
@@ -395,7 +396,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
     @Override
     public void loginSuccessful(String username) {
         try {
-            currentlyLoggedInPlayer = getPlayerByUsername(username);
+            currentlyLoggedInPlayer = new Player(username, "tmp", false);       //remember username of logged in player
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -7,10 +7,10 @@ import pkgData.GsonSerializor;
 import pkgDatabase.pkgListener.OnLoadAllGamesListener;
 import pkgResult.GameResult;
 import pkgWSA.AccessorResponse;
-import pkgWSA.AccessorRunListener;
+import pkgWSA.WebRequestTaskListener;
 
 
-public class LoadAllGamesHandler implements AccessorRunListener {
+public class LoadAllGamesHandler implements WebRequestTaskListener {
     private ArrayList<OnLoadAllGamesListener> listeners;
 
     protected LoadAllGamesHandler(ArrayList<OnLoadAllGamesListener> listeners) {
@@ -19,19 +19,19 @@ public class LoadAllGamesHandler implements AccessorRunListener {
 
     @Override
     public void done(AccessorResponse response) {
-        ArrayList<Game> games = new ArrayList<>();
+        ArrayList<Game> games = null;
 
         try {
-            if (response.getResponseCode() == 500) {
+            if (response.getException() != null) {
+                throw response.getException();
+            }
+            else if (response.getResponseCode() == 500) {
                 throw new Exception(response.getJson());
             }
             else {
                 GameResult gs = GsonSerializor.deserializeGameResult(response.getJson());
                 games = gs.getContent();
-
-                for (OnLoadAllGamesListener listener: listeners) {
-                    listener.loadGamesSuccessful(games);
-                }
+                success(games);
             }
         }
         catch (Exception ex) {
@@ -39,8 +39,13 @@ public class LoadAllGamesHandler implements AccessorRunListener {
         }
     }
 
-    @Override
-    public void failed(Exception ex) {
+    private void success(ArrayList<Game> games) {
+        for (OnLoadAllGamesListener listener: listeners) {
+            listener.loadGamesSuccessful(games);
+        }
+    }
+
+    private void failed(Exception ex) {
         for (OnLoadAllGamesListener listener: listeners) {
             listener.loadGamesFailed(ex);
         }

@@ -35,6 +35,7 @@ public final class WebRequestTask extends AsyncTask <RequestParameter, Void, Acc
                     parameter = params[0];
                     fullUri = new StringBuilder();
                     if (parameter.getUri() != null && !parameter.getUri().isEmpty()) {
+                        listener = parameter.getListener();
                         fullUri.append(parameter.getUri());
                         if (parameter.getUriPath() != null) {
                             //TODO check for '/'
@@ -84,7 +85,9 @@ public final class WebRequestTask extends AsyncTask <RequestParameter, Void, Acc
         }
         finally {
             try {
-                reader.close();
+                if (reader != null) {
+                    reader.close();
+                }
             } catch (IOException ex) {
                 response.setException(ex);
             }

@@ -93,7 +93,7 @@ public final class Player implements Comparable, Serializable, Cloneable {
             throw new IllegalArgumentException("username must only contain letters and numbers");
         }
 
-        this.username = username;
+        this.username = username.toLowerCase();
     }
 
     public TreeSet<PlayerPosition> getPositions() {

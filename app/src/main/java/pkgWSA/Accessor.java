@@ -5,7 +5,7 @@ package pkgWSA;
  */
 
 public final class Accessor {
-    private static String serverUrl = "http://192.168.196.82:51246/team02/services/";
+    private static String serverUrl = "http://10.0.0.4:51246/team02/services/";
 
     public static void runRequestAsync(HttpMethod httpMethod, String uriPath, String uriQuery, String requetsBody, WebRequestTaskListener listener) throws Exception {
         RequestParameter parameter = new RequestParameter(serverUrl, httpMethod, uriPath, uriQuery, requetsBody, true, listener);

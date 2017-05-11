@@ -6,9 +6,9 @@ import pkgData.GsonSerializor;
 import pkgDatabase.pkgListener.OnLoginListener;
 import pkgException.InvalidLoginDataException;
 import pkgWSA.AccessorResponse;
-import pkgWSA.AccessorRunListener;
+import pkgWSA.WebRequestTaskListener;
 
-public class LoginHandler implements AccessorRunListener {
+public class LoginHandler implements WebRequestTaskListener {
     private ArrayList<OnLoginListener> listeners;
     private String local_pwEnc,
             username;
@@ -22,7 +22,10 @@ public class LoginHandler implements AccessorRunListener {
     @Override
     public void done(AccessorResponse response) {
         try {
-            if (response.getResponseCode() == 500) {
+            if (response.getException() != null) {
+                throw response.getException();
+            }
+            else if (response.getResponseCode() == 500) {
                 throw new Exception(response.getJson());
             }
             else if (response.getResponseCode() == 204) {       //if user doesn't exist
@@ -49,8 +52,13 @@ public class LoginHandler implements AccessorRunListener {
         }
     }
 
-    @Override
-    public void failed(Exception ex) {
+    private void success(String username) {
+        for (OnLoginListener listener: listeners) {
+            listener.loginSuccessful(username);
+        }
+    }
+
+    private void failed(Exception ex) {
         for (OnLoginListener listener: listeners) {
             listener.loginFailed(ex);
         }
