@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -44,9 +43,15 @@ public class TeamDivisionActivity extends AppCompatActivity implements OnTeamCha
         mSectionsPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
         viewPager = (ViewPager) findViewById(R.id.container);
         setupViewPager(viewPager);
-        this.findViewById(R.id.btnSave).setOnClickListener(this);
+        setOnClicklistener();
         TabLayout tablayout = (TabLayout) findViewById(R.id.tabs);
         tablayout.setupWithViewPager(viewPager);
+    }
+
+    private void setOnClicklistener() {
+        this.findViewById(R.id.btnContinue).setOnClickListener(this);
+        this.findViewById(R.id.btnCancel).setOnClickListener(this);
+        this.findViewById(R.id.btnShuffle).setOnClickListener(this);
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -106,11 +111,10 @@ public class TeamDivisionActivity extends AppCompatActivity implements OnTeamCha
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.btnSave) {
+        if (v.getId() == R.id.btnContinue) {
             try {
                 createParticipations();
                 game.removeAllParticipations();
-
                 for (Participation p : participations) {
                     game.addParticipation(p);
                 }
@@ -120,6 +124,10 @@ public class TeamDivisionActivity extends AppCompatActivity implements OnTeamCha
             } catch (Exception e) {
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
+        } else if (v.getId() == R.id.btnCancel) {
+            this.finish();
+        } else if (v.getId() == R.id.btnShuffle) {
+            Toast.makeText(this, "folgt", Toast.LENGTH_SHORT).show();
         }
     }
 }

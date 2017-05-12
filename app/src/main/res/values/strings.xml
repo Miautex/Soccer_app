@@ -19,6 +19,7 @@
     <string name="Positions">Positions</string>
     <string name="btnSave">Save</string>
     <string name="btnCancel">Cancel</string>
+    <string name="btnShuffle">Shuffle</string>
     <string name="mniMain">Main</string>
     <string name="mniTeam">Team(test)</string>
     <string name="mniGerman">Deutsch</string>

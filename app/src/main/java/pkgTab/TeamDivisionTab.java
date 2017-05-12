@@ -105,7 +105,6 @@ public class TeamDivisionTab extends Fragment implements View.OnClickListener, O
         }
     }
 
-
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -133,24 +132,20 @@ public class TeamDivisionTab extends Fragment implements View.OnClickListener, O
     public void removeRow(int id) {
         for (int i = 0; i < tableAllPlayers.getChildCount(); i++) {
             TableRow row = (TableRow) tableAllPlayers.getChildAt(i);
-            if (row != container.findViewById(R.id.rowAllPlayerHeader)) {
-                if (Integer.parseInt(((TextView) row.getChildAt(0)).getText().toString()) == id) {
-                    tableAllPlayers.removeView(row);
-                }
+            if (Integer.parseInt(((TextView) row.getChildAt(0)).getText().toString()) == id) {
+                tableAllPlayers.removeView(row);
             }
         }
     }
 
     public ArrayList<Participation> getPlayersInTeam() {
         ArrayList<Participation> list = new ArrayList<>();
-        for (int i = 1; i < tableTeam1.getChildCount(); i++) {
+        for (int i = 0; i < tableTeam1.getChildCount(); i++) {
             TableRow row = (TableRow) tableTeam1.getChildAt(i);
-            if (row != container.findViewById(R.id.rowTeam1Header)) {
-                TextView txtv = (TextView) row.getChildAt(0);
-                Spinner sp = (Spinner) row.getChildAt(2);
-                int playerId = Integer.parseInt(txtv.getText().toString());
-                list.add(new Participation(players.get(playerId), team, StringToEnum((sp.getSelectedItem().toString()))));
-            }
+            TextView txtv = (TextView) row.getChildAt(0);
+            Spinner sp = (Spinner) row.getChildAt(2);
+            int playerId = Integer.parseInt(txtv.getText().toString());
+            list.add(new Participation(players.get(playerId), team, StringToEnum((sp.getSelectedItem().toString()))));
         }
         return list;
     }

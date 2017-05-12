@@ -70,7 +70,7 @@ public class AddGameSelectPlayersActivity extends DynamicMenuActivity implements
         datePicker = (DatePicker) findViewById(R.id.datePicker);
         tablePlayers = (TableLayout) findViewById(R.id.table_Players);
         tablePlayersHeader = (TableLayout) findViewById(R.id.table_PlayersHeader);
-        btnContinue = (Button) findViewById(R.id.btnContinue);
+        btnContinue = (Button) findViewById(R.id.btnSave);
         btnCancel = (Button) findViewById(R.id.btnCancel);
         ckbParticipationHeader = (CheckBox) findViewById(R.id.ckbParticipationHeader);
     }
@@ -168,7 +168,7 @@ public class AddGameSelectPlayersActivity extends DynamicMenuActivity implements
     @Override
     public void onClick(View v) {
         try {
-            if (v.getId() == R.id.btnContinue) {
+            if (v.getId() == R.id.btnSave) {
                 onBtnContinue();
             }
             else if (v.getId() == R.id.btnCancel) {

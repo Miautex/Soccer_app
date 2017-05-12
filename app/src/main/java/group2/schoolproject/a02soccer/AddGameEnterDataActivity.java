@@ -1,5 +1,6 @@
 package group2.schoolproject.a02soccer;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.TabLayout;
@@ -166,7 +167,10 @@ public class AddGameEnterDataActivity extends AppCompatActivity implements OnSco
         try {
             if (v.getId() == R.id.btnSave) {
                 onBtnSaveClick();
-                this.finish();
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                //this.finish();
             }
             else if (v.getId() == R.id.btnBack) {
                 this.finish();
