@@ -89,7 +89,7 @@ public class MainActivity extends DynamicMenuActivity
             openActivity(EditPlayerOwnActivity.class);
 
         } else if (id == R.id.nav_manage) {
-            openActivity(TeamManagmentActivity.class);
+
 
         } else if (id == R.id.mniLogin) {
             openActivity(LoginActivity.class);

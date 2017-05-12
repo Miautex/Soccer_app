@@ -50,7 +50,7 @@ public class DynamicMenuActivity extends AppCompatActivity {
             openActivity(AddGameSelectPlayersActivity.class);
         }
         else if(item.getItemId() == DynamicMenuItem.EDITTEAM.ordinal()){
-            openActivity(TeamManagmentActivity.class);
+            openActivity(TeamDivisionActivity.class);
         }
         else*/ if(item.getItemId() == DynamicMenuItem.GERMAN.ordinal()){
             changeLanguage("de");

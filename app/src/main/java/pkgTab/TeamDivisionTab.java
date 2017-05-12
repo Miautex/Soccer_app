@@ -32,15 +32,17 @@ import pkgListeners.OnTeamChangedListener;
  * The best Product owner
  */
 
-public class TeamDivisionTab1 extends Fragment implements View.OnClickListener, OnTeamChangedListener {
+public class TeamDivisionTab extends Fragment implements View.OnClickListener, OnTeamChangedListener {
     private TableLayout tableAllPlayers = null;
     private TableLayout tableTeam1 = null;
     private View view = null;
     private ArrayAdapter<String> spinnerAdapter = null;
-    private TreeMap<Integer,Player> players = null;
+    private TreeMap<Integer, Player> players = null;
     private int[] ids;
     private int cursorIds = 0;
     private TableRow.LayoutParams rowLayout = null;
+    private TableRow.LayoutParams rowLayout3 = null;
+    private TableRow.LayoutParams rowLayout2 = null;
     private TableRow.LayoutParams rowLayoutNotVisible = null;
     private OnTeamChangedListener listener;
     private Team team;
@@ -49,7 +51,7 @@ public class TeamDivisionTab1 extends Fragment implements View.OnClickListener, 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
-        view = inflater.inflate(R.layout.tab_team1, container, false);
+        view = inflater.inflate(R.layout.tab_team, container, false);
         players = new TreeMap<>();
         //Toast.makeText(view.getContext(),getArguments().getString("message"), Toast.LENGTH_SHORT).show();
         players = (TreeMap<Integer, Player>) this.getArguments().getSerializable("Players");
@@ -71,20 +73,17 @@ public class TeamDivisionTab1 extends Fragment implements View.OnClickListener, 
     }
 
     public void onClick(View arg0) {
-        //if (arg0.getId() == R.id.Player1) {
-            playerToTeam(arg0.getId());
-        //}
+        playerToTeam(arg0.getId());
     }
 
-    private void playerToTeam(int id){
+    private void playerToTeam(int id) {
         TableRow row = (TableRow) view.findViewById(id).getParent();
-        if(row.getParent() == tableAllPlayers) {
+        if (row.getParent() == tableAllPlayers) {
             informOnTeamChangedListener(Integer.parseInt(((TextView) row.getChildAt(0)).getText().toString()), true);
             tableAllPlayers.removeView(row);
             ((Button) row.getChildAt(3)).setText("Remove");
             tableTeam1.addView(row);
-        }
-        else{
+        } else {
             informOnTeamChangedListener(Integer.parseInt(((TextView) row.getChildAt(0)).getText().toString()), false);
             tableTeam1.removeView(row);
             ((Button) row.getChildAt(3)).setText("Add");
@@ -131,7 +130,7 @@ public class TeamDivisionTab1 extends Fragment implements View.OnClickListener, 
         txtId.setLayoutParams(rowLayoutNotVisible);
         row.addView(txtId);
         TextView txtName = new TextView(this.getContext());
-        txtName.setLayoutParams(rowLayout);
+        txtName.setLayoutParams(rowLayout3);
         txtName.setGravity(Gravity.CENTER_VERTICAL);
         txtName.setTextSize(16);
         txtName.setTextColor(Color.BLACK);
@@ -142,7 +141,7 @@ public class TeamDivisionTab1 extends Fragment implements View.OnClickListener, 
         setSpinnerOptions(spinnerPosition);
         row.addView(spinnerPosition);
         Button button = new Button(this.getContext());
-        //Button button = new Button(this.getContext(),null,R.style.buttonStyle);
+        button.setLayoutParams(rowLayout2);
         button.setText("ADD");
         button.setId(ids[cursorIds]);
         cursorIds++;
@@ -162,7 +161,9 @@ public class TeamDivisionTab1 extends Fragment implements View.OnClickListener, 
     }
 
     private void setLayouts() {
-        rowLayout = new TableRow.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1);
+        rowLayout3 = new TableRow.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1);
+        rowLayout = new TableRow.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1.1f);
+        rowLayout2 = new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.7f);
         rowLayoutNotVisible = new TableRow.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 0);
     }
 
@@ -173,17 +174,11 @@ public class TeamDivisionTab1 extends Fragment implements View.OnClickListener, 
         try {
             setLayouts();
             loadIds();
-            /*Player a = new Player(1, "a", "andererPlayer", true);
-            Player a1 = new Player(2, "a", "q", true);
-            a.addPosition(PlayerPosition.ATTACK);
-            a1.addPosition(PlayerPosition.DEFENSE);
-            players.put(a.getId(),a);
-            players.put(2,a1);*/
-            for(Player p : players.values()){
+            for (Player p : players.values()) {
                 addPlayer(p);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Toast.makeText(view.getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -201,7 +196,7 @@ public class TeamDivisionTab1 extends Fragment implements View.OnClickListener, 
     public void removeRow(int id) {
         for (int i = 0; i < tableAllPlayers.getChildCount(); i++) {
             TableRow row = (TableRow) tableAllPlayers.getChildAt(i);
-            if(row != view.findViewById(R.id.rowAllPlayerHeader)){
+            if (row != view.findViewById(R.id.rowAllPlayerHeader)) {
                 if (Integer.parseInt(((TextView) row.getChildAt(0)).getText().toString()) == id) {
                     tableAllPlayers.removeView(row);
                 }
@@ -209,15 +204,15 @@ public class TeamDivisionTab1 extends Fragment implements View.OnClickListener, 
         }
     }
 
-    public ArrayList<Participation> getPlayersInTeam(){
+    public ArrayList<Participation> getPlayersInTeam() {
         ArrayList<Participation> list = new ArrayList<>();
         for (int i = 1; i < tableTeam1.getChildCount(); i++) {
             TableRow row = (TableRow) tableTeam1.getChildAt(i);
-            if(row != view.findViewById(R.id.rowTeam1Header)){
+            if (row != view.findViewById(R.id.rowTeam1Header)) {
                 TextView txtv = (TextView) row.getChildAt(0);
                 Spinner sp = (Spinner) row.getChildAt(2);
                 int playerId = Integer.parseInt(txtv.getText().toString());
-                list.add(new Participation(players.get(playerId),team,PlayerPosition.valueOf(sp.getSelectedItem().toString())));
+                list.add(new Participation(players.get(playerId), team, PlayerPosition.valueOf(sp.getSelectedItem().toString())));
             }
         }
         return list;

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".TeamManagmentActivity"
+    tools:context=".TeamDivisionActivity"
     android:background="@drawable/background">
 
     <RelativeLayout
@@ -47,7 +47,7 @@
             android:layout_below="@+id/container"
             android:layout_marginEnd="53dp"
             android:layout_marginRight="53dp"
-            android:text="Button" />
+            android:text="@string/btnContinue" />
 
     </RelativeLayout>
 

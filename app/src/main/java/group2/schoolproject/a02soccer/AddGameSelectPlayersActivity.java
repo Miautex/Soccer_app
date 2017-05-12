@@ -156,9 +156,9 @@ public class AddGameSelectPlayersActivity extends DynamicMenuActivity implements
         //Game result = getGameWithParticipations(selectedPlayers);
         Game result = new Game(getDateFromDatePicker(datePicker), 0, 0);
 
-        //Intent myIntent = new Intent(this, TeamManagmentActivity.class);
+        //Intent myIntent = new Intent(this, TeamDivisionActivity.class);
         //Intent myIntent = new Intent(this, AddGameEnterDataActivity.class);
-        Intent myIntent = new Intent(this, TeamManagmentActivity.class);
+        Intent myIntent = new Intent(this, TeamDivisionActivity.class);
         myIntent.putExtra("game", result);
         myIntent.putExtra("players",selectedPlayers);
 

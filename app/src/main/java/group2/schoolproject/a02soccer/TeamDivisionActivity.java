@@ -19,9 +19,9 @@ import pkgData.Player;
 import pkgData.Team;
 import pkgListeners.OnTeamChangedListener;
 import pkgTab.SectionsPageAdapter;
-import pkgTab.TeamDivisionTab1;
+import pkgTab.TeamDivisionTab;
 
-public class TeamManagmentActivity extends AppCompatActivity implements OnTeamChangedListener, View.OnClickListener {
+public class TeamDivisionActivity extends AppCompatActivity implements OnTeamChangedListener, View.OnClickListener {
 
     private SectionsPageAdapter mSectionsPageAdapter;
     private ViewPager mViewPager;
@@ -41,7 +41,7 @@ public class TeamManagmentActivity extends AppCompatActivity implements OnTeamCh
         for(Player p : temp){
             allPlayers.put(p.getId(),p);
         }
-        setContentView(R.layout.activity_team_managment);
+        setContentView(R.layout.activity_team_division);
         // get Game
         //get Participations in List
         mSectionsPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
@@ -76,26 +76,26 @@ public class TeamManagmentActivity extends AppCompatActivity implements OnTeamCh
         Bundle bundle1 = new Bundle();
         bundle1.putSerializable("Players",allPlayers);
         bundle1.putSerializable("Team", Team.TEAM1);
-        Fragment team1 = new TeamDivisionTab1();
-        listener[0] = (TeamDivisionTab1) team1;
-        ((TeamDivisionTab1)team1).setOnTeamChangedListener(this);
+        Fragment team1 = new TeamDivisionTab();
+        listener[0] = (TeamDivisionTab) team1;
+        ((TeamDivisionTab)team1).setOnTeamChangedListener(this);
         team1.setArguments(bundle1);
         adapter.addFragment(team1,"TEAM1");
         Bundle bundle2 = new Bundle();
         bundle2.putSerializable("Players",allPlayers);
         bundle2.putSerializable("Team", Team.TEAM2);
-        Fragment team2  = new TeamDivisionTab1();
-        listener[1] = (TeamDivisionTab1) team2;
+        Fragment team2  = new TeamDivisionTab();
+        listener[1] = (TeamDivisionTab) team2;
         team2.setArguments(bundle2);
-        ((TeamDivisionTab1)team2).setOnTeamChangedListener(this);
+        ((TeamDivisionTab)team2).setOnTeamChangedListener(this);
         adapter.addFragment(team2,"TEAM2");
         viewPager.setAdapter(adapter);
     }
 
     public ArrayList<Participation> createParticipations() throws Exception {
         //getPlayersFromParticipations();
-        ArrayList<Participation> list1 = ((TeamDivisionTab1) mSectionsPageAdapter.getItem(0)).getPlayersInTeam();
-        ArrayList<Participation> list2 = ((TeamDivisionTab1) mSectionsPageAdapter.getItem(1)).getPlayersInTeam();
+        ArrayList<Participation> list1 = ((TeamDivisionTab) mSectionsPageAdapter.getItem(0)).getPlayersInTeam();
+        ArrayList<Participation> list2 = ((TeamDivisionTab) mSectionsPageAdapter.getItem(1)).getPlayersInTeam();
         if (list1.size() + list2.size() != allPlayers.size()) {
             //try {
                 throw new Exception("there are players without team");
