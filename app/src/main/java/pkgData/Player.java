@@ -3,9 +3,14 @@ package pkgData;
 import java.io.Serializable;
 import java.util.TreeSet;
 
+import pkgException.NameTooLongException;
+import pkgException.UsernameTooLongException;
 import pkgMisc.UsernameValidator;
 
 public final class Player implements Comparable, Serializable, Cloneable {
+    private final static int MAX_LENGTH_NAME = 50,
+                             MAX_LENGTH_USERNAME = 20;
+
     private Integer id = null;
     private Boolean isAdmin = false;
     private String name = null,
@@ -68,7 +73,10 @@ public final class Player implements Comparable, Serializable, Cloneable {
         if (name == null) {
             throw new Exception("name must not be null");
         }
-        this.name = name;
+        else if (name.length() > MAX_LENGTH_NAME) {
+            throw new NameTooLongException(MAX_LENGTH_NAME);
+        }
+        this.name = name.trim();
     }
 
     public String getUsername() {
@@ -89,11 +97,14 @@ public final class Player implements Comparable, Serializable, Cloneable {
         if (username == null) {
             throw new Exception("username must not be null");
         }
-        if (!UsernameValidator.validate(username)) {
+        else if (!UsernameValidator.validate(username)) {
             throw new IllegalArgumentException("username must only contain letters and numbers");
         }
+        else if (username.length() > MAX_LENGTH_USERNAME) {
+            throw new UsernameTooLongException(MAX_LENGTH_USERNAME);
+        }
 
-        this.username = username.toLowerCase();
+        this.username = (username.toLowerCase()).trim();
     }
 
     public TreeSet<PlayerPosition> getPositions() {

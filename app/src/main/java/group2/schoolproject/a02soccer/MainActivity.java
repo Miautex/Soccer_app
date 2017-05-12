@@ -108,14 +108,15 @@ public class MainActivity extends DynamicMenuActivity
     public void displayPlayers() throws Exception {
         final ArrayAdapter<Player> lsvAdapter = new ArrayAdapter<Player>(this, android.R.layout.simple_list_item_1);
         lsvAdapter.addAll(db.getAllPlayers());
+        lsvEditableGames.setAdapter(lsvAdapter);
 
-        //because otherwise crash if app is closed
+        /*//because otherwise crash if app is closed
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 lsvEditableGames.setAdapter(lsvAdapter);
             }
-        });
+        });*/
     }
 
     @Override

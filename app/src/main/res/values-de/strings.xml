@@ -47,6 +47,7 @@
 
     <string name="navigation_drawer_open">Navigation öffnen</string>
     <string name="navigation_drawer_close">Navigation schließen</string>
+    <item name="mniAddPlayer" type="id">tst</item>
 
     <string name="Error">Fehler</string>
     <string name="msg_SelectMinNumOfPlayers">Es müssen mindestens %d Spieler ausgewählt werden, um ein Spiel zu spielen</string>
@@ -64,6 +65,11 @@
     <string name="msg_CouldNotDeletePlayer">Spieler konnte nicht gelöscht werden</string>
     <string name="msg_NoActionsOnOwnPlayer">Keine Aktionen auf eigenen Spieler anwendbar</string>
     <string name="msg_EnterPassword">Bitte neues Passwort eintragen</string>
+    <string name="msg_ConnectionTimeout">Zeitüberschreitung bei Serververbindung</string>
+    <string name="msg_NetworkUnreachable">Internet ist deaktiviert</string>
+    <string name="msg_IllegalUsername">Benutzername darf nur Buchstaben und Zahlen enthalten</string>
+    <string name="msg_UsernameTooLong">Benutzername darf nicht länger als %d Zeichen sein</string>
+    <string name="msg_NameTooLong">Name darf nicht länger als %d Zeichen sein</string>
 
     <string name="ctxMniEditPlayer">Bearbeiten</string>
     <string name="ctxMniDeletePlayer">Löschen</string>

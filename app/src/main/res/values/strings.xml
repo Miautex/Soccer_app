@@ -47,7 +47,6 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <item name="mniAddPlayer" type="id">tst</item>
 
     <string name="Error">Error</string>
     <string name="msg_SelectMinNumOfPlayers">At least %d players must be selected to play a game</string>
@@ -68,6 +67,8 @@
     <string name="msg_ConnectionTimeout">Connection to server timed out</string>
     <string name="msg_NetworkUnreachable">Internet is disabled</string>
     <string name="msg_IllegalUsername">Username must only contain letters and numbers</string>
+    <string name="msg_UsernameTooLong">Username must not be longer than %d characters</string>
+    <string name="msg_NameTooLong">Name must not be longer than %d characters</string>
 
 
     <string name="ctxMniEditPlayer">Edit</string>

@@ -14,6 +14,8 @@ import pkgData.Player;
 import pkgData.PlayerPosition;
 import pkgException.CouldNotSetPlayerPositionsException;
 import pkgException.DuplicateUsernameException;
+import pkgException.NameTooLongException;
+import pkgException.UsernameTooLongException;
 import pkgMenu.DynamicMenuActivity;
 
 /**
@@ -168,6 +170,14 @@ public class EditPlayerOwnActivity extends DynamicMenuActivity implements View.O
         }
         catch (IllegalArgumentException ex) {
             throw new IllegalArgumentException(getString(R.string.msg_IllegalUsername));
+        }
+        catch (NameTooLongException ex) {
+            throw new NameTooLongException(String.format(getString(R.string.msg_NameTooLong),
+                    ex.getMaxLenght()), ex.getMaxLenght());
+        }
+        catch (UsernameTooLongException ex) {
+            throw new UsernameTooLongException(String.format(getString(R.string.msg_UsernameTooLong),
+                    ex.getMaxLenght()), ex.getMaxLenght());
         }
 
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();

@@ -7,10 +7,12 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import pkgDatabase.Database;
 import pkgData.Player;
 import pkgData.PlayerPosition;
+import pkgDatabase.Database;
 import pkgException.DuplicateUsernameException;
+import pkgException.NameTooLongException;
+import pkgException.UsernameTooLongException;
 import pkgMenu.DynamicMenuActivity;
 
 
@@ -76,6 +78,14 @@ public class AddPlayerActivity extends DynamicMenuActivity implements View.OnCli
         }
         catch (IllegalArgumentException ex) {
             throw new IllegalArgumentException(getString(R.string.msg_IllegalUsername));
+        }
+        catch (NameTooLongException ex) {
+            throw new NameTooLongException(String.format(getString(R.string.msg_NameTooLong),
+                    ex.getMaxLenght()), ex.getMaxLenght());
+        }
+        catch (UsernameTooLongException ex) {
+            throw new UsernameTooLongException(String.format(getString(R.string.msg_UsernameTooLong),
+                    ex.getMaxLenght()), ex.getMaxLenght());
         }
     }
 
