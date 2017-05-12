@@ -164,7 +164,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
             msg = e.getMessage();
         }
         finally {
-            runOnUiThread(new ShowToastRunnable(getApplicationContext(), msg));
+            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -182,7 +182,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
     @Override
     public void loadPlayersFailed(Exception ex) {
         toggleLoginInputs(true);
-        runOnUiThread(new ShowToastRunnable(getApplicationContext(), ex.getMessage()));
+        Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
         ex.printStackTrace();
     }
 
@@ -200,7 +200,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
     @Override
     public void loadGamesFailed(Exception ex) {
         toggleLoginInputs(true);
-        runOnUiThread(new ShowToastRunnable(getApplicationContext(), ex.getMessage()));
+        Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
         ex.printStackTrace();
     }
 }
