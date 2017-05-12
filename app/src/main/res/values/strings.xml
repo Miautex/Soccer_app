@@ -47,6 +47,7 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
     <item name="mniAddPlayer" type="id">tst</item>
 
     <string name="Error">Error</string>
@@ -72,4 +73,21 @@
 
     <string name="ctxMniEditPlayer">Edit</string>
     <string name="ctxMniDeletePlayer">Delete</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Strings related to Settings -->
+
+    <!-- Example General settings -->
+    <string name="pref_header_general">General</string>
+
+    <string name="pref_ip_key" translatable="false">pref_ip</string>
+    <string name="pref_ip_title">Glassfish Server IP</string>
+    <string name="pref_ip_summary"> </string>
+    <string name="pref_ip_default" translatable="false">192.168.196.82</string>
+
+    <string name="pref_port_key" translatable="false">pref_port</string>
+    <string name="pref_port_title">Glassfish Server Port</string>
+    <string name="pref_port_summary"> </string>
+    <string name="pref_port_default" translatable="false">51246</string>
+    <string name="nav_settings_title">Settings</string>
 </resources>
