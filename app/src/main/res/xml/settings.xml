@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/preference_category_general_title">
+        <ListPreference
+            android:defaultValue="@string/preference_language_default"
+            android:entries="@array/language_entries"
+            android:entryValues="@array/language_values"
+            android:key="preference_general_language"
+            android:summary="@string/preference_language_summary"
+            android:title="@string/preference_language_title"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/preference_category_webservice">
+        <EditTextPreference
+            android:defaultValue="@string/preference_webservice_ip_default"
+            android:key="preference_webservice_ip"
+            android:summary="@string/preference_webservice_ip_summary"
+            android:title="@string/preference_webservice_ip_title"/>
+        <EditTextPreference
+            android:defaultValue="@string/preference_webservice_port_default"
+            android:inputType="number"
+            android:key="preference_webservice_port"
+            android:summary="@string/preference_webservice_port_summary"
+            android:title="@string/preference_webservice_port_title"/>
+    </PreferenceCategory>
+</PreferenceScreen>

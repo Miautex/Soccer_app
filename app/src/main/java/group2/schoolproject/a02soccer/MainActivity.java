@@ -1,9 +1,7 @@
 package group2.schoolproject.a02soccer;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -41,10 +39,8 @@ public class MainActivity extends DynamicMenuActivity
         getAllViews();
         registrateEventHandlers();
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        Accessor.init(preferences.getString(getString(R.string.pref_ip_key), null), preferences.getString(getString(R.string.pref_port_key), null));
-
         try {
+            Accessor.init(getApplicationContext());
             db = Database.getInstance();
             db.addOnPlayersUpdatedListener(this);
             db.addOnGamesUpdatedListener(this);
@@ -89,7 +85,6 @@ public class MainActivity extends DynamicMenuActivity
             openActivity(EditPlayerOwnActivity.class);
 
         } else if (id == R.id.nav_manage) {
-
 
         } else if (id == R.id.mniLogin) {
             openActivity(LoginActivity.class);

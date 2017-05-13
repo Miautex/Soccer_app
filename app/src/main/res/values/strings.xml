@@ -89,19 +89,27 @@
     <string name="ctxMniDeletePlayer">Delete</string>
     <string name="title_activity_settings">Settings</string>
 
-    <!-- Strings related to Settings -->
 
-    <!-- Example General settings -->
-    <string name="pref_header_general">General</string>
+    <!--Settings-->
+    <string name="preference_category_general_title">General</string>
+    <string name="preference_language_title">Language</string>
+    <string name="preference_language_default" translatable="false">en</string>
+    <string name="preference_language_summary">App language</string>
+    <string name="preference_category_webservice">Webservice</string>
+    <string name="preference_webservice_ip_title">IP</string>
+    <string name="preference_webservice_ip_summary">Webservice ip address</string>
+    <string name="preference_webservice_ip_default" translatable="false">192.168.0.1</string>
+    <string name="preference_webservice_port_title">Port</string>
+    <string name="preference_webservice_port_summary">Webservice port</string>
+    <string name="preference_webservice_port_default" translatable="false">8080</string>
 
-    <string name="pref_ip_key" translatable="false">pref_ip</string>
-    <string name="pref_ip_title">Glassfish Server IP</string>
-    <string name="pref_ip_summary"> </string>
-    <string name="pref_ip_default" translatable="false">192.168.196.82</string>
-
-    <string name="pref_port_key" translatable="false">pref_port</string>
-    <string name="pref_port_title">Glassfish Server Port</string>
-    <string name="pref_port_summary"> </string>
-    <string name="pref_port_default" translatable="false">51246</string>
-    <string name="nav_settings_title">Settings</string>
+    <string-array name="language_entries">
+        <item>Deutsch</item>
+        <item>English</item>
+    </string-array>
+    <string-array name="language_values">
+        <item>de</item>
+        <item>en</item>
+    </string-array>
+    <!---->
 </resources>

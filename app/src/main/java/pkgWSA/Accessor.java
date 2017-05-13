@@ -1,21 +1,30 @@
 package pkgWSA;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
+import group2.schoolproject.a02soccer.R;
+
 /**
  * @author Marco Wilscher
  */
 
 public final class Accessor {
-    private static String serverUrl = "http://{ip}:{port}/team02/services/", serverIp, serverPort;
+    private static String serverUrl = "http://{ip}:{port}/team02/services/";
+    private static Context ctx = null;
     private static boolean initialized = false;
 
-    public static void init(String ip, String port) {
-        serverIp = ip;
-        serverPort = port;
+    public static void init(Context context) {
+        ctx = context;
         initialized = true;
     }
+
     private static String generateUrl() {
-        return serverUrl.replace("{ip}", serverIp).replace("{port}", serverPort);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ctx);
+        return serverUrl.replace("{ip}", sp.getString("preference_webservice_ip", ctx.getString(R.string.preference_webservice_ip_default))).replace("{port}", sp.getString("preference_webservice_port", ctx.getString(R.string.preference_webservice_port_default)));
     }
+
     public static void runRequestAsync(HttpMethod httpMethod, String uriPath, String uriQuery, String requetsBody, WebRequestTaskListener listener) throws Exception {
         if (!initialized) {
             throw new Exception("Accessor not initialized");
@@ -33,6 +42,7 @@ public final class Accessor {
         requestTask.execute(parameter);
         return requestTask.get();
     }
+
     public static String getServerUrl () {
         return generateUrl();
     }
