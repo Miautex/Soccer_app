@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
-import pkgData.GsonSerializor;
+import pkgMisc.GsonSerializor;
 import pkgData.Player;
 import pkgData.PlayerPosition;
 import pkgDatabase.pkgListener.OnLoadAllPlayersListener;

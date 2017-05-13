@@ -2,7 +2,7 @@ package pkgDatabase;
 
 import java.util.ArrayList;
 
-import pkgData.GsonSerializor;
+import pkgMisc.GsonSerializor;
 import pkgDatabase.pkgListener.OnLoginListener;
 import pkgException.InvalidLoginDataException;
 import pkgWSA.AccessorResponse;

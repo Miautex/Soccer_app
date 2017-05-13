@@ -7,6 +7,7 @@
     <string name="title_activity_edit_player_own">Edit own data</string>
     <string name="title_activity_edit_player_admin">Edit player</string>
     <string name="title_activity_add_player">Add player</string>
+    <string name="title_activity_player_stats">Player Stats</string>
 
     <string name="btnLogin">Login</string>
     <string name="Password">Password</string>
@@ -45,6 +46,17 @@
     <string name="Nutmeg">Nutmeg</string>
     <string name="btnBack">Back</string>
     <string name="ckbUpdatePassword">Update Password</string>
+    <string name="GamesPlayed">Games Played</string>
+    <string name="GamesWon">Victories</string>
+    <string name="GamesLost">Defeats</string>
+    <string name="GameDraws">Draws</string>
+    <string name="AvgGoalDiff">Avg. Goal Difference</string>
+    <string name="GoalsShotAll">Overall Goals Shot</string>
+    <string name="NumPosAttack">Played Attack</string>
+    <string name="NumPosDefense">Played Defense</string>
+    <string name="NumPosMidfield">Played Midfield</string>
+    <string name="NumPosGoal">Played Goalie</string>
+
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -64,7 +76,7 @@
     <string name="msg_UsernameNotAvailable">Username \'%s\' already exists</string>
     <string name="msg_CouldNotSetPositions">Could not set positions</string>
     <string name="msg_CouldNotDeletePlayer">Could not delete player</string>
-    <string name="msg_NoActionsOnOwnPlayer">No actions on own Player possible</string>
+    <string name="msg_CannotDeleteOwnPlayer">Cannot delete own Player</string>
     <string name="msg_EnterPassword">Please enter a new password</string>
     <string name="msg_ConnectionTimeout">Connection to server timed out</string>
     <string name="msg_NetworkUnreachable">Internet is disabled</string>

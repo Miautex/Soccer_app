@@ -3,7 +3,7 @@ package pkgDatabase;
 import java.util.ArrayList;
 
 import pkgData.Game;
-import pkgData.GsonSerializor;
+import pkgMisc.GsonSerializor;
 import pkgDatabase.pkgListener.OnLoadAllGamesListener;
 import pkgResult.GameResult;
 import pkgWSA.AccessorResponse;

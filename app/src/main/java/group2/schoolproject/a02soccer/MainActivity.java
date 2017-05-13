@@ -28,8 +28,8 @@ import pkgWSA.Accessor;
 
 public class MainActivity extends DynamicMenuActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnPlayersUpdatedListener,
-        OnGamesUpdatedListener {
-    ListView lsvEditableGames = null;
+        OnGamesUpdatedListener, AdapterView.OnItemClickListener {
+    ListView lsvPlayers = null;
     Database db = null;
 
     @Override
@@ -103,31 +103,25 @@ public class MainActivity extends DynamicMenuActivity
     }
 
     private void getAllViews(){
-        lsvEditableGames = (ListView) this.findViewById(R.id.lsvEditableGames);
+        lsvPlayers = (ListView) this.findViewById(R.id.lsvPlayers);
     }
 
     private void registrateEventHandlers(){
-        registerForContextMenu(lsvEditableGames);       //set up context-menu
+        registerForContextMenu(lsvPlayers);       //set up context-menu
+        lsvPlayers.setOnItemClickListener(this);
+
     }
 
     public void displayPlayers() throws Exception {
         final ArrayAdapter<Player> lsvAdapter = new ArrayAdapter<Player>(this, android.R.layout.simple_list_item_1);
         lsvAdapter.addAll(db.getAllPlayers());
-        lsvEditableGames.setAdapter(lsvAdapter);
-
-        /*//because otherwise crash if app is closed
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                lsvEditableGames.setAdapter(lsvAdapter);
-            }
-        });*/
+        lsvPlayers.setAdapter(lsvAdapter);
     }
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        if (v.getId()==R.id.lsvEditableGames) {
+        if (v.getId()==R.id.lsvPlayers) {
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.menu_list, menu);
         }
@@ -136,14 +130,9 @@ public class MainActivity extends DynamicMenuActivity
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        Player selectedPlayer = (Player) lsvEditableGames.getAdapter().getItem(info.position);
+        Player selectedPlayer = (Player) lsvPlayers.getAdapter().getItem(info.position);
 
         try {
-            //Player cannot delete his own player
-            if (db.getCurrentlyLoggedInPlayer().equals(selectedPlayer)) {
-                throw new Exception(getString(R.string.msg_NoActionsOnOwnPlayer));
-            }
-
             switch (item.getItemId()) {
                 case R.id.edit:
                     onCtxMniEdit(selectedPlayer);
@@ -155,14 +144,22 @@ public class MainActivity extends DynamicMenuActivity
         }
         catch (Exception ex) {
             Toast.makeText(this, getString(R.string.Error) + ": " + ex.getMessage(), Toast.LENGTH_SHORT).show();
+            ex.printStackTrace();
         }
 
         return false;
     }
 
     private void onCtxMniEdit(Player selectedPlayer) {
-        Intent myIntent = new Intent(this, EditPlayerAdminActivity.class);
-        myIntent.putExtra("player", selectedPlayer);
+        Intent myIntent;
+        if (db.getCurrentlyLoggedInPlayer().equals(selectedPlayer)) {
+            myIntent = new Intent(this, EditPlayerOwnActivity.class);
+        }
+        else
+        {
+            myIntent = new Intent(this, EditPlayerAdminActivity.class);
+            myIntent.putExtra("player", selectedPlayer);
+        }
 
         this.startActivity(myIntent);
     }
@@ -170,8 +167,14 @@ public class MainActivity extends DynamicMenuActivity
     private void onCtxMniDelete(Player selectedPlayer) throws Exception {
 
         try {
-            if (db.remove(selectedPlayer)) {
-                ((ArrayAdapter<Player>) lsvEditableGames.getAdapter()).remove(selectedPlayer);
+            if (db.getCurrentlyLoggedInPlayer().equals(selectedPlayer)) {
+                //Player cannot delete his own player
+                throw new Exception(getString(R.string.msg_CannotDeleteOwnPlayer));
+            }
+            else {
+                if (db.remove(selectedPlayer)) {
+                    ((ArrayAdapter<Player>) lsvPlayers.getAdapter()).remove(selectedPlayer);
+                }
             }
         }
         catch (CouldNotDeletePlayerException ex) {
@@ -190,5 +193,14 @@ public class MainActivity extends DynamicMenuActivity
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Player selectedPlayer = (Player) lsvPlayers.getItemAtPosition(position);
+        Intent myIntent = new Intent(this, ShowPlayerStatsActivity.class);
+
+        myIntent.putExtra("player", selectedPlayer);
+        this.startActivity(myIntent);
     }
 }

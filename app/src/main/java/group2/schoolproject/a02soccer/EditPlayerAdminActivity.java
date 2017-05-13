@@ -55,9 +55,9 @@ public class EditPlayerAdminActivity extends DynamicMenuActivity implements View
         btnCancel = (Button) findViewById(R.id.btnCancel);
         edtName = (EditText) findViewById(R.id.edtName);
         edtUsername = (EditText) findViewById(R.id.edtUsername);
-        edtPassword = (EditText) findViewById(R.id.edtNewPassword);
+        edtPassword = (EditText) findViewById(R.id.edtPassword);
         ckbIsAdmin = (CheckBox) findViewById(R.id.ckbIsAdmin);
-        ckbUpdatePassword = (CheckBox) findViewById(R.id.ckbUpdatePassword);
+        ckbUpdatePassword = (CheckBox) findViewById(R.id.txvPassword);
     }
 
     private void registrateEventHandlers(){
@@ -81,7 +81,7 @@ public class EditPlayerAdminActivity extends DynamicMenuActivity implements View
             else if (v.getId() == R.id.btnCancel) {
                 this.finish();
             }
-            else if (v.getId() == R.id.ckbUpdatePassword) {
+            else if (v.getId() == R.id.txvPassword) {
                 toggleEdtPassword(ckbUpdatePassword.isChecked());
             }
         } catch (Exception e) {
@@ -101,8 +101,7 @@ public class EditPlayerAdminActivity extends DynamicMenuActivity implements View
         if (edtName.getText().toString().isEmpty() || edtUsername.getText().toString().isEmpty()) {
             throw new Exception(getString(R.string.msg_EnterNameUsername));
         }
-
-        if (ckbUpdatePassword.isChecked() && edtPassword.getText().toString().isEmpty()) {
+        else if (ckbUpdatePassword.isChecked() && edtPassword.getText().toString().isEmpty()) {
             throw new Exception(getString(R.string.msg_EnterPassword));
         }
 

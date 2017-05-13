@@ -46,7 +46,7 @@ public class AddPlayerActivity extends DynamicMenuActivity implements View.OnCli
         btnCancel = (Button) findViewById(R.id.btnCancel);
         edtName = (EditText) findViewById(R.id.edtName);
         edtUsername = (EditText) findViewById(R.id.edtUsername);
-        edtPassword = (EditText) findViewById(R.id.edtNewPassword);
+        edtPassword = (EditText) findViewById(R.id.edtPassword);
         ckbIsAdmin = (CheckBox) findViewById(R.id.ckbIsAdmin);
     }
 

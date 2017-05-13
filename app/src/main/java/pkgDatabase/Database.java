@@ -11,7 +11,7 @@ import java.util.Locale;
 
 import group2.schoolproject.a02soccer.R;
 import pkgData.Game;
-import pkgData.GsonSerializor;
+import pkgMisc.GsonSerializor;
 import pkgData.Participation;
 import pkgData.Player;
 import pkgData.PlayerPosition;

@@ -3,7 +3,7 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@id/mniAddPlayer"
+            android:id="@+id/mniAddPlayer"
             android:icon="@drawable/ic_mosquito"
             android:title="@string/mniAdd" />
         <item

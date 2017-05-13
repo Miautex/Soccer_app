@@ -2,7 +2,7 @@ package pkgDatabase;
 
 import java.util.ArrayList;
 
-import pkgData.GsonSerializor;
+import pkgMisc.GsonSerializor;
 import pkgData.PlayerPosition;
 import pkgDatabase.pkgListener.OnLoadPlayerPositionsListener;
 import pkgResult.PositionResult;

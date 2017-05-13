@@ -7,6 +7,7 @@
     <string name="title_activity_edit_player_own">Eigene Daten bearbeiten</string>
     <string name="title_activity_edit_player_admin">Spieler bearbeiten</string>
     <string name="title_activity_add_player">Spieler hinzufügen</string>
+    <string name="title_activity_player_stats">Spieler Statistiken</string>
 
     <string name="btnLogin">Anmelden</string>
     <string name="Password">Passwort</string>
@@ -44,10 +45,19 @@
     <string name="Nutmeg">Gurken</string>
     <string name="btnBack">Zurück</string>
     <string name="ckbUpdatePassword">Passwort ändern</string>
+    <string name="GamesPlayed">Spiele gespielt</string>
+    <string name="GamesWon">Siege</string>
+    <string name="GamesLost">Niederlagen</string>
+    <string name="GameDraws">Unentschieden</string>
+    <string name="AvgGoalDiff">Durchschn. Tor Differenz</string>
+    <string name="GoalsShotAll">Tore geschossen (Gesamt)</string>
+    <string name="NumPosAttack">Sturm gespielt</string>
+    <string name="NumPosDefense">Verteidigung gespielt</string>
+    <string name="NumPosMidfield">Mittelfeld gespielt</string>
+    <string name="NumPosGoal">Torwart gespielt</string>
 
     <string name="navigation_drawer_open">Navigation öffnen</string>
     <string name="navigation_drawer_close">Navigation schließen</string>
-    <item name="mniAddPlayer" type="id">tst</item>
 
     <string name="Error">Fehler</string>
     <string name="msg_SelectMinNumOfPlayers">Es müssen mindestens %d Spieler ausgewählt werden, um ein Spiel zu spielen</string>
@@ -63,7 +73,7 @@
     <string name="msg_UsernameNotAvailable">Benutzername \'%s\' existiert bereits</string>
     <string name="msg_CouldNotSetPositions">Positionen konnten nicht gesetzt werden</string>
     <string name="msg_CouldNotDeletePlayer">Spieler konnte nicht gelöscht werden</string>
-    <string name="msg_NoActionsOnOwnPlayer">Keine Aktionen auf eigenen Spieler anwendbar</string>
+    <string name="msg_CannotDeleteOwnPlayer">Eigener Spieler kann nicht gelöscht werden</string>
     <string name="msg_EnterPassword">Bitte neues Passwort eintragen</string>
     <string name="msg_ConnectionTimeout">Zeitüberschreitung bei Serververbindung</string>
     <string name="msg_NetworkUnreachable">Internet ist deaktiviert</string>

@@ -8,7 +8,7 @@ import pkgException.UsernameTooLongException;
 import pkgMisc.UsernameValidator;
 
 public final class Player implements Comparable, Serializable, Cloneable {
-    private final static int MAX_LENGTH_NAME = 50,
+    private final static int MAX_LENGTH_NAME = 25,
                              MAX_LENGTH_USERNAME = 20;
 
     private Integer id = null;
@@ -20,6 +20,7 @@ public final class Player implements Comparable, Serializable, Cloneable {
                     numDefeats = null,
                     numDraws = null;
     private Float avgGoalDifference = null;
+    private PlayerStatistics statistics;
 
     public Player() {
         super();
@@ -161,6 +162,14 @@ public final class Player implements Comparable, Serializable, Cloneable {
             throw new IllegalArgumentException("goalRatio must not be negative");
         }
         this.avgGoalDifference = goalRatio;
+    }
+
+    public PlayerStatistics getStatistics() {
+        return statistics;
+    }
+
+    public void setStatistics(PlayerStatistics statistics) {
+        this.statistics = statistics;
     }
 
     @Override

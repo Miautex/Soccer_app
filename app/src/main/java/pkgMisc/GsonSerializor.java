@@ -1,10 +1,14 @@
-package pkgData;
+package pkgMisc;
 
 import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pkgData.Game;
+import pkgData.Participation;
+import pkgData.Player;
+import pkgData.PlayerPositionRequest;
 import pkgResult.GameResult;
 import pkgResult.ParticipationResult;
 import pkgResult.PlayerResult;
@@ -23,6 +27,7 @@ public class GsonSerializor {
         try {
             jsonObject = new JSONObject(gson.toJson(p));
             jsonObject.remove("positions");
+            jsonObject.remove("statistics");
             jsonObject.put("admin", jsonObject.get("isAdmin"));     //it's "admin" and not "isAdmin" for webservice for some reason...
             jsonObject.remove("isAdmin");
             retVal = jsonObject.toString();

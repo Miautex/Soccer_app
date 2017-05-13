@@ -23,14 +23,16 @@ import pkgMenu.DynamicMenuActivity;
  */
 
 public class EditPlayerOwnActivity extends DynamicMenuActivity implements View.OnClickListener {
-    Button btnSave = null;
-    Button btnCancel = null;
-    EditText edtName = null;
-    EditText edtUsername = null;
-    CheckBox ckbPosMid = null;
-    CheckBox ckbPosGoal = null;
-    CheckBox ckbPosDef = null;
-    CheckBox ckbPosAtk = null;
+    Button btnSave = null,
+            btnCancel = null;
+    EditText edtName = null,
+             edtUsername = null,
+            edtPassword = null;
+    CheckBox ckbPosMid = null,
+            ckbPosGoal = null,
+            ckbPosDef = null,
+            ckbPosAtk = null,
+            ckbUpdatePassword = null;
 
     Database db = null;
 
@@ -56,6 +58,8 @@ public class EditPlayerOwnActivity extends DynamicMenuActivity implements View.O
         btnCancel = (Button) findViewById(R.id.btnCancel);
         edtName = (EditText) findViewById(R.id.edtName);
         edtUsername = (EditText) findViewById(R.id.edtUsername);
+        edtPassword = (EditText) findViewById(R.id.edtPassword);
+        ckbUpdatePassword = (CheckBox) findViewById(R.id.txvPassword);
         ckbPosAtk = (CheckBox) findViewById(R.id.ckbPosAtk);
         ckbPosDef = (CheckBox) findViewById(R.id.ckbPosDef);
         ckbPosGoal = (CheckBox) findViewById(R.id.ckbPosGoal);
@@ -65,6 +69,7 @@ public class EditPlayerOwnActivity extends DynamicMenuActivity implements View.O
     private void registrateEventHandlers(){
         btnSave.setOnClickListener(this);
         btnCancel.setOnClickListener(this);
+        ckbUpdatePassword.setOnClickListener(this);
     }
 
     private void initTextFields() {
@@ -124,10 +129,17 @@ public class EditPlayerOwnActivity extends DynamicMenuActivity implements View.O
             else if (v.getId() == R.id.btnCancel) {
                 this.finish();
             }
+            else if (v.getId() == R.id.txvPassword) {
+                toggleEdtPassword(ckbUpdatePassword.isChecked());
+            }
         } catch (Exception e) {
             Toast.makeText(this, getString(R.string.Error) + ": " + e.getMessage(), Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
+    }
+
+    private void toggleEdtPassword(boolean enabled) {
+        edtPassword.setEnabled(enabled);
     }
 
     private void onBtnSaveClick() throws Exception {
@@ -139,8 +151,10 @@ public class EditPlayerOwnActivity extends DynamicMenuActivity implements View.O
         if (edtName.getText().toString().isEmpty() || edtUsername.getText().toString().isEmpty()) {
             throw new Exception(getString(R.string.msg_EnterNameUsername));
         }
-
-        if (!ckbPosMid.isChecked() && !ckbPosGoal.isChecked() && !ckbPosAtk.isChecked() && !ckbPosDef.isChecked()) {
+        else if (ckbUpdatePassword.isChecked() && edtPassword.getText().toString().isEmpty()) {
+            throw new Exception(getString(R.string.msg_EnterPassword));
+        }
+        else if (!ckbPosMid.isChecked() && !ckbPosGoal.isChecked() && !ckbPosAtk.isChecked() && !ckbPosDef.isChecked()) {
             throw new Exception(getString(R.string.msg_SelectMinNumOfPositions));
         }
 
@@ -151,12 +165,14 @@ public class EditPlayerOwnActivity extends DynamicMenuActivity implements View.O
             for (PlayerPosition pp : getCheckedPlayerPositions()) {
                 updatedPlayer.addPosition(pp);
             }
-
-
             isSuccess = db.update(updatedPlayer);
 
             if (isSuccess) {
                 msg = getString(R.string.msg_UpdatedUserData);
+
+                if (ckbUpdatePassword.isChecked()) {
+                    db.setPassword(updatedPlayer, edtPassword.getText().toString());
+                }
             }
             else {
                 msg = getString(R.string.msg_CouldNotUpdateUserData);
