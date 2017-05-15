@@ -31,7 +31,7 @@ import pkgListeners.OnScoreChangedListener;
 
 
 public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeListener, View.OnKeyListener, View.OnClickListener {
-    TableLayout table_PlayersData = null;
+    private TableLayout table_PlayersData = null;
     private View view = null;
 
     private ImageButton icGoalShot = null;
@@ -41,12 +41,13 @@ public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeL
     private ImageButton icGoalSnow = null;
     private ImageButton icNutmeg = null;
 
-    OnScoreChangedListener scoreChangedListener = null;
+    private OnScoreChangedListener scoreChangedListener = null;
 
     private HashMap<Integer, Participation> hmParticipations;
 
     public TabAddGameEnterData() {
         super();
+        hmParticipations = new HashMap<>();
     }
 
     @Nullable
@@ -54,9 +55,12 @@ public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeL
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_add_game_enter_data,container,false);
 
-        hmParticipations = new HashMap<>();
         getAllViews();
         registrateEventHandlers();
+
+        ArrayList<Participation> participations = (ArrayList<Participation>) this.getArguments().getSerializable("participations");
+        setParticipations(participations);
+
         return view;
     }
 
@@ -83,7 +87,7 @@ public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeL
         scoreChangedListener = listener;
     }
 
-    public void setParticipations(Collection<Participation> participations) {
+    private void setParticipations(Collection<Participation> participations) {
         try {
             hmParticipations.clear();
             for (Participation p : participations) {
@@ -95,30 +99,6 @@ public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeL
         catch (Exception e) {
             ExceptionNotification.notify(this.getContext(), e);
         }
-    }
-
-    private void setParticipationForRow(int index, Participation p) throws Exception {
-        TableRow row = null;
-        TextView[] viewTexts = new TextView[8];
-
-        if (index>=table_PlayersData.getChildCount()) {
-            throw new IllegalArgumentException("Index out of bound");
-        }
-
-        row = (TableRow) table_PlayersData.getChildAt(index);
-
-        for (int i=0; i<viewTexts.length; i++) {
-            viewTexts[i] = (TextView) row.getChildAt(i);
-        }
-
-        viewTexts[0].setText(p.getPlayer().getName());
-        viewTexts[1].setText(Integer.toString(p.getNumGoalsShotDefault()));
-        viewTexts[2].setText(Integer.toString(p.getNumGoalsShotHead()));
-        viewTexts[3].setText(Integer.toString(p.getNumGoalsShotHeadSnow()));
-        viewTexts[4].setText(Integer.toString(p.getNumGoalsShotPenalty()));
-        viewTexts[5].setText(Integer.toString(p.getNumGoalsGot()));
-        viewTexts[6].setText(Integer.toString(p.getNumNutmeg()));
-        viewTexts[7].setText(Integer.toString(p.getPlayer().getId()));
     }
 
     private Participation getParticipationFromRow(int index) throws Exception {
@@ -161,7 +141,7 @@ public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeL
 
             row.addView(txvName);
             txvName.setLayoutParams(lptr);
-            txvName.setText(p.getPlayer().getName());
+            txvName.setText(p.getPlayer().toString());
             txvName.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 2));
 
             EditText[] editTexts = new EditText[7];

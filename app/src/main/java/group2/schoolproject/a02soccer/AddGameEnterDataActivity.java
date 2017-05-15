@@ -2,7 +2,6 @@ package group2.schoolproject.a02soccer;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -15,10 +14,10 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import pkgDatabase.Database;
 import pkgData.Game;
 import pkgData.Participation;
 import pkgData.Team;
+import pkgDatabase.Database;
 import pkgListeners.OnScoreChangedListener;
 import pkgTab.SectionsPageAdapter;
 import pkgTab.TabAddGameEnterData;
@@ -37,7 +36,7 @@ public class AddGameEnterDataActivity extends AppCompatActivity implements OnSco
     private Game tmpGame = null;
     private Database db = null;
 
-    TabAddGameEnterData[] tabs = null;
+    private TabAddGameEnterData[] tabs = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,25 +58,8 @@ public class AddGameEnterDataActivity extends AppCompatActivity implements OnSco
             setupViewPager(mViewPager);
             tablayout.setupWithViewPager(mViewPager);
 
-            tabs = new TabAddGameEnterData[2];
-
-            tabs[0] = (TabAddGameEnterData) adapter.getItem(0);
-            tabs[1] = (TabAddGameEnterData) adapter.getItem(1);
-            tabs[0].setOnScoreChangedListener(this);
-            tabs[1].setOnScoreChangedListener(this);
-
             //Initially display score
             updateScoreDisplay(tmpGame.getScoreTeamA(), tmpGame.getScoreTeamB());
-
-            //Handler to display first tab after 0.1sec
-            new Handler().postDelayed(
-                new Runnable(){
-                    @Override
-                    public void run() {
-                        tabs[0].setParticipations(getParticipationsOfTeam(Team.TEAM1));
-                        tabs[1].setParticipations(getParticipationsOfTeam(Team.TEAM2));
-                    }
-                }, 100);
         }
         catch (Exception ex) {
             ExceptionNotification.notify(this, ex);
@@ -100,11 +82,24 @@ public class AddGameEnterDataActivity extends AppCompatActivity implements OnSco
     }
 
     private void setupViewPager(ViewPager viewPager){
-        SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
-        adapter.addFragment(new TabAddGameEnterData(),"TEAM1");
-        adapter.addFragment(new TabAddGameEnterData(),"TEAM2");
+        tabs = new TabAddGameEnterData[2];
+
+        for (int i=0; i<tabs.length; i++) {
+            tabs[i] = new TabAddGameEnterData();
+            tabs[i].setOnScoreChangedListener(this);
+        }
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("participations", getParticipationsOfTeam(Team.TEAM1));
+        tabs[0].setArguments(bundle);
+
+        bundle = new Bundle();
+        bundle.putSerializable("participations", getParticipationsOfTeam(Team.TEAM2));
+        tabs[1].setArguments(bundle);
+
+        adapter.addFragment(tabs[0],"TEAM1");
+        adapter.addFragment(tabs[1],"TEAM2");
         viewPager.setAdapter(adapter);
-        this.adapter = adapter;
     }
 
     private ArrayList<Participation> getParticipationsOfTeam(Team team) {

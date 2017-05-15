@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/background">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <DatePicker
+                android:id="@+id/datePicker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/table_PlayersHeader"
+                android:layout_alignParentTop="true"
+                android:layout_alignRight="@+id/table_PlayersHeader"
+                android:calendarViewShown="false"
+                android:datePickerMode="spinner"/>
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/table_PlayersHeader"
+                android:layout_alignStart="@+id/table_PlayersHeader"
+                android:layout_below="@+id/datePicker"
+                android:layout_marginTop="11dp"
+                android:text="@string/SelectPlayersForGame"
+                android:textSize="24sp" />
+
+            <TableLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:stretchColumns="0"
+                android:layout_marginTop="32dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_alignTop="@+id/textView"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:id="@+id/table_PlayersHeader">
+
+                <TableRow>
+
+                    <CheckBox
+                        android:id="@+id/ckbParticipationHeader"
+                        android:layout_width="0dp"
+                        android:layout_column="0"
+                        android:layout_weight="1.1"
+                        android:checked="true"
+                        android:text="@string/Participation"
+                        android:gravity="center"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_column="1"
+                        android:layout_weight="2"
+                        android:gravity="center"
+                        android:text="@string/Name"
+                        android:textStyle="bold" />
+                </TableRow>
+
+            </TableLayout>
+
+            <ScrollView
+                android:id="@+id/ScrollView01"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="150dp"
+                android:layout_below="@+id/table_PlayersHeader"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true">
+
+                <TableLayout
+                    android:id="@+id/table_Players"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:stretchColumns="0">
+
+                </TableLayout>
+            </ScrollView>
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/textView"
+                android:layout_alignParentTop="true"
+                android:layout_alignStart="@+id/textView"
+                android:layout_marginTop="88dp"
+                android:text="@string/Date"
+                android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/btnCancel"
+                style="@style/buttonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/btnCancel"
+                android:layout_alignBaseline="@+id/btnSave"
+                android:layout_alignBottom="@+id/btnSave"
+                android:layout_toLeftOf="@+id/datePicker"
+                android:layout_toStartOf="@+id/datePicker" />
+
+            <Button
+                android:id="@+id/btnSave"
+                style="@style/buttonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/table_PlayersHeader"
+                android:layout_marginLeft="250dp"
+                android:layout_marginTop="170dp"
+                android:text="@string/btnContinue" />
+
+        </RelativeLayout>
+    </ScrollView>
+</LinearLayout>

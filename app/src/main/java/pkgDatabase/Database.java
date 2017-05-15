@@ -7,7 +7,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Locale;
+import java.util.TreeSet;
 
 import group2.schoolproject.a02soccer.R;
 import pkgData.Game;
@@ -38,8 +40,8 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
     private static Database instance = null;
     private Player currentlyLoggedInPlayer = null;
     private Locale locale;
-    private ArrayList<Player> allPlayers = null;
-    private ArrayList<Game> allGames = null;
+    private TreeSet<Player> allPlayers = null;
+    private TreeSet<Game> allGames = null;
 
     private ArrayList<OnPlayersUpdatedListener> playersChangedListener = null;
     private ArrayList<OnGamesUpdatedListener> gamesChangedListener = null;
@@ -53,8 +55,8 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
     }
 
     private Database() {
-        allPlayers = new ArrayList<>();
-        allGames = new ArrayList<>();
+        allPlayers = new TreeSet<>();
+        allGames = new TreeSet<>();
         playersChangedListener = new ArrayList<>();
         gamesChangedListener = new ArrayList<>();
     }
@@ -123,7 +125,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
     }
 
     public ArrayList<Player> getAllPlayers() throws Exception {
-        return allPlayers;
+        return new ArrayList<>(allPlayers);
     }
 
     public Player getPlayerByUsername(String username) {
@@ -140,9 +142,14 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
             }
         }*/
 
-        for (int i=0; i<allPlayers.size() && player==null; i++) {
-            if (allPlayers.get(i).getUsername().equals(username)) {
-                player = allPlayers.get(i);
+        Iterator<Player> iteratorPlayers = allPlayers.iterator();
+        Player tmpPl = null;
+
+        for (; iteratorPlayers.hasNext() && player==null; ) {
+            tmpPl = iteratorPlayers.next();
+
+            if (tmpPl.getUsername().equals(username)) {
+                player = tmpPl;
             }
         }
 
@@ -169,7 +176,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
     }
 
     public ArrayList<Game> getAllGames() throws Exception {
-        return allGames;
+        return new ArrayList<>(allGames);
     }
 
 
