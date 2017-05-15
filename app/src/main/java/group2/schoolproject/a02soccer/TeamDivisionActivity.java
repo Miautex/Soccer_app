@@ -43,12 +43,12 @@ public class TeamDivisionActivity extends AppCompatActivity implements OnTeamCha
         mSectionsPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
         viewPager = (ViewPager) findViewById(R.id.container);
         setupViewPager(viewPager);
-        setOnClicklistener();
+        setOnClickListener();
         TabLayout tablayout = (TabLayout) findViewById(R.id.tabs);
         tablayout.setupWithViewPager(viewPager);
     }
 
-    private void setOnClicklistener() {
+    private void setOnClickListener() {
         this.findViewById(R.id.btnContinue).setOnClickListener(this);
         this.findViewById(R.id.btnCancel).setOnClickListener(this);
         this.findViewById(R.id.btnShuffle).setOnClickListener(this);
@@ -76,11 +76,13 @@ public class TeamDivisionActivity extends AppCompatActivity implements OnTeamCha
     }
 
     public void createParticipations() throws Exception {
-        //getPlayersFromParticipations();
         ArrayList<Participation> list1 = ((TeamDivisionTab) mSectionsPageAdapter.getItem(0)).getPlayersInTeam();
         ArrayList<Participation> list2 = ((TeamDivisionTab) mSectionsPageAdapter.getItem(1)).getPlayersInTeam();
         if (list1.size() + list2.size() != allPlayers.size()) {
-            throw new Exception("there are players without team");
+            throw new Exception(getString(R.string.msg_PlayerhasNoTeam));
+        }
+        else if(Math.abs((list1.size()-list2.size())) > 1){
+            throw new Exception(getString(R.string.msg_UnbalancedTeams));
         }
         list1.addAll(list2);
         participations = list1;
@@ -105,13 +107,13 @@ public class TeamDivisionActivity extends AppCompatActivity implements OnTeamCha
                 }
             }
         } catch (Exception e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            showToast(e.getMessage());
         }
     }
 
     @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.btnContinue) {
+    public void onClick(View button) {
+        if (button.getId() == R.id.btnContinue) {
             try {
                 createParticipations();
                 game.removeAllParticipations();
@@ -124,11 +126,15 @@ public class TeamDivisionActivity extends AppCompatActivity implements OnTeamCha
             } catch (Exception e) {
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
-        } else if (v.getId() == R.id.btnCancel) {
+        } else if (button.getId() == R.id.btnCancel) {
             this.finish();
-        } else if (v.getId() == R.id.btnShuffle) {
+        } else if (button.getId() == R.id.btnShuffle) {
             Toast.makeText(this, "folgt", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void showToast(String msg){
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 }
 

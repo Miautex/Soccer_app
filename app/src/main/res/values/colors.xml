@@ -4,4 +4,6 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="redLogo">#C26C50</color>
+    <color name="darkerRed">#B0523D</color>
+
 </resources>

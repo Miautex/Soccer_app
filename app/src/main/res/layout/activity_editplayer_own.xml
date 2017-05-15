@@ -136,26 +136,27 @@
         android:layout_alignLeft="@+id/ckbPosDef"
         android:layout_alignStart="@+id/ckbPosDef" />
 
-    <Button
-        android:id="@+id/btnCancel"
-        style="@style/buttonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="45dp"
-        android:layout_toLeftOf="@+id/edtName"
-        android:layout_toStartOf="@+id/edtName"
-        android:text="@string/btnCancel" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+        <Button
+            android:id="@+id/btnCancel"
+            style="@style/buttonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/btnCancel" />
 
-    <Button
-        android:id="@+id/btnSave"
-        style="@style/buttonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/btnCancel"
-        android:layout_alignBottom="@+id/btnCancel"
-        android:layout_toEndOf="@+id/ckbPosGoal"
-        android:layout_toRightOf="@+id/ckbPosGoal"
-        android:text="@string/btnSave" />
+        <Button
+            android:id="@+id/btnSave"
+            style="@style/buttonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/btnSave" />
+    </LinearLayout>
 
 </RelativeLayout>
