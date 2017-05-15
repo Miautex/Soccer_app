@@ -8,6 +8,7 @@
     <string name="title_activity_edit_player_admin">Edit player</string>
     <string name="title_activity_add_player">Add player</string>
     <string name="title_activity_player_stats">Player Stats</string>
+    <string name="title_activity_settings">Settings</string>
 
     <string name="btnLogin">Login</string>
     <string name="Password">Password</string>
@@ -87,7 +88,6 @@
 
     <string name="ctxMniEditPlayer">Edit</string>
     <string name="ctxMniDeletePlayer">Delete</string>
-    <string name="title_activity_settings">Settings</string>
 
 
     <!--Settings-->
@@ -111,5 +111,7 @@
         <item>de</item>
         <item>en</item>
     </string-array>
-    <!---->
+
+    <string name="nav_settings_title">Settings</string>
+
 </resources>

@@ -83,6 +83,7 @@
 
     <string name="ctxMniEditPlayer">Bearbeiten</string>
     <string name="ctxMniDeletePlayer">Löschen</string>
+
     <string name="nav_settings_title">Einstellungen</string>
 
     <!--Settings-->
@@ -94,5 +95,4 @@
     <string name="preference_webservice_ip_title">IP</string>
     <string name="preference_webservice_port_summary">Webservice port</string>
     <string name="preference_webservice_port_title">Port</string>
-    <!---->
 </resources>

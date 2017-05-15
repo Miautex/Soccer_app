@@ -48,15 +48,13 @@
             android:windowSoftInputMode="adjustNothing"/>
         <activity
             android:name=".ShowPlayerStatsActivity"
-            android:label="@string/title_activity_player_stats" />
+            android:label="@string/title_activity_player_stats"/>
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings"
-            android:parentActivityName=".MainActivity">
+            android:label="@string/title_activity_settings">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="group2.schoolproject.a02soccer.MainActivity"/>
+                android:value="group2.schoolproject.a02soccer.MainActivity" />
         </activity>
     </application>
-
 </manifest>

@@ -1,12 +1,14 @@
 package group2.schoolproject.a02soccer;
 
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
 
-public class SettingsActivity extends PreferenceActivity {
+public class SettingsActivity extends AppCompatActivity {
+
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.settings);
+        getFragmentManager().beginTransaction().replace(android.R.id.content, new SettingsFragment()).commit();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 }
