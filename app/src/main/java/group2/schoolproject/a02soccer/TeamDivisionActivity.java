@@ -107,7 +107,7 @@ public class TeamDivisionActivity extends AppCompatActivity implements OnTeamCha
                 }
             }
         } catch (Exception e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            showToast(e.getMessage());
         }
     }
 
