@@ -40,7 +40,8 @@
         <!-- android:theme="@style/AppTheme.NoActionBar"></activity> -->
         <activity
             android:name=".AddGameSelectPlayersActivity"
-            android:label="@string/title_activity_add_game_select_players"/>
+            android:label="@string/title_activity_add_game_select_players"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".AddGameEnterDataActivity"
             android:label="@string/title_activity_add_game_enter_data"

@@ -207,10 +207,8 @@ public final class Player implements Comparable, Serializable, Cloneable {
 
     @Override
     public int compareTo(Object o) {
-        //int cp;
         Player tmpP = (Player) o;
-        //cp = getName().compareTo(tmpP.getName());
-        //return cp;
-        return id-tmpP.getId();
+
+        return this.toString().compareTo(tmpP.toString());
     }
 }

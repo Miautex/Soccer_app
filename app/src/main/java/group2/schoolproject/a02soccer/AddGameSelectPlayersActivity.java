@@ -43,7 +43,7 @@ public class AddGameSelectPlayersActivity extends DynamicMenuActivity implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_addgame);
+        setContentView(R.layout.activity_add_game_select_players);
 
         getAllViews();
         registrateEventHandlers();

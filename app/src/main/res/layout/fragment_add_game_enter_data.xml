@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusable="true"
-    android:focusableInTouchMode="true"
-    android:background="@drawable/background">
+    android:focusableInTouchMode="true">
 
     <TableLayout
         android:layout_width="fill_parent"
@@ -17,13 +16,18 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true">
 
-        <TableRow>
+        <TableRow
+            android:background="@color/redLogo"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp">
 
             <TextView
                 android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_column="0"
                 android:layout_weight="2"
                 android:text="@string/Name"
+                android:gravity="center"
                 android:textStyle="bold" />
 
             <ImageButton
