@@ -15,8 +15,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
+import pkgData.Game;
 import pkgData.Player;
 import pkgDatabase.Database;
 import pkgDatabase.pkgListener.OnGamesUpdatedListener;
@@ -27,8 +29,10 @@ import pkgWSA.Accessor;
 
 public class MainActivity extends DynamicMenuActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnPlayersUpdatedListener,
-        OnGamesUpdatedListener, AdapterView.OnItemClickListener {
-    ListView lsvPlayers = null;
+        OnGamesUpdatedListener, AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener {
+    ListView lsvPlayersGames = null;
+    Spinner spPlayersGames = null;
+
     Database db = null;
 
     @Override
@@ -110,25 +114,33 @@ public class MainActivity extends DynamicMenuActivity
     }
 
     private void getAllViews(){
-        lsvPlayers = (ListView) this.findViewById(R.id.lsvPlayers);
+        lsvPlayersGames = (ListView) this.findViewById(R.id.lsvPlayersGames);
+        spPlayersGames = (Spinner) this.findViewById(R.id.spinnerPlayerGame);
     }
 
     private void registrateEventHandlers(){
-        registerForContextMenu(lsvPlayers);       //set up context-menu
-        lsvPlayers.setOnItemClickListener(this);
+        registerForContextMenu(lsvPlayersGames);       //set up context-menu
+        lsvPlayersGames.setOnItemClickListener(this);
+        spPlayersGames.setOnItemSelectedListener(this);
 
     }
 
-    public void displayPlayers() throws Exception {
+    private void displayPlayers() throws Exception {
         final ArrayAdapter<Player> lsvAdapter = new ArrayAdapter<Player>(this, android.R.layout.simple_list_item_1);
         lsvAdapter.addAll(db.getAllPlayers());
-        lsvPlayers.setAdapter(lsvAdapter);
+        lsvPlayersGames.setAdapter(lsvAdapter);
+    }
+
+    private void displayGames() throws Exception {
+        final ArrayAdapter<Game> lsvAdapter = new ArrayAdapter<Game>(this, android.R.layout.simple_list_item_1);
+        lsvAdapter.addAll(db.getAllGames());
+        lsvPlayersGames.setAdapter(lsvAdapter);
     }
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        if (v.getId()==R.id.lsvPlayers && db.getCurrentlyLoggedInPlayer().isAdmin()) {
+        if (v.getId()==R.id.lsvPlayersGames && db.getCurrentlyLoggedInPlayer().isAdmin()) {     //if user is admin
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.menu_list, menu);
         }
@@ -137,22 +149,25 @@ public class MainActivity extends DynamicMenuActivity
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        Player selectedPlayer = (Player) lsvPlayers.getAdapter().getItem(info.position);
 
         try {
-            if (db.getCurrentlyLoggedInPlayer().isAdmin()) {
-                switch (item.getItemId()) {
-                    case R.id.edit:
-                        onCtxMniEdit(selectedPlayer);
-                        break;
-                    case R.id.delete:
-                        onCtxMniDelete(selectedPlayer);
-                        break;
+            if (db.getCurrentlyLoggedInPlayer().isAdmin()) {        //if user is admin
+                if (spPlayersGames.getSelectedItemPosition() == 0) {        //if players are displayed
+                    Player selectedPlayer = (Player) lsvPlayersGames.getAdapter().getItem(info.position);
+
+                    switch (item.getItemId()) {
+                        case R.id.edit:
+                            onCtxMniEdit(selectedPlayer);
+                            break;
+                        case R.id.delete:
+                            onCtxMniDelete(selectedPlayer);
+                            break;
+                    }
                 }
             }
         }
         catch (Exception ex) {
-            Snackbar.make(findViewById(R.id.lsvPlayers), getString(R.string.Error) + ": " + ex.getMessage(), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(findViewById(R.id.lsvPlayersGames), getString(R.string.Error) + ": " + ex.getMessage(), Snackbar.LENGTH_SHORT).show();
             ex.printStackTrace();
         }
 
@@ -175,7 +190,7 @@ public class MainActivity extends DynamicMenuActivity
             }
             else {
                 if (db.remove(selectedPlayer)) {
-                    ((ArrayAdapter<Player>) lsvPlayers.getAdapter()).remove(selectedPlayer);
+                    ((ArrayAdapter<Player>) lsvPlayersGames.getAdapter()).remove(selectedPlayer);
                 }
             }
         }
@@ -186,12 +201,21 @@ public class MainActivity extends DynamicMenuActivity
 
     @Override
     public void gamesChanged() {
+        try {
+            if (spPlayersGames.getSelectedItemPosition() == 1) {
+                displayGames();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void playersChanged() {
         try {
-            displayPlayers();
+            if (spPlayersGames.getSelectedItemPosition() == 0) {
+                displayPlayers();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -199,10 +223,35 @@ public class MainActivity extends DynamicMenuActivity
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Player selectedPlayer = (Player) lsvPlayers.getItemAtPosition(position);
-        Intent myIntent = new Intent(this, ShowPlayerStatsActivity.class);
 
-        myIntent.putExtra("player", selectedPlayer);
-        this.startActivity(myIntent);
+        if (spPlayersGames.getSelectedItemPosition() == 0) {        //only if players are displayed
+            Player selectedPlayer = (Player) lsvPlayersGames.getItemAtPosition(position);
+            Intent myIntent = new Intent(this, ShowPlayerStatsActivity.class);
+
+            myIntent.putExtra("player", selectedPlayer);
+            this.startActivity(myIntent);
+        }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        try {
+            //Players
+            if (position == 0) {
+                displayPlayers();
+            }
+            //Games
+            else {
+                displayGames();
+            }
+        }
+        catch (Exception ex) {
+            Toast.makeText(this, getString(R.string.Error) + ": " + ex.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }

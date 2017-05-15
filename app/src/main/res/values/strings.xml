@@ -58,6 +58,7 @@
     <string name="NumPosDefense">Played Defense</string>
     <string name="NumPosMidfield">Played Midfield</string>
     <string name="NumPosGoal">Played Goalie</string>
+    <string name="ShowPlayersOrGames">Show: </string>
 
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -119,5 +120,12 @@
     <!---->
 
     <string name="nav_settings_title">Settings</string>
+
+
+    <string-array name="spinnerPlayerGameValues">
+        <item>Players</item>
+        <item>Games</item>
+    </string-array>
+
 
 </resources>

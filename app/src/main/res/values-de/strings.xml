@@ -96,4 +96,12 @@
     <string name="preference_webservice_ip_title">IP</string>
     <string name="preference_webservice_port_summary">Webservice port</string>
     <string name="preference_webservice_port_title">Port</string>
+    <string name="ShowPlayersOrGames">Zeige:</string>
+    <string name="btnShuffle"></string>
+
+
+    <string-array name="spinnerPlayerGameValues">
+        <item>Spieler</item>
+        <item>Spiele</item>
+    </string-array>
 </resources>
