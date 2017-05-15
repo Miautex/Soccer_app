@@ -35,6 +35,11 @@ public class AddPlayerActivity extends DynamicMenuActivity implements View.OnCli
 
         try {
             db = Database.getInstance();
+
+            //Exit activity when user is not an admin (shouldn't happen)
+            if (!db.getCurrentlyLoggedInPlayer().isAdmin()) {
+                this.finish();
+            }
         }
         catch (Exception ex) {
             Toast.makeText(this, getString(R.string.Error) + ": " + ex.getMessage(), Toast.LENGTH_SHORT).show();

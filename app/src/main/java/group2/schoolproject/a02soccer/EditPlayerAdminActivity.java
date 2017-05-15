@@ -7,6 +7,9 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
+import pkgData.PlayerPosition;
 import pkgDatabase.Database;
 import pkgData.Player;
 import pkgException.DuplicateUsernameException;
@@ -22,7 +25,11 @@ public class EditPlayerAdminActivity extends DynamicMenuActivity implements View
             edtUsername = null,
             edtPassword = null;
     CheckBox ckbIsAdmin = null,
-            ckbUpdatePassword = null;
+            ckbUpdatePassword = null,
+            ckbPosMid = null,
+            ckbPosGoal = null,
+            ckbPosDef = null,
+            ckbPosAtk = null;
 
     Database db = null;
     Player playerToEdit = null;
@@ -44,6 +51,8 @@ public class EditPlayerAdminActivity extends DynamicMenuActivity implements View
             }
 
             initTextFields(playerToEdit);
+            initCheckboxes(playerToEdit);
+            initSetAdminCkb(playerToEdit);
         }
         catch (Exception ex) {
             Toast.makeText(this, getString(R.string.Error) + ": " + ex.getMessage(), Toast.LENGTH_SHORT).show();
@@ -58,6 +67,10 @@ public class EditPlayerAdminActivity extends DynamicMenuActivity implements View
         edtPassword = (EditText) findViewById(R.id.edtPassword);
         ckbIsAdmin = (CheckBox) findViewById(R.id.ckbIsAdmin);
         ckbUpdatePassword = (CheckBox) findViewById(R.id.txvPassword);
+        ckbPosAtk = (CheckBox) findViewById(R.id.ckbPosAtk);
+        ckbPosDef = (CheckBox) findViewById(R.id.ckbPosDef);
+        ckbPosGoal = (CheckBox) findViewById(R.id.ckbPosGoal);
+        ckbPosMid = (CheckBox) findViewById(R.id.ckbPosMid);
     }
 
     private void registrateEventHandlers(){
@@ -70,6 +83,52 @@ public class EditPlayerAdminActivity extends DynamicMenuActivity implements View
         edtName.setText(player.getName());
         edtUsername.setText(player.getUsername());
         ckbIsAdmin.setChecked(player.isAdmin());
+    }
+
+    private void initSetAdminCkb(Player player) {
+        if (db.getCurrentlyLoggedInPlayer().equals(player) || !db.getCurrentlyLoggedInPlayer().isAdmin()) {
+            ckbIsAdmin.setVisibility(View.GONE);
+        }
+    }
+
+    private void initCheckboxes(Player player) {
+        ArrayList<PlayerPosition> playerPositions = new ArrayList<>();
+
+        for (PlayerPosition pos: player.getPositions()) {
+            playerPositions.add(pos);
+        }
+
+        if (playerPositions.contains(PlayerPosition.ATTACK)) {
+            ckbPosAtk.setChecked(true);
+        }
+        if (playerPositions.contains(PlayerPosition.DEFENSE)) {
+            ckbPosDef.setChecked(true);
+        }
+        if (playerPositions.contains(PlayerPosition.GOAL)) {
+            ckbPosGoal.setChecked(true);
+        }
+        if (playerPositions.contains(PlayerPosition.MIDFIELD)) {
+            ckbPosMid.setChecked(true);
+        }
+    }
+
+    private ArrayList<PlayerPosition> getCheckedPlayerPositions() {
+        ArrayList<PlayerPosition> positions = new ArrayList<>();
+
+        if (ckbPosAtk.isChecked()) {
+            positions.add(PlayerPosition.ATTACK);
+        }
+        if (ckbPosDef.isChecked()) {
+            positions.add(PlayerPosition.DEFENSE);
+        }
+        if (ckbPosGoal.isChecked()) {
+            positions.add(PlayerPosition.GOAL);
+        }
+        if (ckbPosMid.isChecked()) {
+            positions.add(PlayerPosition.MIDFIELD);
+        }
+
+        return  positions;
     }
 
     @Override
@@ -104,11 +163,20 @@ public class EditPlayerAdminActivity extends DynamicMenuActivity implements View
         else if (ckbUpdatePassword.isChecked() && edtPassword.getText().toString().isEmpty()) {
             throw new Exception(getString(R.string.msg_EnterPassword));
         }
+        else if (getCheckedPlayerPositions().size() == 0) {
+            throw new Exception(getString(R.string.msg_SelectMinNumOfPositions));
+        }
 
         try {
             playerToEdit.setName(edtName.getText().toString());
             playerToEdit.setUsername(edtUsername.getText().toString());
             playerToEdit.setAdmin(ckbIsAdmin.isChecked());
+
+            playerToEdit.getPositions().clear();
+
+            for (PlayerPosition pp : getCheckedPlayerPositions()) {
+                playerToEdit.addPosition(pp);
+            }
 
             isSuccess = db.update(playerToEdit);
 

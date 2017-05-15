@@ -41,24 +41,32 @@ public class MainActivity extends DynamicMenuActivity
         registrateEventHandlers();
 
         try {
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            drawer.setDrawerListener(toggle);
+            toggle.syncState();
+
+            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            navigationView.setNavigationItemSelectedListener(this);
+
             Accessor.init(getApplicationContext());
             db = Database.getInstance();
             db.addOnPlayersUpdatedListener(this);
             db.addOnGamesUpdatedListener(this);
+
+            if (db.getCurrentlyLoggedInPlayer() == null || !db.getCurrentlyLoggedInPlayer().isAdmin()) {
+                navigationView.getMenu().setGroupVisible(R.id.menuGroupAdmin, false);
+            }
+            else {
+                navigationView.getMenu().setGroupVisible(R.id.menuGroupAdmin, true);
+            }
+
             displayPlayers();
         }
         catch (Exception ex) {
             Toast.makeText(this, getString(R.string.Error) + ": " + ex.getMessage(), Toast.LENGTH_SHORT).show();
         }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
     }
 
     @Override
@@ -83,10 +91,13 @@ public class MainActivity extends DynamicMenuActivity
         } else if (id == R.id.mniAddGame) {
             openActivity(AddGameSelectPlayersActivity.class);
         } else if (id == R.id.mniEditPlayer) {
-            openActivity(EditPlayerOwnActivity.class);
-
+            Intent myIntent = new Intent(this, EditPlayerAdminActivity.class);
+            myIntent.putExtra("player", db.getCurrentlyLoggedInPlayer());
+            startActivity(myIntent);
         } else if (id == R.id.nav_manage) {
             openActivity(ScoreBoardActivity.class);
+
+
         } else if (id == R.id.mniLogin) {
             openActivity(LoginActivity.class);
         } else if (id == R.id.nav_settings) {
@@ -117,7 +128,7 @@ public class MainActivity extends DynamicMenuActivity
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        if (v.getId()==R.id.lsvPlayers) {
+        if (v.getId()==R.id.lsvPlayers && db.getCurrentlyLoggedInPlayer().isAdmin()) {
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.menu_list, menu);
         }
@@ -129,13 +140,15 @@ public class MainActivity extends DynamicMenuActivity
         Player selectedPlayer = (Player) lsvPlayers.getAdapter().getItem(info.position);
 
         try {
-            switch (item.getItemId()) {
-                case R.id.edit:
-                    onCtxMniEdit(selectedPlayer);
-                    break;
-                case R.id.delete:
-                    onCtxMniDelete(selectedPlayer);
-                    break;
+            if (db.getCurrentlyLoggedInPlayer().isAdmin()) {
+                switch (item.getItemId()) {
+                    case R.id.edit:
+                        onCtxMniEdit(selectedPlayer);
+                        break;
+                    case R.id.delete:
+                        onCtxMniDelete(selectedPlayer);
+                        break;
+                }
             }
         }
         catch (Exception ex) {
@@ -148,15 +161,8 @@ public class MainActivity extends DynamicMenuActivity
 
     private void onCtxMniEdit(Player selectedPlayer) {
         Intent myIntent;
-        if (db.getCurrentlyLoggedInPlayer().equals(selectedPlayer)) {
-            myIntent = new Intent(this, EditPlayerOwnActivity.class);
-        }
-        else
-        {
-            myIntent = new Intent(this, EditPlayerAdminActivity.class);
-            myIntent.putExtra("player", selectedPlayer);
-        }
-
+        myIntent = new Intent(this, EditPlayerAdminActivity.class);
+        myIntent.putExtra("player", selectedPlayer);
         this.startActivity(myIntent);
     }
 

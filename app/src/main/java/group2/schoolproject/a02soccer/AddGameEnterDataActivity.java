@@ -54,6 +54,11 @@ public class AddGameEnterDataActivity extends AppCompatActivity implements OnSco
                 throw new Exception("Please call activity with intent-extra 'game'");
             }
 
+            //Exit activity when user is not an admin (shouldn't happen)
+            if (!db.getCurrentlyLoggedInPlayer().isAdmin()) {
+                this.finish();
+            }
+
             adapter = new SectionsPageAdapter(getSupportFragmentManager());
             setupViewPager(mViewPager);
             tablayout.setupWithViewPager(mViewPager);

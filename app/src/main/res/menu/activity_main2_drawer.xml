@@ -2,35 +2,42 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/mniAddPlayer"
-            android:icon="@drawable/ic_mosquito"
-            android:title="@string/mniAdd" />
-        <item
-            android:id="@+id/mniAddGame"
-            android:icon="@drawable/ic_mosquito"
-            android:title="@string/mniAddGame" />
+
+        <group
+            android:id="@+id/menuGroupAdmin"
+            android:checkableBehavior="single">
+            <item
+                android:id="@+id/menuAdmin"
+                android:title="Admin">
+                <menu>
+                    <item
+                        android:id="@+id/mniAddPlayer"
+                        android:icon="@drawable/ic_mosquito"
+                        android:title="@string/mniAdd" />
+                    <item
+                        android:id="@+id/mniAddGame"
+                        android:icon="@drawable/ic_mosquito"
+                        android:title="@string/mniAddGame" />
+                </menu>
+            </item>
+        </group>
+
         <item
             android:id="@+id/mniEditPlayer"
             android:icon="@drawable/ic_mosquito"
             android:title="@string/mniEdit" />
         <item
             android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="@string/mniTeam" />
+            android:icon="@drawable/ic_mosquito"
+            android:title="Scoreboard" />
+        <item
+            android:id="@+id/mniLogin"
+            android:icon="@drawable/ic_mosquito"
+            android:title="@string/mniLogin" />
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_mosquito"
+            android:title="@string/nav_settings_title" />
     </group>
-
-    <item android:title="Communicate">
-        <menu>
-            <item
-                android:id="@+id/mniLogin"
-                android:icon="@drawable/ic_mosquito"
-                android:title="@string/mniLogin" />
-            <item
-                android:id="@+id/nav_settings"
-                android:icon="@drawable/ic_mosquito"
-                android:title="@string/nav_settings_title" />
-        </menu>
-    </item>
 
 </menu>

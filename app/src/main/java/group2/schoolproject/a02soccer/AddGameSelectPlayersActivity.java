@@ -52,6 +52,11 @@ public class AddGameSelectPlayersActivity extends DynamicMenuActivity implements
             db = Database.getInstance();
             hmPlayers = new HashMap<>();        //for easier access to players by id
 
+            //Exit activity when user is not an admin (shouldn't happen)
+            if (!db.getCurrentlyLoggedInPlayer().isAdmin()) {
+                this.finish();
+            }
+
             for (Player p: db.getAllPlayers()) {
                 hmPlayers.put(p.getId(), p);
             }

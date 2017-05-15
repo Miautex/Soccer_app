@@ -117,6 +117,58 @@
             android:text="@string/btnSave" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/txvPositions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/Positions"
+        android:textSize="18sp"
+        android:layout_below="@+id/ckbIsAdmin"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp" />
+
+    <CheckBox
+        android:id="@+id/ckbPosAtk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/PosAtk"
+        android:textSize="18sp"
+        android:layout_below="@+id/txvPositions"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="14dp" />
+
+    <CheckBox
+        android:id="@+id/ckbPosMid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/PosMid"
+        android:textSize="18sp"
+        android:layout_below="@+id/ckbPosAtk"
+        android:layout_alignLeft="@+id/ckbPosAtk"
+        android:layout_alignStart="@+id/ckbPosAtk" />
+
+    <CheckBox
+        android:id="@+id/ckbPosDef"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/PosDef"
+        android:textSize="18sp"
+        android:layout_alignLeft="@+id/ckbPosMid"
+        android:layout_alignStart="@+id/ckbPosMid"
+        android:layout_below="@+id/ckbPosMid" />
+
+    <CheckBox
+        android:id="@+id/ckbPosGoal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/PosGoal"
+        android:textSize="18sp"
+        android:layout_below="@+id/ckbPosDef"
+        android:layout_alignLeft="@+id/ckbPosDef"
+        android:layout_alignStart="@+id/ckbPosDef" />
+
+
 
 
 
