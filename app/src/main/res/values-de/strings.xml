@@ -8,6 +8,7 @@
     <string name="title_activity_edit_player_admin">Spieler bearbeiten</string>
     <string name="title_activity_add_player">Spieler hinzufügen</string>
     <string name="title_activity_player_stats">Spieler Statistiken</string>
+    <string name="title_activity_scoreboard">Scoreboard</string>
 
     <string name="btnLogin">Anmelden</string>
     <string name="Password">Passwort</string>
@@ -26,7 +27,7 @@
     <string name="mniEnglish">English</string>
     <string name="mniLogin">Anmelden</string>
     <string name="mniAdd">Spieler hinzufügen</string>
-    <string name="mniEdit">Spieler bearbeiten</string>
+    <string name="mniEdit">Benutzerdaten ändern</string>
     <string name="ckbIsAdmin">Admin</string>
     <string name="btnAdd">Hinzufügen</string>
     <string name="Date">Datum</string>

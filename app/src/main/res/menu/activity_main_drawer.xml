@@ -3,6 +3,23 @@
 
     <group android:checkableBehavior="single">
 
+        <item
+            android:id="@+id/mniEditPlayer"
+            android:icon="@drawable/ic_mosquito"
+            android:title="@string/mniEdit" />
+        <item
+            android:id="@+id/nav_manage"
+            android:icon="@drawable/ic_mosquito"
+            android:title="@string/title_activity_scoreboard" />
+        <item
+            android:id="@+id/mniLogin"
+            android:icon="@drawable/ic_mosquito"
+            android:title="@string/mniLogin" />
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_mosquito"
+            android:title="@string/nav_settings_title" />
+
         <group
             android:id="@+id/menuGroupAdmin"
             android:checkableBehavior="single">
@@ -21,23 +38,6 @@
                 </menu>
             </item>
         </group>
-
-        <item
-            android:id="@+id/mniEditPlayer"
-            android:icon="@drawable/ic_mosquito"
-            android:title="@string/mniEdit" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_mosquito"
-            android:title="Scoreboard" />
-        <item
-            android:id="@+id/mniLogin"
-            android:icon="@drawable/ic_mosquito"
-            android:title="@string/mniLogin" />
-        <item
-            android:id="@+id/nav_settings"
-            android:icon="@drawable/ic_mosquito"
-            android:title="@string/nav_settings_title" />
     </group>
 
 </menu>
