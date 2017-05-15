@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="group2.schoolproject.a02soccer">
+    package="group2.schoolproject.a02soccer">
 
-    <uses-permission android:name="android.permission.VIBRATE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -17,36 +17,36 @@
             android:label="Moskito&apos;s Soccer App"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".LoginActivity"
-            android:label="@string/title_activity_login"/>
+            android:label="@string/title_activity_login" />
         <activity
             android:name=".EditPlayerOwnActivity"
-            android:label="@string/title_activity_edit_player_own"/>
+            android:label="@string/title_activity_edit_player_own" />
         <activity
             android:name=".EditPlayerAdminActivity"
-            android:label="@string/title_activity_edit_player_admin"/>
+            android:label="@string/title_activity_edit_player_admin" />
         <activity
             android:name=".AddPlayerActivity"
-            android:label="@string/title_activity_add_player"/>
+            android:label="@string/title_activity_add_player" />
         <activity
             android:name=".TeamDivisionActivity"
-            android:label="@string/title_activity_team_management"/>
+            android:label="@string/title_activity_team_management" />
         <!-- android:theme="@style/AppTheme.NoActionBar"></activity> -->
         <activity
             android:name=".AddGameSelectPlayersActivity"
             android:label="@string/title_activity_add_game_select_players"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".AddGameEnterDataActivity"
             android:label="@string/title_activity_add_game_enter_data"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustNothing"/>
+            android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".ShowPlayerStatsActivity"
             android:label="@string/title_activity_player_stats" />
@@ -56,8 +56,12 @@
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="group2.schoolproject.a02soccer.MainActivity"/>
+                android:value="group2.schoolproject.a02soccer.MainActivity" />
         </activity>
+        <activity
+            android:name=".ScoreBoardActivity"
+            android:label="@string/title_activity_score_board"
+            android:theme="@style/Theme.App.Base.NoActionBar"></activity>
     </application>
 
 </manifest>

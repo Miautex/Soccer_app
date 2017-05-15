@@ -43,12 +43,12 @@ public class TeamDivisionActivity extends AppCompatActivity implements OnTeamCha
         mSectionsPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
         viewPager = (ViewPager) findViewById(R.id.container);
         setupViewPager(viewPager);
-        setOnClicklistener();
+        setOnClickListener();
         TabLayout tablayout = (TabLayout) findViewById(R.id.tabs);
         tablayout.setupWithViewPager(viewPager);
     }
 
-    private void setOnClicklistener() {
+    private void setOnClickListener() {
         this.findViewById(R.id.btnContinue).setOnClickListener(this);
         this.findViewById(R.id.btnCancel).setOnClickListener(this);
         this.findViewById(R.id.btnShuffle).setOnClickListener(this);
@@ -112,8 +112,8 @@ public class TeamDivisionActivity extends AppCompatActivity implements OnTeamCha
     }
 
     @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.btnContinue) {
+    public void onClick(View button) {
+        if (button.getId() == R.id.btnContinue) {
             try {
                 createParticipations();
                 game.removeAllParticipations();
@@ -126,9 +126,9 @@ public class TeamDivisionActivity extends AppCompatActivity implements OnTeamCha
             } catch (Exception e) {
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
-        } else if (v.getId() == R.id.btnCancel) {
+        } else if (button.getId() == R.id.btnCancel) {
             this.finish();
-        } else if (v.getId() == R.id.btnShuffle) {
+        } else if (button.getId() == R.id.btnShuffle) {
             Toast.makeText(this, "folgt", Toast.LENGTH_SHORT).show();
         }
     }

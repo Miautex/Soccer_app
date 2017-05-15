@@ -3,6 +3,7 @@ package group2.schoolproject.a02soccer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -85,7 +86,7 @@ public class MainActivity extends DynamicMenuActivity
             openActivity(EditPlayerOwnActivity.class);
 
         } else if (id == R.id.nav_manage) {
-
+            openActivity(ScoreBoardActivity.class);
         } else if (id == R.id.mniLogin) {
             openActivity(LoginActivity.class);
         } else if (id == R.id.nav_settings) {
@@ -138,7 +139,7 @@ public class MainActivity extends DynamicMenuActivity
             }
         }
         catch (Exception ex) {
-            Toast.makeText(this, getString(R.string.Error) + ": " + ex.getMessage(), Toast.LENGTH_SHORT).show();
+            Snackbar.make(findViewById(R.id.lsvPlayers), getString(R.string.Error) + ": " + ex.getMessage(), Snackbar.LENGTH_SHORT).show();
             ex.printStackTrace();
         }
 
