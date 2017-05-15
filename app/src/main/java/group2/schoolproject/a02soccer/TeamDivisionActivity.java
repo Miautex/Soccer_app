@@ -76,11 +76,13 @@ public class TeamDivisionActivity extends AppCompatActivity implements OnTeamCha
     }
 
     public void createParticipations() throws Exception {
-        //getPlayersFromParticipations();
         ArrayList<Participation> list1 = ((TeamDivisionTab) mSectionsPageAdapter.getItem(0)).getPlayersInTeam();
         ArrayList<Participation> list2 = ((TeamDivisionTab) mSectionsPageAdapter.getItem(1)).getPlayersInTeam();
         if (list1.size() + list2.size() != allPlayers.size()) {
-            throw new Exception("there are players without team");
+            throw new Exception(getString(R.string.msg_PlayerhasNoTeam));
+        }
+        else if(Math.abs((list1.size()-list2.size())) > 1){
+            throw new Exception(getString(R.string.msg_UnbalancedTeams));
         }
         list1.addAll(list2);
         participations = list1;
@@ -129,6 +131,10 @@ public class TeamDivisionActivity extends AppCompatActivity implements OnTeamCha
         } else if (v.getId() == R.id.btnShuffle) {
             Toast.makeText(this, "folgt", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void showToast(String msg){
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 }
 

@@ -138,16 +138,31 @@ public class TeamDivisionTab extends Fragment implements View.OnClickListener, O
         }
     }
 
-    public ArrayList<Participation> getPlayersInTeam() {
+    public ArrayList<Participation> getPlayersInTeam() throws Exception {
         ArrayList<Participation> list = new ArrayList<>();
+        if(!hasGoalkeeper()){
+            throw new Exception(getString(R.string.msg_TeamHasNoGolaie) + team);
+        }
         for (int i = 0; i < tableTeam1.getChildCount(); i++) {
             TableRow row = (TableRow) tableTeam1.getChildAt(i);
-            TextView txtv = (TextView) row.getChildAt(0);
+            TextView textv = (TextView) row.getChildAt(0);
             Spinner sp = (Spinner) row.getChildAt(2);
-            int playerId = Integer.parseInt(txtv.getText().toString());
+            int playerId = Integer.parseInt(textv.getText().toString());
             list.add(new Participation(players.get(playerId), team, StringToEnum((sp.getSelectedItem().toString()))));
         }
         return list;
+    }
+
+    private boolean hasGoalkeeper(){
+        boolean hasGolaie = false;
+        for (int i = 0; i < tableTeam1.getChildCount() && !hasGolaie; i++) {
+            TableRow row = (TableRow) tableTeam1.getChildAt(i);
+            Spinner sp = (Spinner) row.getChildAt(2);
+            if (getString(R.string.PosGoal).equals(sp.getSelectedItem().toString())){
+                hasGolaie = true;
+            }
+        }
+        return hasGolaie;
     }
 
     private void setLayouts() {
