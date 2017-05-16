@@ -82,10 +82,13 @@
     <string name="msg_CannotDeleteOwnPlayer">Cannot delete own Player</string>
     <string name="msg_EnterPassword">Please enter a new password</string>
     <string name="msg_ConnectionTimeout">Connection to server timed out</string>
-    <string name="msg_NetworkUnreachable">Internet is disabled</string>
+    <string name="msg_NetworkUnreachable">Cannot connect to Internet</string>
     <string name="msg_IllegalUsername">Username must only contain letters and numbers</string>
     <string name="msg_UsernameTooLong">Username must not be longer than %d characters</string>
     <string name="msg_NameTooLong">Name must not be longer than %d characters</string>
+    <string name="msg_UsernameTooShort">Username must at least be %d characters long</string>
+    <string name="msg_NameTooShort">Name must at least be %d characters long</string>
+    <string name="msg_PasswordTooShort">Password must at least be %d characters long</string>
     <string name="msg_PlayerhasNoTeam">Every player must be assigned to a Team</string>
     <string name="msg_TeamHasNoGolaie">No Goalkeeper in: </string>
     <string name="msg_UnbalancedTeams">The player difference between the Teams is too high</string>

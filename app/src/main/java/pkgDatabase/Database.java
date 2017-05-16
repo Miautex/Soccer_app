@@ -13,7 +13,6 @@ import java.util.TreeSet;
 
 import group2.schoolproject.a02soccer.R;
 import pkgData.Game;
-import pkgMisc.GsonSerializor;
 import pkgData.Participation;
 import pkgData.Player;
 import pkgData.PlayerPosition;
@@ -27,6 +26,8 @@ import pkgDatabase.pkgListener.OnPlayersUpdatedListener;
 import pkgException.CouldNotDeletePlayerException;
 import pkgException.CouldNotSetPlayerPositionsException;
 import pkgException.DuplicateUsernameException;
+import pkgException.PasswordTooShortException;
+import pkgMisc.GsonSerializor;
 import pkgResult.Result;
 import pkgResult.SingleGameResult;
 import pkgResult.SinglePlayerResult;
@@ -36,6 +37,8 @@ import pkgWSA.HttpMethod;
 
 public class Database extends Application implements OnLoginListener, OnLoadAllPlayersListener,
         OnLoadAllGamesListener {
+
+    public static final int MIN_LENGTH_PASSWORD = 5;
 
     private static Database instance = null;
     private Player currentlyLoggedInPlayer = null;
@@ -266,20 +269,22 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
             if (!isSuccess && r.getError() != null && r.getError().getErrorMessage().contains("MySQLIntegrityConstraintViolationException")) {
                 throw new DuplicateUsernameException();
             }
+            else {
+                allPlayers.remove(p);
+                allPlayers.add(p);
+                notifyOnPlayersUpdatedListener();
 
-            allPlayers.remove(p);
-            allPlayers.add(p);
-            notifyOnPlayersUpdatedListener();
+                r = setPlayerPositions(p);
 
-            r = setPlayerPositions(p);
+                if (!r.isSuccess()) {
+                    throw new Exception(getApplicationContext().getString(R.string.msg_CouldNotSetPositions));
+                }
 
-            if (!r.isSuccess()) {
-                throw new Exception(getApplicationContext().getString(R.string.msg_CouldNotSetPositions));
+                if (isSuccess && p.equals(currentlyLoggedInPlayer)) {
+                    currentlyLoggedInPlayer = getPlayerByUsername(p.getUsername());
+                }
             }
 
-            if (isSuccess && p.equals(currentlyLoggedInPlayer)) {
-                currentlyLoggedInPlayer = getPlayerByUsername(p.getUsername());
-            }
         }
 
         return isSuccess;
@@ -336,17 +341,22 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
 
     public boolean setPassword(Player p, String pw) throws Exception {
         boolean isSuccess = false;
-        String local_pwEnc = encryptPassword(pw);
-        AccessorResponse response = Accessor.runRequestSync(HttpMethod.PUT,
-                "player/security/" + Integer.toString(p.getId()), null, GsonSerializor.serializePassword(local_pwEnc));
 
-        if (response.getResponseCode() == 500) {
-            throw new Exception(response.getJson());
-        } else {
-            Result r = GsonSerializor.deserializeResult(response.getJson());
-            isSuccess = r.isSuccess();
+        if (pw.length() < MIN_LENGTH_PASSWORD) {
+            throw new PasswordTooShortException(MIN_LENGTH_PASSWORD);
         }
+        else {
+            String local_pwEnc = encryptPassword(pw);
+            AccessorResponse response = Accessor.runRequestSync(HttpMethod.PUT,
+                    "player/security/" + Integer.toString(p.getId()), null, GsonSerializor.serializePassword(local_pwEnc));
 
+            if (response.getResponseCode() == 500) {
+                throw new Exception(response.getJson());
+            } else {
+                Result r = GsonSerializor.deserializeResult(response.getJson());
+                isSuccess = r.isSuccess();
+            }
+        }
         return isSuccess;
     }
 
@@ -403,7 +413,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
     @Override
     public void loginSuccessful(String username) {
         try {
-            currentlyLoggedInPlayer = new Player(username, "tmp", false);       //remember username of logged in player
+            currentlyLoggedInPlayer = new Player(username, "tmpname", false);       //remember username of logged in player
         } catch (Exception e) {
             e.printStackTrace();
         }

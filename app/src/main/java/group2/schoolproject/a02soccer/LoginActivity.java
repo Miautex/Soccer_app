@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import java.io.FileNotFoundException;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.util.Collection;
@@ -160,8 +161,11 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
         catch (InvalidLoginDataException e) {
             msg = getString(R.string.msg_UsernameOrPasswordInvalid);
         }
+        catch (FileNotFoundException e) {
+            msg = getString(R.string.msg_NetworkUnreachable);
+        }
         catch (Exception e) {
-            msg = e.getMessage();
+            msg = getString(R.string.Error) + ": " + e.getMessage();
         }
         finally {
             Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();

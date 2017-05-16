@@ -77,10 +77,16 @@
     <string name="msg_CannotDeleteOwnPlayer">Eigener Spieler kann nicht gelöscht werden</string>
     <string name="msg_EnterPassword">Bitte neues Passwort eintragen</string>
     <string name="msg_ConnectionTimeout">Zeitüberschreitung bei Serververbindung</string>
-    <string name="msg_NetworkUnreachable">Internet ist deaktiviert</string>
+    <string name="msg_NetworkUnreachable">Keine Verbindung zum Internet möglich</string>
     <string name="msg_IllegalUsername">Benutzername darf nur Buchstaben und Zahlen enthalten</string>
     <string name="msg_UsernameTooLong">Benutzername darf nicht länger als %d Zeichen sein</string>
     <string name="msg_NameTooLong">Name darf nicht länger als %d Zeichen sein</string>
+    <string name="msg_UsernameTooShort">Benutzername muss mindestens %d Zeichen lang sein</string>
+    <string name="msg_NameTooShort">Name muss mindestens %d Zeichen lang sein</string>
+    <string name="msg_PasswordTooShort">Passwort muss mindestens %d Zeichen lang sein</string>
+    <string name="msg_PlayerhasNoTeam">Jeder Spieler muss einem Team zugewiesen werden</string>
+    <string name="msg_TeamHasNoGolaie">Kein Torwart in: </string>
+    <string name="msg_UnbalancedTeams">Die Spielerdifferenz zwischen den Teams ist zu groß</string>
 
     <string name="ctxMniEditPlayer">Bearbeiten</string>
     <string name="ctxMniDeletePlayer">Löschen</string>

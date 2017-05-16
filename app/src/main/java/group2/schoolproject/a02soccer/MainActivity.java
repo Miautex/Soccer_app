@@ -42,7 +42,6 @@ public class MainActivity extends DynamicMenuActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getAllViews();
-        registrateEventHandlers();
 
         try {
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -56,8 +55,6 @@ public class MainActivity extends DynamicMenuActivity
 
             Accessor.init(getApplicationContext());
             db = Database.getInstance();
-            db.addOnPlayersUpdatedListener(this);
-            db.addOnGamesUpdatedListener(this);
 
             if (db.getCurrentlyLoggedInPlayer() == null || !db.getCurrentlyLoggedInPlayer().isAdmin()) {
                 navigationView.getMenu().setGroupVisible(R.id.menuGroupAdmin, false);
@@ -66,7 +63,9 @@ public class MainActivity extends DynamicMenuActivity
                 navigationView.getMenu().setGroupVisible(R.id.menuGroupAdmin, true);
             }
 
+            registrateEventHandlers();
             displayPlayers();
+            displayLoggedInUser();
         }
         catch (Exception ex) {
             Toast.makeText(this, getString(R.string.Error) + ": " + ex.getMessage(), Toast.LENGTH_SHORT).show();
@@ -95,7 +94,7 @@ public class MainActivity extends DynamicMenuActivity
         } else if (id == R.id.mniAddGame) {
             openActivity(AddGameSelectPlayersActivity.class);
         } else if (id == R.id.mniEditPlayer) {
-            Intent myIntent = new Intent(this, EditPlayerAdminActivity.class);
+            Intent myIntent = new Intent(this, EditPlayerActivity.class);
             myIntent.putExtra("player", db.getCurrentlyLoggedInPlayer());
             startActivity(myIntent);
         } else if (id == R.id.nav_manage) {
@@ -122,7 +121,22 @@ public class MainActivity extends DynamicMenuActivity
         registerForContextMenu(lsvPlayersGames);       //set up context-menu
         lsvPlayersGames.setOnItemClickListener(this);
         spPlayersGames.setOnItemSelectedListener(this);
+        db.addOnPlayersUpdatedListener(this);
+        db.addOnGamesUpdatedListener(this);
 
+    }
+
+    private void displayLoggedInUser() {
+        //TODO
+        /*if (db.getCurrentlyLoggedInPlayer() != null) {
+            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            View header = navigationView.getHeaderView(0);
+            TextView txvName = (TextView) header.findViewById(R.id.txvName);
+            TextView txvUsername = (TextView) header.findViewById(R.id.txvUsername);
+
+            txvName.setText(db.getCurrentlyLoggedInPlayer().getName());
+            txvUsername.setText(db.getCurrentlyLoggedInPlayer().getUsername());
+        }*/
     }
 
     private void displayPlayers() throws Exception {
@@ -176,7 +190,7 @@ public class MainActivity extends DynamicMenuActivity
 
     private void onCtxMniEdit(Player selectedPlayer) {
         Intent myIntent;
-        myIntent = new Intent(this, EditPlayerAdminActivity.class);
+        myIntent = new Intent(this, EditPlayerActivity.class);
         myIntent.putExtra("player", selectedPlayer);
         this.startActivity(myIntent);
     }

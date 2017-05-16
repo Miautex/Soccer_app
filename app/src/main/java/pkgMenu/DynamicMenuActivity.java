@@ -13,7 +13,7 @@ import java.util.Locale;
 
 import group2.schoolproject.a02soccer.AddGameSelectPlayersActivity;
 import group2.schoolproject.a02soccer.AddPlayerActivity;
-import group2.schoolproject.a02soccer.EditPlayerAdminActivity;
+import group2.schoolproject.a02soccer.EditPlayerActivity;
 import group2.schoolproject.a02soccer.R;
 import pkgDatabase.Database;
 
@@ -100,7 +100,7 @@ public class DynamicMenuActivity extends AppCompatActivity {
         if (cl == AddPlayerActivity.class) {
             dmi= DynamicMenuItem.ADD_PLAYER;
         }
-        else if (cl == EditPlayerAdminActivity.class) {
+        else if (cl == EditPlayerActivity.class) {
             dmi = DynamicMenuItem.EDIT_PLAYER;
         }
         else if (cl == AddGameSelectPlayersActivity.class) {

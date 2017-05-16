@@ -4,12 +4,16 @@ import java.io.Serializable;
 import java.util.TreeSet;
 
 import pkgException.NameTooLongException;
+import pkgException.NameTooShortException;
 import pkgException.UsernameTooLongException;
+import pkgException.UsernameTooShortException;
 import pkgMisc.UsernameValidator;
 
 public final class Player implements Comparable, Serializable, Cloneable {
     private final static int MAX_LENGTH_NAME = 25,
-                             MAX_LENGTH_USERNAME = 20;
+                             MAX_LENGTH_USERNAME = 20,
+                             MIN_LENGTH_NAME = 3,
+                             MIN_LENGTH_USERNAME = 3;
 
     private Integer id = null;
     private Boolean isAdmin = false;
@@ -77,6 +81,9 @@ public final class Player implements Comparable, Serializable, Cloneable {
         else if (name.length() > MAX_LENGTH_NAME) {
             throw new NameTooLongException(MAX_LENGTH_NAME);
         }
+        else if (name.length() < MIN_LENGTH_NAME) {
+            throw new NameTooShortException(MIN_LENGTH_NAME);
+        }
         this.name = name.trim();
     }
 
@@ -103,6 +110,9 @@ public final class Player implements Comparable, Serializable, Cloneable {
         }
         else if (username.length() > MAX_LENGTH_USERNAME) {
             throw new UsernameTooLongException(MAX_LENGTH_USERNAME);
+        }
+        else if (username.length() < MIN_LENGTH_USERNAME) {
+            throw new UsernameTooShortException(MIN_LENGTH_USERNAME);
         }
 
         this.username = (username.toLowerCase()).trim();

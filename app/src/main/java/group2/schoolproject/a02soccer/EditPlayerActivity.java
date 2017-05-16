@@ -14,11 +14,14 @@ import pkgDatabase.Database;
 import pkgData.Player;
 import pkgException.DuplicateUsernameException;
 import pkgException.NameTooLongException;
+import pkgException.NameTooShortException;
+import pkgException.PasswordTooShortException;
 import pkgException.UsernameTooLongException;
+import pkgException.UsernameTooShortException;
 import pkgMenu.DynamicMenuActivity;
 
 
-public class EditPlayerAdminActivity extends DynamicMenuActivity implements View.OnClickListener {
+public class EditPlayerActivity extends DynamicMenuActivity implements View.OnClickListener {
     Button btnSave = null,
             btnCancel = null;
     EditText edtName = null,
@@ -37,7 +40,7 @@ public class EditPlayerAdminActivity extends DynamicMenuActivity implements View
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_editplayer_admin);
+        setContentView(R.layout.activity_editplayer);
         getAllViews();
         registrateEventHandlers();
 
@@ -168,27 +171,32 @@ public class EditPlayerAdminActivity extends DynamicMenuActivity implements View
         }
 
         try {
-            playerToEdit.setName(edtName.getText().toString());
-            playerToEdit.setUsername(edtUsername.getText().toString());
-            playerToEdit.setAdmin(ckbIsAdmin.isChecked());
 
-            playerToEdit.getPositions().clear();
-
-            for (PlayerPosition pp : getCheckedPlayerPositions()) {
-                playerToEdit.addPosition(pp);
-            }
-
-            isSuccess = db.update(playerToEdit);
-
-            if (isSuccess) {
-                msg = getString(R.string.msg_UpdatedUserData);
-
-                if (ckbUpdatePassword.isChecked()) {
-                    db.setPassword(playerToEdit, edtPassword.getText().toString());
-                }
+            if (ckbUpdatePassword.isChecked() && edtPassword.getText().length() < Database.MIN_LENGTH_PASSWORD) {
+                throw new PasswordTooShortException(Database.MIN_LENGTH_PASSWORD);
             }
             else {
-                msg = getString(R.string.msg_CouldNotUpdateUserData);
+                playerToEdit.setName(edtName.getText().toString());
+                playerToEdit.setUsername(edtUsername.getText().toString());
+                playerToEdit.setAdmin(ckbIsAdmin.isChecked());
+
+                playerToEdit.getPositions().clear();
+
+                for (PlayerPosition pp : getCheckedPlayerPositions()) {
+                    playerToEdit.addPosition(pp);
+                }
+
+                isSuccess = db.update(playerToEdit);
+
+                if (isSuccess) {
+                    msg = getString(R.string.msg_UpdatedUserData);
+
+                    if (ckbUpdatePassword.isChecked()) {
+                        db.setPassword(playerToEdit, edtPassword.getText().toString());
+                    }
+                } else {
+                    msg = getString(R.string.msg_CouldNotUpdateUserData);
+                }
             }
         }
         catch (DuplicateUsernameException ex) {
@@ -204,6 +212,18 @@ public class EditPlayerAdminActivity extends DynamicMenuActivity implements View
         catch (UsernameTooLongException ex) {
             throw new UsernameTooLongException(String.format(getString(R.string.msg_UsernameTooLong),
                     ex.getMaxLenght()), ex.getMaxLenght());
+        }
+        catch (NameTooShortException ex) {
+            throw new NameTooShortException(String.format(getString(R.string.msg_NameTooShort),
+                    ex.getMinLenght()), ex.getMinLenght());
+        }
+        catch (UsernameTooShortException ex) {
+            throw new UsernameTooShortException(String.format(getString(R.string.msg_UsernameTooShort),
+                    ex.getMinLenght()), ex.getMinLenght());
+        }
+        catch (PasswordTooShortException ex) {
+            throw new PasswordTooShortException(String.format(getString(R.string.msg_PasswordTooShort),
+                    ex.getMinLenght()), ex.getMinLenght());
         }
 
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
