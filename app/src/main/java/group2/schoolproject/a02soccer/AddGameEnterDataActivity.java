@@ -22,7 +22,7 @@ import pkgListeners.OnScoreChangedListener;
 import pkgTab.SectionsPageAdapter;
 import pkgTab.TabAddGameEnterData;
 
-public class AddGameEnterDataActivity extends AppCompatActivity implements OnScoreChangedListener, View.OnClickListener {
+public class AddGameEnterDataActivity extends BaseActivity implements OnScoreChangedListener, View.OnClickListener {
 
     private SectionsPageAdapter adapter = null;
     private ViewPager mViewPager = null;
@@ -42,7 +42,7 @@ public class AddGameEnterDataActivity extends AppCompatActivity implements OnSco
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_game_enter_data);
-
+        setTitle(R.string.title_activity_add_game_enter_data);
         try {
             getAllViews();
             registrateEventHandlers();
@@ -154,7 +154,7 @@ public class AddGameEnterDataActivity extends AppCompatActivity implements OnSco
                 db.insert(p);
             }
 
-            Toast.makeText(this, getString(R.string.msg_SavedGame), Toast.LENGTH_SHORT).show();
+            showMessage(getString(R.string.msg_SavedGame));
         }
         catch (Exception ex) {
             ExceptionNotification.notify(this, ex);
@@ -176,7 +176,7 @@ public class AddGameEnterDataActivity extends AppCompatActivity implements OnSco
                 this.finish();
             }
         } catch (Exception e) {
-            Toast.makeText(this, getString(R.string.Error) + ": " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            showMessage(getString(R.string.Error) + ": " + e.getMessage());
         }
     }
 }

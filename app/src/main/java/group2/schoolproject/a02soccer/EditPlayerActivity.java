@@ -5,7 +5,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -18,10 +17,9 @@ import pkgException.NameTooShortException;
 import pkgException.PasswordTooShortException;
 import pkgException.UsernameTooLongException;
 import pkgException.UsernameTooShortException;
-import pkgMenu.DynamicMenuActivity;
 
 
-public class EditPlayerActivity extends DynamicMenuActivity implements View.OnClickListener {
+public class EditPlayerActivity extends BaseActivity implements View.OnClickListener {
     Button btnSave = null,
             btnCancel = null;
     EditText edtName = null,
@@ -41,6 +39,7 @@ public class EditPlayerActivity extends DynamicMenuActivity implements View.OnCl
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editplayer);
+        setTitle(R.string.title_activity_edit_player_own);
         getAllViews();
         registrateEventHandlers();
 
@@ -58,7 +57,7 @@ public class EditPlayerActivity extends DynamicMenuActivity implements View.OnCl
             initSetAdminCkb(playerToEdit);
         }
         catch (Exception ex) {
-            Toast.makeText(this, getString(R.string.Error) + ": " + ex.getMessage(), Toast.LENGTH_SHORT).show();
+            showMessage( getString(R.string.Error) + ": " + ex.getMessage());
         }
     }
 
@@ -147,7 +146,7 @@ public class EditPlayerActivity extends DynamicMenuActivity implements View.OnCl
                 toggleEdtPassword(ckbUpdatePassword.isChecked());
             }
         } catch (Exception e) {
-            Toast.makeText(this, getString(R.string.Error) + ": " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            showMessage( getString(R.string.Error) + ": " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -226,6 +225,6 @@ public class EditPlayerActivity extends DynamicMenuActivity implements View.OnCl
                     ex.getMinLenght()), ex.getMinLenght());
         }
 
-        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+        showMessage(msg);
     }
 }

@@ -32,7 +32,7 @@ public class ShowPlayerStatsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_player_stats);
-
+        setTitle(R.string.title_activity_player_stats);
         try {
             getAllViews();
 

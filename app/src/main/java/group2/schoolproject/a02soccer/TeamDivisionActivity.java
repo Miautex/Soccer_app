@@ -2,6 +2,7 @@ package group2.schoolproject.a02soccer;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -20,7 +21,7 @@ import pkgListeners.OnTeamChangedListener;
 import pkgTab.SectionsPageAdapter;
 import pkgTab.TeamDivisionTab;
 
-public class TeamDivisionActivity extends AppCompatActivity implements OnTeamChangedListener, View.OnClickListener {
+public class TeamDivisionActivity extends BaseActivity implements OnTeamChangedListener, View.OnClickListener {
 
     private SectionsPageAdapter mSectionsPageAdapter;
     private Game game = null;
@@ -32,6 +33,7 @@ public class TeamDivisionActivity extends AppCompatActivity implements OnTeamCha
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle(R.string.title_activity_team_management);
         ViewPager viewPager;
         game = (Game) this.getIntent().getSerializableExtra("game");
         allPlayers = new TreeMap<>();
@@ -107,7 +109,7 @@ public class TeamDivisionActivity extends AppCompatActivity implements OnTeamCha
                 }
             }
         } catch (Exception e) {
-            showToast(e.getMessage());
+            showMessage(e.getMessage());
         }
     }
 
@@ -124,17 +126,14 @@ public class TeamDivisionActivity extends AppCompatActivity implements OnTeamCha
                 myIntent.putExtra("game", game);
                 this.startActivity(myIntent);
             } catch (Exception e) {
-                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                showMessage(e.getMessage());
             }
         } else if (button.getId() == R.id.btnCancel) {
             this.finish();
         } else if (button.getId() == R.id.btnShuffle) {
-            Toast.makeText(this, "folgt", Toast.LENGTH_SHORT).show();
+            showMessage("folgt");
         }
     }
 
-    private void showToast(String msg){
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-    }
 }
 

@@ -16,7 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.Toast;
+
 
 import pkgData.Game;
 import pkgData.Player;
@@ -24,10 +24,9 @@ import pkgDatabase.Database;
 import pkgDatabase.pkgListener.OnGamesUpdatedListener;
 import pkgDatabase.pkgListener.OnPlayersUpdatedListener;
 import pkgException.CouldNotDeletePlayerException;
-import pkgMenu.DynamicMenuActivity;
 import pkgWSA.Accessor;
 
-public class MainActivity extends DynamicMenuActivity
+public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnPlayersUpdatedListener,
         OnGamesUpdatedListener, AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener {
     ListView lsvPlayersGames = null;
@@ -68,7 +67,7 @@ public class MainActivity extends DynamicMenuActivity
             displayLoggedInUser();
         }
         catch (Exception ex) {
-            Toast.makeText(this, getString(R.string.Error) + ": " + ex.getMessage(), Toast.LENGTH_SHORT).show();
+            showMessage(getString(R.string.Error) + ": " + ex.getMessage());
         }
     }
 
@@ -181,7 +180,7 @@ public class MainActivity extends DynamicMenuActivity
             }
         }
         catch (Exception ex) {
-            Snackbar.make(findViewById(R.id.lsvPlayersGames), getString(R.string.Error) + ": " + ex.getMessage(), Snackbar.LENGTH_SHORT).show();
+            showMessage(getString(R.string.Error) + ": " + ex.getMessage());
             ex.printStackTrace();
         }
 
@@ -260,7 +259,7 @@ public class MainActivity extends DynamicMenuActivity
             }
         }
         catch (Exception ex) {
-            Toast.makeText(this, getString(R.string.Error) + ": " + ex.getMessage(), Toast.LENGTH_SHORT).show();
+            showMessage(getString(R.string.Error) + ": " + ex.getMessage());
         }
     }
 

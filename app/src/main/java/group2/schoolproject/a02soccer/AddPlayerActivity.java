@@ -16,10 +16,9 @@ import pkgException.NameTooShortException;
 import pkgException.PasswordTooShortException;
 import pkgException.UsernameTooLongException;
 import pkgException.UsernameTooShortException;
-import pkgMenu.DynamicMenuActivity;
 
 
-public class AddPlayerActivity extends DynamicMenuActivity implements View.OnClickListener {
+public class AddPlayerActivity extends BaseActivity implements View.OnClickListener {
     Button btnAdd = null;
     Button btnCancel = null;
     EditText edtName = null;
@@ -33,6 +32,7 @@ public class AddPlayerActivity extends DynamicMenuActivity implements View.OnCli
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addplayer);
+        setTitle(R.string.title_activity_add_player);
         getAllViews();
         registrateEventHandlers();
 
@@ -45,7 +45,7 @@ public class AddPlayerActivity extends DynamicMenuActivity implements View.OnCli
             }
         }
         catch (Exception ex) {
-            Toast.makeText(this, getString(R.string.Error) + ": " + ex.getMessage(), Toast.LENGTH_SHORT).show();
+            showMessage(getString(R.string.Error) + ": " + ex.getMessage());
         }
     }
 
@@ -83,7 +83,7 @@ public class AddPlayerActivity extends DynamicMenuActivity implements View.OnCli
 
                 Player remote_newPlayer = db.insert(newPlayer);
                 db.setPassword(remote_newPlayer, edtPassword.getText().toString());
-                Toast.makeText(this, String.format(getString(R.string.msg_PlayerAdded), remote_newPlayer.getName()), Toast.LENGTH_SHORT).show();
+                showMessage(String.format(getString(R.string.msg_PlayerAdded), remote_newPlayer.getName()));
             }
 
         }
@@ -125,7 +125,7 @@ public class AddPlayerActivity extends DynamicMenuActivity implements View.OnCli
                 this.finish();
             }
         } catch (Exception e) {
-            Toast.makeText(this, getString(R.string.Error) + ": " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            showMessage(getString(R.string.Error) + ": " + e.getMessage());
             e.printStackTrace();
         }
     }

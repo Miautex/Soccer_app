@@ -11,7 +11,6 @@ import android.widget.DatePicker;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -23,9 +22,8 @@ import pkgComparator.PlayerComparatorName;
 import pkgDatabase.Database;
 import pkgData.Game;
 import pkgData.Player;
-import pkgMenu.DynamicMenuActivity;
 
-public class AddGameSelectPlayersActivity extends DynamicMenuActivity implements View.OnClickListener {
+public class AddGameSelectPlayersActivity extends BaseActivity implements View.OnClickListener {
     private static final int MIN_PLAYERS_REQUIRED = 4;
 
     private DatePicker datePicker = null;
@@ -44,7 +42,7 @@ public class AddGameSelectPlayersActivity extends DynamicMenuActivity implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_game_select_players);
-
+        setTitle(R.string.title_activity_add_game_select_players );
         getAllViews();
         registrateEventHandlers();
 
@@ -215,7 +213,7 @@ public class AddGameSelectPlayersActivity extends DynamicMenuActivity implements
                 }
             }
         } catch (Exception e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            showMessage(e.getMessage());
             e.printStackTrace();
         }
     }

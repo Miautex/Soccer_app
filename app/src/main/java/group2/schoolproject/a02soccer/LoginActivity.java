@@ -2,8 +2,10 @@ package group2.schoolproject.a02soccer;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
+import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -24,7 +26,7 @@ import pkgDatabase.pkgListener.OnLoadAllGamesListener;
 import pkgDatabase.pkgListener.OnLoadAllPlayersListener;
 import pkgDatabase.pkgListener.OnLoginListener;
 
-public class LoginActivity extends AppCompatActivity implements OnClickListener, OnLoginListener, OnLoadAllPlayersListener, OnLoadAllGamesListener {
+public class LoginActivity extends BaseActivity implements OnClickListener, OnLoginListener, OnLoadAllPlayersListener, OnLoadAllGamesListener {
 
     Button btnLogin = null;
     EditText edtPassword = null;
@@ -39,17 +41,18 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        setTitle(R.string.title_activity_login);
         getAllViews();
         registrateEventHandlers();
-
         try {
             db = Database.getInstance();
         }
         catch (Exception ex) {
-            Toast.makeText(this, getString(R.string.Error) + ": " + ex.getMessage(), Toast.LENGTH_SHORT).show();
+            showMessage(getString(R.string.Error) + ": " + ex.getMessage());
             ExceptionNotification.notify(this, ex);
         }
     }
+
 
     /**
      * set all views by id
@@ -87,7 +90,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
                 tryLogin();
             }
         } catch (Exception e) {
-            Toast.makeText(this, getString(R.string.Error) + ": " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            showMessage(getString(R.string.Error) + ": " + e.getMessage());
         }
     }
 
@@ -103,7 +106,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
         }
         catch (Exception ex) {
             toggleLoginInputs(true);
-            Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
+            showMessage(ex.getMessage());
         }
     }
 
@@ -168,7 +171,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
             msg = getString(R.string.Error) + ": " + e.getMessage();
         }
         finally {
-            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+            showMessage(msg);
         }
     }
 
@@ -186,7 +189,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
     @Override
     public void loadPlayersFailed(Exception ex) {
         toggleLoginInputs(true);
-        Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+        showMessage(ex.getMessage());
         ex.printStackTrace();
     }
 
@@ -204,7 +207,12 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
     @Override
     public void loadGamesFailed(Exception ex) {
         toggleLoginInputs(true);
-        Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+        showMessage(ex.getMessage());
         ex.printStackTrace();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return true;
     }
 }

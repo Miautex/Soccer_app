@@ -424,4 +424,8 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         System.out.println("-------------LOGIN FAILED");
         ex.printStackTrace();
     }
+
+    public boolean isToast(){
+        return false;
+    }
 }

@@ -25,9 +25,9 @@
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login" />
-        <activity
+        <!--<activity
             android:name=".EditPlayerOwnActivity"
-            android:label="@string/title_activity_edit_player_own" />
+            android:label="@string/title_activity_edit_player_own" />-->
         <activity
             android:name=".EditPlayerActivity"
             android:label="@string/title_activity_edit_player_admin" />
