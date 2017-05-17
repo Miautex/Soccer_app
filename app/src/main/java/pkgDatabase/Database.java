@@ -1,6 +1,9 @@
 package pkgDatabase;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -46,6 +49,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
     private Locale locale;
     private TreeSet<Player> allPlayers = null;
     private TreeSet<Game> allGames = null;
+    private SharedPreferences preferences = null;
 
     private ArrayList<OnPlayersUpdatedListener> playersChangedListener = null;
     private ArrayList<OnGamesUpdatedListener> gamesChangedListener = null;
@@ -430,6 +434,10 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
     }
 
     public boolean isToast(){
-        return false;
+        return !preferences.getBoolean("preference_usesnackbar", true);
+    }
+
+    public void initPreferences (Context ctx) {
+        preferences = PreferenceManager.getDefaultSharedPreferences(ctx);
     }
 }

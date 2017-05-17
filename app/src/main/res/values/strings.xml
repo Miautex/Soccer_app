@@ -123,6 +123,7 @@
     <!---->
 
     <string name="nav_settings_title">Settings</string>
+    <string name="preference_general_usesnackbar">Use Snackbar</string>
 
 
     <string-array name="spinnerPlayerGameValues">

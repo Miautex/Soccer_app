@@ -8,6 +8,11 @@
             android:key="preference_general_language"
             android:summary="@string/preference_language_summary"
             android:title="@string/preference_language_title"/>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="preference_usesnackbar"
+            android:title="@string/preference_general_usesnackbar"/>
+
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/preference_category_webservice">
         <EditTextPreference

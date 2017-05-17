@@ -3,7 +3,6 @@ package group2.schoolproject.a02soccer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,7 +15,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
-
 
 import pkgData.Game;
 import pkgData.Player;
@@ -54,6 +52,7 @@ public class MainActivity extends BaseActivity
 
             Accessor.init(getApplicationContext());
             db = Database.getInstance();
+            db.initPreferences(this);
 
             if (db.getCurrentlyLoggedInPlayer() == null || !db.getCurrentlyLoggedInPlayer().isAdmin()) {
                 navigationView.getMenu().setGroupVisible(R.id.menuGroupAdmin, false);
@@ -98,8 +97,6 @@ public class MainActivity extends BaseActivity
             startActivity(myIntent);
         } else if (id == R.id.nav_manage) {
             openActivity(ScoreBoardActivity.class);
-
-
         } else if (id == R.id.mniLogin) {
             openActivity(LoginActivity.class);
         } else if (id == R.id.nav_settings) {
