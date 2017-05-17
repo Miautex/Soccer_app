@@ -19,10 +19,10 @@ import android.widget.SpinnerAdapter;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -139,6 +139,40 @@ public class TeamDivisionTab extends Fragment implements View.OnClickListener, O
         }
     }
 
+    public ArrayList<Integer> getFreePlayerids(){
+        ArrayList<Integer> freePlayer = new ArrayList<>();
+        int playercount = tableAllPlayers.getChildCount();
+        for (int i = 0; i < playercount; i++) {
+            TableRow row = (TableRow) tableAllPlayers.getChildAt(i);
+            freePlayer.add(Integer.parseInt(((TextView) row.getChildAt(0)).getText().toString()));
+        }
+        return freePlayer;
+    }
+
+    public int Teammembercount(){
+        return tableTeam1.getChildCount();
+    }
+
+    public void movePlayerRow(int id) {
+        for (int i = 0; i < tableAllPlayers.getChildCount(); i++) {
+            TableRow row = (TableRow) tableAllPlayers.getChildAt(i);
+            if (Integer.parseInt(((TextView) row.getChildAt(0)).getText().toString()) == id) {
+                tableAllPlayers.removeView(row);
+                informOnTeamChangedListener(Integer.parseInt(((TextView) row.getChildAt(0)).getText().toString()), true);
+                ((Button) row.getChildAt(3)).setText("-");
+                ((Button) row.getChildAt(3)).setTextColor(Color.RED);
+                int newPos = getPosition((Spinner)row.getChildAt((2)));
+                ((Spinner) row.getChildAt((2))).setSelection(newPos);
+                tableTeam1.addView(row);
+            }
+        }
+    }
+
+    private int getPosition(Spinner s){
+        Random rand = new Random();
+        return rand.nextInt(s.getAdapter().getCount());
+    }
+
     public ArrayList<Participation> getPlayersInTeam() throws Exception {
         ArrayList<Participation> list = new ArrayList<>();
         if(!hasGoalkeeper()){
@@ -163,13 +197,15 @@ public class TeamDivisionTab extends Fragment implements View.OnClickListener, O
                 hasGolaie = true;
             }
         }
-        return hasGolaie;
+        //return hasGolaie;
+        //TODO fragen ob das nötig ist
+        return true;
     }
 
     private void setLayouts() {
-        layoutTextView = new TableRow.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1.2f);
-        layoutSpinner = new TableRow.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1);
-        layoutButton = new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.4f);
+        layoutTextView = new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1.2f);
+        layoutSpinner = new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1);
+        layoutButton = new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.3f);
         layoutNotVisible = new TableRow.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 0);
     }
 

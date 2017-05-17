@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.TreeMap;
 
 import pkgData.Game;
@@ -82,8 +83,7 @@ public class TeamDivisionActivity extends BaseActivity implements OnTeamChangedL
         ArrayList<Participation> list2 = ((TeamDivisionTab) mSectionsPageAdapter.getItem(1)).getPlayersInTeam();
         if (list1.size() + list2.size() != allPlayers.size()) {
             throw new Exception(getString(R.string.msg_PlayerhasNoTeam));
-        }
-        else if(Math.abs((list1.size()-list2.size())) > 1){
+        } else if (Math.abs((list1.size() - list2.size())) > 1) {
             throw new Exception(getString(R.string.msg_UnbalancedTeams));
         }
         list1.addAll(list2);
@@ -115,8 +115,8 @@ public class TeamDivisionActivity extends BaseActivity implements OnTeamChangedL
 
     @Override
     public void onClick(View button) {
-        if (button.getId() == R.id.btnContinue) {
-            try {
+        try {
+            if (button.getId() == R.id.btnContinue) {
                 createParticipations();
                 game.removeAllParticipations();
                 for (Participation p : participations) {
@@ -125,15 +125,50 @@ public class TeamDivisionActivity extends BaseActivity implements OnTeamChangedL
                 Intent myIntent = new Intent(this, AddGameEnterDataActivity.class);
                 myIntent.putExtra("game", game);
                 this.startActivity(myIntent);
-            } catch (Exception e) {
-                showMessage(e.getMessage());
+
+            } else if (button.getId() == R.id.btnCancel) {
+                this.finish();
+            } else if (button.getId() == R.id.btnShuffle) {
+                //showMessage("folgt");
+                shuffle();
             }
-        } else if (button.getId() == R.id.btnCancel) {
-            this.finish();
-        } else if (button.getId() == R.id.btnShuffle) {
-            showMessage("folgt");
+        } catch (Exception e) {
+            showMessage(e.getMessage());
         }
     }
 
+    private void shuffle() {
+        Random rand = new Random();
+        TeamDivisionTab team1 = ((TeamDivisionTab) mSectionsPageAdapter.getItem(0));
+        TeamDivisionTab team2 = ((TeamDivisionTab) mSectionsPageAdapter.getItem(1));
+        ArrayList<Integer> freePlayers = ((TeamDivisionTab) mSectionsPageAdapter.getItem(0)).getFreePlayerids();
+        int diff = team1.Teammembercount() - team2.Teammembercount(); // wenn negativ müssen leute in team1, sonst team2
+        if (freePlayers.size() != 0) {
+            if (diff < 0) {
+                for (int i = 0; i < Math.abs(diff); i++) {
+                    team1.movePlayerRow(freePlayers.remove(rand.nextInt(freePlayers.size())));
+                    diff++;
+                }
+            } else if (diff > 0) {
+                for (int i = 0; i < Math.abs(diff); i++) {
+                    team2.movePlayerRow(freePlayers.remove(rand.nextInt(freePlayers.size())));
+                    diff--;
+                }
+            }
+            if (diff == 0 && freePlayers.size() != 0) {
+                for (int i = 0; i < freePlayers.size(); ) {
+                    if (diff == 0) {
+                        team1.movePlayerRow(freePlayers.remove(rand.nextInt(freePlayers.size())));
+                        diff++;
+                    } else if (diff != 0) {
+                        team2.movePlayerRow(freePlayers.remove(rand.nextInt(freePlayers.size())));
+                        diff--;
+                    }
+                }
+            }
+        } else {
+            showMessage("Keine Spieler zum aufteilen");
+        }
+    }
 }
 
