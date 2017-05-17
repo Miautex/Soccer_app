@@ -12,6 +12,7 @@ import java.util.Locale;
 import java.util.TreeSet;
 
 import group2.schoolproject.a02soccer.R;
+import pkgComparator.PlayerComparatorName;
 import pkgData.Game;
 import pkgData.Participation;
 import pkgData.Player;
@@ -128,7 +129,10 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
     }
 
     public ArrayList<Player> getAllPlayers() throws Exception {
-        return new ArrayList<>(allPlayers);
+        TreeSet<Player> sortingTs = new TreeSet<Player>(new PlayerComparatorName());
+        sortingTs.addAll(allPlayers);
+
+        return new ArrayList<>(sortingTs);
     }
 
     public Player getPlayerByUsername(String username) {

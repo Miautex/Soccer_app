@@ -219,6 +219,6 @@ public final class Player implements Comparable, Serializable, Cloneable {
     public int compareTo(Object o) {
         Player tmpP = (Player) o;
 
-        return this.toString().compareTo(tmpP.toString());
+        return this.getId()-tmpP.getId();
     }
 }
