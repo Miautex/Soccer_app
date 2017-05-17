@@ -125,7 +125,7 @@ public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeL
         p.setNumGoalsShotPenalty(Integer.parseInt(editTexts[3].getText().toString()));
         p.setNumGoalsGot(Integer.parseInt(editTexts[4].getText().toString()));
         p.setNumNutmeg(Integer.parseInt(editTexts[5].getText().toString()));
-        p.setPlayer((new Player(Integer.parseInt(editTexts[6].getText().toString()), "", "", false)));
+        p.setPlayer((new Player(Integer.parseInt(editTexts[6].getText().toString()))));
 
         return p;
     }

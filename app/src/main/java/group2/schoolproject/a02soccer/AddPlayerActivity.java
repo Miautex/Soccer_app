@@ -5,7 +5,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import pkgData.Player;
 import pkgData.PlayerPosition;
@@ -38,6 +37,8 @@ public class AddPlayerActivity extends BaseActivity implements View.OnClickListe
 
         try {
             db = Database.getInstance();
+            db.setContext(this);
+
 
             //Exit activity when user is not an admin (shouldn't happen)
             if (!db.getCurrentlyLoggedInPlayer().isAdmin()) {
@@ -88,7 +89,8 @@ public class AddPlayerActivity extends BaseActivity implements View.OnClickListe
 
         }
         catch (DuplicateUsernameException ex) {
-            throw new DuplicateUsernameException(String.format(getString(R.string.msg_UsernameNotAvailable), newPlayer.getUsername()));
+            throw new DuplicateUsernameException(String.format(
+                    getString(R.string.msg_UsernameNotAvailable), newPlayer.getUsername()));
         }
         catch (IllegalArgumentException ex) {
             throw new IllegalArgumentException(getString(R.string.msg_IllegalUsername));

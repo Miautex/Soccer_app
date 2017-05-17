@@ -15,12 +15,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import pkgData.Game;
 import pkgData.Player;
 import pkgDatabase.Database;
 import pkgDatabase.pkgListener.OnGamesUpdatedListener;
 import pkgDatabase.pkgListener.OnPlayersUpdatedListener;
+import pkgException.CouldNotDeleteGameException;
 import pkgException.CouldNotDeletePlayerException;
 import pkgWSA.Accessor;
 
@@ -124,15 +126,15 @@ public class MainActivity extends BaseActivity
 
     private void displayLoggedInUser() {
         //TODO
-        /*if (db.getCurrentlyLoggedInPlayer() != null) {
+        if (db.getCurrentlyLoggedInPlayer() != null) {
             NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
             View header = navigationView.getHeaderView(0);
             TextView txvName = (TextView) header.findViewById(R.id.txvName);
             TextView txvUsername = (TextView) header.findViewById(R.id.txvUsername);
 
             txvName.setText(db.getCurrentlyLoggedInPlayer().getName());
-            txvUsername.setText(db.getCurrentlyLoggedInPlayer().getUsername());
-        }*/
+            txvUsername.setText("@" + db.getCurrentlyLoggedInPlayer().getUsername());
+        }
     }
 
     private void displayPlayers() throws Exception {
@@ -150,7 +152,7 @@ public class MainActivity extends BaseActivity
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        if (v.getId()==R.id.lsvPlayersGames && db.getCurrentlyLoggedInPlayer().isAdmin()) {     //if user is admin
+        if (db.getCurrentlyLoggedInPlayer().isAdmin()) {     //if user is admin
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.menu_list, menu);
         }
@@ -167,10 +169,22 @@ public class MainActivity extends BaseActivity
 
                     switch (item.getItemId()) {
                         case R.id.edit:
-                            onCtxMniEdit(selectedPlayer);
+                            onCtxMniEditPlayer(selectedPlayer);
                             break;
                         case R.id.delete:
-                            onCtxMniDelete(selectedPlayer);
+                            onCtxMniDeletePlayer(selectedPlayer);
+                            break;
+                    }
+                }
+                else {        //if games are displayed
+                    Game selectedGame = (Game) lsvPlayersGames.getAdapter().getItem(info.position);
+
+                    switch (item.getItemId()) {
+                        case R.id.edit:
+                            onCtxMniEditGame(selectedGame);
+                            break;
+                        case R.id.delete:
+                            onCtxMniDeleteGame(selectedGame);
                             break;
                     }
                 }
@@ -184,14 +198,27 @@ public class MainActivity extends BaseActivity
         return false;
     }
 
-    private void onCtxMniEdit(Player selectedPlayer) {
+    private void onCtxMniEditGame(Game selectedGame) {
+        //TODO
+    }
+
+    private void onCtxMniDeleteGame(Game selectedGame) throws Exception {
+        try {
+            db.remove(selectedGame);
+        }
+        catch (CouldNotDeleteGameException ex) {
+            throw new CouldNotDeleteGameException(getString(R.string.msg_CouldNotDeleteGame));
+        }
+    }
+
+    private void onCtxMniEditPlayer(Player selectedPlayer) {
         Intent myIntent;
         myIntent = new Intent(this, EditPlayerActivity.class);
         myIntent.putExtra("player", selectedPlayer);
         this.startActivity(myIntent);
     }
 
-    private void onCtxMniDelete(Player selectedPlayer) throws Exception {
+    private void onCtxMniDeletePlayer(Player selectedPlayer) throws Exception {
 
         try {
             if (db.getCurrentlyLoggedInPlayer().equals(selectedPlayer)) {
@@ -199,9 +226,7 @@ public class MainActivity extends BaseActivity
                 throw new Exception(getString(R.string.msg_CannotDeleteOwnPlayer));
             }
             else {
-                if (db.remove(selectedPlayer)) {
-                    ((ArrayAdapter<Player>) lsvPlayersGames.getAdapter()).remove(selectedPlayer);
-                }
+                db.remove(selectedPlayer);
             }
         }
         catch (CouldNotDeletePlayerException ex) {

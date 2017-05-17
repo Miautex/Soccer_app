@@ -27,6 +27,7 @@ import pkgDatabase.pkgListener.OnLoadAllPlayersListener;
 import pkgDatabase.pkgListener.OnLoadPlayerPositionsListener;
 import pkgDatabase.pkgListener.OnLoginListener;
 import pkgDatabase.pkgListener.OnPlayersUpdatedListener;
+import pkgException.CouldNotDeleteGameException;
 import pkgException.CouldNotDeletePlayerException;
 import pkgException.CouldNotSetPlayerPositionsException;
 import pkgException.DuplicateUsernameException;
@@ -43,6 +44,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         OnLoadAllGamesListener {
 
     public static final int MIN_LENGTH_PASSWORD = 5;
+    private Context ctx = null;
 
     private static Database instance = null;
     private Player currentlyLoggedInPlayer = null;
@@ -112,6 +114,19 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
                 listener.gamesChanged();
             }
         }
+    }
+
+    public void setContext(Context ctx) throws Exception {
+        if (ctx == null) {
+            throw new Exception("Context may not be null");
+        }
+        else {
+            this.ctx = ctx;
+        }
+    }
+
+    public Context getContext() {
+        return this.ctx;
     }
 
     /**
@@ -200,7 +215,8 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         } else {
             SinglePlayerResult spr = GsonSerializor.deserializeSinglePlayerResult(response.getJson());
 
-            if (!spr.isSuccess() && spr.getError() != null && spr.getError().getErrorMessage().contains("MySQLIntegrityConstraintViolationException")) {
+            if (!spr.isSuccess() && spr.getError() != null && spr.getError().getErrorMessage().
+                    contains("MySQLIntegrityConstraintViolationException")) {
                 throw new DuplicateUsernameException();
             }
 
@@ -285,7 +301,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
                 r = setPlayerPositions(p);
 
                 if (!r.isSuccess()) {
-                    throw new Exception(getApplicationContext().getString(R.string.msg_CouldNotSetPositions));
+                    throw new Exception(ctx.getString(R.string.msg_CouldNotSetPositions));
                 }
 
                 if (isSuccess && p.equals(currentlyLoggedInPlayer)) {
@@ -324,6 +340,27 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
             isSuccess = r.isSuccess();
             allPlayers.remove(p);
             notifyOnPlayersUpdatedListener();
+        }
+
+        return isSuccess;
+    }
+
+    public boolean remove(Game g) throws Exception {
+        boolean isSuccess = false;
+        AccessorResponse response = Accessor.runRequestSync(HttpMethod.DELETE, "game/" + g.getId(), null, null);
+
+        if (response.getResponseCode() == 500) {
+            throw new CouldNotDeleteGameException();
+        } else {
+            System.out.println("----------- "+response.getJson());
+            Result r = GsonSerializor.deserializeResult(response.getJson());
+            if (!r.isSuccess()) {
+                throw new CouldNotDeleteGameException();
+            }
+            else {
+                allGames.remove(g);
+                notifyOnGamesUpdatedListener();
+            }
         }
 
         return isSuccess;

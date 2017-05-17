@@ -207,7 +207,7 @@ public final class Player implements Comparable, Serializable, Cloneable {
 
     @Override
     public String toString() {
-        return getName() + " \n(" + getUsername() + ")";
+        return getName() + " \n@" + getUsername();
     }
 
     @Override
