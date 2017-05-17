@@ -13,10 +13,6 @@ import android.widget.Toast;
 
 import java.util.Locale;
 
-import group2.schoolproject.a02soccer.AddGameSelectPlayersActivity;
-import group2.schoolproject.a02soccer.AddPlayerActivity;
-import group2.schoolproject.a02soccer.EditPlayerActivity;
-import group2.schoolproject.a02soccer.R;
 import pkgDatabase.Database;
 import pkgMenu.DynamicMenuItem;
 
@@ -29,7 +25,7 @@ public class BaseActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-}
+    }
 
     public boolean onCreateOptionsMenu(Menu menu) {
         return false;
@@ -66,7 +62,7 @@ public class BaseActivity extends AppCompatActivity {
         return true;
     }
 
-    private void changeLanguage(String s){
+    protected void changeLanguage (String s){
         Locale locale = new Locale(s);
         Database.getInstance().setLocale(locale);
         Resources res = getResources();
@@ -86,5 +82,4 @@ public class BaseActivity extends AppCompatActivity {
             Snackbar.make(findViewById(android.R.id.content),msg,Snackbar.LENGTH_SHORT).show();
         }
     }
-
 }

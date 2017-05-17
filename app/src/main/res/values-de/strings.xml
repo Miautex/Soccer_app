@@ -103,11 +103,14 @@
     <string name="preference_webservice_port_summary">Webservice port</string>
     <string name="preference_webservice_port_title">Port</string>
     <string name="ShowPlayersOrGames">Zeige:</string>
-    <string name="btnShuffle"></string>
+    <string name="btnShuffle">Shuffle</string>
 
 
     <string-array name="spinnerPlayerGameValues">
         <item>Spieler</item>
         <item>Spiele</item>
     </string-array>
+    <string name="title_activity_settings">Einstellungen</string>
+    <string name="preference_general_usesnackbar">Snackbar benutzen</string>
+    <string name="title_activity_score_board">Bestenliste</string>
 </resources>
