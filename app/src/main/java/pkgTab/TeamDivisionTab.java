@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 
 import android.view.Gravity;
@@ -114,7 +115,7 @@ public class TeamDivisionTab extends Fragment implements View.OnClickListener, O
                 playerToRow(p);
             }
         } catch (Exception e) {
-            Toast.makeText(view.getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            Snackbar.make(view,e.getMessage(),Snackbar.LENGTH_SHORT).show();
         }
     }
 
@@ -141,7 +142,7 @@ public class TeamDivisionTab extends Fragment implements View.OnClickListener, O
     public ArrayList<Participation> getPlayersInTeam() throws Exception {
         ArrayList<Participation> list = new ArrayList<>();
         if(!hasGoalkeeper()){
-            throw new Exception(getString(R.string.msg_TeamHasNoGolaie) + team);
+            throw new Exception(getString(R.string.msg_TeamHasNoGolaie) +" "+ team);
         }
         for (int i = 0; i < tableTeam1.getChildCount(); i++) {
             TableRow row = (TableRow) tableTeam1.getChildAt(i);
