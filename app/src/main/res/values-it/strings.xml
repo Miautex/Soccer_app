@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">calcio</string>
+    <string name="Username">nome utente</string>
+    <string name="Password">parola d\'accesso</string>
+    <string name="Name">nome</string>
+    <string name="action_settings">impostazione</string>
+    <string name="btnBack">indietro</string>
+    <string name="btnCancel">sospensione</string>
+    <string name="btnLogin">collegarsi</string>
+    <string name="mniGerman">tedesco</string>
+    <string name="mniEnglish">inglese</string>
+    <string name="mniLogin">collegarsi</string>
+    <string name="name">nome</string>
+    <string name="title_activity_login">collegarsi</string>
+    <string name="title_activity_settings">impostazione</string>
+</resources>
