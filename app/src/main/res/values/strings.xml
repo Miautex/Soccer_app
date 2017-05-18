@@ -17,7 +17,7 @@
     <string name="Name">Name</string>
     <string name="PosMid">Midfield</string>
     <string name="PosGoal">Goalie</string>
-    <string name="PosDef">Defends</string>
+    <string name="PosDef">Defense</string>
     <string name="PosAtk">Attacker</string>
     <string name="Positions">Positions</string>
     <string name="btnSave">Save</string>
@@ -40,7 +40,7 @@
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="Remark">Remark</string>
-    <string name="GoalsShotDefault">Goals Shot</string>
+    <string name="GoalsShotDefault">Goals Shot (Default)</string>
     <string name="GoalsShotHead">Goals Shot (Head)</string>
     <string name="GoalsShotHeadSnow">Goals Shot (Head+Snow)</string>
     <string name="GoalsShotPenalty">Goals Shot (Penalty)</string>
@@ -53,7 +53,7 @@
     <string name="GamesLost">Defeats</string>
     <string name="GameDraws">Draws</string>
     <string name="AvgGoalDiff">Avg. Goal Difference</string>
-    <string name="GoalsShotAll">Overall Goals Shot</string>
+    <string name="GoalsShotAll">Goals Shot</string>
     <string name="NumPosAttack">Played Attack</string>
     <string name="NumPosDefense">Played Defense</string>
     <string name="NumPosMidfield">Played Midfield</string>
@@ -107,7 +107,7 @@
     <string name="preference_category_webservice">Webservice</string>
     <string name="preference_webservice_ip_title">IP</string>
     <string name="preference_webservice_ip_summary">Webservice ip address</string>
-    <string name="preference_webservice_ip_default" translatable="false">192.168.0.1</string>
+    <string name="preference_webservice_ip_default">192.168.0.1</string>
     <string name="preference_webservice_port_title">Port</string>
     <string name="preference_webservice_port_summary">Webservice port</string>
     <string name="preference_webservice_port_default" translatable="false">8080</string>
@@ -125,6 +125,8 @@
 
     <string name="nav_settings_title">Settings</string>
     <string name="preference_general_usesnackbar">Use Snackbar</string>
+    <string name="name">Name</string>
+    <string name="position">Position</string>
 
 
     <string-array name="spinnerPlayerGameValues">

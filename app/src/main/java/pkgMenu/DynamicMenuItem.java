@@ -6,6 +6,5 @@ package pkgMenu;
  */
 
 public enum DynamicMenuItem {
-    //einfach des Benutzen was vor Activity steht
-    MAIN,ADD_PLAYER,EDIT_PLAYER,ADD_GAME,EDITTEAM,LOGIN,ENGLISH,GERMAN
+    ENGLISH,GERMAN,SPANISCH
 }

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="position">Poste</string>
+    <string name="app_name">el fútbol</string>
+    <string name="GoalsShotHead">Cabezazo</string>
+    <string name="GoalsShotHeadSnow"></string>
+    <string name="GoalsShotDefault">Meter un gol</string>
+    <string name="GoalsShotAll">Marcar</string>
+    <string name="GamesWon">ganar el partido</string>
+    <string name="GamesLost">perder el partido</string>
+    <string name="PosDef">la defensa</string>
+    <string name="PosAtk">la delantera</string>
+    <string name="PosMid">centro del campo</string>
+    <string name="PosGoal">portero</string>
+    <string name="Positions">Poste</string>
+</resources>

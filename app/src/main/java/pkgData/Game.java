@@ -91,10 +91,8 @@ public final class Game implements Serializable, Comparable<Game> {
         if (p == null) {
             throw new IllegalArgumentException("Participation must not be null");
         }
-
-        participations.add(p);
-
-        if (p != null) {
+        else {
+            participations.add(p);
             if (p.getGame() != null && !p.getGame().equals(this)) {
                 p.setGame(this);
             }
@@ -143,7 +141,7 @@ public final class Game implements Serializable, Comparable<Game> {
     }
 
     @Override
-    public int compareTo(Game game) {
+    public int compareTo( Game game) {
         int cp;
         cp = getDate().compareTo(game.getDate());
         return cp;

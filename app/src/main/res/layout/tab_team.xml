@@ -19,14 +19,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1.4"
                 android:textAlignment="center"
-                android:text="Name" />
+                android:text="@string/Name" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textAlignment="center"
-                android:text="Position" />
+                android:text="@string/position" />
 
             <TextView
                 android:layout_width="0dp"
@@ -64,14 +64,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1.2"
                 android:textAlignment="center"
-                android:text="Name" />
+                android:text="@string/name" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textAlignment="center"
-                android:text="Position" />
+                android:text="@string/position" />
 
             <TextView
                 android:layout_width="0dp"

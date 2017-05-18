@@ -1,7 +1,7 @@
 package pkgData;
 
 /**
- * Created by Wilscher Marco
+ * Created by Wilscher Mario
  */
 
 public enum Team {

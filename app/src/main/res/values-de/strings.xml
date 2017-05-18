@@ -16,7 +16,7 @@
     <string name="Name">Name</string>
     <string name="PosMid">Mittelfeld</string>
     <string name="PosGoal">Torwart</string>
-    <string name="PosDef">Verteidigung</string>
+    <string name="PosDef">Abwehr</string>
     <string name="PosAtk">Sturm</string>
     <string name="Positions">Positionen</string>
     <string name="btnSave">Speichern</string>
@@ -38,7 +38,7 @@
     <string name="action_settings">Einstellungen</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="Remark">Bemerkung</string>
-    <string name="GoalsShotDefault">Tore geschossen</string>
+    <string name="GoalsShotDefault">Tore geschossen (Normal)</string>
     <string name="GoalsShotHead">Tore geschossen (Kopf)</string>
     <string name="GoalsShotHeadSnow">Tore geschossen (Kopf+Schnee)</string>
     <string name="GoalsShotPenalty">Tore geschossen (Elfmeter)</string>
@@ -51,9 +51,9 @@
     <string name="GamesLost">Niederlagen</string>
     <string name="GameDraws">Unentschieden</string>
     <string name="AvgGoalDiff">Durchschn. Tor Differenz</string>
-    <string name="GoalsShotAll">Tore geschossen (Gesamt)</string>
+    <string name="GoalsShotAll">Tore geschossen</string>
     <string name="NumPosAttack">Sturm gespielt</string>
-    <string name="NumPosDefense">Verteidigung gespielt</string>
+    <string name="NumPosDefense">Abwehr gespielt</string>
     <string name="NumPosMidfield">Mittelfeld gespielt</string>
     <string name="NumPosGoal">Torwart gespielt</string>
 
@@ -114,4 +114,6 @@
     <string name="title_activity_settings">Einstellungen</string>
     <string name="preference_general_usesnackbar">Snackbar benutzen</string>
     <string name="title_activity_score_board">Bestenliste</string>
+    <string name="name">Name</string>
+    <string name="preference_webservice_ip_default" translatable="false">192.168.0.2</string>
 </resources>

@@ -38,6 +38,9 @@ public class BaseActivity extends AppCompatActivity {
         else if(item.getItemId() == DynamicMenuItem.ENGLISH.ordinal()){
             changeLanguage("en");
         }
+        else if(item.getItemId() == DynamicMenuItem.SPANISCH.ordinal()){
+            changeLanguage("es");
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -49,9 +52,15 @@ public class BaseActivity extends AppCompatActivity {
     public boolean onPrepareOptionsMenu(Menu menu,Class cl) {
         if(getResources().getConfiguration().locale.toString().contains("de")){
             menu.add(0,DynamicMenuItem.ENGLISH.ordinal(),Menu.NONE, R.string.mniEnglish);
+            menu.add(0,DynamicMenuItem.SPANISCH.ordinal(),Menu.NONE,"Spanisch");
+        }
+        else if ((getResources().getConfiguration().locale.toString().contains("en"))){
+            menu.add(0,DynamicMenuItem.GERMAN.ordinal(),Menu.NONE, R.string.mniGerman);
+            menu.add(0,DynamicMenuItem.SPANISCH.ordinal(),Menu.NONE,"Spanisch");
         }
         else{
             menu.add(0,DynamicMenuItem.GERMAN.ordinal(),Menu.NONE, R.string.mniGerman);
+            menu.add(0,DynamicMenuItem.ENGLISH.ordinal(),Menu.NONE, R.string.mniEnglish);
         }
         return true;
     }
