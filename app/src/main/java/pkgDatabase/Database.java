@@ -140,7 +140,9 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
 
     public void loadAllPlayers(OnLoadAllPlayersListener listener) throws Exception {
         ArrayList<OnLoadAllPlayersListener> listeners = new ArrayList<>();
-        listeners.add(listener);
+        if (listener != null) {
+            listeners.add(listener);
+        }
         listeners.add(this);
 
         Accessor.runRequestAsync(HttpMethod.GET, "player",
@@ -194,7 +196,9 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
 
     public void loadAllGames(OnLoadAllGamesListener listener) throws Exception {
         ArrayList<OnLoadAllGamesListener> listeners = new ArrayList<>();
-        listeners.add(listener);
+        if (listener != null) {
+            listeners.add(listener);
+        }
         listeners.add(this);
 
         Accessor.runRequestAsync(HttpMethod.GET, "game",

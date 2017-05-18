@@ -93,6 +93,7 @@
     <string name="msg_TeamHasNoGolaie">No Goalkeeper in: </string>
     <string name="msg_UnbalancedTeams">The player difference between the Teams is too high</string>
     <string name="msg_CouldNotDeleteGame">Could not delete game</string>
+    <string name="msg_CouldNotRefreshData">Could not refresh data</string>
 
 
     <string name="ctxMniEditPlayer">Edit</string>

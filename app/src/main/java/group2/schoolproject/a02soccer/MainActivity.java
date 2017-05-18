@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.ContextMenu;
@@ -17,10 +18,14 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.util.Collection;
+
 import pkgData.Game;
 import pkgData.Player;
 import pkgDatabase.Database;
 import pkgDatabase.pkgListener.OnGamesUpdatedListener;
+import pkgDatabase.pkgListener.OnLoadAllGamesListener;
+import pkgDatabase.pkgListener.OnLoadAllPlayersListener;
 import pkgDatabase.pkgListener.OnPlayersUpdatedListener;
 import pkgException.CouldNotDeleteGameException;
 import pkgException.CouldNotDeletePlayerException;
@@ -28,11 +33,13 @@ import pkgWSA.Accessor;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnPlayersUpdatedListener,
-        OnGamesUpdatedListener, AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener {
-    ListView lsvPlayersGames = null;
-    Spinner spPlayersGames = null;
+        OnGamesUpdatedListener, AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener, SwipeRefreshLayout.OnRefreshListener, OnLoadAllPlayersListener, OnLoadAllGamesListener {
+    private ListView lsvPlayersGames = null;
+    private Spinner spPlayersGames = null;
+    private SwipeRefreshLayout swipeRefreshLayout = null;
 
-    Database db = null;
+    private boolean arePlayersRefreshed, areGamesRefreshed;
+    private Database db = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -113,12 +120,14 @@ public class MainActivity extends BaseActivity
     private void getAllViews(){
         lsvPlayersGames = (ListView) this.findViewById(R.id.lsvPlayersGames);
         spPlayersGames = (Spinner) this.findViewById(R.id.spinnerPlayerGame);
+        swipeRefreshLayout = (SwipeRefreshLayout) this.findViewById(R.id.swiperefresh);
     }
 
     private void registrateEventHandlers(){
         registerForContextMenu(lsvPlayersGames);       //set up context-menu
         lsvPlayersGames.setOnItemClickListener(this);
         spPlayersGames.setOnItemSelectedListener(this);
+        swipeRefreshLayout.setOnRefreshListener(this);
         db.addOnPlayersUpdatedListener(this);
         db.addOnGamesUpdatedListener(this);
 
@@ -288,5 +297,46 @@ public class MainActivity extends BaseActivity
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    @Override
+    public void onRefresh() {
+        try {
+            arePlayersRefreshed = false;
+            areGamesRefreshed = false;
+            db.loadAllPlayers(this);
+            db.loadAllGames(this);
+        } catch (Exception e) {
+            showMessage(getString(R.string.Error) + ": " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void loadPlayersSuccessful(Collection<Player> players) {
+        arePlayersRefreshed = true;
+        if (areGamesRefreshed) {
+            swipeRefreshLayout.setRefreshing(false);
+        }
+    }
+
+    @Override
+    public void loadPlayersFailed(Exception ex) {
+        swipeRefreshLayout.setRefreshing(false);
+        showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CouldNotRefreshData));
+    }
+
+    @Override
+    public void loadGamesSuccessful(Collection<Game> games) {
+        areGamesRefreshed = true;
+        if (arePlayersRefreshed) {
+            swipeRefreshLayout.setRefreshing(false);
+        }
+    }
+
+    @Override
+    public void loadGamesFailed(Exception ex) {
+        swipeRefreshLayout.setRefreshing(false);
+        showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CouldNotRefreshData));
     }
 }
