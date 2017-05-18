@@ -1,5 +1,6 @@
 package group2.schoolproject.a02soccer;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -16,11 +17,11 @@ public class SettingsActivity extends BaseActivity implements SharedPreferences.
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
     }
 
-
     @Override
     public void onSharedPreferenceChanged (SharedPreferences sharedPreferences, String key) {
         if (key.equals("preference_general_language")) {
-            changeLanguage(sharedPreferences.getString("preference_general_language", "en"));
+            finish();
+            startActivity(new Intent(this,this.getClass()).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
         }
     }
 

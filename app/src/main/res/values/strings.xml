@@ -93,6 +93,7 @@
     <string name="msg_TeamHasNoGolaie">No Goalkeeper in: </string>
     <string name="msg_UnbalancedTeams">The player difference between the Teams is too high</string>
     <string name="msg_CouldNotDeleteGame">Could not delete game</string>
+    <string name="msg_CouldNotRefreshData">Could not refresh data</string>
 
 
     <string name="ctxMniEditPlayer">Edit</string>
@@ -115,10 +116,14 @@
     <string-array name="language_entries">
         <item>Deutsch</item>
         <item>English</item>
+        <item>Italiano</item>
+        <item>Español</item>
     </string-array>
     <string-array name="language_values">
         <item>de</item>
         <item>en</item>
+        <item>it</item>
+        <item>es</item>
     </string-array>
     <string name="title_activity_score_board">Scoreboard</string>
     <!---->

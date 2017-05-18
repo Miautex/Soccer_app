@@ -88,6 +88,7 @@
     <string name="msg_TeamHasNoGolaie">Kein Torwart in: </string>
     <string name="msg_UnbalancedTeams">Die Spielerdifferenz zwischen den Teams ist zu groß</string>
     <string name="msg_CouldNotDeleteGame">Spiel konnte nicht gelöscht werden</string>
+    <string name="msg_CouldNotRefreshData">Daten konnten nicht aktualisiert werden</string>
 
     <string name="ctxMniEditPlayer">Bearbeiten</string>
     <string name="ctxMniDeletePlayer">Löschen</string>

@@ -1,9 +1,11 @@
 package group2.schoolproject.a02soccer;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
@@ -25,6 +27,7 @@ public class BaseActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setLanguage(PreferenceManager.getDefaultSharedPreferences(this).getString("preference_general_language", "en"));
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -32,15 +35,20 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = preferences.edit();
         if(item.getItemId() == DynamicMenuItem.GERMAN.ordinal()){
-            changeLanguage("de");
+            editor.putString("preference_general_language", "de");
         }
         else if(item.getItemId() == DynamicMenuItem.ENGLISH.ordinal()){
-            changeLanguage("en");
+            editor.putString("preference_general_language", "en");
         }
         else if(item.getItemId() == DynamicMenuItem.SPANISCH.ordinal()){
-            changeLanguage("es");
+            editor.putString("preference_general_language", "es");
         }
+        editor.commit();
+        finish();
+        startActivity(new Intent(this,this.getClass()).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
         return super.onOptionsItemSelected(item);
     }
 
@@ -81,6 +89,16 @@ public class BaseActivity extends AppCompatActivity {
         res.updateConfiguration(conf, dm);
         finish();
         startActivity(new Intent(this,this.getClass()).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+    }
+
+    protected void setLanguage (String s) {
+        Locale locale = new Locale(s);
+        Database.getInstance().setLocale(locale);
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = locale;
+        res.updateConfiguration(conf, dm);
     }
 
     public void showMessage(String msg){

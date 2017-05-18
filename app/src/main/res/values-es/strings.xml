@@ -13,4 +13,10 @@
     <string name="PosMid">centro del campo</string>
     <string name="PosGoal">portero</string>
     <string name="Positions">Poste</string>
+    <string name="mniLogin">inicio de sesión</string>
+    <string name="Password">contraseña</string>
+    <string name="Username">nombre del usuario</string>
+    <string name="title_activity_login"></string>
+    <string name="action_settings"></string>
+    <string name="btnLogin">inicio de sesión</string>
 </resources>
