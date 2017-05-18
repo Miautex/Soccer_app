@@ -38,7 +38,7 @@ public class MainActivity extends BaseActivity
     private Spinner spPlayersGames = null;
     private SwipeRefreshLayout swipeRefreshLayout = null;
 
-    private boolean arePlayersRefreshed, areGamesRefreshed;
+    private boolean arePlayersRefreshed, areGamesRefreshed, hasRefreshFailed;
     private Database db = null;
 
     @Override
@@ -304,6 +304,7 @@ public class MainActivity extends BaseActivity
         try {
             arePlayersRefreshed = false;
             areGamesRefreshed = false;
+            hasRefreshFailed = false;
             db.loadAllPlayers(this);
             db.loadAllGames(this);
         } catch (Exception e) {
@@ -323,7 +324,10 @@ public class MainActivity extends BaseActivity
     @Override
     public void loadPlayersFailed(Exception ex) {
         swipeRefreshLayout.setRefreshing(false);
-        showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CouldNotRefreshData));
+        if (!hasRefreshFailed) {
+            hasRefreshFailed = true;
+            showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CouldNotRefreshData));
+        }
     }
 
     @Override
@@ -337,6 +341,9 @@ public class MainActivity extends BaseActivity
     @Override
     public void loadGamesFailed(Exception ex) {
         swipeRefreshLayout.setRefreshing(false);
-        showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CouldNotRefreshData));
+        if (!hasRefreshFailed) {
+            hasRefreshFailed = true;
+            showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CouldNotRefreshData));
+        }
     }
 }
