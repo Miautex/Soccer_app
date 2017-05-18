@@ -136,6 +136,10 @@ public class TeamDivisionActivity extends BaseActivity implements OnTeamChangedL
             showMessage(e.getMessage());
         }
     }
+    
+    private void shuffleGoalie(){
+        // TODO: 18.05.2017  
+    }
 
     private void shuffle() {
         Random rand = new Random();
@@ -145,14 +149,12 @@ public class TeamDivisionActivity extends BaseActivity implements OnTeamChangedL
         int diff = team1.Teammembercount() - team2.Teammembercount(); // wenn negativ müssen leute in team1, sonst team2
         if (freePlayers.size() != 0) {
             if (diff < 0) {
-                for (int i = 0; i > diff;) {
+                for (int i = 0; i > diff;diff++) {
                     team1.movePlayerRow(freePlayers.remove(rand.nextInt(freePlayers.size())));
-                    diff++;
                 }
             } else if (diff > 0) {
-                for (int i = 0; i < diff;) {
+                for (int i = 0; i < diff;diff--) {
                     team2.movePlayerRow(freePlayers.remove(rand.nextInt(freePlayers.size())));
-                    diff--;
                 }
             }
             if (diff == 0 && freePlayers.size() != 0) {
