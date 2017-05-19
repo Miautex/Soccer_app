@@ -134,7 +134,6 @@ public class MainActivity extends BaseActivity
     }
 
     private void displayLoggedInUser() {
-        //TODO
         if (db.getCurrentlyLoggedInPlayer() != null) {
             NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
             View header = navigationView.getHeaderView(0);
@@ -207,7 +206,7 @@ public class MainActivity extends BaseActivity
         return false;
     }
 
-    private void onCtxMniEditGame(Game selectedGame) {
+    private void onCtxMniEditGame(Game selectedGame) throws Exception {
         //TODO
     }
 
@@ -274,6 +273,21 @@ public class MainActivity extends BaseActivity
 
             myIntent.putExtra("player", selectedPlayer);
             this.startActivity(myIntent);
+        }
+        else {
+            //TODO
+            try {
+                Game selectedGame = (Game) lsvPlayersGames.getItemAtPosition(position);
+                db.getParticipationsOfGame(selectedGame);
+
+                Intent myIntent = new Intent(this, ShowGameActivity.class);
+                myIntent.putExtra("game", selectedGame);
+                this.startActivity(myIntent);
+            }
+            catch (Exception ex) {
+                showMessage(ex.getMessage());
+                ex.printStackTrace();
+            }
         }
     }
 

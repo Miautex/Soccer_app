@@ -8,6 +8,7 @@
     <string name="title_activity_edit_player_admin">Edit player</string>
     <string name="title_activity_add_player">Add player</string>
     <string name="title_activity_player_stats">Player Stats</string>
+    <string name="title_activity_display_game">Show Game</string>
     <string name="title_activity_settings">Settings</string>
     <string name="title_activity_scoreboard">Scoreboard</string>
 
@@ -59,6 +60,11 @@
     <string name="NumPosMidfield">Played Midfield</string>
     <string name="NumPosGoal">Played Goalie</string>
     <string name="ShowPlayersOrGames">Show: </string>
+    <string name="PosMidAbbrev">M</string>
+    <string name="PosGoalAbbrev">G</string>
+    <string name="PosDefAbbrev">D</string>
+    <string name="PosAtkAbbrev">A</string>
+    <string name="PositionAbbrev">P</string>
 
 
     <string name="navigation_drawer_open">Open navigation drawer</string>

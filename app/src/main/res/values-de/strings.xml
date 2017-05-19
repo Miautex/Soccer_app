@@ -56,6 +56,10 @@
     <string name="NumPosDefense">Abwehr gespielt</string>
     <string name="NumPosMidfield">Mittelfeld gespielt</string>
     <string name="NumPosGoal">Torwart gespielt</string>
+    <string name="PosMidAbbrev">M</string>
+    <string name="PosGoalAbbrev">T</string>
+    <string name="PosDefAbbrev">A</string>
+    <string name="PosAtkAbbrev">S</string>
 
     <string name="navigation_drawer_open">Navigation öffnen</string>
     <string name="navigation_drawer_close">Navigation schließen</string>

@@ -3,11 +3,13 @@ package group2.schoolproject.a02soccer;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -19,9 +21,10 @@ import java.util.HashMap;
 import java.util.TreeSet;
 
 import pkgComparator.PlayerComparatorName;
-import pkgDatabase.Database;
 import pkgData.Game;
 import pkgData.Player;
+import pkgDatabase.Database;
+import pkgMisc.PxDpConverter;
 
 public class AddGameSelectPlayersActivity extends BaseActivity implements View.OnClickListener {
     private static final int MIN_PLAYERS_REQUIRED = 4;
@@ -90,10 +93,13 @@ public class AddGameSelectPlayersActivity extends BaseActivity implements View.O
             CheckBox cb = new CheckBox(this);
             TextView txvName = new TextView(this);
             TextView txvId = new TextView(this);
+            LinearLayout llo = new LinearLayout(this);
+
 
             cb.setChecked(true);
             cb.setOnClickListener(this);
             txvName.setText(p.toString());
+            txvName.setGravity(Gravity.TOP);
             txvId.setText(Integer.toString(p.getId()));
             txvId.setVisibility(View.GONE);
 
@@ -101,10 +107,15 @@ public class AddGameSelectPlayersActivity extends BaseActivity implements View.O
 
             //Set layout like header
             cb.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
-            txvName.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 2.5f));
+            txvName.setLayoutParams(new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            llo.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 5));
 
+            //set paddingBottom for row
+            row.setPadding(0, PxDpConverter.toDp(5, this), 0, 0);
+
+            llo.addView(txvName);       //linear layout as wrapper for txvName to fix text being cut off
             row.addView(cb);
-            row.addView(txvName);
+            row.addView(llo);
             row.addView(txvId);
 
             tablePlayers.addView(row, new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT,

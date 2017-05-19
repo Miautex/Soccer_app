@@ -29,10 +29,12 @@ import pkgDatabase.pkgListener.OnLoginListener;
 import pkgDatabase.pkgListener.OnPlayersUpdatedListener;
 import pkgException.CouldNotDeleteGameException;
 import pkgException.CouldNotDeletePlayerException;
+import pkgException.CouldNotLoadParticipationsException;
 import pkgException.CouldNotSetPlayerPositionsException;
 import pkgException.DuplicateUsernameException;
 import pkgException.PasswordTooShortException;
 import pkgMisc.GsonSerializor;
+import pkgResult.ParticipationResult;
 import pkgResult.Result;
 import pkgResult.SingleGameResult;
 import pkgResult.SinglePlayerResult;
@@ -356,7 +358,6 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         if (response.getResponseCode() == 500) {
             throw new CouldNotDeleteGameException();
         } else {
-            System.out.println("----------- "+response.getJson());
             Result r = GsonSerializor.deserializeResult(response.getJson());
             if (!r.isSuccess()) {
                 throw new CouldNotDeleteGameException();
@@ -364,6 +365,33 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
             else {
                 allGames.remove(g);
                 notifyOnGamesUpdatedListener();
+            }
+        }
+
+        return isSuccess;
+    }
+
+    /**
+     * Loads all participations of given game and adds them to the game
+     */
+    public boolean getParticipationsOfGame(Game g) throws Exception {
+        boolean isSuccess = false;
+        AccessorResponse response = Accessor.
+                runRequestSync(HttpMethod.GET, "participation/byGame/" + g.getId(), null, null);
+
+        if (response.getResponseCode() == 500) {
+            throw new CouldNotLoadParticipationsException();
+        } else {
+            ParticipationResult pr = GsonSerializor.deserializeParticipationResult((response.getJson()));
+            if (!pr.isSuccess()) {
+                throw new CouldNotLoadParticipationsException();
+            }
+            else {
+                g.removeAllParticipations();
+
+                for (Participation p: pr.getContent()) {
+                    g.addParticipation(p);
+                }
             }
         }
 
@@ -422,6 +450,10 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
 
         return hash;
     }
+
+
+
+
 
     @Override
     public void loadPlayersSuccessful(Collection<Player> players) {

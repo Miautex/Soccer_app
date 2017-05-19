@@ -51,6 +51,9 @@
             android:name=".ShowPlayerStatsActivity"
             android:label="@string/title_activity_player_stats"/>
         <activity
+            android:name=".ShowGameActivity"
+            android:label="@string/title_activity_display_game"/>
+        <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings">
             <meta-data

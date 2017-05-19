@@ -1,11 +1,13 @@
 package pkgTab;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
 import android.text.method.DigitsKeyListener;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -27,7 +29,9 @@ import group2.schoolproject.a02soccer.ExceptionNotification;
 import group2.schoolproject.a02soccer.R;
 import pkgData.Participation;
 import pkgData.Player;
+import pkgData.PlayerPosition;
 import pkgListeners.OnScoreChangedListener;
+import pkgMisc.PxDpConverter;
 
 
 public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeListener, View.OnKeyListener, View.OnClickListener {
@@ -44,6 +48,8 @@ public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeL
     private OnScoreChangedListener scoreChangedListener = null;
 
     private HashMap<Integer, Participation> hmParticipations;
+    private boolean isEditable = true;
+
 
     public TabAddGameEnterData() {
         super();
@@ -59,6 +65,16 @@ public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeL
         registrateEventHandlers();
 
         ArrayList<Participation> participations = (ArrayList<Participation>) this.getArguments().getSerializable("participations");
+
+        //if value isn't passed, enable editing
+        try {
+            isEditable = (Boolean) this.getArguments().getSerializable("isEditable");
+        }
+        catch (Exception ex) {
+            isEditable = true;
+            ex.printStackTrace();
+        }
+
         setParticipations(participations);
 
         return view;
@@ -94,7 +110,7 @@ public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeL
                 hmParticipations.put(p.getPlayer().getId(), p);
             }
 
-            displayPlayersInTable(participations);
+            displayParticipationsInTable(participations);
         }
         catch (Exception e) {
             ExceptionNotification.notify(this.getContext(), e);
@@ -112,7 +128,7 @@ public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeL
         row = (TableRow) table_PlayersData.getChildAt(index);
 
         for (int i=0; i<editTexts.length; i++) {
-            editTexts[i] = (TextView) row.getChildAt(i+1);
+            editTexts[i] = (TextView) row.getChildAt(i+2);
             if (editTexts[i].getText().length() == 0) {
                 editTexts[i].setText("0");
             }
@@ -130,28 +146,67 @@ public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeL
         return p;
     }
 
-    private void displayPlayersInTable(Collection<Participation> participations) throws Exception {
+    private String getPositionAbbreviation(PlayerPosition pos) {
+        String retVal = null;
+
+        switch (pos) {
+            case ATTACK:
+                retVal = getString(R.string.PosAtkAbbrev);
+                break;
+            case DEFENSE:
+                retVal = getString(R.string.PosDefAbbrev);
+                break;
+            case MIDFIELD:
+                retVal = getString(R.string.PosMidAbbrev);
+                break;
+            case GOAL:
+                retVal = getString(R.string.PosGoalAbbrev);
+                break;
+        }
+
+        return retVal;
+    }
+
+    private void displayParticipationsInTable(Collection<Participation> participations) throws Exception {
         table_PlayersData.removeAllViews();
 
         for (Participation p: participations) {
 
             TableRow row = new TableRow(this.getContext());
-            TextView txvName = new TextView(this.getContext());
+            TextView txvName = new TextView(this.getContext()),
+                    txvPos = new TextView(this.getContext());
             TableRow.LayoutParams lptr = new TableRow.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1);
 
             row.addView(txvName);
+            row.addView(txvPos);
             txvName.setText(p.getPlayer().toString());
             txvName.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 2));
+            txvName.setPadding(0, 0, PxDpConverter.toDp(5, this.getContext()),0);
 
-            EditText[] editTexts = new EditText[7];
+            txvPos.setText(getPositionAbbreviation(p.getPosition()));
+            txvPos.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 0.5f));
+            txvPos.setGravity(Gravity.CENTER_VERTICAL);
+            txvPos.setTypeface(null, Typeface.BOLD);
+            txvPos.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
+
+            TextView[] editTexts = new TextView[7];
 
             for (int i=0; i<editTexts.length; i++) {
-                EditText et = new EditText(this.getContext());
+                TextView et;
+
+                if (isEditable) {
+                    et = new EditText(this.getContext());
+                    et.setGravity(Gravity.RIGHT);
+                }
+                else {
+                    et = new TextView(this.getContext());
+                    et.setGravity(Gravity.CENTER);
+                    et.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
+                }
 
                 et.setLayoutParams(lptr);
                 et.setKeyListener(DigitsKeyListener.getInstance("0123456789"));
                 et.setLongClickable(false);
-                et.setGravity(Gravity.RIGHT);
                 et.setOnFocusChangeListener(this);
                 et.setRawInputType(InputType.TYPE_CLASS_NUMBER);
                 et.setOnKeyListener(this);

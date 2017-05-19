@@ -83,6 +83,10 @@ public final class Game implements Serializable, Comparable<Game> {
         return retVal;
     }
 
+    public String getDateString() {
+        return this.date;
+    }
+
     public ArrayList<Participation> getParticipations() {
         return new ArrayList<>(participations);
     }
