@@ -109,7 +109,8 @@ public class TeamDivisionActivity extends BaseActivity implements OnTeamChangedL
                 }
             }
         } catch (Exception e) {
-            showMessage(e.getMessage());
+            showMessage(
+                    e.getMessage());
         }
     }
 

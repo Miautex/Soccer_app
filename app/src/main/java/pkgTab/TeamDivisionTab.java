@@ -66,7 +66,10 @@ public class TeamDivisionTab extends Fragment implements View.OnClickListener, O
     }
 
     public void onClick(View bttn) {
-        movePlayerRow(bttn);
+        if(bttn.getClass() == new Button(this.getContext()).getClass()){
+            movePlayerRow(bttn);
+        }
+
     }
 
     private void movePlayerRow(View bttn) {
