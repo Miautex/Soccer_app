@@ -37,6 +37,7 @@ import pkgMisc.PxDpConverter;
 public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeListener, View.OnKeyListener, View.OnClickListener {
     private TableLayout table_PlayersData = null;
     private View view = null;
+    private TextView txtPosition = null;
 
     private ImageButton icGoalShot = null;
     private ImageButton icGoalGot = null;
@@ -88,6 +89,7 @@ public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeL
         icGoalSnow = (ImageButton) view.findViewById(R.id.icGoalSnow);
         icPenalty = (ImageButton) view.findViewById(R.id.icPenalty);
         icNutmeg = (ImageButton) view.findViewById(R.id.icNutmeg);
+        txtPosition = (TextView) view.findViewById(R.id.txtPosition);
     }
 
     private void registrateEventHandlers(){
@@ -97,13 +99,14 @@ public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeL
         icGoalSnow.setOnClickListener(this);
         icPenalty.setOnClickListener(this);
         icNutmeg.setOnClickListener(this);
+        txtPosition.setOnClickListener(this);
     }
 
     public void setOnScoreChangedListener(OnScoreChangedListener listener) {
         scoreChangedListener = listener;
     }
 
-    private void setParticipations(Collection<Participation> participations) {
+    public void setParticipations(Collection<Participation> participations) {
         try {
             hmParticipations.clear();
             for (Participation p : participations) {
@@ -333,7 +336,10 @@ public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeL
                 Toast.makeText(view.getContext(), getString(R.string.GoalsShotPenalty), Toast.LENGTH_SHORT).show();
             } else if(v.getId() == R.id.icNutmeg){
                 Toast.makeText(view.getContext(), getString(R.string.Nutmeg), Toast.LENGTH_SHORT).show();
+            } else if(v.getId() == R.id.txtPosition){
+                Toast.makeText(view.getContext(), getString(R.string.Positions), Toast.LENGTH_SHORT).show();
             }
+
         } catch (Exception e) {
             Toast.makeText(view.getContext(), getString(R.string.Error) + ": " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }

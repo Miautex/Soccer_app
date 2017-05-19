@@ -38,7 +38,7 @@ public final class Game implements Serializable, Comparable<Game> {
     }
 
     public void setRemark(String additionalInformation) {
-        this.remark = additionalInformation;
+        this.remark = additionalInformation.trim();
     }
 
     public void setId(int id) {

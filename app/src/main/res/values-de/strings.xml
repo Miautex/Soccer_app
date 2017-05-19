@@ -60,6 +60,7 @@
     <string name="PosGoalAbbrev">T</string>
     <string name="PosDefAbbrev">A</string>
     <string name="PosAtkAbbrev">S</string>
+    <string name="NoRemark">-</string>
 
     <string name="navigation_drawer_open">Navigation öffnen</string>
     <string name="navigation_drawer_close">Navigation schließen</string>

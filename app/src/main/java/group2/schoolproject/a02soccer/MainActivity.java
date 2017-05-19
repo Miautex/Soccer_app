@@ -258,6 +258,7 @@ public class MainActivity extends BaseActivity
         try {
             if (spPlayersGames.getSelectedItemPosition() == 0) {
                 displayPlayers();
+                displayLoggedInUser();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -275,12 +276,10 @@ public class MainActivity extends BaseActivity
             this.startActivity(myIntent);
         }
         else {
-            //TODO
             try {
                 Game selectedGame = (Game) lsvPlayersGames.getItemAtPosition(position);
-                db.getParticipationsOfGame(selectedGame);
-
                 Intent myIntent = new Intent(this, ShowGameActivity.class);
+
                 myIntent.putExtra("game", selectedGame);
                 this.startActivity(myIntent);
             }

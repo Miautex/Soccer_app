@@ -3,23 +3,29 @@ package group2.schoolproject.a02soccer;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Collection;
+import java.util.Date;
 import java.util.ArrayList;
 
 import pkgData.Game;
 import pkgData.Participation;
 import pkgData.Team;
 import pkgDatabase.Database;
+import pkgDatabase.pkgListener.OnLoadParticipationsListener;
 import pkgTab.SectionsPageAdapter;
 import pkgTab.TabAddGameEnterData;
 
-public class ShowGameActivity extends BaseActivity {
+public class ShowGameActivity extends BaseActivity implements OnLoadParticipationsListener {
 
     private SectionsPageAdapter adapter = null;
     private ViewPager mViewPager = null;
     private TabLayout tablayout = null;
-
+    private ProgressBar pb = null;
     private TextView txtScore = null,
                      txvRemark = null,
                      txvDate = null;
@@ -48,6 +54,8 @@ public class ShowGameActivity extends BaseActivity {
             setupViewPager(mViewPager);
             tablayout.setupWithViewPager(mViewPager);
 
+            db.getParticipationsOfGame(tmpGame, this);
+            toggleProgressBar(true);
             init();
         }
         catch (Exception ex) {
@@ -56,10 +64,31 @@ public class ShowGameActivity extends BaseActivity {
         }
     }
 
+    private void toggleProgressBar(boolean isEnabled) {
+        if (isEnabled) {
+            pb.setVisibility(View.VISIBLE);
+        }
+        else {
+            pb.setVisibility(View.GONE);
+        }
+    }
+
     private void init() {
         updateScoreDisplay(tmpGame.getScoreTeamA(), tmpGame.getScoreTeamB());
-        txvRemark.setText(tmpGame.getRemark());
-        txvDate.setText(tmpGame.getDateString());
+        displayRemark(tmpGame.getRemark());
+        displayDate(tmpGame.getDate());
+    }
+
+    private void displayRemark(String remark) {
+        if (remark.trim().isEmpty()) {
+            remark = getString(R.string.NoRemark);
+        }
+        txvRemark.setText(remark);
+    }
+
+    private void displayDate(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd. MMMM yyyy");
+        txvDate.setText(sdf.format(date));
     }
 
     private void getAllViews() {
@@ -68,6 +97,7 @@ public class ShowGameActivity extends BaseActivity {
         txtScore = (TextView) findViewById(R.id.txtScore);
         txvRemark = (TextView) findViewById(R.id.txvRemark);
         txvDate = (TextView) findViewById(R.id.txvDate);
+        pb = (ProgressBar) findViewById(R.id.progressBar);
     }
 
     private void setupViewPager(ViewPager viewPager){
@@ -106,5 +136,24 @@ public class ShowGameActivity extends BaseActivity {
 
     private void updateScoreDisplay(int scoreTeamA, int scoreTeamB) {
         txtScore.setText("A:B - " + scoreTeamA + ":" + scoreTeamB);
+    }
+
+    @Override
+    public void loadParticipationsSuccessful(Collection<Participation> participations, int gameID) {
+        tmpGame.removeAllParticipations();
+        for (Participation part: participations) {
+            tmpGame.addParticipation(part);
+        }
+
+        tabs[0].setParticipations(getParticipationsOfTeam(Team.TEAM1));
+        tabs[1].setParticipations(getParticipationsOfTeam(Team.TEAM2));
+
+        toggleProgressBar(false);
+    }
+
+    @Override
+    public void loadParticipationsFailed(Exception ex) {
+        showMessage(ex.getMessage());
+        toggleProgressBar(false);
     }
 }

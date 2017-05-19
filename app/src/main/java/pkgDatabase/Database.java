@@ -24,17 +24,15 @@ import pkgData.PlayerPositionRequest;
 import pkgDatabase.pkgListener.OnGamesUpdatedListener;
 import pkgDatabase.pkgListener.OnLoadAllGamesListener;
 import pkgDatabase.pkgListener.OnLoadAllPlayersListener;
-import pkgDatabase.pkgListener.OnLoadPlayerPositionsListener;
+import pkgDatabase.pkgListener.OnLoadParticipationsListener;
 import pkgDatabase.pkgListener.OnLoginListener;
 import pkgDatabase.pkgListener.OnPlayersUpdatedListener;
 import pkgException.CouldNotDeleteGameException;
 import pkgException.CouldNotDeletePlayerException;
-import pkgException.CouldNotLoadParticipationsException;
 import pkgException.CouldNotSetPlayerPositionsException;
 import pkgException.DuplicateUsernameException;
 import pkgException.PasswordTooShortException;
 import pkgMisc.GsonSerializor;
-import pkgResult.ParticipationResult;
 import pkgResult.Result;
 import pkgResult.SingleGameResult;
 import pkgResult.SinglePlayerResult;
@@ -43,7 +41,7 @@ import pkgWSA.AccessorResponse;
 import pkgWSA.HttpMethod;
 
 public class Database extends Application implements OnLoginListener, OnLoadAllPlayersListener,
-        OnLoadAllGamesListener {
+        OnLoadAllGamesListener, OnLoadParticipationsListener {
 
     public static final int MIN_LENGTH_PASSWORD = 5;
     private Context ctx = null;
@@ -175,7 +173,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         Iterator<Player> iteratorPlayers = allPlayers.iterator();
         Player tmpPl = null;
 
-        for (; iteratorPlayers.hasNext() && player==null; ) {
+        while (iteratorPlayers.hasNext() && player==null) {
             tmpPl = iteratorPlayers.next();
 
             if (tmpPl.getUsername().equals(username)) {
@@ -187,13 +185,21 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
 
     }
 
-    public void getPlayerPositions(int playerId, OnLoadPlayerPositionsListener listener) throws Exception {
-        ArrayList<PlayerPosition> positions = new ArrayList<>();
-        ArrayList<OnLoadPlayerPositionsListener> listeners = new ArrayList<>();
-        listeners.add(listener);
+    public Game getGameByID(int id) {
+        Game game = null;
+        Iterator<Game> iteratorGames = allGames.iterator();
+        Game tmpG = null;
 
-        Accessor.runRequestAsync(HttpMethod.GET, "player/positions/" + playerId,
-                null, null, new LoadPlayerPositionsHandler(playerId, listeners));
+        while (iteratorGames.hasNext() && game==null) {
+            tmpG = iteratorGames.next();
+
+            if (tmpG.getId() == id) {
+                game = tmpG;
+            }
+        }
+
+        return game;
+
     }
 
     public void loadAllGames(OnLoadAllGamesListener listener) throws Exception {
@@ -302,7 +308,6 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
             else {
                 allPlayers.remove(p);
                 allPlayers.add(p);
-                notifyOnPlayersUpdatedListener();
 
                 r = setPlayerPositions(p);
 
@@ -313,6 +318,8 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
                 if (isSuccess && p.equals(currentlyLoggedInPlayer)) {
                     currentlyLoggedInPlayer = getPlayerByUsername(p.getUsername());
                 }
+
+                notifyOnPlayersUpdatedListener();
             }
 
         }
@@ -374,28 +381,14 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
     /**
      * Loads all participations of given game and adds them to the game
      */
-    public boolean getParticipationsOfGame(Game g) throws Exception {
+    public void getParticipationsOfGame(Game g, OnLoadParticipationsListener listener) throws Exception {
         boolean isSuccess = false;
-        AccessorResponse response = Accessor.
-                runRequestSync(HttpMethod.GET, "participation/byGame/" + g.getId(), null, null);
+        ArrayList<OnLoadParticipationsListener> listeners = new ArrayList<>();
+        listeners.add(listener);
+        listeners.add(this);
 
-        if (response.getResponseCode() == 500) {
-            throw new CouldNotLoadParticipationsException();
-        } else {
-            ParticipationResult pr = GsonSerializor.deserializeParticipationResult((response.getJson()));
-            if (!pr.isSuccess()) {
-                throw new CouldNotLoadParticipationsException();
-            }
-            else {
-                g.removeAllParticipations();
-
-                for (Participation p: pr.getContent()) {
-                    g.addParticipation(p);
-                }
-            }
-        }
-
-        return isSuccess;
+        Accessor.runRequestAsync(HttpMethod.GET, "participation/byGame/" + g.getId(),
+                        null, null, new LoadParticipationsHandler(listeners, g.getId()));
     }
 
     /**
@@ -512,5 +505,20 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
 
     public void initPreferences (Context ctx) {
         preferences = PreferenceManager.getDefaultSharedPreferences(ctx);
+    }
+
+    @Override
+    public void loadParticipationsSuccessful(Collection<Participation> participations, int gameID) {
+        Game game = getGameByID(gameID);
+        game.removeAllParticipations();
+        for (Participation p: participations) {
+            game.addParticipation(p);
+        }
+    }
+
+    @Override
+    public void loadParticipationsFailed(Exception ex) {
+        System.out.println("-------------LOAD PARTICIPATIONS FAILED");
+        ex.printStackTrace();
     }
 }
