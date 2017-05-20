@@ -148,5 +148,12 @@
         <item>Games</item>
     </string-array>
 
+    <string-array name="spinnerScoreboard">
+        <item>Wins</item>
+        <item>Goals shot</item>
+        <item>Goals got</item>
+        <item>Defeats</item>
+    </string-array>
+
 
 </resources>

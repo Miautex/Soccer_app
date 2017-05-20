@@ -67,7 +67,7 @@
                 android:value="group2.schoolproject.a02soccer.MainActivity" />
         </activity>
         <activity
-            android:name=".ScoreBoardActivity"
+            android:name=".ScoreboardActivity"
             android:label="@string/title_activity_score_board" />
     </application>
 </manifest>

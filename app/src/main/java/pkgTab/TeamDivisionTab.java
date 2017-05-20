@@ -106,6 +106,7 @@ public class TeamDivisionTab extends Fragment implements View.OnClickListener, O
         row.addView(createTextViewName(player.getName()));
         row.addView(createSpinner(player.getPositions()));
         row.addView(createButton());
+        row.setBackgroundResource(R.drawable.tablelayout);
         tableAllPlayers.addView(row);
     }
 

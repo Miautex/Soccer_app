@@ -105,7 +105,7 @@ public class MainActivity extends BaseActivity
             myIntent.putExtra("player", db.getCurrentlyLoggedInPlayer());
             startActivity(myIntent);
         } else if (id == R.id.nav_manage) {
-            openActivity(ScoreBoardActivity.class);
+            openActivity(ScoreboardActivity.class);
         } else if (id == R.id.mniLogin) {
             openActivity(LoginActivity.class);
         } else if (id == R.id.nav_settings) {

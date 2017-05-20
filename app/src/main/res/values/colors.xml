@@ -5,5 +5,6 @@
     <color name="colorAccent">#FF4081</color>
     <color name="redLogo">#C26C50</color>
     <color name="darkerRed">#B0523D</color>
+    <color name ="black">#000</color>
 
 </resources>

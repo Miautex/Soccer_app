@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="group2.schoolproject.a02soccer.ScoreboardActivity"
+    android:theme="@style/Theme.App.Base"
+    android:background="@drawable/background">
+
+    <RelativeLayout
+        android:id="@+id/spinnerContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/redLogo">
+
+        <TextView
+            android:id="@+id/lblShowPlayersOrGames"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/spinnerPlayerGame"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:text="@string/ShowPlayersOrGames"
+            android:textSize="17sp"
+            />
+
+        <Spinner
+            android:id="@+id/spinnerPlayerGame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_margin="5dp"
+            android:layout_toEndOf="@+id/lblShowPlayersOrGames"
+            android:layout_toRightOf="@+id/lblShowPlayersOrGames"
+            android:entries="@array/spinnerScoreboard" />
+
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/lsv_Score"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/spinnerContainer" />
+
+</RelativeLayout>
