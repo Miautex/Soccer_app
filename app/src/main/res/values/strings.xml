@@ -9,6 +9,7 @@
     <string name="title_activity_add_player">Add player</string>
     <string name="title_activity_player_stats">Player Stats</string>
     <string name="title_activity_display_game">Show Game</string>
+    <string name="title_activity_edit_game">Edit Game</string>
     <string name="title_activity_settings">Settings</string>
     <string name="title_activity_scoreboard">Scoreboard</string>
 
@@ -101,6 +102,7 @@
     <string name="msg_UnbalancedTeams">The player difference between the Teams is too high</string>
     <string name="msg_CouldNotDeleteGame">Could not delete game</string>
     <string name="msg_CouldNotRefreshData">Could not refresh data</string>
+    <string name="msg_CannotConnectToWebservice">Connection to webservice failed</string>
 
 
     <string name="ctxMniEditPlayer">Edit</string>

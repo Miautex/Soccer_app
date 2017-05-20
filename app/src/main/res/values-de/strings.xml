@@ -9,6 +9,8 @@
     <string name="title_activity_add_player">Spieler hinzufügen</string>
     <string name="title_activity_player_stats">Spieler Statistiken</string>
     <string name="title_activity_scoreboard">Scoreboard</string>
+    <string name="title_activity_edit_game">Spiel bearbeiten</string>
+    <string name="title_activity_display_game">Spiel anzeigen</string>
 
     <string name="btnLogin">Anmelden</string>
     <string name="Password">Passwort</string>
@@ -94,6 +96,7 @@
     <string name="msg_UnbalancedTeams">Die Spielerdifferenz zwischen den Teams ist zu groß</string>
     <string name="msg_CouldNotDeleteGame">Spiel konnte nicht gelöscht werden</string>
     <string name="msg_CouldNotRefreshData">Daten konnten nicht aktualisiert werden</string>
+    <string name="msg_CannotConnectToWebservice">Verbindung mit Webservice fehlgeschlagen</string>
 
     <string name="ctxMniEditPlayer">Bearbeiten</string>
     <string name="ctxMniDeletePlayer">Löschen</string>

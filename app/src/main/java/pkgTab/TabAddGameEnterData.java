@@ -24,6 +24,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.TreeSet;
 
 import group2.schoolproject.a02soccer.ExceptionNotification;
 import group2.schoolproject.a02soccer.R;
@@ -113,7 +114,7 @@ public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeL
                 hmParticipations.put(p.getPlayer().getId(), p);
             }
 
-            displayParticipationsInTable(participations);
+            displayParticipationsInTable(new TreeSet<Participation>(participations));
         }
         catch (Exception e) {
             ExceptionNotification.notify(this.getContext(), e);

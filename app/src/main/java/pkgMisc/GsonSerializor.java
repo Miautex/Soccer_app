@@ -61,7 +61,6 @@ public class GsonSerializor {
         try {
             jsonObject = new JSONObject(gson.toJson(g));
             jsonObject.remove("participations");
-            jsonObject.remove("id");
             retVal = jsonObject.toString();
         } catch (JSONException e) {
             e.printStackTrace();

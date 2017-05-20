@@ -1,5 +1,6 @@
 package group2.schoolproject.a02soccer;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -8,19 +9,21 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import java.util.ArrayList;
+import java.util.Collection;
 
 import pkgData.Game;
 import pkgData.Participation;
 import pkgData.Team;
 import pkgDatabase.Database;
+import pkgDatabase.pkgListener.OnLoadParticipationsListener;
 import pkgListeners.OnScoreChangedListener;
 import pkgTab.SectionsPageAdapter;
 import pkgTab.TabAddGameEnterData;
 
-public class AddGameEnterDataActivity extends BaseActivity implements OnScoreChangedListener, View.OnClickListener {
+public class EditGameActivity extends BaseActivity implements OnScoreChangedListener, View.OnClickListener, OnLoadParticipationsListener {
 
     private SectionsPageAdapter adapter = null;
     private ViewPager mViewPager = null;
@@ -29,9 +32,10 @@ public class AddGameEnterDataActivity extends BaseActivity implements OnScoreCha
     private TextView txtScore = null;
     private EditText edtRemark = null;
     private Button btnBack = null,
-                   btnSave = null;
+            btnSave = null;
+    private ProgressBar pb = null;
 
-    private Game tmpGame = null;
+    private Game gameToUpdate = null;
     private Database db = null;
 
     private TabAddGameEnterData[] tabs = null;
@@ -41,14 +45,15 @@ public class AddGameEnterDataActivity extends BaseActivity implements OnScoreCha
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_game_enter_data);
         setTitle(R.string.title_activity_add_game_enter_data);
+
         try {
             getAllViews();
             registrateEventHandlers();
 
             db = Database.getInstance();
-            tmpGame = (Game) this.getIntent().getSerializableExtra("game");
+            gameToUpdate = (Game) this.getIntent().getSerializableExtra("game");
 
-            if (tmpGame == null) {
+            if (gameToUpdate == null) {
                 throw new Exception("Please call activity with intent-extra 'game'");
             }
 
@@ -61,8 +66,13 @@ public class AddGameEnterDataActivity extends BaseActivity implements OnScoreCha
             setupViewPager(mViewPager);
             tablayout.setupWithViewPager(mViewPager);
 
+            //Load participations
+            db.getParticipationsOfGame(gameToUpdate, this);
+            toggleProgressBar(true);
+
             //Initially display score
-            updateScoreDisplay(tmpGame.getScoreTeamA(), tmpGame.getScoreTeamB());
+            updateScoreDisplay(gameToUpdate.getScoreTeamA(), gameToUpdate.getScoreTeamB());
+            initRemark();
         }
         catch (Exception ex) {
             ExceptionNotification.notify(this, ex);
@@ -77,11 +87,25 @@ public class AddGameEnterDataActivity extends BaseActivity implements OnScoreCha
         edtRemark = (EditText) findViewById(R.id.edtRemark);
         btnBack = (Button) findViewById(R.id.btnBack);
         btnSave = (Button) findViewById(R.id.btnSave);
+        pb = (ProgressBar) findViewById(R.id.progressBar);
     }
 
     private void registrateEventHandlers() {
         btnBack.setOnClickListener(this);
         btnSave.setOnClickListener(this);
+    }
+
+    private void toggleProgressBar(boolean isEnabled) {
+        if (isEnabled) {
+            pb.setVisibility(View.VISIBLE);
+        }
+        else {
+            pb.setVisibility(View.GONE);
+        }
+    }
+
+    private void initRemark() {
+        edtRemark.setText(gameToUpdate.getRemark());
     }
 
     private void setupViewPager(ViewPager viewPager){
@@ -108,7 +132,7 @@ public class AddGameEnterDataActivity extends BaseActivity implements OnScoreCha
     private ArrayList<Participation> getParticipationsOfTeam(Team team) {
         ArrayList<Participation> participationsOfTeam = new ArrayList<>();
 
-        for (Participation p: tmpGame.getParticipations()) {
+        for (Participation p: gameToUpdate.getParticipations()) {
             if (p.getTeam().equals(team)) {
                 participationsOfTeam.add(p);
             }
@@ -120,12 +144,12 @@ public class AddGameEnterDataActivity extends BaseActivity implements OnScoreCha
     @Override
     public void onScoreUpdated(int sumGoalsShot, Fragment fragment) {
         if (tabs[0].equals(fragment)) {
-            tmpGame.setScoreTeamA(sumGoalsShot);
+            gameToUpdate.setScoreTeamA(sumGoalsShot);
         }
         else {
-            tmpGame.setScoreTeamB(sumGoalsShot);
+            gameToUpdate.setScoreTeamB(sumGoalsShot);
         }
-        updateScoreDisplay(tmpGame.getScoreTeamA(), tmpGame.getScoreTeamB());
+        updateScoreDisplay(gameToUpdate.getScoreTeamA(), gameToUpdate.getScoreTeamB());
     }
 
     private void updateScoreDisplay(int scoreTeamA, int scoreTeamB) {
@@ -138,18 +162,17 @@ public class AddGameEnterDataActivity extends BaseActivity implements OnScoreCha
             for (int i = 0; i < tabs.length; i++) {
                 for (Participation p : tabs[i].getParticipationsFromTable()) {
                     tabs[i].forceScoreRecalculation();
-                    tmpGame.removeParticipation(p);
-                    tmpGame.addParticipation(p);
+                    gameToUpdate.removeParticipation(p);
+                    gameToUpdate.addParticipation(p);
                 }
             }
 
-            tmpGame.setRemark(edtRemark.getText().toString());
+            gameToUpdate.setRemark(edtRemark.getText().toString());
 
-            Game remoteGame = db.insert(tmpGame);
-            tmpGame.setId(remoteGame.getId());      //set webservice-generated id for game
+            db.update(gameToUpdate);
 
-            for (Participation p: tmpGame.getParticipations()) {
-                db.insert(p);
+            for (Participation p: gameToUpdate.getParticipations()) {
+                db.update(p);
             }
 
             showMessage(getString(R.string.msg_SavedGame));
@@ -175,5 +198,24 @@ public class AddGameEnterDataActivity extends BaseActivity implements OnScoreCha
         } catch (Exception e) {
             showMessage(getString(R.string.Error) + ": " + e.getMessage());
         }
+    }
+
+    @Override
+    public void loadParticipationsSuccessful(Collection<Participation> participations, int gameID) {
+        gameToUpdate.removeAllParticipations();
+        for (Participation part: participations) {
+            gameToUpdate.addParticipation(part);
+        }
+
+        tabs[0].setParticipations(getParticipationsOfTeam(Team.TEAM1));
+        tabs[1].setParticipations(getParticipationsOfTeam(Team.TEAM2));
+
+        toggleProgressBar(false);
+    }
+
+    @Override
+    public void loadParticipationsFailed(Exception ex) {
+        showMessage(ex.getMessage());
+        toggleProgressBar(false);
     }
 }

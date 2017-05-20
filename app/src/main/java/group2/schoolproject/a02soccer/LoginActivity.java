@@ -2,8 +2,6 @@ package group2.schoolproject.a02soccer;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
@@ -11,20 +9,19 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import java.io.FileNotFoundException;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.util.Collection;
 
-import pkgDatabase.Database;
 import pkgData.Game;
 import pkgData.Player;
-import pkgException.InvalidLoginDataException;
+import pkgDatabase.Database;
 import pkgDatabase.pkgListener.OnLoadAllGamesListener;
 import pkgDatabase.pkgListener.OnLoadAllPlayersListener;
 import pkgDatabase.pkgListener.OnLoginListener;
+import pkgException.InvalidLoginDataException;
 
 public class LoginActivity extends BaseActivity implements OnClickListener, OnLoginListener, OnLoadAllPlayersListener, OnLoadAllGamesListener {
 
@@ -168,7 +165,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener, OnLo
             msg = getString(R.string.msg_NetworkUnreachable);
         }
         catch (Exception e) {
-            msg = getString(R.string.Error) + ": " + e.getMessage();
+            msg = getString(R.string.msg_CannotConnectToWebservice);
         }
         finally {
             showMessage(msg);

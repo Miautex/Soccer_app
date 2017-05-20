@@ -135,8 +135,7 @@ public final class Game implements Serializable, Comparable<Game> {
     @Override
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd.MM.yyyy");
-        return "Game (#" + getId() + " - " + sdf.format(getDate()) + ") A:B (" + getScoreTeamA() + ":" + getScoreTeamB()
-                + ")";
+        return sdf.format(getDate()) + "  (" + getScoreTeamA() + ":" + getScoreTeamB() + ")";
     }
 
     @Override

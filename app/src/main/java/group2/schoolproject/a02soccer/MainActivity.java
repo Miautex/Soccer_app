@@ -207,7 +207,10 @@ public class MainActivity extends BaseActivity
     }
 
     private void onCtxMniEditGame(Game selectedGame) throws Exception {
-        //TODO
+        Intent myIntent;
+        myIntent = new Intent(this, EditGameActivity.class);
+        myIntent.putExtra("game", selectedGame);
+        this.startActivity(myIntent);
     }
 
     private void onCtxMniDeleteGame(Game selectedGame) throws Exception {

@@ -55,6 +55,11 @@
             android:label="@string/title_activity_display_game"
             android:screenOrientation="portrait"/>
         <activity
+            android:name=".EditGameActivity"
+            android:label="@string/title_activity_edit_game"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustNothing"/>
+        <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings">
             <meta-data

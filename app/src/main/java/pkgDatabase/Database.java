@@ -327,6 +327,43 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         return isSuccess;
     }
 
+    public boolean update(Game g) throws Exception {
+        boolean isSuccess = false;
+        AccessorResponse response = Accessor.runRequestSync(HttpMethod.PUT, "game", null, GsonSerializor.serializeGame(g));
+
+        if (response.getResponseCode() == 500) {
+            throw new Exception(response.getJson());
+        } else {
+            Result r = GsonSerializor.deserializeResult(response.getJson());
+            isSuccess = r.isSuccess();
+
+            if (isSuccess) {
+                allGames.remove(g);
+                allGames.add(g);
+
+                notifyOnGamesUpdatedListener();
+            }
+
+        }
+        return isSuccess;
+    }
+
+    public boolean update(Participation p) throws Exception {
+        boolean isSuccess = false;
+        AccessorResponse response = Accessor.runRequestSync(HttpMethod.PUT, "participation",
+                "idGame=" + p.getGame().getId() + "&idPlayer=" + p.getPlayer().getId(),
+                GsonSerializor.serializeParticipation(p));
+
+        if (response.getResponseCode() == 500) {
+            throw new Exception(response.getJson());
+        } else if (response.getJson() != null && !response.getJson().isEmpty()) {
+            Result r = GsonSerializor.deserializeResult(response.getJson());
+            isSuccess = r.isSuccess();
+        }
+
+        return isSuccess;
+    }
+
     private Result setPlayerPositions(Player p) throws Exception {
         AccessorResponse response;
         PlayerPositionRequest ppr = new PlayerPositionRequest();

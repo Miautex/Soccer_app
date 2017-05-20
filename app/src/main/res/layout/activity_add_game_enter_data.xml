@@ -86,12 +86,25 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/pager">
 
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:indeterminate="true"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:visibility="gone"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true">
+
                 <Button
                     android:id="@+id/btnBack"
                     style="@style/buttonStyle"

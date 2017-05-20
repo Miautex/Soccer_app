@@ -59,7 +59,6 @@ public class ShowGameActivity extends BaseActivity implements OnLoadParticipatio
             init();
         }
         catch (Exception ex) {
-            ExceptionNotification.notify(this, ex);
             ex.printStackTrace();
         }
     }
@@ -87,7 +86,7 @@ public class ShowGameActivity extends BaseActivity implements OnLoadParticipatio
     }
 
     private void displayDate(Date date) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd. MMMM yyyy");
+        SimpleDateFormat sdf =  new SimpleDateFormat("EEE, dd.MM.yyyy");
         txvDate.setText(sdf.format(date));
     }
 
@@ -135,7 +134,7 @@ public class ShowGameActivity extends BaseActivity implements OnLoadParticipatio
     }
 
     private void updateScoreDisplay(int scoreTeamA, int scoreTeamB) {
-        txtScore.setText("A:B - " + scoreTeamA + ":" + scoreTeamB);
+        txtScore.setText(scoreTeamA + ":" + scoreTeamB);
     }
 
     @Override
