@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +28,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import group2.schoolproject.a02soccer.R;
+import group2.schoolproject.a02soccer.TeamDivisionActivity;
 import pkgData.Participation;
 import pkgData.Player;
 import pkgData.PlayerPosition;
@@ -69,7 +71,16 @@ public class TeamDivisionTab extends Fragment implements View.OnClickListener, O
         if(bttn.getClass() == new Button(this.getContext()).getClass()){
             movePlayerRow(bttn);
         }
+        else if (bttn.getClass() == new TextView(this.getContext()).getClass()){
+            TableRow row = (TableRow) bttn.getParent();
+            Player p = players.get(Integer.parseInt(((TextView) row.getChildAt(0)).getText().toString()));
+            showFullName(p.toString());
+        }
 
+    }
+
+    private void showFullName(String s){
+        ((TeamDivisionActivity)listener).showMessage(s);
     }
 
     private void movePlayerRow(View bttn) {
@@ -92,7 +103,7 @@ public class TeamDivisionTab extends Fragment implements View.OnClickListener, O
     public void playerToRow(Player player) {
         TableRow row = new TableRow(this.getContext());
         row.addView(createTextViewId(String.valueOf(player.getId())));
-        row.addView(createTextViewName(player.toString()));
+        row.addView(createTextViewName(player.getName()));
         row.addView(createSpinner(player.getPositions()));
         row.addView(createButton());
         tableAllPlayers.addView(row);
@@ -207,7 +218,7 @@ public class TeamDivisionTab extends Fragment implements View.OnClickListener, O
 
     private void setLayouts() {
         layoutTextView = new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1.2f);
-        layoutSpinner = new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1);
+        layoutSpinner = new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.9f);
         layoutButton = new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.3f);
         layoutNotVisible = new TableRow.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 0);
     }
@@ -223,9 +234,16 @@ public class TeamDivisionTab extends Fragment implements View.OnClickListener, O
         TextView txtName = new TextView(this.getContext());
         txtName.setLayoutParams(layoutTextView);
         txtName.setGravity(Gravity.CENTER_VERTICAL);
-        txtName.setTextSize(16);
+        if(name.length() >= 20){
+            txtName.setTextSize(14);
+        }
+        else{
+            txtName.setTextSize(16);
+        }
         txtName.setTextColor(Color.BLACK);
         txtName.setText(name);
+        txtName.setOnClickListener(this);
+        txtName.setEllipsize(TextUtils.TruncateAt.END);
         return txtName;
     }
 
@@ -285,5 +303,7 @@ public class TeamDivisionTab extends Fragment implements View.OnClickListener, O
         }
         return retVal;
     }
+
+
 }
 

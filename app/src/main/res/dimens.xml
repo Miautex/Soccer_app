@@ -1,0 +1,4 @@
+<resources>
+    <dimen name="header_date_font_size">16dp</dimen>
+    <dimen name="snackbar_textsize">16dp</dimen>
+</resources>
