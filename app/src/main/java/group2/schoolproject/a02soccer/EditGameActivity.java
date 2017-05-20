@@ -44,7 +44,7 @@ public class EditGameActivity extends BaseActivity implements OnScoreChangedList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_game_enter_data);
-        setTitle(R.string.title_activity_add_game_enter_data);
+        setTitle(R.string.title_activity_edit_game);
 
         try {
             getAllViews();
@@ -156,30 +156,35 @@ public class EditGameActivity extends BaseActivity implements OnScoreChangedList
         txtScore.setText(scoreTeamA + ":" + scoreTeamB);
     }
 
-    private void onBtnSaveClick() {
-        try {
+    private void onBtnSaveClick() throws Exception {
+        int[][] goalData = new int[2][2];
 
-            for (int i = 0; i < tabs.length; i++) {
-                for (Participation p : tabs[i].getParticipationsFromTable()) {
-                    tabs[i].forceScoreRecalculation();
-                    gameToUpdate.removeParticipation(p);
-                    gameToUpdate.addParticipation(p);
-                }
+        for (int i = 0; i < tabs.length; i++) {
+            for (Participation p : tabs[i].getParticipationsFromTable()) {
+                tabs[i].forceScoreRecalculation();
+                gameToUpdate.removeParticipation(p);
+                gameToUpdate.addParticipation(p);
+
+                goalData[i][0] += p.getNumGoalsShotDefault()+p.getNumGoalsShotHead()+
+                        p.getNumGoalsShotHeadSnow()+p.getNumGoalsShotPenalty();
+                goalData[i][1] += p.getNumGoalsGot();
             }
+        }
 
+        //If goalsShot of TeamA != goalsGot of TeamB and vice versa
+        if (!(goalData[0][0]==goalData[1][1] && goalData[0][1]==goalData[1][0])) {
+            throw new Exception(getString(R.string.msg_InconsistentGoalData));
+        }
+        else {
             gameToUpdate.setRemark(edtRemark.getText().toString());
 
             db.update(gameToUpdate);
 
-            for (Participation p: gameToUpdate.getParticipations()) {
+            for (Participation p : gameToUpdate.getParticipations()) {
                 db.update(p);
             }
 
             showMessage(getString(R.string.msg_SavedGame));
-        }
-        catch (Exception ex) {
-            ExceptionNotification.notify(this, ex);
-            ex.printStackTrace();
         }
     }
 

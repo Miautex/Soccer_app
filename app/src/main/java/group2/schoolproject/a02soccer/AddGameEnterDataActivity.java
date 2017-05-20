@@ -132,31 +132,37 @@ public class AddGameEnterDataActivity extends BaseActivity implements OnScoreCha
         txtScore.setText(scoreTeamA + ":" + scoreTeamB);
     }
 
-    private void onBtnSaveClick() {
-        try {
+    private void onBtnSaveClick() throws Exception {
+        int[][] goalData = new int[2][2];
 
-            for (int i = 0; i < tabs.length; i++) {
-                for (Participation p : tabs[i].getParticipationsFromTable()) {
-                    tabs[i].forceScoreRecalculation();
-                    tmpGame.removeParticipation(p);
-                    tmpGame.addParticipation(p);
-                }
+        for (int i = 0; i < tabs.length; i++) {
+            for (Participation p : tabs[i].getParticipationsFromTable()) {
+                tabs[i].forceScoreRecalculation();
+                tmpGame.removeParticipation(p);
+                tmpGame.addParticipation(p);
+
+                goalData[i][0] += p.getNumGoalsShotDefault()+p.getNumGoalsShotHead()+
+                        p.getNumGoalsShotHeadSnow()+p.getNumGoalsShotPenalty();
+                goalData[i][1] += p.getNumGoalsGot();
             }
+        }
+
+        //If goalsShot of TeamA != goalsGot of TeamB and vice versa
+        if (!(goalData[0][0]==goalData[1][1] && goalData[0][1]==goalData[1][0])) {
+            throw new Exception(getString(R.string.msg_InconsistentGoalData));
+        }
+        else {
 
             tmpGame.setRemark(edtRemark.getText().toString());
 
             Game remoteGame = db.insert(tmpGame);
             tmpGame.setId(remoteGame.getId());      //set webservice-generated id for game
 
-            for (Participation p: tmpGame.getParticipations()) {
+            for (Participation p : tmpGame.getParticipations()) {
                 db.insert(p);
             }
 
             showMessage(getString(R.string.msg_SavedGame));
-        }
-        catch (Exception ex) {
-            ExceptionNotification.notify(this, ex);
-            ex.printStackTrace();
         }
     }
 

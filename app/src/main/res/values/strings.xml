@@ -103,7 +103,7 @@
     <string name="msg_CouldNotDeleteGame">Could not delete game</string>
     <string name="msg_CouldNotRefreshData">Could not refresh data</string>
     <string name="msg_CannotConnectToWebservice">Connection to webservice failed</string>
-
+    <string name="msg_InconsistentGoalData">Goals Shot must equal Goals Got of opposing team</string>
 
     <string name="ctxMniEditPlayer">Edit</string>
     <string name="ctxMniDeletePlayer">Delete</string>

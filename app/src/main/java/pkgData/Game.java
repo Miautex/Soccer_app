@@ -146,7 +146,10 @@ public final class Game implements Serializable, Comparable<Game> {
     @Override
     public int compareTo( Game game) {
         int cp;
-        cp = getDate().compareTo(game.getDate());
+        cp = game.getDate().compareTo(getDate());
+        if (cp == 0) {
+            cp = game.getId()-getId();
+        }
         return cp;
     }
 

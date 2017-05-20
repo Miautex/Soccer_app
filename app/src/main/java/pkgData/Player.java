@@ -20,9 +20,6 @@ public final class Player implements Comparable, Serializable, Cloneable {
     private String name = null,
                    username = null;
     private TreeSet<PlayerPosition> positions = null;
-    private Integer numWins = null,
-                    numDefeats = null,
-                    numDraws = null;
     private Float avgGoalDifference = null;
     private PlayerStatistics statistics;
 
@@ -128,50 +125,6 @@ public final class Player implements Comparable, Serializable, Cloneable {
 
     public void removePosition(PlayerPosition position) throws Exception {
         positions.remove(position);
-    }
-
-    public int getNumWins() {
-        return numWins;
-    }
-
-    public void setNumWins(int numWins) {
-        if (numWins < 0) {
-            throw new IllegalArgumentException("numWins must not be negative");
-        }
-        this.numWins = numWins;
-    }
-
-    public int getNumDefeats() {
-        return numDefeats;
-    }
-
-    public void setNumDefeats(int numDefeats) {
-        if (numDefeats < 0) {
-            throw new IllegalArgumentException("numDefeats must not be negative");
-        }
-        this.numDefeats = numDefeats;
-    }
-
-    public int getNumDraws() {
-        return numDraws;
-    }
-
-    public void setNumDraws(int numDraws) {
-        if (numDraws < 0) {
-            throw new IllegalArgumentException("numDraws must not be negative");
-        }
-        this.numDraws = numDraws;
-    }
-
-    public float getGoalDifference() {
-        return avgGoalDifference;
-    }
-
-    public void setGoalDifference(float goalRatio) {
-        if (goalRatio < 0) {
-            throw new IllegalArgumentException("goalRatio must not be negative");
-        }
-        this.avgGoalDifference = goalRatio;
     }
 
     public PlayerStatistics getStatistics() {

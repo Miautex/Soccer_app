@@ -97,6 +97,7 @@
     <string name="msg_CouldNotDeleteGame">Spiel konnte nicht gelöscht werden</string>
     <string name="msg_CouldNotRefreshData">Daten konnten nicht aktualisiert werden</string>
     <string name="msg_CannotConnectToWebservice">Verbindung mit Webservice fehlgeschlagen</string>
+    <string name="msg_InconsistentGoalData">Geschossene Tore müssen bekommenen Toren der Gegnermannschaft entsprechen</string>
 
     <string name="ctxMniEditPlayer">Bearbeiten</string>
     <string name="ctxMniDeletePlayer">Löschen</string>
