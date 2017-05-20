@@ -14,7 +14,6 @@
         android:background="@color/redLogo">
 
         <TextView
-            android:id="@+id/lblShowPlayersOrGames"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/spinnerPlayerGame"
@@ -23,11 +22,10 @@
             android:layout_marginTop="5dp"
             android:gravity="center"
             android:text="@string/ShowPlayersOrGames"
-            android:textSize="17sp"
-            />
+            android:textSize="17sp" />
 
         <Spinner
-            android:id="@+id/spinnerPlayerGame"
+            android:id="@+id/spSorting"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"

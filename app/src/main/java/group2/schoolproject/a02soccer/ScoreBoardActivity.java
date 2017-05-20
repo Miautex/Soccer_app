@@ -2,9 +2,11 @@ package group2.schoolproject.a02soccer;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -14,13 +16,15 @@ import pkgDatabase.Database;
 
 import static group2.schoolproject.a02soccer.R.id.lsvPlayersGames;
 
-public class ScoreboardActivity extends AppCompatActivity {
+public class ScoreboardActivity extends BaseActivity implements AdapterView.OnItemSelectedListener{
 
+    private Spinner choice = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scoreboard);
         final ListView listview = (ListView) findViewById(R.id.lsv_Score);
+        choice = (Spinner) findViewById(R.id.spSorting);
 
         ArrayList<Player> test = null;
         try {
@@ -45,4 +49,13 @@ public class ScoreboardActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 }
