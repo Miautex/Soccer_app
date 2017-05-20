@@ -149,7 +149,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
                 null, null, new LoadAllPlayersHandler(listeners));
     }
 
-    public ArrayList<Player> getAllPlayers() throws Exception {
+    public ArrayList<Player> getAllPlayers() {
         TreeSet<Player> sortingTs = new TreeSet<Player>(new PlayerComparatorName());
         sortingTs.addAll(allPlayers);
 
@@ -158,18 +158,6 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
 
     public Player getPlayerByUsername(String username) {
         Player player = null;
-        /*AccessorResponse response = Accessor.runRequestSync(HttpMethod.GET, "player/" + username, null, null);
-
-        if (response.getResponseCode() == 500) {
-            throw new Exception(response.getJson());
-        } else {
-            SinglePlayerResult spr = GsonSerializor.deserializeSinglePlayerResult(response.getJson());
-            player = spr.getContent();
-            for (PlayerPosition pp : getPlayerPositions(player.getId(), null)) {
-                player.addPosition(pp);
-            }
-        }*/
-
         Iterator<Player> iteratorPlayers = allPlayers.iterator();
         Player tmpPl = null;
 
@@ -213,7 +201,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
                 null, null, new LoadAllGamesHandler(listeners));
     }
 
-    public ArrayList<Game> getAllGames() throws Exception {
+    public ArrayList<Game> getAllGames() {
         return new ArrayList<>(allGames);
     }
 

@@ -193,6 +193,13 @@ public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeL
             txvPos.setTypeface(null, Typeface.BOLD);
             txvPos.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
 
+            //border-lines
+            row.setBackgroundResource(R.drawable.tablelayout);
+            row.setPadding(0, 0, PxDpConverter.toDp(5,this.getContext()), 0);
+            txvName.setBackgroundResource(R.drawable.tablelayout);
+            txvName.setPadding(PxDpConverter.toDp(5,this.getContext()), 0, 0, 0);
+
+
             TextView[] editTexts = new TextView[7];
 
             for (int i=0; i<editTexts.length; i++) {
