@@ -5,12 +5,14 @@ package group2.schoolproject.a02soccer;
  */
 
 public class PlayerWithScore {
-    String name;
-    String score;
+    private String name;
+    private String score;
+    private String username;
 
-    public PlayerWithScore (String name,int score){
-        this.name = name;
-        this.score = String.valueOf(score);
+    public PlayerWithScore (String name,int score, String username){
+        setName(name);
+        setScore(score);
+        setUsername(username);
     }
 
     public String getName() {
@@ -25,7 +27,14 @@ public class PlayerWithScore {
         return score;
     }
 
-    public void setScore(String score) {
-        this.score = score;
+    public void setScore(int score) {
+        this.score = String.valueOf(score);
+    }
+    public String getUserame() {
+        return username;
+    }
+
+    public void setUsername(String name) {
+        this.username = name;
     }
 }

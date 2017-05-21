@@ -155,5 +155,9 @@
         <item>Defeats</item>
     </string-array>
 
+    <string name="Scoreboard_titles_wins">Scoreboard: wins</string>
+    <string name="Scoreboard_titles_defeats">Scoreboard: defeats</string>
+    <string name="Scoreboard_titles_goalsgot">Scoreboard: goals got</string>
+    <string name="Scoreboard_titles_goalsshot">Scoreboard: goals shot</string>
 
 </resources>

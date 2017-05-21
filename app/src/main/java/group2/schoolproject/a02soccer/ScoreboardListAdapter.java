@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Raphael on 20.05.2017.
+ *
  */
 
 public class ScoreboardListAdapter extends ArrayAdapter<PlayerWithScore> {
@@ -25,15 +26,10 @@ public class ScoreboardListAdapter extends ArrayAdapter<PlayerWithScore> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.list_scoreboard, parent, false);
         TextView name = (TextView) rowView.findViewById(R.id.name);
         TextView score = (TextView) rowView.findViewById(R.id.score);
-
-        name.setText("test");
-        score.setText("1");
-
         name.setText(values.get(position).getName());
         score.setText(values.get(position).getScore());
         return rowView;
