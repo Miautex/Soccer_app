@@ -39,7 +39,6 @@ public class EditPlayerActivity extends BaseActivity implements View.OnClickList
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editplayer);
-        setTitle(R.string.title_activity_edit_player_own);
         getAllViews();
         registrateEventHandlers();
 
@@ -50,6 +49,13 @@ public class EditPlayerActivity extends BaseActivity implements View.OnClickList
 
             if (playerToEdit == null) {
                 throw new Exception("Please call activity with intent-extra 'player'");
+            }
+
+            if (db.getCurrentlyLoggedInPlayer().equals(playerToEdit)) {
+                setTitle(R.string.title_activity_edit_player_own);
+            }
+            else {
+                setTitle(R.string.title_activity_edit_player_admin);
             }
 
             initTextFields(playerToEdit);
