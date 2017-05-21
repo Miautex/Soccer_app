@@ -35,7 +35,7 @@
     <string name="mniGerman">Deutsch</string>
     <string name="mniEnglish">Englisch</string>
     <string name="mniLogin">Anmelden</string>
-    <string name="mniAdd">Spieler hinzufügenr</string>
+    <string name="mniAdd">Spieler hinzufügen</string>
     <string name="mniAddGame">Spiel hinzufügen</string>
     <string name="mniEdit">Benutzerdaten bearbeiten</string>
     <string name="ctxMniEditPlayer">Bearbeiten</string>
