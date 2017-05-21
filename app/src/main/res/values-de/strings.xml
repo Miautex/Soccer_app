@@ -1,135 +1,166 @@
 <resources>
-    <string name="app_name">Fußball</string>
-    <string name="title_activity_add_game_select_players">Spieler auswählen</string>
-    <string name="title_activity_team_management">Team Verwaltung</string>
-    <string name="title_activity_add_game_enter_data">Daten eingeben</string>
+    <string name="app_name">Soccer</string>
+    <!--Activitytitles-->
+    <string name="title_activity_add_game_select_players">Spielerauswahl</string>
+    <string name="title_activity_team_management">Teamzuweisung</string>
+    <string name="title_activity_add_game_enter_data">Ergebniseingabe</string>
     <string name="title_activity_login">Anmelden</string>
-    <string name="title_activity_edit_player_own">Eigene Daten bearbeiten</string>
+    <string name="title_activity_edit_player_own">Benutzerdaten</string>
     <string name="title_activity_edit_player_admin">Spieler bearbeiten</string>
     <string name="title_activity_add_player">Spieler hinzufügen</string>
-    <string name="title_activity_player_stats">Spieler Statistiken</string>
-    <string name="title_activity_scoreboard">Scoreboard</string>
-    <string name="title_activity_edit_game">Spiel bearbeiten</string>
-    <string name="title_activity_display_game">Spiel anzeigen</string>
+    <string name="title_activity_player_stats">Spieler Statistik</string>
+    <string name="title_activity_display_game">Spielanzeige</string>
+    <string name="title_activity_edit_game">Spielbearbeitung</string>
+    <string name="title_activity_settings">Einstellungen</string>
+    <string name="title_activity_scoreboard">Bestenliste</string>
+    <string name="Scoreboard_titles_wins">Bestenliste: Siege</string>
+    <string name="Scoreboard_titles_defeats">Bestenliste: Niederlagen</string>
+    <string name="Scoreboard_titles_goalsgot">Bestenliste: Tore bekommen</string>
+    <string name="Scoreboard_titles_goalsshot">Bestenliste: Torjäger</string>
+    <string name="nav_settings_title">Einstellungen</string>
+    <string name="title_activity_score_board">Bestenliste</string>
 
+    <!--Buttons-->
     <string name="btnLogin">Anmelden</string>
+    <string name="btnContinue">Weiter</string>
+    <string name="btnSave">Speichern</string>
+    <string name="btnCancel">Abbruch</string>
+    <string name="btnShuffle">Shuffle</string>
+    <string name="btnAdd">Hinzufügen</string>
+    <string name="btnBack">Zurück</string>
+
+    <!--Menuitems-->
+    <string name="mniMain">Haupt</string>
+    <string name="mniTeam">Team(test)</string>
+    <string name="mniGerman">Deutsch</string>
+    <string name="mniEnglish">Englisch</string>
+    <string name="mniLogin">Anmelden</string>
+    <string name="mniAdd">Spieler hinzufügenr</string>
+    <string name="mniAddGame">Spiel hinzufügen</string>
+    <string name="mniEdit">Benutzerdaten bearbeiten</string>
+    <string name="ctxMniEditPlayer">Bearbeiten</string>
+    <string name="ctxMniDeletePlayer">Löschen</string>
+
+    <!--Checkboxes-->
+    <string name="ckbUpdatePassword">Passwort erneuern</string>
+    <string name="ckbIsAdmin">Admin</string>
+
+    <!--Settings-->
+    <string name="preference_category_general_title">Allgemein</string>
+    <string name="preference_language_title">Sprache</string>
+    <string name="preference_language_default" translatable="false">de</string>
+    <string name="preference_language_summary">App Sprache</string>
+    <string name="preference_category_webservice">Webservice</string>
+    <string name="preference_webservice_ip_title">IP</string>
+    <string name="preference_webservice_ip_summary">Webservice ip address</string>
+    <string name="preference_webservice_ip_default">192.168.0.1</string>
+    <string name="preference_webservice_port_title">Port</string>
+    <string name="preference_webservice_port_summary">Webservice port</string>
+    <string name="preference_webservice_port_default" translatable="false">8080</string>
+    <string name="preference_general_usesnackbar">Nachrichtenart Überblendung</string>
+
+
+    <!--Words-->
     <string name="Password">Passwort</string>
     <string name="Username">Benutzername</string>
     <string name="Name">Name</string>
     <string name="PosMid">Mittelfeld</string>
     <string name="PosGoal">Torwart</string>
-    <string name="PosDef">Abwehr</string>
+    <string name="PosDef">Verteidigung</string>
     <string name="PosAtk">Sturm</string>
     <string name="Positions">Positionen</string>
-    <string name="btnSave">Speichern</string>
-    <string name="btnCancel">Abbruch</string>
-    <string name="mniMain">Hauptfenster</string>
-    <string name="mniTeam">Team(test)</string>
-    <string name="mniGerman">Deutsch</string>
-    <string name="mniEnglish">English</string>
-    <string name="mniLogin">Anmelden</string>
-    <string name="mniAdd">Spieler hinzufügen</string>
-    <string name="mniEdit">Benutzerdaten ändern</string>
-    <string name="ckbIsAdmin">Admin</string>
-    <string name="btnAdd">Hinzufügen</string>
-    <string name="Date">Datum</string>
-    <string name="SelectPlayersForGame">Spieler für Spiel auswählen</string>
-    <string name="mniAddGame">Spiel hinzufügen</string>
-    <string name="Participation">Teilnahme</string>
-    <string name="btnContinue">Weiter</string>
-    <string name="action_settings">Einstellungen</string>
-    <string name="section_format">Hello World from section: %1$d</string>
-    <string name="Remark">Bemerkung</string>
-    <string name="GoalsShotDefault">Tore geschossen (Normal)</string>
-    <string name="GoalsShotHead">Tore geschossen (Kopf)</string>
-    <string name="GoalsShotHeadSnow">Tore geschossen (Kopf+Schnee)</string>
-    <string name="GoalsShotPenalty">Tore geschossen (Elfmeter)</string>
-    <string name="GoalsGot">Tore bekommen</string>
-    <string name="Nutmeg">Gurken</string>
-    <string name="btnBack">Zurück</string>
-    <string name="ckbUpdatePassword">Passwort ändern</string>
-    <string name="GamesPlayed">Spiele gespielt</string>
+    <string name="GamesPlayed">Spielanzahl</string>
     <string name="GamesWon">Siege</string>
     <string name="GamesLost">Niederlagen</string>
     <string name="GameDraws">Unentschieden</string>
-    <string name="AvgGoalDiff">Durchschn. Tor Differenz</string>
+    <string name="AvgGoalDiff">Durchsch. Tordifferenz</string>
     <string name="GoalsShotAll">Tore geschossen</string>
     <string name="NumPosAttack">Sturm gespielt</string>
-    <string name="NumPosDefense">Abwehr gespielt</string>
+    <string name="NumPosDefense">Verteidigung gespielt</string>
     <string name="NumPosMidfield">Mittelfeld gespielt</string>
     <string name="NumPosGoal">Torwart gespielt</string>
-    <string name="PosMidAbbrev">M</string>
-    <string name="PosGoalAbbrev">T</string>
-    <string name="PosDefAbbrev">A</string>
-    <string name="PosAtkAbbrev">S</string>
+    <string name="ShowPlayersOrGames">Zeige: </string>
     <string name="NoRemark">-</string>
+    <string name="Remark">Anmerkung</string>
+    <string name="GoalsShotDefault">Tore geschossen (Fuß)</string>
+    <string name="GoalsShotHead">Kopfballtore</string>
+    <string name="GoalsShotHeadSnow">Kofballtore bei Schnee</string>
+    <string name="GoalsShotPenalty">Elfmetertore</string>
+    <string name="GoalsGot">Tore bekommen</string>
+    <string name="Nutmeg">Gurken</string>
+    <string name="Date">Datum</string>
+    <string name="SelectPlayersForGame">Wähle Spieler fürs Spiel aus</string>
+    <string name="Participation">Teilnehmer</string>
+    <string name="action_settings">Einstellungen</string>
+    <string name= "position">Position</string>
 
-    <string name="navigation_drawer_open">Navigation öffnen</string>
-    <string name="navigation_drawer_close">Navigation schließen</string>
+    <!--Spinner Arrays-->
+    <string-array name="spinnerPlayerGameValues">
+        <item>Spieler</item>
+        <item>Spiele</item>
+    </string-array>
+    <string-array name="spinnerScoreboard">
+        <item>Siege</item>
+        <item>Torjäger</item>
+        <item>Tore bekommen</item>
+        <item>Niederlagen</item>
+    </string-array>
 
+    <!--Settings Array-->
+    <string-array name="language_entries">
+        <item>Deutsch</item>
+        <item>English</item>
+        <item>Italiano</item>
+        <item>Español</item>
+    </string-array>
+    <string-array name="language_values">
+        <item>de</item>
+        <item>en</item>
+        <item>it</item>
+        <item>es</item>
+    </string-array>
+
+    <!--Error Messages-->
     <string name="Error">Fehler</string>
-    <string name="msg_SelectMinNumOfPlayers">Es müssen mindestens %d Spieler ausgewählt werden, um ein Spiel zu spielen</string>
+    <string name="msg_SelectMinNumOfPlayers">Spiel brauch mindestens %d Spiele</string>
     <string name="msg_SavedGame">Spiel gespeichert</string>
     <string name="msg_EnterNameUsernamePassword">Name, Benutzername und Passwort dürfen nicht leer sein</string>
     <string name="msg_EnterNameUsername">Name und Benutzername dürfen nicht leer sein</string>
     <string name="msg_PlayerAdded">Spieler \'%s\' hinzugefügt</string>
-    <string name="msg_SelectMinNumOfPositions">Es muss zumindest eine Position ausgewählt sein</string>
-    <string name="msg_UpdatedUserData">Benutzerdaten erfolgreich aktualisiert</string>
-    <string name="msg_CouldNotUpdateUserData">Benutzerdaten konnten nicht aktualisiert werden</string>
-    <string name="msg_EnterUsernamePassword">Bitte Benutzername und Passwort eintragen</string>
-    <string name="msg_UsernameOrPasswordInvalid">Benutzername oder Passwort ungültig</string>
-    <string name="msg_UsernameNotAvailable">Benutzername \'%s\' existiert bereits</string>
-    <string name="msg_CouldNotSetPositions">Positionen konnten nicht gesetzt werden</string>
+    <string name="msg_SelectMinNumOfPositions">Mindestens eine position muss ausgewählt sein</string>
+    <string name="msg_UpdatedUserData">Benutzerdaten Aktualisierung erfolgreich</string>
+    <string name="msg_CouldNotUpdateUserData">Benutzerdaten Aktualisierung fehlgeschlagen</string>
+    <string name="msg_EnterUsernamePassword">Bitte gib Benutzername und Passwort ein</string>
+    <string name="msg_UsernameOrPasswordInvalid">Benutzername oder Passwort ist falsch</string>
+    <string name="msg_UsernameNotAvailable">Benutzername \'%s\' ist bereits vergeben</string>
+    <string name="msg_CouldNotSetPositions">Position kann nicht gesetzt werden</string>
     <string name="msg_CouldNotDeletePlayer">Spieler konnte nicht gelöscht werden</string>
     <string name="msg_CannotDeleteOwnPlayer">Eigener Spieler kann nicht gelöscht werden</string>
-    <string name="msg_EnterPassword">Bitte neues Passwort eintragen</string>
-    <string name="msg_ConnectionTimeout">Zeitüberschreitung bei Serververbindung</string>
-    <string name="msg_NetworkUnreachable">Keine Verbindung zum Internet möglich</string>
-    <string name="msg_IllegalUsername">Benutzername darf nur Buchstaben und Zahlen enthalten</string>
+    <string name="msg_EnterPassword">Gib ein neues Passwort ein</string>
+    <string name="msg_ConnectionTimeout">Zugriff auf Server dauert zu lange</string>
+    <string name="msg_NetworkUnreachable">Keine Internetverbindung</string>
+    <string name="msg_IllegalUsername">Benutzername darf nur aus Buchstaben und Zahlen bestehen</string>
     <string name="msg_UsernameTooLong">Benutzername darf nicht länger als %d Zeichen sein</string>
     <string name="msg_NameTooLong">Name darf nicht länger als %d Zeichen sein</string>
     <string name="msg_UsernameTooShort">Benutzername muss mindestens %d Zeichen lang sein</string>
     <string name="msg_NameTooShort">Name muss mindestens %d Zeichen lang sein</string>
     <string name="msg_PasswordTooShort">Passwort muss mindestens %d Zeichen lang sein</string>
-    <string name="msg_PlayerhasNoTeam">Jeder Spieler muss einem Team zugewiesen werden</string>
+    <string name="msg_PlayerhasNoTeam">Jeder Spieler muss einem Team zugewiesen sein</string>
     <string name="msg_TeamHasNoGolaie">Kein Torwart in: </string>
-    <string name="msg_UnbalancedTeams">Die Spielerdifferenz zwischen den Teams ist zu groß</string>
+    <string name="msg_UnbalancedTeams">Ein Team ist in der Überzahl</string>
     <string name="msg_CouldNotDeleteGame">Spiel konnte nicht gelöscht werden</string>
     <string name="msg_CouldNotRefreshData">Daten konnten nicht aktualisiert werden</string>
-    <string name="msg_CannotConnectToWebservice">Verbindung mit Webservice fehlgeschlagen</string>
-    <string name="msg_InconsistentGoalData">Geschossene Tore müssen bekommenen Toren der Gegnermannschaft entsprechen</string>
+    <string name="msg_CannotConnectToWebservice">Verbindung zum Server fehlgeschlagen</string>
+    <string name="msg_InconsistentGoalData">Tore geschossen stimmt nicht mit Tore bekommen des Gegnerteams überein</string>
 
-    <string name="ctxMniEditPlayer">Bearbeiten</string>
-    <string name="ctxMniDeletePlayer">Löschen</string>
+    <!--Nav Drawer-->
+    <string name="navigation_drawer_open">Öffne Menü</string>
+    <string name="navigation_drawer_close">Schließe Menü</string>
 
-    <string name="nav_settings_title">Einstellungen</string>
-
-    <!--Settings-->
-    <string name="preference_category_general_title">Allgemein</string>
-    <string name="preference_category_webservice">Webservice</string>
-    <string name="preference_language_summary">App Sprache</string>
-    <string name="preference_language_title">Sprache</string>
-    <string name="preference_webservice_ip_summary">Webservice ip adresse</string>
-    <string name="preference_webservice_ip_title">IP</string>
-    <string name="preference_webservice_port_summary">Webservice port</string>
-    <string name="preference_webservice_port_title">Port</string>
-    <string name="ShowPlayersOrGames">Zeige:</string>
-    <string name="btnShuffle">Shuffle</string>
-
-
-    <string-array name="spinnerPlayerGameValues">
-        <item>Spieler</item>
-        <item>Spiele</item>
-    </string-array>
-    <string name="title_activity_settings">Einstellungen</string>
-    <string name="preference_general_usesnackbar">Snackbar benutzen</string>
-    <string name="title_activity_score_board">Bestenliste</string>
-    <string name="name">Name</string>
-    <string name="preference_webservice_ip_default" translatable="false">192.168.0.2</string>
-    <string-array name="spinnerScoreboard">
-        <item>Siege</item>
-        <item>Tore geschossen</item>
-        <item>Tore bekommen</item>
-        <item>Verloren</item>
-    </string-array>
+    <!--???????-->
+    <string name="PosMidAbbrev">M</string>
+    <string name="PosGoalAbbrev">T</string>
+    <string name="PosDefAbbrev">V</string>
+    <string name="PosAtkAbbrev">S</string>
+    <string name="PositionAbbrev">P</string>
 </resources>

@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Soccer</string>
+    <!--Activitytitles-->
     <string name="title_activity_add_game_select_players">Select Players</string>
     <string name="title_activity_team_management">Team Management</string>
     <string name="title_activity_add_game_enter_data">Enter Data</string>
@@ -12,8 +13,54 @@
     <string name="title_activity_edit_game">Edit Game</string>
     <string name="title_activity_settings">Settings</string>
     <string name="title_activity_scoreboard">Scoreboard</string>
+    <string name="Scoreboard_titles_wins">Scoreboard: wins</string>
+    <string name="Scoreboard_titles_defeats">Scoreboard: defeats</string>
+    <string name="Scoreboard_titles_goalsgot">Scoreboard: goals got</string>
+    <string name="Scoreboard_titles_goalsshot">Scoreboard: goals shot</string>
+    <string name="nav_settings_title">Settings</string>
+    <string name="title_activity_score_board">Scoreboard</string>
 
+    <!--Buttons-->
     <string name="btnLogin">Login</string>
+    <string name="btnContinue">Continue</string>
+    <string name="btnSave">Save</string>
+    <string name="btnCancel">Cancel</string>
+    <string name="btnShuffle">Shuffle</string>
+    <string name="btnAdd">Add</string>
+    <string name="btnBack">Back</string>
+
+    <!--Menuitems-->
+    <string name="mniMain">Main</string>
+    <string name="mniTeam">Team(test)</string>
+    <string name="mniGerman">Deutsch</string>
+    <string name="mniEnglish">English</string>
+    <string name="mniLogin">Login</string>
+    <string name="mniAdd">Add Player</string>
+    <string name="mniAddGame">Add Game</string>
+    <string name="mniEdit">Edit Userdata</string>
+    <string name="ctxMniEditPlayer">Edit</string>
+    <string name="ctxMniDeletePlayer">Delete</string>
+
+    <!--Checkboxes-->
+    <string name="ckbUpdatePassword">Update Password</string>
+    <string name="ckbIsAdmin">Admin</string>
+
+    <!--Settings-->
+    <string name="preference_category_general_title">General</string>
+    <string name="preference_language_title">Language</string>
+    <string name="preference_language_default" translatable="false">en</string>
+    <string name="preference_language_summary">App language</string>
+    <string name="preference_category_webservice">Webservice</string>
+    <string name="preference_webservice_ip_title">IP</string>
+    <string name="preference_webservice_ip_summary">Webservice ip address</string>
+    <string name="preference_webservice_ip_default">192.168.0.1</string>
+    <string name="preference_webservice_port_title">Port</string>
+    <string name="preference_webservice_port_summary">Webservice port</string>
+    <string name="preference_webservice_port_default" translatable="false">8080</string>
+    <string name="preference_general_usesnackbar">Use Snackbar</string>
+
+
+    <!--Words-->
     <string name="Password">Password</string>
     <string name="Username">Username</string>
     <string name="Name">Name</string>
@@ -22,34 +69,6 @@
     <string name="PosDef">Defense</string>
     <string name="PosAtk">Attacker</string>
     <string name="Positions">Positions</string>
-    <string name="btnSave">Save</string>
-    <string name="btnCancel">Cancel</string>
-    <string name="btnShuffle">Shuffle</string>
-    <string name="mniMain">Main</string>
-    <string name="mniTeam">Team(test)</string>
-    <string name="mniGerman">Deutsch</string>
-    <string name="mniEnglish">English</string>
-    <string name="mniLogin">Login</string>
-    <string name="mniAdd">Add Player</string>
-    <string name="mniEdit">Edit Userdata</string>
-    <string name="ckbIsAdmin">Admin</string>
-    <string name="btnAdd">Add</string>
-    <string name="Date">Date</string>
-    <string name="SelectPlayersForGame">Select Players for the Game</string>
-    <string name="mniAddGame">Add Game</string>
-    <string name="Participation">Participation</string>
-    <string name="btnContinue">Continue</string>
-    <string name="action_settings">Settings</string>
-    <string name="section_format">Hello World from section: %1$d</string>
-    <string name="Remark">Remark</string>
-    <string name="GoalsShotDefault">Goals Shot (Default)</string>
-    <string name="GoalsShotHead">Goals Shot (Head)</string>
-    <string name="GoalsShotHeadSnow">Goals Shot (Head+Snow)</string>
-    <string name="GoalsShotPenalty">Goals Shot (Penalty)</string>
-    <string name="GoalsGot">Goals Got</string>
-    <string name="Nutmeg">Nutmeg</string>
-    <string name="btnBack">Back</string>
-    <string name="ckbUpdatePassword">Update Password</string>
     <string name="GamesPlayed">Games Played</string>
     <string name="GamesWon">Victories</string>
     <string name="GamesLost">Defeats</string>
@@ -61,18 +80,47 @@
     <string name="NumPosMidfield">Played Midfield</string>
     <string name="NumPosGoal">Played Goalie</string>
     <string name="ShowPlayersOrGames">Show: </string>
-    <string name="PosMidAbbrev">M</string>
-    <string name="PosGoalAbbrev">G</string>
-    <string name="PosDefAbbrev">D</string>
-    <string name="PosAtkAbbrev">A</string>
-    <string name="PositionAbbrev">P</string>
     <string name="NoRemark">-</string>
+    <string name="Remark">Remark</string>
+    <string name="GoalsShotDefault">Goals Shot (Default)</string>
+    <string name="GoalsShotHead">Goals Shot (Head)</string>
+    <string name="GoalsShotHeadSnow">Goals Shot (Head+Snow)</string>
+    <string name="GoalsShotPenalty">Goals Shot (Penalty)</string>
+    <string name="GoalsGot">Goals Got</string>
+    <string name="Nutmeg">Nutmeg</string>
+    <string name="Date">Date</string>
+    <string name="SelectPlayersForGame">Select Players for the Game</string>
+    <string name="Participation">Participation</string>
+    <string name="action_settings">Settings</string>
+    <string name= "position">Position</string>
 
+    <!--Spinner Arrays-->
+    <string-array name="spinnerPlayerGameValues">
+        <item>Players</item>
+        <item>Games</item>
+    </string-array>
+    <string-array name="spinnerScoreboard">
+        <item>Wins</item>
+        <item>Goals shot</item>
+        <item>Goals got</item>
+        <item>Defeats</item>
+    </string-array>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <!--Settings Array-->
+    <string-array name="language_entries">
+        <item>Deutsch</item>
+        <item>English</item>
+        <item>Italiano</item>
+        <item>Español</item>
+    </string-array>
+    <string-array name="language_values">
+        <item>de</item>
+        <item>en</item>
+        <item>it</item>
+        <item>es</item>
+    </string-array>
 
-
+    <!--Error Messages-->
     <string name="Error">Error</string>
     <string name="msg_SelectMinNumOfPlayers">At least %d players must be selected to play a game</string>
     <string name="msg_SavedGame">Saved game</string>
@@ -105,59 +153,14 @@
     <string name="msg_CannotConnectToWebservice">Connection to webservice failed</string>
     <string name="msg_InconsistentGoalData">Goals Shot must equal Goals Got of opposing team</string>
 
-    <string name="ctxMniEditPlayer">Edit</string>
-    <string name="ctxMniDeletePlayer">Delete</string>
+    <!--Nav Drawer-->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 
-
-    <!--Settings-->
-    <string name="preference_category_general_title">General</string>
-    <string name="preference_language_title">Language</string>
-    <string name="preference_language_default" translatable="false">en</string>
-    <string name="preference_language_summary">App language</string>
-    <string name="preference_category_webservice">Webservice</string>
-    <string name="preference_webservice_ip_title">IP</string>
-    <string name="preference_webservice_ip_summary">Webservice ip address</string>
-    <string name="preference_webservice_ip_default">192.168.0.1</string>
-    <string name="preference_webservice_port_title">Port</string>
-    <string name="preference_webservice_port_summary">Webservice port</string>
-    <string name="preference_webservice_port_default" translatable="false">8080</string>
-
-    <string-array name="language_entries">
-        <item>Deutsch</item>
-        <item>English</item>
-        <item>Italiano</item>
-        <item>Español</item>
-    </string-array>
-    <string-array name="language_values">
-        <item>de</item>
-        <item>en</item>
-        <item>it</item>
-        <item>es</item>
-    </string-array>
-    <string name="title_activity_score_board">Scoreboard</string>
-    <!---->
-
-    <string name="nav_settings_title">Settings</string>
-    <string name="preference_general_usesnackbar">Use Snackbar</string>
-    <string name="name">Name</string>
-    <string name="position">Position</string>
-
-
-    <string-array name="spinnerPlayerGameValues">
-        <item>Players</item>
-        <item>Games</item>
-    </string-array>
-
-    <string-array name="spinnerScoreboard">
-        <item>Wins</item>
-        <item>Goals shot</item>
-        <item>Goals got</item>
-        <item>Defeats</item>
-    </string-array>
-
-    <string name="Scoreboard_titles_wins">Scoreboard: wins</string>
-    <string name="Scoreboard_titles_defeats">Scoreboard: defeats</string>
-    <string name="Scoreboard_titles_goalsgot">Scoreboard: goals got</string>
-    <string name="Scoreboard_titles_goalsshot">Scoreboard: goals shot</string>
-
+    <!--???????-->
+    <string name="PosMidAbbrev">M</string>
+    <string name="PosGoalAbbrev">G</string>
+    <string name="PosDefAbbrev">D</string>
+    <string name="PosAtkAbbrev">A</string>
+    <string name="PositionAbbrev">P</string>
 </resources>
