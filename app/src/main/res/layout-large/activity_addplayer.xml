@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background">
+
+    <EditText
+        android:id="@+id/edtUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/txvPassword"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/edtName"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textSize="24sp" />
+
+    <EditText
+        android:id="@+id/edtName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/txvName"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/txvName"
+        android:ems="10"
+        android:inputType="text"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/txvPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/txvUsername"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/txvUsername"
+        android:layout_below="@+id/txvUsername"
+        android:padding="20dp"
+        android:text="@string/Password"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/txvUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/txvName"
+        android:layout_toLeftOf="@+id/edtName"
+        android:layout_toStartOf="@+id/edtName"
+        android:padding="20dp"
+        android:text="@string/Username"
+        android:textSize="24sp" />
+
+    <EditText
+        android:id="@+id/edtPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/txvPassword"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/edtUsername"
+        android:layout_toEndOf="@+id/txvPassword"
+        android:layout_toRightOf="@+id/txvPassword"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/txvName"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@+id/edtName"
+        android:padding="20dp"
+        android:text="@string/Name"
+        android:textSize="24sp" />
+
+    <CheckBox
+        android:id="@+id/ckbIsAdmin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/ckbIsAdmin"
+        android:textSize="30sp"
+        android:layout_below="@+id/txvPassword"
+        android:layout_toRightOf="@+id/txvPassword"
+        android:layout_toEndOf="@+id/txvPassword" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+        <Button
+            android:id="@+id/btnCancel"
+            style="@style/buttonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/btnCancel" />
+        <Button
+            android:id="@+id/btnAdd"
+            style="@style/buttonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/btnAdd" />
+    </LinearLayout>
+
+</RelativeLayout>

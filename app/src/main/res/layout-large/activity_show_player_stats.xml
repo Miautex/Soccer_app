@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@drawable/background">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="10dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/lblName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="@string/Name"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txvName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_margin="10dp"
+                android:layout_toRightOf="@+id/lblName"
+                android:gravity="end"
+                android:textColor="@color/darkerRed"
+                android:textSize="24sp" />
+
+            <View
+                android:id="@+id/sep1"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/redLogo"
+                android:layout_below="@id/txvName"/>
+
+            <TextView
+                android:id="@+id/lblGamesPlayed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sep1"
+                android:layout_margin="10dp"
+                android:text="@string/GamesPlayed"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txvGamesPlayed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/lblGamesPlayed"
+                android:layout_alignBottom="@+id/lblGamesPlayed"
+                android:layout_alignEnd="@+id/txvName"
+                android:layout_alignRight="@+id/txvName"
+                android:layout_toEndOf="@+id/lblGamesPlayed"
+                android:layout_toRightOf="@+id/lblGamesPlayed"
+                android:gravity="end"
+                android:textColor="@color/darkerRed"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/lblWins"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lblGamesPlayed"
+                android:layout_margin="10dp"
+                android:text="@string/GamesWon"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txvWins"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/lblWins"
+                android:layout_alignBottom="@+id/lblWins"
+                android:layout_alignEnd="@+id/txvGamesPlayed"
+                android:layout_alignRight="@+id/txvGamesPlayed"
+                android:layout_toEndOf="@+id/lblWins"
+                android:layout_toRightOf="@+id/lblWins"
+                android:gravity="end"
+                android:textColor="@color/darkerRed"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/lblDefeats"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lblWins"
+                android:layout_margin="10dp"
+                android:text="@string/GamesLost"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txvDefeats"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/lblDefeats"
+                android:layout_alignBottom="@+id/lblDefeats"
+                android:layout_alignEnd="@+id/txvWins"
+                android:layout_alignRight="@+id/txvWins"
+                android:layout_toEndOf="@+id/lblDefeats"
+                android:layout_toRightOf="@+id/lblDefeats"
+                android:gravity="end"
+                android:textColor="@color/darkerRed"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/lblDraws"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lblDefeats"
+                android:layout_margin="10dp"
+                android:text="@string/GameDraws"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txvDraws"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/lblDraws"
+                android:layout_alignBottom="@+id/lblDraws"
+                android:layout_alignEnd="@+id/txvDefeats"
+                android:layout_alignRight="@+id/txvDefeats"
+                android:layout_toEndOf="@+id/lblDraws"
+                android:layout_toRightOf="@+id/lblDraws"
+                android:gravity="end"
+                android:textColor="@color/darkerRed"
+                android:textSize="24sp" />
+
+            <View
+                android:id="@+id/sep2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/redLogo"
+                android:layout_below="@id/lblDraws"/>
+
+            <TextView
+                android:id="@+id/lblAvgGoalDiff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sep2"
+                android:layout_margin="10dp"
+                android:text="@string/AvgGoalDiff"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txvAvgGoalDiff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/lblAvgGoalDiff"
+                android:layout_alignBottom="@+id/lblAvgGoalDiff"
+                android:layout_alignEnd="@+id/txvDraws"
+                android:layout_alignRight="@+id/txvDraws"
+                android:layout_toEndOf="@+id/lblAvgGoalDiff"
+                android:layout_toRightOf="@+id/lblAvgGoalDiff"
+                android:gravity="end"
+                android:textColor="@color/darkerRed"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/lblGoalsShotAll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lblAvgGoalDiff"
+                android:layout_margin="10dp"
+                android:text="@string/GoalsShotAll"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txvGoalsShotAll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/lblGoalsShotAll"
+                android:layout_alignBottom="@+id/lblGoalsShotAll"
+                android:layout_alignEnd="@+id/txvAvgGoalDiff"
+                android:layout_alignRight="@+id/txvAvgGoalDiff"
+                android:layout_toEndOf="@+id/lblGoalsShotAll"
+                android:layout_toRightOf="@+id/lblGoalsShotAll"
+                android:gravity="end"
+                android:textColor="@color/darkerRed"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/lblGoalsShotDefault"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lblGoalsShotAll"
+                android:layout_margin="10dp"
+                android:text="@string/GoalsShotDefault"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txvGoalsShotDefault"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/lblGoalsShotDefault"
+                android:layout_alignBottom="@+id/lblGoalsShotDefault"
+                android:layout_alignEnd="@+id/txvGoalsShotAll"
+                android:layout_alignRight="@+id/txvGoalsShotAll"
+                android:layout_toEndOf="@+id/lblGoalsShotDefault"
+                android:layout_toRightOf="@+id/lblGoalsShotDefault"
+                android:gravity="end"
+                android:textColor="@color/darkerRed"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/lblGoalsShotHead"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lblGoalsShotDefault"
+                android:layout_margin="10dp"
+                android:text="@string/GoalsShotHead"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txvGoalsShotHead"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/lblGoalsShotHead"
+                android:layout_alignBottom="@+id/lblGoalsShotHead"
+                android:layout_alignEnd="@+id/txvGoalsShotDefault"
+                android:layout_alignRight="@+id/txvGoalsShotDefault"
+                android:layout_toEndOf="@+id/lblGoalsShotHead"
+                android:layout_toRightOf="@+id/lblGoalsShotHead"
+                android:gravity="end"
+                android:textColor="@color/darkerRed"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/lblGoalsShotHeadSnow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lblGoalsShotHead"
+                android:layout_margin="10dp"
+                android:text="@string/GoalsShotHeadSnow"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txvGoalsShotHeadSnow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/lblGoalsShotHeadSnow"
+                android:layout_alignBottom="@+id/lblGoalsShotHeadSnow"
+                android:layout_alignEnd="@+id/txvGoalsShotHead"
+                android:layout_alignRight="@+id/txvGoalsShotHead"
+                android:layout_toEndOf="@+id/lblGoalsShotHeadSnow"
+                android:layout_toRightOf="@+id/lblGoalsShotHeadSnow"
+                android:gravity="end"
+                android:textColor="@color/darkerRed"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/lblGoalsShotPenalty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lblGoalsShotHeadSnow"
+                android:layout_margin="10dp"
+                android:text="@string/GoalsShotPenalty"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txvGoalsShotPenalty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/lblGoalsShotPenalty"
+                android:layout_alignBottom="@+id/lblGoalsShotPenalty"
+                android:layout_alignEnd="@+id/txvGoalsShotHeadSnow"
+                android:layout_alignRight="@+id/txvGoalsShotHeadSnow"
+                android:layout_toEndOf="@+id/lblGoalsShotPenalty"
+                android:layout_toRightOf="@+id/lblGoalsShotPenalty"
+                android:gravity="end"
+                android:textColor="@color/darkerRed"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/lblGoalsGot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lblGoalsShotPenalty"
+                android:layout_margin="10dp"
+                android:text="@string/GoalsGot"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txvGoalsGot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/lblGoalsGot"
+                android:layout_alignBottom="@+id/lblGoalsGot"
+                android:layout_alignEnd="@+id/txvGoalsShotPenalty"
+                android:layout_alignRight="@+id/txvGoalsShotPenalty"
+                android:layout_toEndOf="@+id/lblGoalsGot"
+                android:layout_toRightOf="@+id/lblGoalsGot"
+                android:gravity="end"
+                android:textColor="@color/darkerRed"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/lblNutmeg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lblGoalsGot"
+                android:layout_margin="10dp"
+                android:text="@string/Nutmeg"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txvNutmeg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/lblNutmeg"
+                android:layout_alignBottom="@+id/lblNutmeg"
+                android:layout_alignEnd="@+id/txvGoalsGot"
+                android:layout_alignRight="@+id/txvGoalsGot"
+                android:layout_toEndOf="@+id/lblNutmeg"
+                android:layout_toRightOf="@+id/lblNutmeg"
+                android:gravity="end"
+                android:textColor="@color/darkerRed"
+                android:textSize="24sp" />
+
+            <View
+                android:id="@+id/sep3"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/redLogo"
+                android:layout_below="@id/lblNutmeg"/>
+
+            <TextView
+                android:id="@+id/lblPosAttack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sep3"
+                android:layout_margin="10dp"
+                android:text="@string/NumPosAttack"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txvPosAttack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/lblPosAttack"
+                android:layout_alignBottom="@+id/lblPosAttack"
+                android:layout_alignEnd="@+id/txvNutmeg"
+                android:layout_alignRight="@+id/txvNutmeg"
+                android:layout_toEndOf="@+id/lblPosAttack"
+                android:layout_toRightOf="@+id/lblPosAttack"
+                android:gravity="end"
+                android:textColor="@color/darkerRed"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/lblPosDefense"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lblPosAttack"
+                android:layout_margin="10dp"
+                android:text="@string/NumPosDefense"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txvPosDefense"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/lblPosDefense"
+                android:layout_alignBottom="@+id/lblPosDefense"
+                android:layout_alignEnd="@+id/txvPosAttack"
+                android:layout_alignRight="@+id/txvPosAttack"
+                android:layout_toEndOf="@+id/lblPosDefense"
+                android:layout_toRightOf="@+id/lblPosDefense"
+                android:gravity="end"
+                android:textColor="@color/darkerRed"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/lblPosMidfield"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lblPosDefense"
+                android:layout_margin="10dp"
+                android:text="@string/NumPosMidfield"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txvPosMidfield"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/lblPosMidfield"
+                android:layout_alignBottom="@+id/lblPosMidfield"
+                android:layout_alignEnd="@+id/txvPosDefense"
+                android:layout_alignRight="@+id/txvPosDefense"
+                android:layout_toEndOf="@+id/lblPosMidfield"
+                android:layout_toRightOf="@+id/lblPosMidfield"
+                android:gravity="end"
+                android:textColor="@color/darkerRed"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/lblPosGoal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lblPosMidfield"
+                android:layout_margin="10dp"
+                android:text="@string/NumPosGoal"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txvPosGoal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/lblPosGoal"
+                android:layout_alignBottom="@+id/lblPosGoal"
+                android:layout_alignEnd="@+id/txvPosMidfield"
+                android:layout_alignRight="@+id/txvPosMidfield"
+                android:layout_toEndOf="@+id/lblPosGoal"
+                android:layout_toRightOf="@+id/lblPosGoal"
+                android:gravity="end"
+                android:textColor="@color/darkerRed"
+                android:textSize="24sp" />
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>
