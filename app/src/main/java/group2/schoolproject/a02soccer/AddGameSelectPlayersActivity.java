@@ -102,6 +102,7 @@ public class AddGameSelectPlayersActivity extends BaseActivity implements View.O
             txvId.setText(Integer.toString(p.getId()));
             txvId.setVisibility(View.GONE);
 
+
             numSelectedCheckboxes++;
 
             //Set layout like header
@@ -111,7 +112,7 @@ public class AddGameSelectPlayersActivity extends BaseActivity implements View.O
 
             //set paddingBottom for row
             row.setPadding(0, PxDpConverter.toDp(5, this), 0, 0);
-
+            row.setBackgroundResource(R.drawable.tablelayout3);
             llo.addView(txvName);       //linear layout as wrapper for txvName to fix text being cut off
             row.addView(cb);
             row.addView(llo);

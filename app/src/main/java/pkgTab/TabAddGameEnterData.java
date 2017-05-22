@@ -206,7 +206,7 @@ public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeL
                     et.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
                 }
 
-                et.setBackgroundResource(R.drawable.tablelayout);
+                et.setBackgroundResource(R.drawable.tablelayout2);
                 et.setLayoutParams(lptr);
                 et.setKeyListener(DigitsKeyListener.getInstance("0123456789"));
                 et.setLongClickable(false);
@@ -228,9 +228,10 @@ public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeL
             editTexts[6].setVisibility(View.GONE);
 
             //border-lines
-            row.setBackgroundResource(R.drawable.tablelayout);
+            row.setBackgroundResource(R.drawable.tablelayout2);
             row.setPadding(0, 0, 0, 0);
-            txvName.setBackgroundResource(R.drawable.tablelayout);
+            txvPos.setBackgroundResource(R.drawable.tablelayout2);
+            txvName.setBackgroundResource(R.drawable.tablelayout2);
             txvName.setPadding(PxDpConverter.toDp(5,this.getContext()), 0, 0, 0);
 
 
