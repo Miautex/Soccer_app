@@ -22,6 +22,7 @@ import pkgDatabase.pkgListener.OnLoadAllGamesListener;
 import pkgDatabase.pkgListener.OnLoadAllPlayersListener;
 import pkgDatabase.pkgListener.OnLoginListener;
 import pkgException.InvalidLoginDataException;
+import pkgWSA.Accessor;
 
 public class LoginActivity extends BaseActivity implements OnClickListener, OnLoginListener, OnLoadAllPlayersListener, OnLoadAllGamesListener {
 
@@ -42,7 +43,15 @@ public class LoginActivity extends BaseActivity implements OnClickListener, OnLo
         getAllViews();
         registrateEventHandlers();
         try {
+            Accessor.init(getApplicationContext());
             db = Database.getInstance();
+            db.initPreferences(this);
+
+            setDefaultCredentials();
+            if (db.isInitialLogin() && db.isAutologin()) {
+                tryLogin();
+                db.setInitialLogin(false);
+            }
         }
         catch (Exception ex) {
             showMessage(getString(R.string.Error) + ": " + ex.getMessage());
@@ -211,5 +220,10 @@ public class LoginActivity extends BaseActivity implements OnClickListener, OnLo
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         return true;
+    }
+
+    private void setDefaultCredentials() {
+        edtUsername.setText(db.getStoredUsername());
+        edtPassword.setText(db.getStoredPassword());
     }
 }

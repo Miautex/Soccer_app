@@ -52,6 +52,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
     private TreeSet<Player> allPlayers = null;
     private TreeSet<Game> allGames = null;
     private SharedPreferences preferences = null;
+    private boolean initialLogin = true;
 
     private ArrayList<OnPlayersUpdatedListener> playersChangedListener = null;
     private ArrayList<OnGamesUpdatedListener> gamesChangedListener = null;
@@ -545,5 +546,29 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
     public void loadParticipationsFailed(Exception ex) {
         System.out.println("-------------LOAD PARTICIPATIONS FAILED");
         ex.printStackTrace();
+    }
+
+    public String getStoredUsername() {
+        return preferences.getString("preference_user_username", "");
+    }
+
+    public String getStoredPassword() {
+        return preferences.getString("preference_user_password", "");
+    }
+
+    public boolean isAutologin() {
+        return preferences.getBoolean("preference_user_autologin", false);
+    }
+
+    public void setInitialLogin (boolean initialLogin) {
+        this.initialLogin = initialLogin;
+    }
+
+    public boolean isInitialLogin () {
+        return initialLogin;
+    }
+
+    public void logout () {
+        currentlyLoggedInPlayer = null;
     }
 }

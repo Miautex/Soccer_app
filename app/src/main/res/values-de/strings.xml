@@ -34,7 +34,7 @@
     <string name="mniTeam">Team(test)</string>
     <string name="mniGerman">Deutsch</string>
     <string name="mniEnglish">Englisch</string>
-    <string name="mniLogin">Anmelden</string>
+    <string name="mniLogin">Abmelden</string>
     <string name="mniAdd">Spieler hinzufügen</string>
     <string name="mniAddGame">Spiel hinzufügen</string>
     <string name="mniEdit">Benutzerdaten bearbeiten</string>
@@ -48,15 +48,12 @@
     <!--Settings-->
     <string name="preference_category_general_title">Allgemein</string>
     <string name="preference_language_title">Sprache</string>
-    <string name="preference_language_default" translatable="false">de</string>
     <string name="preference_language_summary">App Sprache</string>
     <string name="preference_category_webservice">Webservice</string>
     <string name="preference_webservice_ip_title">IP</string>
     <string name="preference_webservice_ip_summary">Webservice ip address</string>
-    <string name="preference_webservice_ip_default">192.168.0.1</string>
     <string name="preference_webservice_port_title">Port</string>
     <string name="preference_webservice_port_summary">Webservice port</string>
-    <string name="preference_webservice_port_default" translatable="false">8080</string>
     <string name="preference_general_usesnackbar">Nachrichtenart Überblendung</string>
 
 
@@ -163,4 +160,10 @@
     <string name="PosDefAbbrev">V</string>
     <string name="PosAtkAbbrev">S</string>
     <string name="PositionAbbrev">P</string>
+    <string name="preference_category_user_title">Benutzer</string>
+    <string name="preference_user_autologin">Automatische Anmeldung</string>
+    <string name="preference_user_password_summary">Passwort</string>
+    <string name="preference_user_password_title">Passwort</string>
+    <string name="preference_user_username_summary">Benutzername</string>
+    <string name="preference_user_username_title">Benutzername</string>
 </resources>

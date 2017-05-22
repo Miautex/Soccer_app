@@ -14,17 +14,16 @@
         android:theme="@style/Theme.App.Base">
         <activity
             android:name=".MainActivity"
-            android:label="Moskito&apos;s Soccer App"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".LoginActivity"
-            android:label="@string/title_activity_login" />
+            android:label="Moskito&apos;s Soccer App">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <!--<activity
             android:name=".EditPlayerOwnActivity"
             android:label="@string/title_activity_edit_player_own" />-->

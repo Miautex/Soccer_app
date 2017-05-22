@@ -29,7 +29,6 @@ import pkgDatabase.pkgListener.OnLoadAllPlayersListener;
 import pkgDatabase.pkgListener.OnPlayersUpdatedListener;
 import pkgException.CouldNotDeleteGameException;
 import pkgException.CouldNotDeletePlayerException;
-import pkgWSA.Accessor;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnPlayersUpdatedListener,
@@ -59,9 +58,9 @@ public class MainActivity extends BaseActivity
             NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
             navigationView.setNavigationItemSelectedListener(this);
 
-            Accessor.init(getApplicationContext());
+            //Accessor.init(getApplicationContext());
             db = Database.getInstance();
-            db.initPreferences(this);
+            //db.initPreferences(this);
 
             if (db.getCurrentlyLoggedInPlayer() == null || !db.getCurrentlyLoggedInPlayer().isAdmin()) {
                 navigationView.getMenu().setGroupVisible(R.id.menuGroupAdmin, false);
@@ -107,6 +106,7 @@ public class MainActivity extends BaseActivity
         } else if (id == R.id.nav_manage) {
             openActivity(ScoreboardActivity.class);
         } else if (id == R.id.mniLogin) {
+            db.logout();
             openActivity(LoginActivity.class);
         } else if (id == R.id.nav_settings) {
             openActivity(SettingsActivity.class);
