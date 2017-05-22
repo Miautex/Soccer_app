@@ -12,9 +12,9 @@
         <item name="colorPrimary">#4F575B</item>
         <item name="colorPrimaryDark">#4F575B</item>
         <item name="colorAccent">#4F575B</item>
-        <item name="colorControlNormal">#BC4C31</item>
-        <item name="colorControlActivated">#BC4C31</item>
-        <item name="colorControlHighlight">#BC4C31</item>
+        <item name="colorControlNormal">@color/standardRed</item>
+        <item name="colorControlActivated">@color/standardRed</item>
+        <item name="colorControlHighlight">@color/standardRed</item>
         <item name="android:button">@style/buttonStyle</item>
         <item name="android:tabStripEnabled">false</item>
     </style>
