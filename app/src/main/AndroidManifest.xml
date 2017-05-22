@@ -35,7 +35,8 @@
             android:label="@string/title_activity_add_player" />
         <activity
             android:name=".TeamDivisionActivity"
-            android:label="@string/title_activity_team_management" />
+            android:label="@string/title_activity_team_management"
+            android:screenOrientation="portrait"/>
         <!-- android:theme="@style/AppTheme.NoActionBar"></activity> -->
         <activity
             android:name=".AddGameSelectPlayersActivity"

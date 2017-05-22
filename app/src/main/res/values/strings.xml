@@ -2,10 +2,10 @@
     <string name="app_name">Soccer</string>
     <!--Activitytitles-->
     <string name="title_activity_add_game_select_players">Select Players</string>
-    <string name="title_activity_team_management">Team Management</string>
+    <string name="title_activity_team_management">Team Division</string>
     <string name="title_activity_add_game_enter_data">Enter Data</string>
     <string name="title_activity_login">Login</string>
-    <string name="title_activity_edit_player_own">Edit own data</string>
+    <string name="title_activity_edit_player_own">Edit Userdata</string>
     <string name="title_activity_edit_player_admin">Edit player</string>
     <string name="title_activity_add_player">Add player</string>
     <string name="title_activity_player_stats">Player Stats</string>
@@ -53,10 +53,10 @@
     <string name="preference_category_webservice">Webservice</string>
     <string name="preference_webservice_ip_title">IP</string>
     <string name="preference_webservice_ip_summary">Webservice ip address</string>
-    <string name="preference_webservice_ip_default" translatable="false">192.168.0.1</string>
+    <string name="preference_webservice_ip_default" translatable="false">192.168.192.1</string>
     <string name="preference_webservice_port_title">Port</string>
     <string name="preference_webservice_port_summary">Webservice port</string>
-    <string name="preference_webservice_port_default" translatable="false">8080</string>
+    <string name="preference_webservice_port_default" translatable="false">25120</string>
     <string name="preference_general_usesnackbar">Use Snackbar</string>
 
 
