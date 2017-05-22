@@ -6,6 +6,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Locale;
+
+import pkgMisc.LocalizedDateFormatter;
 
 public final class Game implements Serializable, Comparable<Game> {
     private int id, scoreTeamA, scoreTeamB;
@@ -134,8 +137,7 @@ public final class Game implements Serializable, Comparable<Game> {
 
     @Override
     public String toString() {
-        SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd.MM.yyyy");
-        return sdf.format(getDate()) + "  (" + getScoreTeamA() + ":" + getScoreTeamB() + ")";
+        return LocalizedDateFormatter.format(getDate(), Locale.getDefault()) + "  (" + getScoreTeamA() + ":" + getScoreTeamB() + ")";
     }
 
     @Override
