@@ -75,8 +75,7 @@ public class EditGameActivity extends BaseActivity implements OnScoreChangedList
             initRemark();
         }
         catch (Exception ex) {
-            ExceptionNotification.notify(this, ex);
-            ex.printStackTrace();
+            showMessage(getString(R.string.Error) + ": " + ex.getMessage());
         }
     }
 

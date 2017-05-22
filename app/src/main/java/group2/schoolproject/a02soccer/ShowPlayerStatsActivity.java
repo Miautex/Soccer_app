@@ -1,13 +1,12 @@
 package group2.schoolproject.a02soccer;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import pkgData.Player;
 import pkgData.PlayerStatistics;
 
-public class ShowPlayerStatsActivity extends AppCompatActivity {
+public class ShowPlayerStatsActivity extends BaseActivity {
     private TextView txvName,
             txvGamesPlayed,
             txvGameWins,
@@ -45,8 +44,7 @@ public class ShowPlayerStatsActivity extends AppCompatActivity {
             displayPlayerStats();
         }
         catch (Exception ex) {
-            ExceptionNotification.notify(this, ex);
-            ex.printStackTrace();
+            showMessage(getString(R.string.Error) + ": " + ex.getMessage());
         }
     }
 
