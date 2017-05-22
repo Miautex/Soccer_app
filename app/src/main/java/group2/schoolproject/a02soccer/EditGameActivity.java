@@ -189,6 +189,8 @@ public class EditGameActivity extends BaseActivity implements OnScoreChangedList
             }
 
             showMessage(getString(R.string.msg_SavedGame));
+
+            db.loadAllPlayers(null);
         }
     }
 

@@ -167,6 +167,8 @@ public class AddGameEnterDataActivity extends BaseActivity implements OnScoreCha
             }
 
             showMessage(getString(R.string.msg_SavedGame));
+
+            db.loadAllPlayers(null);
         }
     }
 
