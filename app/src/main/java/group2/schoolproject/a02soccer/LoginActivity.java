@@ -49,8 +49,8 @@ public class LoginActivity extends BaseActivity implements OnClickListener, OnLo
 
             setDefaultCredentials();
             if (db.isInitialLogin() && db.isAutologin()) {
-                tryLogin();
                 db.setInitialLogin(false);
+                tryLogin();
             }
         }
         catch (Exception ex) {

@@ -36,18 +36,23 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = preferences.edit();
-        if (item.getItemId() == DynamicMenuItem.GERMAN.ordinal()) {
-            editor.putString("preference_general_language", "de");
-        } else if (item.getItemId() == DynamicMenuItem.ENGLISH.ordinal()) {
-            editor.putString("preference_general_language", "en");
-        } else if (item.getItemId() == DynamicMenuItem.SPANISCH.ordinal()) {
-            editor.putString("preference_general_language", "es");
+        if (item.getItemId() == DynamicMenuItem.SETTINGS.ordinal()) {
+            openActivity(DebugSettingsActivity.class);
         }
-        editor.commit();
-        finish();
-        startActivity(new Intent(this, this.getClass()).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+        else {
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+            SharedPreferences.Editor editor = preferences.edit();
+            if (item.getItemId() == DynamicMenuItem.GERMAN.ordinal()) {
+                editor.putString("preference_general_language", "de");
+            } else if (item.getItemId() == DynamicMenuItem.ENGLISH.ordinal()) {
+                editor.putString("preference_general_language", "en");
+            } else if (item.getItemId() == DynamicMenuItem.SPANISCH.ordinal()) {
+                editor.putString("preference_general_language", "es");
+            }
+            editor.commit();
+            finish();
+            startActivity(new Intent(this, this.getClass()).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -57,6 +62,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public boolean onPrepareOptionsMenu(Menu menu, Class cl) {
+        menu.add(0, DynamicMenuItem.SETTINGS.ordinal(), Menu.NONE, "DEBUG SETTINGS");
         if (getResources().getConfiguration().locale.toString().contains("de")) {
             menu.add(0, DynamicMenuItem.ENGLISH.ordinal(), Menu.NONE, R.string.mniEnglish);
             menu.add(0, DynamicMenuItem.SPANISCH.ordinal(), Menu.NONE, "Spanisch");

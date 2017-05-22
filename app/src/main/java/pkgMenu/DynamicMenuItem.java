@@ -6,5 +6,5 @@ package pkgMenu;
  */
 
 public enum DynamicMenuItem {
-    ENGLISH,GERMAN,SPANISCH
+    ENGLISH,GERMAN,SPANISCH,SETTINGS
 }

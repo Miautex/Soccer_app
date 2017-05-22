@@ -53,10 +53,10 @@
     <string name="preference_category_webservice">Webservice</string>
     <string name="preference_webservice_ip_title">IP</string>
     <string name="preference_webservice_ip_summary">Webservice ip address</string>
-    <string name="preference_webservice_ip_default" translatable="false">192.168.0.1</string>
+    <string name="preference_webservice_ip_default" translatable="false">192.168.192.1</string>
     <string name="preference_webservice_port_title">Port</string>
     <string name="preference_webservice_port_summary">Webservice port</string>
-    <string name="preference_webservice_port_default" translatable="false">8080</string>
+    <string name="preference_webservice_port_default" translatable="false">25120</string>
     <string name="preference_general_usesnackbar">Use Snackbar</string>
 
 
@@ -110,13 +110,11 @@
     <string-array name="language_entries">
         <item>Deutsch</item>
         <item>English</item>
-        <item>Italiano</item>
         <item>Español</item>
     </string-array>
     <string-array name="language_values">
         <item>de</item>
         <item>en</item>
-        <item>it</item>
         <item>es</item>
     </string-array>
 
@@ -164,10 +162,8 @@
     <string name="PosAtkAbbrev">A</string>
     <string name="PositionAbbrev">P</string>
     <string name="preference_category_user_title">User</string>
-    <string name="preference_user_username_default" translatable="false">admin</string>
     <string name="preference_user_username_summary">Username</string>
     <string name="preference_user_username_title">Username</string>
-    <string name="preference_user_password_default" translatable="false">admin</string>
     <string name="preference_user_password_summary">Password</string>
     <string name="preference_user_password_title">Password</string>
     <string name="preference_user_autologin">Autologin</string>

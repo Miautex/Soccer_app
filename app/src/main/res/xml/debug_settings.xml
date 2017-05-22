@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/preference_category_webservice">
+        <EditTextPreference
+            android:defaultValue="@string/preference_webservice_ip_default"
+            android:key="preference_webservice_ip"
+            android:summary="@string/preference_webservice_ip_summary"
+            android:title="@string/preference_webservice_ip_title"/>
+        <EditTextPreference
+            android:defaultValue="@string/preference_webservice_port_default"
+            android:inputType="number"
+            android:key="preference_webservice_port"
+            android:summary="@string/preference_webservice_port_summary"
+            android:title="@string/preference_webservice_port_title"/>
+    </PreferenceCategory>
+</PreferenceScreen>

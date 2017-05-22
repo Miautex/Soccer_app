@@ -66,6 +66,13 @@
                 android:value="group2.schoolproject.a02soccer.MainActivity" />
         </activity>
         <activity
+            android:name=".DebugSettingsActivity"
+            android:label="@string/title_activity_settings">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="group2.schoolproject.a02soccer.LoginActivity" />
+        </activity>
+        <activity
             android:name=".ScoreboardActivity"
             android:label="@string/title_activity_score_board" />
     </application>
