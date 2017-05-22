@@ -28,19 +28,6 @@
             android:key="preference_user_autologin"
             android:title="@string/preference_user_autologin"/>
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/preference_category_webservice">
-        <EditTextPreference
-            android:defaultValue="@string/preference_webservice_ip_default"
-            android:key="preference_webservice_ip"
-            android:summary="@string/preference_webservice_ip_summary"
-            android:title="@string/preference_webservice_ip_title"/>
-        <EditTextPreference
-            android:defaultValue="@string/preference_webservice_port_default"
-            android:inputType="number"
-            android:key="preference_webservice_port"
-            android:summary="@string/preference_webservice_port_summary"
-            android:title="@string/preference_webservice_port_title"/>
-    </PreferenceCategory>
     <PreferenceCategory android:title="Design Color">
         <com.rarepebble.colorpicker.ColorPreference
             android:key="colorPicker"
