@@ -89,7 +89,7 @@ public final class Player implements Comparable, Serializable, Cloneable {
 
         //if username is deactivated (contains '~'), return deactivated
         if (username.contains("~")) {
-            retVal = "deactivated";
+            retVal = "deleted";
         }
         else {
             retVal = username;

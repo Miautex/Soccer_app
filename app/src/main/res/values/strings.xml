@@ -138,7 +138,7 @@
     <string name="msg_CannotDeleteOwnPlayer">Cannot delete own Player</string>
     <string name="msg_EnterPassword">Please enter a new password</string>
     <string name="msg_ConnectionTimeout">Connection to server timed out</string>
-    <string name="msg_NetworkUnreachable">Cannot connect to Internet</string>
+    <string name="msg_NetworkUnreachable">Cannot connect to server</string>
     <string name="msg_IllegalUsername">Username must only contain letters and numbers</string>
     <string name="msg_UsernameTooLong">Username must not be longer than %d characters</string>
     <string name="msg_NameTooLong">Name must not be longer than %d characters</string>

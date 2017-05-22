@@ -55,7 +55,6 @@ public class LoginActivity extends BaseActivity implements OnClickListener, OnLo
         }
         catch (Exception ex) {
             showMessage(getString(R.string.Error) + ": " + ex.getMessage());
-            ExceptionNotification.notify(this, ex);
         }
     }
 
@@ -81,8 +80,8 @@ public class LoginActivity extends BaseActivity implements OnClickListener, OnLo
                 if(keyCode == event.KEYCODE_ENTER){
                     try {
                         tryLogin();
-                    }catch(Exception x){
-                        ExceptionNotification.notify(getApplicationContext(), x);
+                    }catch(Exception ex){
+                        showMessage(getString(R.string.Error) + ": " + ex.getMessage());
                     }
                 }
                 return false;

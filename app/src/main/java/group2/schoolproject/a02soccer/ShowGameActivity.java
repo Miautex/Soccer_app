@@ -2,6 +2,7 @@ package group2.schoolproject.a02soccer;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -17,10 +18,11 @@ import pkgData.Participation;
 import pkgData.Team;
 import pkgDatabase.Database;
 import pkgDatabase.pkgListener.OnLoadParticipationsListener;
+import pkgListeners.OnScoreChangedListener;
 import pkgTab.SectionsPageAdapter;
 import pkgTab.TabAddGameEnterData;
 
-public class ShowGameActivity extends BaseActivity implements OnLoadParticipationsListener {
+public class ShowGameActivity extends BaseActivity implements OnLoadParticipationsListener, OnScoreChangedListener {
 
     private SectionsPageAdapter adapter = null;
     private ViewPager mViewPager = null;
@@ -110,11 +112,13 @@ public class ShowGameActivity extends BaseActivity implements OnLoadParticipatio
         bundle.putSerializable("participations", getParticipationsOfTeam(Team.TEAM1));
         bundle.putSerializable("isEditable", false);
         tabs[0].setArguments(bundle);
+        tabs[0].setOnScoreChangedListener(this);
 
         bundle = new Bundle();
         bundle.putSerializable("participations", getParticipationsOfTeam(Team.TEAM2));
         bundle.putSerializable("isEditable", false);
         tabs[1].setArguments(bundle);
+        tabs[1].setOnScoreChangedListener(this);
 
         adapter.addFragment(tabs[0],"TEAM1");
         adapter.addFragment(tabs[1],"TEAM2");
@@ -154,5 +158,10 @@ public class ShowGameActivity extends BaseActivity implements OnLoadParticipatio
     public void loadParticipationsFailed(Exception ex) {
         showMessage(ex.getMessage());
         toggleProgressBar(false);
+    }
+
+    @Override
+    public void onScoreUpdated(int sumGoalsShot, Fragment fragment) {
+        //Only to display message from Tabs
     }
 }
