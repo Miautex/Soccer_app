@@ -150,6 +150,9 @@
     <string name="msg_CouldNotRefreshData">Could not refresh data</string>
     <string name="msg_CannotConnectToWebservice">Connection to webservice failed</string>
     <string name="msg_InconsistentGoalData">Goals Shot must equal Goals Got of opposing team</string>
+    <string name="msg_IllegalName">Name must only contain letters and numbers</string>
+    <string name="msg_IllegalPassword">Password must only contain letters and numbers</string>
+    <string name="msg_IllegalRemark">Remark must only contain letters and numbers</string>
 
     <!--Nav Drawer-->
     <string name="navigation_drawer_open">Open navigation drawer</string>

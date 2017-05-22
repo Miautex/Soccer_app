@@ -20,6 +20,7 @@ import pkgData.Team;
 import pkgDatabase.Database;
 import pkgDatabase.pkgListener.OnLoadParticipationsListener;
 import pkgListeners.OnScoreChangedListener;
+import pkgMisc.NamePWValidator;
 import pkgTab.SectionsPageAdapter;
 import pkgTab.TabAddGameEnterData;
 
@@ -175,6 +176,10 @@ public class EditGameActivity extends BaseActivity implements OnScoreChangedList
             throw new Exception(getString(R.string.msg_InconsistentGoalData));
         }
         else {
+            if (!NamePWValidator.validate(edtRemark.getText().toString())) {
+                throw new Exception(getString(R.string.msg_IllegalRemark));
+            }
+
             gameToUpdate.setRemark(edtRemark.getText().toString());
 
             db.update(gameToUpdate);
@@ -219,7 +224,7 @@ public class EditGameActivity extends BaseActivity implements OnScoreChangedList
 
     @Override
     public void loadParticipationsFailed(Exception ex) {
-        showMessage(ex.getMessage());
+        showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CannotConnectToWebservice));
         toggleProgressBar(false);
     }
 }

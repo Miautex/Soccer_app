@@ -17,6 +17,7 @@ import pkgException.NameTooShortException;
 import pkgException.PasswordTooShortException;
 import pkgException.UsernameTooLongException;
 import pkgException.UsernameTooShortException;
+import pkgMisc.NamePWValidator;
 
 
 public class EditPlayerActivity extends BaseActivity implements View.OnClickListener {
@@ -173,6 +174,15 @@ public class EditPlayerActivity extends BaseActivity implements View.OnClickList
         }
         else if (getCheckedPlayerPositions().size() == 0) {
             throw new Exception(getString(R.string.msg_SelectMinNumOfPositions));
+        }
+
+
+        if (!NamePWValidator.validate(edtName.getText().toString())) {
+            throw new Exception(getString(R.string.msg_IllegalName));
+        }
+
+        if (!NamePWValidator.validate(edtPassword.getText().toString())) {
+            throw new Exception(getString(R.string.msg_IllegalPassword));
         }
 
         try {

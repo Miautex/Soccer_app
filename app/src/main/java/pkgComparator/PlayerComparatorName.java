@@ -9,7 +9,7 @@ public class PlayerComparatorName implements Comparator<Player> {
         int retVal = o1.getName().compareTo(o2.getName());
 
         if (retVal == 0) {
-            retVal = o1.getUsername().compareTo(o2.getUsername());
+            retVal = o1.getUsername().toLowerCase().compareTo(o2.getUsername().toLowerCase());
         }
 
         return retVal;

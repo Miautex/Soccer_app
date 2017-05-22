@@ -285,7 +285,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         boolean isSuccess = false;
         AccessorResponse response = Accessor.runRequestSync(HttpMethod.PUT, "player", null, GsonSerializor.serializePlayer(p));
 
-        if (response.getResponseCode() == 500) {
+        if (response.getResponseCode() == 500 || response.getResponseCode() == -1) {
             throw new Exception(response.getJson());
         } else {
             Result r = GsonSerializor.deserializeResult(response.getJson());

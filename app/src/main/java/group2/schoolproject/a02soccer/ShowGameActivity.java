@@ -156,7 +156,7 @@ public class ShowGameActivity extends BaseActivity implements OnLoadParticipatio
 
     @Override
     public void loadParticipationsFailed(Exception ex) {
-        showMessage(ex.getMessage());
+        showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CannotConnectToWebservice));
         toggleProgressBar(false);
     }
 

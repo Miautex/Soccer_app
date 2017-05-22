@@ -15,6 +15,7 @@ import pkgException.NameTooShortException;
 import pkgException.PasswordTooShortException;
 import pkgException.UsernameTooLongException;
 import pkgException.UsernameTooShortException;
+import pkgMisc.NamePWValidator;
 
 
 public class AddPlayerActivity extends BaseActivity implements View.OnClickListener {
@@ -69,6 +70,14 @@ public class AddPlayerActivity extends BaseActivity implements View.OnClickListe
 
         if (edtName.getText().toString().isEmpty() || edtUsername.getText().toString().isEmpty() || edtPassword.getText().toString().isEmpty()) {
             throw new Exception(getString(R.string.msg_EnterNameUsernamePassword));
+        }
+
+        if (!NamePWValidator.validate(edtName.getText().toString())) {
+            throw new Exception(getString(R.string.msg_IllegalName));
+        }
+
+        if (!NamePWValidator.validate(edtPassword.getText().toString())) {
+            throw new Exception(getString(R.string.msg_IllegalPassword));
         }
 
         try {

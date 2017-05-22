@@ -149,6 +149,9 @@
     <string name="msg_CouldNotRefreshData">Daten konnten nicht aktualisiert werden</string>
     <string name="msg_CannotConnectToWebservice">Verbindung zum Server fehlgeschlagen</string>
     <string name="msg_InconsistentGoalData">Tore geschossen stimmt nicht mit Tore bekommen des Gegnerteams überein</string>
+    <string name="msg_IllegalName">Name darf nur aus Buchstaben und Zahlen bestehen</string>
+    <string name="msg_IllegalPassword">Passwort darf nur aus Buchstaben und Zahlen bestehen</string>
+    <string name="msg_IllegalRemark">Anmerkung darf nur aus Buchstaben und Zahlen bestehen</string>
 
     <!--Nav Drawer-->
     <string name="navigation_drawer_open">Öffne Menü</string>

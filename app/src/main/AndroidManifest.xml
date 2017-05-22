@@ -29,10 +29,12 @@
             android:label="@string/title_activity_edit_player_own" />-->
         <activity
             android:name=".EditPlayerActivity"
-            android:label="@string/title_activity_edit_player_admin" />
+            android:label="@string/title_activity_edit_player_admin"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".AddPlayerActivity"
-            android:label="@string/title_activity_add_player" />
+            android:label="@string/title_activity_add_player"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".TeamDivisionActivity"
             android:label="@string/title_activity_team_management"
@@ -49,7 +51,8 @@
             android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".ShowPlayerStatsActivity"
-            android:label="@string/title_activity_player_stats"/>
+            android:label="@string/title_activity_player_stats"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ShowGameActivity"
             android:label="@string/title_activity_display_game"
@@ -61,20 +64,23 @@
             android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings">
+            android:label="@string/title_activity_settings"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="group2.schoolproject.a02soccer.MainActivity" />
         </activity>
         <activity
             android:name=".DebugSettingsActivity"
-            android:label="@string/title_activity_settings">
+            android:label="@string/title_activity_settings"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="group2.schoolproject.a02soccer.LoginActivity" />
         </activity>
         <activity
             android:name=".ScoreboardActivity"
-            android:label="@string/title_activity_score_board" />
+            android:label="@string/title_activity_score_board"
+            android:screenOrientation="portrait"/>
     </application>
 </manifest>

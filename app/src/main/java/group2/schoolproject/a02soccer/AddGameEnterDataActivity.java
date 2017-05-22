@@ -17,6 +17,7 @@ import pkgData.Participation;
 import pkgData.Team;
 import pkgDatabase.Database;
 import pkgListeners.OnScoreChangedListener;
+import pkgMisc.NamePWValidator;
 import pkgTab.SectionsPageAdapter;
 import pkgTab.TabAddGameEnterData;
 
@@ -152,6 +153,10 @@ public class AddGameEnterDataActivity extends BaseActivity implements OnScoreCha
         }
         else {
 
+            if (!NamePWValidator.validate(edtRemark.getText().toString())) {
+                throw new Exception(getString(R.string.msg_IllegalRemark));
+            }
+
             tmpGame.setRemark(edtRemark.getText().toString());
 
             Game remoteGame = db.insert(tmpGame);
@@ -179,6 +184,7 @@ public class AddGameEnterDataActivity extends BaseActivity implements OnScoreCha
             }
         } catch (Exception e) {
             showMessage(getString(R.string.Error) + ": " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }
