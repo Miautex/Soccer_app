@@ -8,10 +8,10 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.ArrayList;
+import java.util.Locale;
 
 import pkgData.Game;
 import pkgData.Participation;
@@ -19,6 +19,7 @@ import pkgData.Team;
 import pkgDatabase.Database;
 import pkgDatabase.pkgListener.OnLoadParticipationsListener;
 import pkgListeners.OnScoreChangedListener;
+import pkgMisc.LocalizedDateFormatter;
 import pkgTab.SectionsPageAdapter;
 import pkgTab.TabAddGameEnterData;
 
@@ -88,8 +89,7 @@ public class ShowGameActivity extends BaseActivity implements OnLoadParticipatio
     }
 
     private void displayDate(Date date) {
-        SimpleDateFormat sdf =  new SimpleDateFormat("EEE, dd.MM.yyyy");
-        txvDate.setText(sdf.format(date));
+        txvDate.setText(LocalizedDateFormatter.format(date, Locale.getDefault()));
     }
 
     private void getAllViews() {

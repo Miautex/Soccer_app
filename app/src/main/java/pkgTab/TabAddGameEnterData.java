@@ -356,16 +356,45 @@ public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeL
             }
             else if (v.getClass().equals(TextView.class)) {
                 TableRow row = (TableRow) v.getParent();
-
                 Participation clickedParticipation = hmParticipations
                         .get(Integer.parseInt(((TextView) row.getChildAt(8)).getText().toString()));
 
-                showMessage(clickedParticipation.getPlayer().toString());
+                if (row.getChildAt(0).equals(v)) {
+                    displayFullName(clickedParticipation.getPlayer());
+                }
+                else {
+                    displayPosition(clickedParticipation.getPosition());
+                }
             }
 
         } catch (Exception e) {
             showMessage(getString(R.string.Error) + ": " + e.getMessage());
         }
+    }
+
+    private void displayFullName(Player pl) {
+        showMessage(pl.toString());
+    }
+
+    private void displayPosition(PlayerPosition pos) {
+        String posString = null;
+
+        switch (pos) {
+            case ATTACK:
+                posString = getString(R.string.PosAtk);
+                break;
+            case DEFENSE:
+                posString = getString(R.string.PosDef);
+                break;
+            case MIDFIELD:
+                posString = getString(R.string.PosMid);
+                break;
+            case GOAL:
+                posString = getString(R.string.PosGoal);
+                break;
+        }
+
+        showMessage(posString);
     }
 
     private void showMessage(String msg) {
