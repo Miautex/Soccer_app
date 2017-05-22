@@ -22,11 +22,12 @@
                 android:text="@string/Name" />
 
             <TextView
+                android:id="@+id/textView2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textAlignment="center"
-                android:text="@string/position" />
+                android:text="@string/position"
+                android:textAlignment="center" />
 
             <TextView
                 android:layout_width="0dp"
@@ -38,7 +39,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="220dp">
+        android:layout_height="208dp">
 
         <TableLayout
             android:id="@+id/tableAllPlayers1"
@@ -83,7 +84,7 @@
     <ScrollView
         style="@android:style/Widget.Holo.ScrollView"
         android:layout_width="match_parent"
-        android:layout_height="220dp">
+        android:layout_height="209dp">
 
         <TableLayout
             android:id="@+id/tableTeam1"

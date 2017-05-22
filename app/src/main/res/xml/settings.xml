@@ -41,4 +41,11 @@
             android:summary="@string/preference_webservice_port_summary"
             android:title="@string/preference_webservice_port_title"/>
     </PreferenceCategory>
+    <PreferenceCategory android:title="Design Color">
+        <com.rarepebble.colorpicker.ColorPreference
+            android:key="colorPicker"
+            android:title="Change the look of the app"
+            android:defaultValue="@color/standardRed"
+            />
+    </PreferenceCategory>
 </PreferenceScreen>

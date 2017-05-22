@@ -67,8 +67,7 @@ public class AddGameSelectPlayersActivity extends BaseActivity implements View.O
             displayPlayersInTable(tsPlayers);
 
         } catch (Exception ex) {
-            ExceptionNotification.notify(this, ex);
-            ex.printStackTrace();
+            showMessage(getString(R.string.Error) + ": " + ex.getMessage());
         }
     }
 

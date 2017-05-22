@@ -40,7 +40,7 @@ public class ScoreboardActivity extends BaseActivity implements AdapterView.OnIt
         try {
             db = Database.getInstance();
         } catch (Exception e) {
-            System.out.println("warum zum teufel braucht man da a catch");
+            showMessage(getString(R.string.Error) + ": " +e.getMessage());
         }
 
     }

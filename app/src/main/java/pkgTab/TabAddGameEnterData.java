@@ -19,14 +19,13 @@ import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.TreeSet;
 
-import group2.schoolproject.a02soccer.ExceptionNotification;
+import group2.schoolproject.a02soccer.BaseActivity;
 import group2.schoolproject.a02soccer.R;
 import pkgData.Participation;
 import pkgData.Player;
@@ -74,7 +73,6 @@ public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeL
         }
         catch (Exception ex) {
             isEditable = true;
-            ex.printStackTrace();
         }
 
         setParticipations(participations);
@@ -117,7 +115,7 @@ public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeL
             displayParticipationsInTable(new TreeSet<Participation>(participations));
         }
         catch (Exception e) {
-            ExceptionNotification.notify(this.getContext(), e);
+            showMessage(getString(R.string.Error) + ": " + e.getMessage());
         }
     }
 
@@ -183,7 +181,8 @@ public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeL
 
             row.addView(txvName);
             row.addView(txvPos);
-            txvName.setText(p.getPlayer().toString());
+
+            txvName.setText(p.getPlayer().getName());
             txvName.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 2));
             txvName.setPadding(0, 0, PxDpConverter.toDp(5, this.getContext()),0);
 
@@ -200,7 +199,6 @@ public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeL
 
                 if (isEditable) {
                     et = new EditText(this.getContext());
-                    et.setGravity(Gravity.RIGHT);
                 }
                 else {
                     et = new TextView(this.getContext());
@@ -235,6 +233,15 @@ public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeL
             txvName.setBackgroundResource(R.drawable.tablelayout);
             txvName.setPadding(PxDpConverter.toDp(5,this.getContext()), 0, 0, 0);
 
+
+            txvName.setOnClickListener(this);
+            txvPos.setOnClickListener(this);
+
+            ((TextView) row.getChildAt(0)).setGravity(Gravity.CENTER_VERTICAL);
+            for (int i=1; i<row.getChildCount(); i++) {
+                ((TextView) row.getChildAt(i)).setGravity(Gravity.CENTER);
+            }
+
             table_PlayersData.addView(row, new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT,
                     TableLayout.LayoutParams.WRAP_CONTENT));
         }
@@ -259,8 +266,7 @@ public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeL
                 participations.add(p);
             }
             catch (Exception ex) {
-                ExceptionNotification.notify(this.getContext(), ex);
-                ex.printStackTrace();
+                showMessage(getString(R.string.Error) + ": " + ex.getMessage());
             }
         }
 
@@ -333,23 +339,36 @@ public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeL
     public void onClick(View v) {
         try {
             if (v.getId() == R.id.icGoalShot) {
-                Toast.makeText(view.getContext(), getString(R.string.GoalsShotDefault), Toast.LENGTH_SHORT).show();
-            } else if(v.getId() == R.id.icGoalGot){
-                Toast.makeText(view.getContext(), getString(R.string.GoalsGot), Toast.LENGTH_SHORT).show();
-            } else if(v.getId() == R.id.icGoalHead){
-                Toast.makeText(view.getContext(), getString(R.string.GoalsShotHead), Toast.LENGTH_SHORT).show();
-            } else if(v.getId() == R.id.icGoalSnow){
-                Toast.makeText(view.getContext(), getString(R.string.GoalsShotHeadSnow), Toast.LENGTH_SHORT).show();
-            } else if(v.getId() == R.id.icPenalty){
-                Toast.makeText(view.getContext(), getString(R.string.GoalsShotPenalty), Toast.LENGTH_SHORT).show();
-            } else if(v.getId() == R.id.icNutmeg){
-                Toast.makeText(view.getContext(), getString(R.string.Nutmeg), Toast.LENGTH_SHORT).show();
-            } else if(v.getId() == R.id.txtPosition){
-                Toast.makeText(view.getContext(), getString(R.string.Positions), Toast.LENGTH_SHORT).show();
+                showMessage(getString(R.string.GoalsShotDefault));
+            } else if (v.getId() == R.id.icGoalGot){
+                showMessage(getString(R.string.GoalsGot));
+            } else if (v.getId() == R.id.icGoalHead){
+                showMessage(getString(R.string.GoalsShotHead));
+            } else if (v.getId() == R.id.icGoalSnow){
+                showMessage(getString(R.string.GoalsShotHeadSnow));
+            } else if (v.getId() == R.id.icPenalty){
+                showMessage(getString(R.string.GoalsShotPenalty));
+            } else if (v.getId() == R.id.icNutmeg){
+                showMessage(getString(R.string.Nutmeg));
+            } else if (v.getId() == R.id.txtPosition){
+                showMessage(getString(R.string.Positions));
+            }
+            else if (v.getClass().equals(TextView.class)) {
+                TableRow row = (TableRow) v.getParent();
+
+                Participation clickedParticipation = hmParticipations
+                        .get(Integer.parseInt(((TextView) row.getChildAt(8)).getText().toString()));
+
+                showMessage(clickedParticipation.getPlayer().toString());
             }
 
         } catch (Exception e) {
-            Toast.makeText(view.getContext(), getString(R.string.Error) + ": " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            showMessage(getString(R.string.Error) + ": " + e.getMessage());
         }
+    }
+
+    private void showMessage(String msg) {
+        //Dirty, but works
+        ((BaseActivity) scoreChangedListener).showMessage(msg);
     }
 }

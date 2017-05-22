@@ -2,10 +2,10 @@
     <string name="app_name">Soccer</string>
     <!--Activitytitles-->
     <string name="title_activity_add_game_select_players">Select Players</string>
-    <string name="title_activity_team_management">Team Management</string>
+    <string name="title_activity_team_management">Team Division</string>
     <string name="title_activity_add_game_enter_data">Enter Data</string>
     <string name="title_activity_login">Login</string>
-    <string name="title_activity_edit_player_own">Edit own data</string>
+    <string name="title_activity_edit_player_own">Edit Userdata</string>
     <string name="title_activity_edit_player_admin">Edit player</string>
     <string name="title_activity_add_player">Add player</string>
     <string name="title_activity_player_stats">Player Stats</string>
@@ -136,7 +136,7 @@
     <string name="msg_CannotDeleteOwnPlayer">Cannot delete own Player</string>
     <string name="msg_EnterPassword">Please enter a new password</string>
     <string name="msg_ConnectionTimeout">Connection to server timed out</string>
-    <string name="msg_NetworkUnreachable">Cannot connect to Internet</string>
+    <string name="msg_NetworkUnreachable">Cannot connect to server</string>
     <string name="msg_IllegalUsername">Username must only contain letters and numbers</string>
     <string name="msg_UsernameTooLong">Username must not be longer than %d characters</string>
     <string name="msg_NameTooLong">Name must not be longer than %d characters</string>
