@@ -190,9 +190,7 @@ public class TeamDivisionTab extends Fragment implements View.OnClickListener, O
 
     public ArrayList<Participation> getPlayersInTeam() throws Exception {
         ArrayList<Participation> list = new ArrayList<>();
-        if(!hasGoalkeeper()){
-            throw new Exception(getString(R.string.msg_TeamHasNoGolaie) +" "+ team);
-        }
+        hasOnlyOneGoalkeeper();
         for (int i = 0; i < tableTeam1.getChildCount(); i++) {
             TableRow row = (TableRow) tableTeam1.getChildAt(i);
             TextView textv = (TextView) row.getChildAt(0);
@@ -203,18 +201,19 @@ public class TeamDivisionTab extends Fragment implements View.OnClickListener, O
         return list;
     }
 
-    private boolean hasGoalkeeper(){
-        boolean hasGolaie = false;
-        for (int i = 0; i < tableTeam1.getChildCount() && !hasGolaie; i++) {
+    public boolean hasOnlyOneGoalkeeper() throws Exception {
+        boolean hasGoalie = false;
+        for (int i = 0; i < tableTeam1.getChildCount(); i++) {
             TableRow row = (TableRow) tableTeam1.getChildAt(i);
             Spinner sp = (Spinner) row.getChildAt(2);
             if (getString(R.string.PosGoal).equals(sp.getSelectedItem().toString())){
-                hasGolaie = true;
+                if(hasGoalie){
+                    throw new Exception("lolol " + team);
+                }
+                hasGoalie = true;
             }
         }
-        //return hasGolaie;
-        //TODO fragen ob das nötig ist
-        return true;
+        return hasGoalie;
     }
 
     private void setLayouts() {
@@ -304,6 +303,25 @@ public class TeamDivisionTab extends Fragment implements View.OnClickListener, O
         }
         return retVal;
     }
+
+    public ArrayList<Integer> getGoalieOnlyId(){
+        ArrayList<Integer> freePlayer = new ArrayList<>();
+        int playercount = tableAllPlayers.getChildCount();
+        for (int i = 0; i < playercount; i++) {
+            TableRow row = (TableRow) tableAllPlayers.getChildAt(i);
+            freePlayer.add(Integer.parseInt(((TextView) row.getChildAt(0)).getText().toString()));
+        }
+        ArrayList<Integer> singleGoalies = new ArrayList<>();
+        for (int i : freePlayer){
+            Player p = players.get(i);
+            TreeSet <PlayerPosition> ts = p.getPositions();
+            if(ts.contains(PlayerPosition.GOAL) && ts.size()==1){
+                singleGoalies.add(p.getId());
+            }
+        }
+        return singleGoalies;
+    }
+
 
 
 }

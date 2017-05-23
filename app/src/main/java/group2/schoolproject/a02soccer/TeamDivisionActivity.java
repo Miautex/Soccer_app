@@ -14,6 +14,7 @@ import java.util.TreeMap;
 import pkgData.Game;
 import pkgData.Participation;
 import pkgData.Player;
+import pkgData.PlayerPosition;
 import pkgData.Team;
 import pkgListeners.OnTeamChangedListener;
 import pkgAdapter.SectionsPageAdapter;
@@ -134,40 +135,86 @@ public class TeamDivisionActivity extends BaseActivity implements OnTeamChangedL
             showMessage(e.getMessage());
         }
     }
-    
-    private void shuffleGoalie(){
-        // TODO: 18.05.2017  
-    }
 
-    private void shuffle() {
+
+    private boolean shuffleGoalie() {
+        boolean retVal = true;
         Random rand = new Random();
         TeamDivisionTab team1 = ((TeamDivisionTab) mSectionsPageAdapter.getItem(0));
         TeamDivisionTab team2 = ((TeamDivisionTab) mSectionsPageAdapter.getItem(1));
-        ArrayList<Integer> freePlayers = ((TeamDivisionTab) mSectionsPageAdapter.getItem(0)).getFreePlayerids();
-        int diff = team1.Teammembercount() - team2.Teammembercount(); // wenn negativ müssen leute in team1, sonst team2
-        if (freePlayers.size() != 0) {
-            if (diff < 0) {
-                for (int i = 0; i > diff;diff++) {
-                    team1.movePlayerRow(freePlayers.remove(rand.nextInt(freePlayers.size())));
-                }
-            } else if (diff > 0) {
-                for (int i = 0; i < diff;diff--) {
-                    team2.movePlayerRow(freePlayers.remove(rand.nextInt(freePlayers.size())));
-                }
-            }
-            if (diff == 0 && freePlayers.size() != 0) {
-                for (int i = 0; i < freePlayers.size(); ) {
-                    if (diff == 0) {
-                        team1.movePlayerRow(freePlayers.remove(rand.nextInt(freePlayers.size())));
-                        diff++;
-                    } else if (diff != 0) {
-                        team2.movePlayerRow(freePlayers.remove(rand.nextInt(freePlayers.size())));
-                        diff--;
+        ArrayList<Integer> freeOnlyGoalies = team1.getGoalieOnlyId();
+        if (freeOnlyGoalies.size() > 2) {
+            retVal = false;
+            showMessage("mehr als 2 Spieler die nur Tormann spielen können");
+        } else {
+            try {
+                int diff = team1.Teammembercount() - team2.Teammembercount(); // wenn negativ müssen leute in team1, sonst team2
+                if (freeOnlyGoalies.size() != 0) {
+                    if (diff < 0) {
+                        for (int i = 0; i > diff && !team1.hasOnlyOneGoalkeeper();) {
+                            team1.movePlayerRow(freeOnlyGoalies.remove(rand.nextInt(freeOnlyGoalies.size())));
+                            diff++;
+                        }
+                    } else if (diff > 0) {
+                        for (int i = 0; i < diff && !team2.hasOnlyOneGoalkeeper();) {
+                            team2.movePlayerRow(freeOnlyGoalies.remove(rand.nextInt(freeOnlyGoalies.size())));
+                            diff--;
+                        }
+                    }
+                    if (diff == 0 && freeOnlyGoalies.size() != 0) {
+                        for (int i = 0; i < freeOnlyGoalies.size(); i++) {
+                            if (!team1.hasOnlyOneGoalkeeper()) {
+                                team1.movePlayerRow(freeOnlyGoalies.remove(rand.nextInt(freeOnlyGoalies.size())));
+                                diff++;
+                            } else if (diff != 0 &&!team2.hasOnlyOneGoalkeeper()) {
+                                team2.movePlayerRow(freeOnlyGoalies.remove(rand.nextInt(freeOnlyGoalies.size())));
+                                diff--;
+                            } else {
+                                retVal = false;
+                                showMessage("Tormann kann nicht zugewiesen werden");
+                            }
+                        }
                     }
                 }
+            } catch (Exception e) {
+                showMessage(e.getMessage());
+                retVal = false;
             }
-        } else {
-            showMessage("Keine Spieler zum aufteilen");
+        }
+        return retVal;
+    }
+
+    private void shuffle() {
+        if (shuffleGoalie()) {
+            Random rand = new Random();
+            TeamDivisionTab team1 = ((TeamDivisionTab) mSectionsPageAdapter.getItem(0));
+            TeamDivisionTab team2 = ((TeamDivisionTab) mSectionsPageAdapter.getItem(1));
+            ArrayList<Integer> freePlayers = ((TeamDivisionTab) mSectionsPageAdapter.getItem(0)).getFreePlayerids();
+            int diff = team1.Teammembercount() - team2.Teammembercount(); // wenn negativ müssen leute in team1, sonst team2
+            if (freePlayers.size() != 0) {
+                if (diff < 0) {
+                    for (int i = 0; i > diff; diff++) {
+                        team1.movePlayerRow(freePlayers.remove(rand.nextInt(freePlayers.size())));
+                    }
+                } else if (diff > 0) {
+                    for (int i = 0; i < diff; diff--) {
+                        team2.movePlayerRow(freePlayers.remove(rand.nextInt(freePlayers.size())));
+                    }
+                }
+                if (diff == 0 && freePlayers.size() != 0) {
+                    for (int i = 0; i < freePlayers.size(); ) {
+                        if (diff == 0) {
+                            team1.movePlayerRow(freePlayers.remove(rand.nextInt(freePlayers.size())));
+                            diff++;
+                        } else if (diff != 0) {
+                            team2.movePlayerRow(freePlayers.remove(rand.nextInt(freePlayers.size())));
+                            diff--;
+                        }
+                    }
+                }
+            } else {
+                showMessage("Keine Spieler zum aufteilen");
+            }
         }
     }
 }
