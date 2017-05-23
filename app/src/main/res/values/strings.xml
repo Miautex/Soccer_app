@@ -65,7 +65,7 @@
     <string name="Username">Username</string>
     <string name="Name">Name</string>
     <string name="PosMid">Midfield</string>
-    <string name="PosGoal">Goalie</string>
+    <string name="PosGoal">Goalkeeper</string>
     <string name="PosDef">Defense</string>
     <string name="PosAtk">Attacker</string>
     <string name="Positions">Positions</string>
@@ -153,6 +153,7 @@
     <string name="msg_IllegalName">Name must only contain letters and numbers</string>
     <string name="msg_IllegalPassword">Password must only contain letters and numbers</string>
     <string name="msg_IllegalRemark">Remark must only contain letters and numbers</string>
+    <string name="msg_TooManyGoalies">Only one Goalkeeper is allowed per team</string>
 
     <!--Nav Drawer-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
