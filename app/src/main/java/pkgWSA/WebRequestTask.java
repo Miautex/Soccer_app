@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -57,7 +58,10 @@ public final class WebRequestTask extends AsyncTask <RequestParameter, Void, Acc
 
                         if (parameter.getRequestBody() != null && !parameter.getRequestBody().isEmpty()) {
                             con.setRequestProperty("Content-Length", Integer.toString(parameter.getRequestBody().length()));
-                            con.getOutputStream().write(parameter.getRequestBody().getBytes("UTF8"));
+                            //con.getOutputStream().write(parameter.getRequestBody().getBytes("UTF8"));
+                            OutputStreamWriter writer = new OutputStreamWriter(con.getOutputStream(), "UTF-8");
+                            writer.write(parameter.getRequestBody());
+                            writer.flush();
                         }
 
                         response.setCode(con.getResponseCode());

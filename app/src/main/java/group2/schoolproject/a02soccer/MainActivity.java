@@ -108,6 +108,7 @@ public class MainActivity extends BaseActivity
             openActivity(ScoreboardActivity.class);
         } else if (id == R.id.mniLogin) {
             db.logout();
+            finish();
             openActivity(LoginActivity.class);
         } else if (id == R.id.nav_settings) {
             openActivity(SettingsActivity.class);
