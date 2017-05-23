@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.TreeSet;
 
+import pkgAdapter.ScoreboardListAdapter;
 import pkgComparator.PlayerComparatorDefeats;
 import pkgComparator.PlayerComparatorGoalsGot;
 import pkgComparator.PlayerComparatorGoalsShot;

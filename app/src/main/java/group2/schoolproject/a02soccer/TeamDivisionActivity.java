@@ -2,13 +2,10 @@ package group2.schoolproject.a02soccer;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -19,7 +16,7 @@ import pkgData.Participation;
 import pkgData.Player;
 import pkgData.Team;
 import pkgListeners.OnTeamChangedListener;
-import pkgTab.SectionsPageAdapter;
+import pkgAdapter.SectionsPageAdapter;
 import pkgTab.TeamDivisionTab;
 
 public class TeamDivisionActivity extends BaseActivity implements OnTeamChangedListener, View.OnClickListener {

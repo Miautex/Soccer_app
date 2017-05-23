@@ -146,13 +146,13 @@ public class MainActivity extends BaseActivity
     }
 
     private void displayPlayers() throws Exception {
-        final ArrayAdapter<Player> lsvAdapter = new ArrayAdapter<Player>(this, android.R.layout.simple_list_item_1);
+        final ArrayAdapter<Player> lsvAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
         lsvAdapter.addAll(db.getAllPlayers());
         lsvPlayersGames.setAdapter(lsvAdapter);
     }
 
     private void displayGames() throws Exception {
-        final ArrayAdapter<Game> lsvAdapter = new ArrayAdapter<Game>(this, android.R.layout.simple_list_item_1);
+        final ArrayAdapter<Game> lsvAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
         lsvAdapter.addAll(db.getAllGames());
         lsvPlayersGames.setAdapter(lsvAdapter);
     }

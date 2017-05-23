@@ -1,4 +1,4 @@
-package group2.schoolproject.a02soccer;
+package pkgAdapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,9 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import group2.schoolproject.a02soccer.PlayerWithScore;
+import group2.schoolproject.a02soccer.R;
 
 /**
  * Created by Raphael on 20.05.2017.

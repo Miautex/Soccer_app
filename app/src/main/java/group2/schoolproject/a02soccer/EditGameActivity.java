@@ -21,7 +21,7 @@ import pkgDatabase.Database;
 import pkgDatabase.pkgListener.OnLoadParticipationsListener;
 import pkgListeners.OnScoreChangedListener;
 import pkgMisc.NamePWValidator;
-import pkgTab.SectionsPageAdapter;
+import pkgAdapter.SectionsPageAdapter;
 import pkgTab.TabAddGameEnterData;
 
 public class EditGameActivity extends BaseActivity implements OnScoreChangedListener, View.OnClickListener, OnLoadParticipationsListener {
