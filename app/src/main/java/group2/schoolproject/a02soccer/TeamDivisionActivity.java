@@ -11,13 +11,12 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.TreeMap;
 
+import pkgAdapter.SectionsPageAdapter;
 import pkgData.Game;
 import pkgData.Participation;
 import pkgData.Player;
-import pkgData.PlayerPosition;
 import pkgData.Team;
 import pkgListeners.OnTeamChangedListener;
-import pkgAdapter.SectionsPageAdapter;
 import pkgTab.TeamDivisionTab;
 
 public class TeamDivisionActivity extends BaseActivity implements OnTeamChangedListener, View.OnClickListener {
@@ -145,7 +144,7 @@ public class TeamDivisionActivity extends BaseActivity implements OnTeamChangedL
         ArrayList<Integer> freeOnlyGoalies = team1.getGoalieOnlyId();
         if (freeOnlyGoalies.size() > 2) {
             retVal = false;
-            showMessage("mehr als 2 Spieler die nur Tormann spielen können");
+            showMessage(getString(R.string.msg_TooManyGoalkeeperOnlyPlayers));
         } else {
             try {
                 int diff = team1.Teammembercount() - team2.Teammembercount(); // wenn negativ müssen leute in team1, sonst team2
@@ -171,7 +170,7 @@ public class TeamDivisionActivity extends BaseActivity implements OnTeamChangedL
                                 diff--;
                             } else {
                                 retVal = false;
-                                showMessage("Tormann kann nicht zugewiesen werden");
+                                showMessage(getString(R.string.msg_CannotAssignGoalie));
                             }
                         }
                     }
@@ -213,7 +212,7 @@ public class TeamDivisionActivity extends BaseActivity implements OnTeamChangedL
                     }
                 }
             } else {
-                showMessage("Keine Spieler zum aufteilen");
+                showMessage(getString(R.string.msg_NoPlayersToAssign));
             }
         }
     }

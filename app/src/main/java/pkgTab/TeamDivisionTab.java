@@ -208,7 +208,7 @@ public class TeamDivisionTab extends Fragment implements View.OnClickListener, O
             Spinner sp = (Spinner) row.getChildAt(2);
             if (getString(R.string.PosGoal).equals(sp.getSelectedItem().toString())){
                 if(hasGoalie){
-                    throw new Exception("lolol " + team);
+                    throw new Exception(getString(R.string.msg_TooManyGoalkeeperOnlyPlayers) + " in: " + team);
                 }
                 hasGoalie = true;
             }

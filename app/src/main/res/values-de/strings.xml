@@ -153,6 +153,9 @@
     <string name="msg_IllegalPassword">Passwort darf nur aus Buchstaben und Zahlen bestehen</string>
     <string name="msg_IllegalRemark">Anmerkung darf nur aus Buchstaben und Zahlen bestehen</string>
     <string name="msg_TooManyGoalies">Nur ein Torwart pro Team ist erlaubt</string>
+    <string name="msg_NoPlayersToAsign">Keine Spieler zum aufteilen</string>
+    <string name="msg_CannotAssignGoalie">Torwart kann nicht zugewiesen werden</string>
+    <string name="msg_TooManyGoalkeeperOnlyPlayers">Es gibt mehr als 2 Spieler, die nur Torwart spielen können</string>
 
     <!--Nav Drawer-->
     <string name="navigation_drawer_open">Öffne Menü</string>
