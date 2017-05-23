@@ -11,6 +11,5 @@ public class NamePWValidator {
 
         matcher = usernamePattern.matcher(str);
         return matcher.matches();
-
     }
 }

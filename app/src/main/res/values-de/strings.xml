@@ -55,7 +55,12 @@
     <string name="preference_webservice_port_title">Port</string>
     <string name="preference_webservice_port_summary">Webservice port</string>
     <string name="preference_general_usesnackbar">Nachrichtenart Überblendung</string>
-
+    <string name="preference_category_user_title">Benutzer</string>
+    <string name="preference_user_autologin">Automatische Anmeldung</string>
+    <string name="preference_user_password_summary">Passwort</string>
+    <string name="preference_user_password_title">Passwort</string>
+    <string name="preference_user_username_summary">Benutzername</string>
+    <string name="preference_user_username_title">Benutzername</string>
 
     <!--Words-->
     <string name="Password">Passwort</string>
@@ -101,20 +106,6 @@
         <item>Torjäger</item>
         <item>Tore bekommen</item>
         <item>Niederlagen</item>
-    </string-array>
-
-    <!--Settings Array-->
-    <string-array name="language_entries">
-        <item>Deutsch</item>
-        <item>English</item>
-        <item>Italiano</item>
-        <item>Español</item>
-    </string-array>
-    <string-array name="language_values">
-        <item>de</item>
-        <item>en</item>
-        <item>it</item>
-        <item>es</item>
     </string-array>
 
     <!--Error Messages-->
@@ -164,10 +155,4 @@
     <string name="PosDefAbbrev">V</string>
     <string name="PosAtkAbbrev">S</string>
     <string name="PositionAbbrev">P</string>
-    <string name="preference_category_user_title">Benutzer</string>
-    <string name="preference_user_autologin">Automatische Anmeldung</string>
-    <string name="preference_user_password_summary">Passwort</string>
-    <string name="preference_user_password_title">Passwort</string>
-    <string name="preference_user_username_summary">Benutzername</string>
-    <string name="preference_user_username_title">Benutzername</string>
 </resources>

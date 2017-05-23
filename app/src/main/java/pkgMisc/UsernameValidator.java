@@ -11,6 +11,5 @@ public class UsernameValidator {
 
         matcher = usernamePattern.matcher(username);
         return matcher.matches();
-
     }
 }
