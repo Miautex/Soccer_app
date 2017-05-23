@@ -185,7 +185,7 @@ public class TeamDivisionActivity extends BaseActivity implements OnTeamChangedL
     }
 
     private void shuffle() {
-        if (shuffleGoalie()) {
+        if (/*shuffleGoalie()*/ true) {
             Random rand = new Random();
             TeamDivisionTab team1 = ((TeamDivisionTab) mSectionsPageAdapter.getItem(0));
             TeamDivisionTab team2 = ((TeamDivisionTab) mSectionsPageAdapter.getItem(1));
