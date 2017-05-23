@@ -13,13 +13,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.Collection;
 
+import pkgAdapter.MainGameListAdapter;
+import pkgAdapter.MainPlayerListAdapter;
 import pkgData.Game;
 import pkgData.Player;
 import pkgDatabase.Database;
@@ -146,14 +147,12 @@ public class MainActivity extends BaseActivity
     }
 
     private void displayPlayers() throws Exception {
-        final ArrayAdapter<Player> lsvAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
-        lsvAdapter.addAll(db.getAllPlayers());
+        final MainPlayerListAdapter lsvAdapter = new MainPlayerListAdapter(this, db.getAllPlayers());
         lsvPlayersGames.setAdapter(lsvAdapter);
     }
 
     private void displayGames() throws Exception {
-        final ArrayAdapter<Game> lsvAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
-        lsvAdapter.addAll(db.getAllGames());
+        final MainGameListAdapter lsvAdapter = new MainGameListAdapter(this, db.getAllGames());
         lsvPlayersGames.setAdapter(lsvAdapter);
     }
 

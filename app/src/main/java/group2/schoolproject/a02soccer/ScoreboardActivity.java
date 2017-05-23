@@ -1,9 +1,5 @@
 package group2.schoolproject.a02soccer;
 
-/**
- * Created by Raphael on 21.05.2017.
- */
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
