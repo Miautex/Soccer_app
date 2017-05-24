@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -138,7 +139,7 @@ public class MainActivity extends BaseActivity
         return bitmap;
     }
 
-
+    private byte backPressedCount = 0;
 
     @Override
     public void onBackPressed() {
@@ -146,7 +147,19 @@ public class MainActivity extends BaseActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            backPressedCount++;
+            if (backPressedCount >= 2) {
+                super.onBackPressed();
+            }
+            else {
+                showMessage(getString(R.string.msg_DoubleBackPress));
+            }
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    backPressedCount = 0;
+                }
+            }, 2000);
         }
     }
 

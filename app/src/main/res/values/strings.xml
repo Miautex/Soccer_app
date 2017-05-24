@@ -173,4 +173,6 @@
     <string name="PosDefAbbrev">D</string>
     <string name="PosAtkAbbrev">A</string>
     <string name="PositionAbbrev">P</string>
+
+    <string name="msg_DoubleBackPress">Press again to exit</string>
 </resources>

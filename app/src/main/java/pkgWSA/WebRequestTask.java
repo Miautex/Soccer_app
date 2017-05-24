@@ -59,7 +59,6 @@ public final class WebRequestTask extends AsyncTask <RequestParameter, Void, Acc
                         con.setRequestProperty("Charset", "UTF-8");
 
                         if (parameter.getRequestBody() != null && !parameter.getRequestBody().isEmpty()) {
-
                             con.setRequestProperty("Content-Length", Integer.toString(parameter.getRequestBody().getBytes("UTF-8").length));
                             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(con.getOutputStream(), "UTF-8"));
                             writer.write(parameter.getRequestBody());

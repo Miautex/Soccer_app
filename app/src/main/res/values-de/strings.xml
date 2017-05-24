@@ -158,4 +158,6 @@
     <string name="PosDefAbbrev">V</string>
     <string name="PosAtkAbbrev">S</string>
     <string name="PositionAbbrev">P</string>
+
+    <string name="msg_DoubleBackPress">Erneut drücken um zu beenden</string>
 </resources>
