@@ -3,6 +3,7 @@ package pkgWSA;
 import android.os.AsyncTask;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -55,15 +56,16 @@ public final class WebRequestTask extends AsyncTask <RequestParameter, Void, Acc
                         con.setRequestMethod(parameter.getHttpMethod().toString());
                         con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
                         con.setRequestProperty("Accept", "application/json; charset=UTF-8");
+                        con.setRequestProperty("Charset", "UTF-8");
 
                         if (parameter.getRequestBody() != null && !parameter.getRequestBody().isEmpty()) {
-                            con.setRequestProperty("Content-Length", Integer.toString(parameter.getRequestBody().length()));
-                            //con.getOutputStream().write(parameter.getRequestBody().getBytes("UTF8"));
-                            OutputStreamWriter writer = new OutputStreamWriter(con.getOutputStream(), "UTF-8");
+
+                            con.setRequestProperty("Content-Length", Integer.toString(parameter.getRequestBody().getBytes("UTF-8").length));
+                            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(con.getOutputStream(), "UTF-8"));
                             writer.write(parameter.getRequestBody());
                             writer.flush();
+                            writer.close();
                         }
-
                         response.setCode(con.getResponseCode());
                         reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
                         responseContent = new StringBuilder();
