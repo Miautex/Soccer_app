@@ -14,31 +14,33 @@
         android:theme="@style/Theme.App.Base">
         <activity
             android:name=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".LoginActivity"
             android:label="Moskito&apos;s Soccer App">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!--<activity
+        <!--
+            <activity
             android:name=".EditPlayerOwnActivity"
-            android:label="@string/title_activity_edit_player_own" />-->
+            android:label="@string/title_activity_edit_player_own" />
+        -->
         <activity
             android:name=".EditPlayerActivity"
             android:label="@string/title_activity_edit_player_admin"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".AddPlayerActivity"
             android:label="@string/title_activity_add_player"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".TeamDivisionActivity"
             android:label="@string/title_activity_team_management"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <!-- android:theme="@style/AppTheme.NoActionBar"></activity> -->
         <activity
             android:name=".AddGameSelectPlayersActivity"
@@ -48,20 +50,20 @@
             android:name=".AddGameEnterDataActivity"
             android:label="@string/title_activity_add_game_enter_data"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ShowPlayerStatsActivity"
             android:label="@string/title_activity_player_stats"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ShowGameActivity"
             android:label="@string/title_activity_display_game"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".EditGameActivity"
             android:label="@string/title_activity_edit_game"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
@@ -81,6 +83,11 @@
         <activity
             android:name=".ScoreboardActivity"
             android:label="@string/title_activity_score_board"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TeamDivision2"
+            android:label="@string/title_activity_team_division2"
+            android:theme="@style/Theme.App.Base"></activity>
     </application>
+
 </manifest>

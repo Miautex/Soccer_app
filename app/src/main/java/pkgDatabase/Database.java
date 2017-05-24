@@ -151,7 +151,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
     }
 
     public ArrayList<Player> getAllPlayers() {
-        TreeSet<Player> sortingTs = new TreeSet<Player>(new PlayerComparatorName());
+        TreeSet<Player> sortingTs = new TreeSet<>(new PlayerComparatorName());
         sortingTs.addAll(allPlayers);
 
         return new ArrayList<>(sortingTs);
@@ -160,7 +160,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
     public Player getPlayerByUsername(String username) {
         Player player = null;
         Iterator<Player> iteratorPlayers = allPlayers.iterator();
-        Player tmpPl = null;
+        Player tmpPl;
 
         while (iteratorPlayers.hasNext() && player==null) {
             tmpPl = iteratorPlayers.next();
@@ -177,7 +177,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
     public Game getGameByID(int id) {
         Game game = null;
         Iterator<Game> iteratorGames = allGames.iterator();
-        Game tmpG = null;
+        Game tmpG;
 
         while (iteratorGames.hasNext() && game==null) {
             tmpG = iteratorGames.next();
@@ -208,7 +208,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
 
 
     public Player insert(Player p) throws Exception {
-        Player player = null;
+        Player player;
         AccessorResponse response = Accessor.runRequestSync(HttpMethod.POST, "player", null, GsonSerializor.serializePlayer(p));
 
         if (response.getResponseCode() == 500) {
@@ -246,7 +246,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
     }
 
     public Game insert(Game g) throws Exception {
-        Game game = null;
+        Game game;
         AccessorResponse response = Accessor.runRequestSync(HttpMethod.POST, "game", null, GsonSerializor.serializeGame(g));
 
         if (response.getResponseCode() == 500) {
@@ -266,7 +266,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
     }
 
     public boolean insert(Participation p) throws Exception {
-        Result r = null;
+        Result r;
 
         AccessorResponse response = Accessor.runRequestSync(HttpMethod.POST, "participation",
                 "idGame=" + p.getGame().getId() + "&idPlayer=" + p.getPlayer().getId(),
@@ -458,7 +458,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
 
     private String encryptPassword(String pwInput) {
         String hash = null;
-        MessageDigest m = null;
+        MessageDigest m;
         try {
             m = MessageDigest.getInstance("MD5");
             m.update(pwInput.getBytes(), 0, pwInput.length());
