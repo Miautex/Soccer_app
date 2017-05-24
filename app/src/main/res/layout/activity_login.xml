@@ -55,7 +55,8 @@
         android:layout_below="@+id/txvName"
         android:layout_toRightOf="@+id/txvName"
         android:ems="10"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:layout_alignBottom="@+id/txvPassword" />
 
     <LinearLayout
         android:id="@+id/layLinear"

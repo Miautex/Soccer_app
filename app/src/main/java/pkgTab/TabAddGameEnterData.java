@@ -5,7 +5,9 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.text.method.DigitsKeyListener;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -34,7 +36,8 @@ import pkgListeners.OnScoreChangedListener;
 import pkgMisc.PxDpConverter;
 
 
-public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeListener, View.OnKeyListener, View.OnClickListener {
+public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeListener, View.OnKeyListener,
+        View.OnClickListener, TextWatcher {
     private TableLayout table_PlayersData = null;
     private View view = null;
     private TextView txtPosition = null;
@@ -131,18 +134,21 @@ public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeL
 
         for (int i=0; i<editTexts.length; i++) {
             editTexts[i] = (TextView) row.getChildAt(i+2);
-            if (editTexts[i].getText().length() == 0) {
-                editTexts[i].setText("0");
-            }
         }
 
         Participation p = new Participation();
-        p.setNumGoalsShotDefault(Integer.parseInt(editTexts[0].getText().toString()));
-        p.setNumGoalsShotHead(Integer.parseInt(editTexts[1].getText().toString()));
-        p.setNumGoalsShotHeadSnow(Integer.parseInt(editTexts[2].getText().toString()));
-        p.setNumGoalsShotPenalty(Integer.parseInt(editTexts[3].getText().toString()));
-        p.setNumGoalsGot(Integer.parseInt(editTexts[4].getText().toString()));
-        p.setNumNutmeg(Integer.parseInt(editTexts[5].getText().toString()));
+        p.setNumGoalsShotDefault(Integer.parseInt(editTexts[0].getText().toString().isEmpty() ?
+                "0" : editTexts[0].getText().toString()));
+        p.setNumGoalsShotHead(Integer.parseInt(editTexts[1].getText().toString().isEmpty() ?
+                "0" : editTexts[1].getText().toString()));
+        p.setNumGoalsShotHeadSnow(Integer.parseInt(editTexts[2].getText().toString().isEmpty() ?
+                "0" : editTexts[2].getText().toString()));
+        p.setNumGoalsShotPenalty(Integer.parseInt(editTexts[3].getText().toString().isEmpty() ?
+                "0" : editTexts[3].getText().toString()));
+        p.setNumGoalsGot(Integer.parseInt(editTexts[4].getText().toString().isEmpty() ?
+                "0" : editTexts[4].getText().toString()));
+        p.setNumNutmeg(Integer.parseInt(editTexts[5].getText().toString().isEmpty() ?
+                "0" : editTexts[5].getText().toString()));
         p.setPlayer((new Player(Integer.parseInt(editTexts[6].getText().toString()))));
 
         return p;
@@ -199,6 +205,7 @@ public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeL
 
                 if (isEditable) {
                     et = new EditText(this.getContext());
+                    et.addTextChangedListener(this);
                 }
                 else {
                     et = new TextView(this.getContext());
@@ -299,10 +306,10 @@ public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeL
 
         if (!hasFocus) {
             //if invalid/no text has been entered, set it to 0 on focus lost
-            if (edt.getText().length() == 0) {
+            if (edt.getText().toString().isEmpty()) {
                 edt.setText("0");
             }
-            informOnScoreChangedListener(calcuteSumOfGoals());
+            forceScoreRecalculation();
         }
         else {
             //if text==0, clear field on selection to make entering easier
@@ -400,5 +407,20 @@ public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeL
     private void showMessage(String msg) {
         //Dirty, but works
         ((BaseActivity) scoreChangedListener).showMessage(msg);
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        forceScoreRecalculation();
     }
 }

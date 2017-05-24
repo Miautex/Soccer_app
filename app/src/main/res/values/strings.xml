@@ -5,7 +5,7 @@
     <string name="title_activity_team_management">Team Division</string>
     <string name="title_activity_add_game_enter_data">Enter Data</string>
     <string name="title_activity_login">Login</string>
-    <string name="title_activity_edit_player_own">Edit Userdata</string>
+    <string name="title_activity_edit_player_own">Edit Own Userdata</string>
     <string name="title_activity_edit_player_admin">Edit player</string>
     <string name="title_activity_add_player">Add player</string>
     <string name="title_activity_player_stats">Player Stats</string>
@@ -13,10 +13,10 @@
     <string name="title_activity_edit_game">Edit Game</string>
     <string name="title_activity_settings">Settings</string>
     <string name="title_activity_scoreboard">Scoreboard</string>
-    <string name="Scoreboard_titles_wins">Scoreboard: wins</string>
-    <string name="Scoreboard_titles_defeats">Scoreboard: defeats</string>
-    <string name="Scoreboard_titles_goalsgot">Scoreboard: goals got</string>
-    <string name="Scoreboard_titles_goalsshot">Scoreboard: goals shot</string>
+    <string name="Scoreboard_titles_wins">Scoreboard: Wins</string>
+    <string name="Scoreboard_titles_defeats">Scoreboard: Defeats</string>
+    <string name="Scoreboard_titles_goalsgot">Scoreboard: Goals Got</string>
+    <string name="Scoreboard_titles_goalsshot">Scoreboard: Goals Shot</string>
     <string name="nav_settings_title">Settings</string>
     <string name="title_activity_score_board">Scoreboard</string>
 
@@ -49,13 +49,13 @@
     <string name="preference_category_general_title">General</string>
     <string name="preference_language_title">Language</string>
     <string name="preference_language_default" translatable="false">en</string>
-    <string name="preference_language_summary">App language</string>
+    <string name="preference_language_summary">App Language</string>
     <string name="preference_category_webservice">Webservice</string>
     <string name="preference_webservice_ip_title">IP</string>
-    <string name="preference_webservice_ip_summary">Webservice ip address</string>
+    <string name="preference_webservice_ip_summary">Webservice IP Address</string>
     <string name="preference_webservice_ip_default" translatable="false">192.168.192.1</string>
     <string name="preference_webservice_port_title">Port</string>
-    <string name="preference_webservice_port_summary">Webservice port</string>
+    <string name="preference_webservice_port_summary">Webservice Port</string>
     <string name="preference_webservice_port_default" translatable="false">25120</string>
     <string name="preference_general_usesnackbar">Use Snackbar</string>
     <string name="preference_category_user_title">User</string>
@@ -106,8 +106,8 @@
     </string-array>
     <string-array name="spinnerScoreboard">
         <item>Wins</item>
-        <item>Goals shot</item>
-        <item>Goals got</item>
+        <item>Goals Shot</item>
+        <item>Goals Got</item>
         <item>Defeats</item>
     </string-array>
 
