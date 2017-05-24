@@ -26,6 +26,13 @@
             app:srcCompat="@drawable/logo_moskitos" />
     </LinearLayout>
 
+    <ImageButton
+        android:id="@+id/imgQRCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        app:srcCompat="@drawable/ic_qrcode" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

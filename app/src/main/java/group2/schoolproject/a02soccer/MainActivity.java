@@ -1,21 +1,31 @@
 package group2.schoolproject.a02soccer;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 
 import java.util.Collection;
 
@@ -33,11 +43,13 @@ import pkgException.CouldNotDeletePlayerException;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnPlayersUpdatedListener,
-        OnGamesUpdatedListener, AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener, SwipeRefreshLayout.OnRefreshListener, OnLoadAllPlayersListener, OnLoadAllGamesListener {
+        OnGamesUpdatedListener, AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener, SwipeRefreshLayout.OnRefreshListener, OnLoadAllPlayersListener, OnLoadAllGamesListener, View.OnClickListener {
     private ListView lsvPlayersGames = null;
     private Spinner spPlayersGames = null;
     private SwipeRefreshLayout swipeRefreshLayout = null;
+    private NavigationView navView = null;
 
+    private ImageButton imgQRCode = null;
     private boolean arePlayersRefreshed, areGamesRefreshed, hasRefreshFailed;
     private Database db = null;
 
@@ -78,6 +90,55 @@ public class MainActivity extends BaseActivity
             showMessage(getString(R.string.Error) + ": " + ex.getMessage());
         }
     }
+
+    @Override
+    public void onClick(View v) {
+        try {
+            if (v.getId() == R.id.imgQRCode) {
+                openQRCode();
+            }
+        } catch (Exception e) {
+            showMessage(getString(R.string.Error) + ": " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void openQRCode(){
+        Bitmap qr = null;
+        try{
+            qr = generateQRBitmap(String.valueOf(db.getCurrentlyLoggedInPlayer().getId()));
+        } catch(Exception we){
+            showMessage(getString(R.string.Error) + ": " + we.getMessage());
+        }
+        ImageView image = new ImageView(this);
+        image.setImageBitmap(qr);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.ShowQRCode);
+        builder.setView(image);
+
+        builder.create().show();
+    }
+
+    private static Bitmap generateQRBitmap(String content){
+        Bitmap bitmap = null;
+        int width=500,height=500;
+
+        QRCodeWriter writer = new QRCodeWriter();
+        try {
+            BitMatrix bitMatrix = writer.encode(content, BarcodeFormat.QR_CODE, width, height);//256, 256
+            bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    bitmap.setPixel(x, y, bitMatrix.get(x, y) ? Color.BLACK : Color.WHITE);//guest_pass_background_color
+                }
+            }
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
+        return bitmap;
+    }
+
+
 
     @Override
     public void onBackPressed() {
@@ -123,6 +184,9 @@ public class MainActivity extends BaseActivity
         lsvPlayersGames = (ListView) this.findViewById(R.id.lsvPlayersGames);
         spPlayersGames = (Spinner) this.findViewById(R.id.spinnerPlayerGame);
         swipeRefreshLayout = (SwipeRefreshLayout) this.findViewById(R.id.swiperefresh);
+        navView = (NavigationView) this.findViewById(R.id.nav_view);
+        View headerLayout = navView.getHeaderView(0);
+        imgQRCode = (ImageButton) headerLayout.findViewById(R.id.imgQRCode);
     }
 
     private void registrateEventHandlers(){
@@ -132,7 +196,7 @@ public class MainActivity extends BaseActivity
         swipeRefreshLayout.setOnRefreshListener(this);
         db.addOnPlayersUpdatedListener(this);
         db.addOnGamesUpdatedListener(this);
-
+        imgQRCode.setOnClickListener(this);
     }
 
     private void displayLoggedInUser() {
