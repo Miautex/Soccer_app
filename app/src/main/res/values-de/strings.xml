@@ -95,6 +95,8 @@
     <string name="Participation">Teilnehmer</string>
     <string name="action_settings">Einstellungen</string>
     <string name= "position">Position</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
 
     <!--Spinner Arrays-->
     <string-array name="spinnerPlayerGameValues">
@@ -152,6 +154,8 @@
     <string name="msg_CouldNotSetPassword">Passwort konnte nicht gesetzt werden</string>
     <string name="msg_CouldNotUpdateGame">Spiel konnte nicht aktualisiert werden</string>
     <string name="msg_CouldNotUpdateStats">Statistiken konnten nicht aktualisert werden</string>
+    <string name="msg_ConfirmGameDeletion">Spiel wirklich löschen ?</string>
+    <string name="msg_ConfirmPlayerDeletion">Spieler \'%s\' wirklich löschen ?</string>
 
     <!--Nav Drawer-->
     <string name="navigation_drawer_open">Öffne Menü</string>

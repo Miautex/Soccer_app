@@ -98,6 +98,8 @@
     <string name="Participation">Participation</string>
     <string name="action_settings">Settings</string>
     <string name="position">Position</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
     <!--Spinner Arrays-->
     <string-array name="spinnerPlayerGameValues">
@@ -167,6 +169,8 @@
     <string name="msg_CouldNotSetPassword">Could not set password</string>
     <string name="msg_CouldNotUpdateGame">Could not update game</string>
     <string name="msg_CouldNotUpdateStats">Could not update statistics</string>
+    <string name="msg_ConfirmGameDeletion">Do you really want to delete this game ?</string>
+    <string name="msg_ConfirmPlayerDeletion">Do you really want to delete player \'%s\' ?</string>
 
     <!--Nav Drawer-->
     <string name="navigation_drawer_open">Open navigation drawer</string>

@@ -39,12 +39,13 @@ import pkgDatabase.pkgListener.OnLoadAllPlayersListener;
 import pkgDatabase.pkgListener.OnPlayerRemovedListener;
 import pkgDatabase.pkgListener.OnPlayersChangedListener;
 import pkgException.CouldNotDeletePlayerException;
+import pkgListeners.OnDeleteDialogButtonPressedListener;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnPlayersChangedListener,
         OnGamesChangedListener, AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener,
         SwipeRefreshLayout.OnRefreshListener, OnLoadAllPlayersListener, OnLoadAllGamesListener, View.OnClickListener,
-        OnPlayerRemovedListener, OnGameRemovedListener {
+        OnPlayerRemovedListener, OnGameRemovedListener, OnDeleteDialogButtonPressedListener {
     private ListView lsvPlayersGames = null;
     private Spinner spPlayersGames = null;
     private SwipeRefreshLayout swipeRefreshLayout = null;
@@ -282,13 +283,9 @@ public class MainActivity extends BaseActivity
     }
 
     private void onCtxMniDeleteGame(Game selectedGame) throws Exception {
-        /*try {
-            db.remove(selectedGame, this);
-        }
-        catch (CouldNotDeleteGameException ex) {
-            throw new CouldNotDeleteGameException(getString(R.string.msg_CouldNotDeleteGame));
-        }*/
-        db.remove(selectedGame, this);
+        String title = getString(R.string.msg_ConfirmGameDeletion);
+        ConfirmDeleteDialog cdd = new ConfirmDeleteDialog(selectedGame, this, title);
+        cdd.show();
     }
 
     private void onCtxMniEditPlayer(Player selectedPlayer) {
@@ -306,32 +303,29 @@ public class MainActivity extends BaseActivity
                 throw new Exception(getString(R.string.msg_CannotDeleteOwnPlayer));
             }
             else {
-                /*AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setView(R.layout.activity_login);
-
-                builder.setTitle(R.string.title_dialogDeletePlayer);
-                builder.setMessage(String.format(getString(R.string.msg_dialogDeletePlayer), selectedPlayer.getName()));
-                builder.setCancelable(false);
-                builder.setPositiveButton(getString(R.string.btnPositive_dialogDeletePlayer),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                showMessage("YES");
-                            }
-                        });
-                builder.setNegativeButton(getString(R.string.btnNegative_dialogDeletePlayer),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-
-                                dialog.cancel();
-                            }
-                        });
-
-                builder.create().show();*/
-                db.remove(selectedPlayer, this);
+                String title = String.format(getString(R.string.msg_ConfirmPlayerDeletion), selectedPlayer.getName());
+                ConfirmDeleteDialog cdd = new ConfirmDeleteDialog(selectedPlayer, this, title);
+                cdd.show();
             }
         }
         catch (CouldNotDeletePlayerException ex) {
             throw new CouldNotDeletePlayerException(getString(R.string.msg_CouldNotDeletePlayer));
+        }
+    }
+
+    @Override
+    public void deleteDialogButtonPressed(Object selectedObject, boolean isPositive) {
+        try {
+            if (isPositive && selectedObject.getClass().equals(Player.class)) {
+                db.remove((Player) selectedObject, this);
+            }
+            else if (isPositive && selectedObject.getClass().equals(Game.class)) {
+                db.remove((Game) selectedObject, this);
+            }
+        }
+        catch (Exception ex) {
+            showMessage(ex.getMessage());
+            ex.printStackTrace();
         }
     }
 
