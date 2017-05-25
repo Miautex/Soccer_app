@@ -5,10 +5,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import pkgData.Player;
 import pkgData.PlayerPosition;
 import pkgDatabase.Database;
+import pkgDatabase.InsertPlayerHandler;
+import pkgDatabase.SetPasswordHandler;
+import pkgDatabase.pkgListener.OnPlayerInsertedListener;
+import pkgDatabase.pkgListener.OnSetPasswordListener;
 import pkgException.DuplicateUsernameException;
 import pkgException.NameTooLongException;
 import pkgException.NameTooShortException;
@@ -18,15 +23,17 @@ import pkgException.UsernameTooShortException;
 import pkgMisc.NamePWValidator;
 
 
-public class AddPlayerActivity extends BaseActivity implements View.OnClickListener {
-    Button btnAdd = null;
-    Button btnCancel = null;
-    EditText edtName = null;
-    EditText edtUsername = null;
-    EditText edtPassword = null;
-    CheckBox ckbIsAdmin = null;
+public class AddPlayerActivity extends BaseActivity
+        implements View.OnClickListener, OnPlayerInsertedListener, OnSetPasswordListener {
+    private Button btnAdd = null;
+    private Button btnCancel = null;
+    private EditText edtName = null;
+    private EditText edtUsername = null;
+    private EditText edtPassword = null;
+    private CheckBox ckbIsAdmin = null;
+    private ProgressBar pb = null;
 
-    Database db = null;
+    private Database db = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,6 +65,7 @@ public class AddPlayerActivity extends BaseActivity implements View.OnClickListe
         edtUsername = (EditText) findViewById(R.id.edtUsername);
         edtPassword = (EditText) findViewById(R.id.edtPassword);
         ckbIsAdmin = (CheckBox) findViewById(R.id.ckbIsAdmin);
+        pb = (ProgressBar) findViewById(R.id.progressBar);
     }
 
     private void registrateEventHandlers(){
@@ -91,15 +99,10 @@ public class AddPlayerActivity extends BaseActivity implements View.OnClickListe
                 newPlayer.addPosition(PlayerPosition.MIDFIELD);
                 newPlayer.addPosition(PlayerPosition.GOAL);
 
-                Player remote_newPlayer = db.insert(newPlayer);
-                db.setPassword(remote_newPlayer, edtPassword.getText().toString());
-                showMessage(String.format(getString(R.string.msg_PlayerAdded), remote_newPlayer.getName()));
+                toggleProgressBar(true);
+                db.insert(newPlayer, this);
             }
 
-        }
-        catch (DuplicateUsernameException ex) {
-            throw new DuplicateUsernameException(String.format(
-                    getString(R.string.msg_UsernameNotAvailable), newPlayer.getUsername()));
         }
         catch (IllegalArgumentException ex) {
             throw new IllegalArgumentException(getString(R.string.msg_IllegalUsername));
@@ -126,6 +129,15 @@ public class AddPlayerActivity extends BaseActivity implements View.OnClickListe
         }
     }
 
+    private void toggleProgressBar(boolean isEnabled) {
+        if (isEnabled) {
+            pb.setVisibility(View.VISIBLE);
+        }
+        else {
+            pb.setVisibility(View.GONE);
+        }
+    }
+
     @Override
     public void onClick(View v) {
         try {
@@ -138,6 +150,40 @@ public class AddPlayerActivity extends BaseActivity implements View.OnClickListe
         } catch (Exception e) {
             showMessage(getString(R.string.Error) + ": " + e.getMessage());
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void setPasswordFinished(SetPasswordHandler handler) {
+        toggleProgressBar(false);
+        if (handler.getException() == null) {
+            showMessage(String.format(getString(R.string.msg_PlayerAdded), handler.getPlayer().getName()));
+        }
+        else {
+            showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CouldNotSetPassword));
+        }
+    }
+
+    @Override
+    public void insertPlayerFinished(InsertPlayerHandler handler) {
+        try {
+            if (handler.getException() == null) {
+                db.setPassword(handler.getPlayer(), edtPassword.getText().toString(), this);
+            }
+            else {
+                toggleProgressBar(false);
+
+                if (handler.getException().getClass().equals(DuplicateUsernameException.class)) {
+                    showMessage(getString(R.string.Error) + ": " +
+                            String.format(getString(R.string.msg_UsernameNotAvailable), handler.getPlayer().getUsername()));
+                }
+                else {
+                    showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CouldNotInsertPlayer));
+                }
+            }
+        }
+        catch (Exception ex) {
+            showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CouldNotInsertPlayer));
         }
     }
 }

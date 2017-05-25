@@ -10,6 +10,6 @@ public class NamePWValidator {
     public static boolean validate(String str) {
 
         matcher = usernamePattern.matcher(str);
-        return true;//matcher.matches();
+        return true;    //matcher.matches();
     }
 }

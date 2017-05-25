@@ -13,18 +13,19 @@ import android.widget.ProgressBar;
 import java.io.FileNotFoundException;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
-import java.util.Collection;
 
-import pkgData.Game;
-import pkgData.Player;
 import pkgDatabase.Database;
+import pkgDatabase.LoadAllGamesHandler;
+import pkgDatabase.LoadAllPlayersHandler;
+import pkgDatabase.LoginHandler;
 import pkgDatabase.pkgListener.OnLoadAllGamesListener;
 import pkgDatabase.pkgListener.OnLoadAllPlayersListener;
 import pkgDatabase.pkgListener.OnLoginListener;
 import pkgException.InvalidLoginDataException;
 import pkgWSA.Accessor;
 
-public class LoginActivity extends BaseActivity implements OnClickListener, OnLoginListener, OnLoadAllPlayersListener, OnLoadAllGamesListener {
+public class LoginActivity extends BaseActivity
+        implements OnClickListener, OnLoginListener, OnLoadAllPlayersListener, OnLoadAllGamesListener {
 
     Button btnLogin = null;
     EditText edtPassword = null;
@@ -142,81 +143,6 @@ public class LoginActivity extends BaseActivity implements OnClickListener, OnLo
         });
     }
 
-    @Override
-    public void loginSuccessful(String username) {
-        try {
-            db.loadAllPlayers(this);
-            db.loadAllGames(this);
-        }
-        catch (Exception ex) {
-            loadPlayersFailed(ex);
-        }
-    }
-
-    @Override
-    public void loginFailed(Exception ex) {
-        String msg = null;
-
-        toggleLoginInputs(true);
-
-        try {
-            throw ex;
-        }
-        catch (SocketTimeoutException e) {
-            msg = getString(R.string.msg_ConnectionTimeout);
-        }
-        catch (ConnectException e) {
-            msg = getString(R.string.msg_NetworkUnreachable);
-        }
-        catch (InvalidLoginDataException e) {
-            msg = getString(R.string.msg_UsernameOrPasswordInvalid);
-        }
-        catch (FileNotFoundException e) {
-            msg = getString(R.string.msg_NetworkUnreachable);
-        }
-        catch (Exception e) {
-            msg = getString(R.string.msg_CannotConnectToWebservice);
-        }
-        finally {
-            showMessage(msg);
-        }
-    }
-
-    @Override
-    public void loadPlayersSuccessful(Collection<Player> players) {
-        if (areGamesLoaded) {
-            toggleLoginInputs(true);
-            openMainActivity();
-        }
-        else {
-            arePlayersLoaded = true;
-        }
-    }
-
-    @Override
-    public void loadPlayersFailed(Exception ex) {
-        toggleLoginInputs(true);
-        showMessage(ex.getMessage());
-        ex.printStackTrace();
-    }
-
-    @Override
-    public void loadGamesSuccessful(Collection<Game> games) {
-        if (arePlayersLoaded) {
-            toggleLoginInputs(true);
-            openMainActivity();
-        }
-        else {
-            areGamesLoaded = true;
-        }
-    }
-
-    @Override
-    public void loadGamesFailed(Exception ex) {
-        toggleLoginInputs(true);
-        showMessage(ex.getMessage());
-        ex.printStackTrace();
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -226,5 +152,78 @@ public class LoginActivity extends BaseActivity implements OnClickListener, OnLo
     private void setDefaultCredentials() {
         edtUsername.setText(db.getStoredUsername());
         edtPassword.setText(db.getStoredPassword());
+    }
+
+    @Override
+    public void loginFinished(LoginHandler handler) {
+        try {
+            if (handler.getException() == null) {
+                db.loadAllPlayers(this);
+                db.loadAllGames(this);
+            }
+            else {
+                String msg = null;
+                toggleLoginInputs(true);
+
+                try {
+                    throw handler.getException();
+                }
+                catch (SocketTimeoutException e) {
+                    msg = getString(R.string.msg_ConnectionTimeout);
+                }
+                catch (ConnectException e) {
+                    msg = getString(R.string.msg_NetworkUnreachable);
+                }
+                catch (InvalidLoginDataException e) {
+                    msg = getString(R.string.msg_UsernameOrPasswordInvalid);
+                }
+                catch (FileNotFoundException e) {
+                    msg = getString(R.string.msg_NetworkUnreachable);
+                }
+                catch (Exception e) {
+                    msg = getString(R.string.msg_CannotConnectToWebservice);
+                }
+                finally {
+                    showMessage(msg);
+                }
+            }
+        }
+        catch (Exception ex) {
+            showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CannotConnectToWebservice));
+        }
+    }
+
+    @Override
+    public void loadGamesFinished(LoadAllGamesHandler handler) {
+        if (handler.getException() == null) {
+            if (arePlayersLoaded) {
+                toggleLoginInputs(true);
+                openMainActivity();
+            }
+            else {
+                areGamesLoaded = true;
+            }
+        }
+        else {
+            toggleLoginInputs(true);
+            showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CannotConnectToWebservice));
+        }
+    }
+
+    @Override
+    public void loadPlayersFinished(LoadAllPlayersHandler handler) {
+        if (handler.getException() == null) {
+            if (areGamesLoaded) {
+                toggleLoginInputs(true);
+                openMainActivity();
+            }
+            else {
+                arePlayersLoaded = true;
+            }
+        }
+        else {
+            toggleLoginInputs(true);
+            showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CannotConnectToWebservice));
+        }
     }
 }

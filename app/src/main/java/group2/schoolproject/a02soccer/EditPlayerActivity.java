@@ -5,12 +5,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import java.util.ArrayList;
 
 import pkgData.PlayerPosition;
 import pkgDatabase.Database;
 import pkgData.Player;
+import pkgDatabase.SetPasswordHandler;
+import pkgDatabase.UpdatePlayerHandler;
+import pkgDatabase.pkgListener.OnPlayerUpdatedListener;
+import pkgDatabase.pkgListener.OnSetPasswordListener;
 import pkgException.DuplicateUsernameException;
 import pkgException.NameTooLongException;
 import pkgException.NameTooShortException;
@@ -20,7 +25,8 @@ import pkgException.UsernameTooShortException;
 import pkgMisc.NamePWValidator;
 
 
-public class EditPlayerActivity extends BaseActivity implements View.OnClickListener {
+public class EditPlayerActivity extends BaseActivity
+        implements View.OnClickListener, OnPlayerUpdatedListener, OnSetPasswordListener {
     Button btnSave = null,
             btnCancel = null;
     EditText edtName = null,
@@ -32,6 +38,7 @@ public class EditPlayerActivity extends BaseActivity implements View.OnClickList
             ckbPosGoal = null,
             ckbPosDef = null,
             ckbPosAtk = null;
+    private ProgressBar pb = null;
 
     Database db = null;
     Player playerToEdit = null;
@@ -80,6 +87,7 @@ public class EditPlayerActivity extends BaseActivity implements View.OnClickList
         ckbPosDef = (CheckBox) findViewById(R.id.ckbPosDef);
         ckbPosGoal = (CheckBox) findViewById(R.id.ckbPosGoal);
         ckbPosMid = (CheckBox) findViewById(R.id.ckbPosMid);
+        pb = (ProgressBar) findViewById(R.id.progressBar);
     }
 
     private void registrateEventHandlers(){
@@ -201,21 +209,12 @@ public class EditPlayerActivity extends BaseActivity implements View.OnClickList
                     playerToEdit.addPosition(pp);
                 }
 
-                isSuccess = db.update(playerToEdit);
-
-                if (isSuccess) {
-                    msg = getString(R.string.msg_UpdatedUserData);
-
-                    if (ckbUpdatePassword.isChecked()) {
-                        db.setPassword(playerToEdit, edtPassword.getText().toString());
-                    }
-                } else {
-                    msg = getString(R.string.msg_CouldNotUpdateUserData);
-                }
+                toggleProgressBar(true);
+                db.update(playerToEdit, this);
             }
         }
         catch (DuplicateUsernameException ex) {
-            msg = String.format(getString(R.string.msg_UsernameNotAvailable), playerToEdit.getUsername());
+            throw new DuplicateUsernameException(String.format(getString(R.string.msg_UsernameNotAvailable), playerToEdit.getUsername()));
         }
         catch (IllegalArgumentException ex) {
             throw new IllegalArgumentException(getString(R.string.msg_IllegalUsername));
@@ -240,7 +239,53 @@ public class EditPlayerActivity extends BaseActivity implements View.OnClickList
             throw new PasswordTooShortException(String.format(getString(R.string.msg_PasswordTooShort),
                     ex.getMinLenght()), ex.getMinLenght());
         }
+    }
 
-        showMessage(msg);
+    private void toggleProgressBar(boolean isEnabled) {
+        if (isEnabled) {
+            pb.setVisibility(View.VISIBLE);
+        }
+        else {
+            pb.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void setPasswordFinished(SetPasswordHandler handler) {
+        toggleProgressBar(false);
+        if (handler.getException() == null) {
+            showMessage(getString(R.string.msg_UpdatedUserData));
+        }
+        else {
+            showMessage(getString(R.string.Error) + ": " + handler.getException().getMessage());
+        }
+    }
+
+    @Override
+    public void updatePlayerFinished(UpdatePlayerHandler handler) {
+        try {
+            if (handler.getException() == null) {
+                if (ckbUpdatePassword.isChecked()) {
+                    db.setPassword(playerToEdit, edtPassword.getText().toString(), this);
+                } else {
+                    toggleProgressBar(false);
+                    showMessage(getString(R.string.msg_UpdatedUserData));
+                }
+            }
+            else {
+                toggleProgressBar(false);
+
+                if (handler.getException().getClass().equals(DuplicateUsernameException.class)) {
+                    showMessage(getString(R.string.Error) + ": " +
+                            String.format(getString(R.string.msg_UsernameNotAvailable), handler.getPlayer().getUsername()));
+                }
+                else {
+                    showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CouldNotUpdateUserData));
+                }
+            }
+        }
+        catch (Exception ex) {
+            showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CouldNotUpdateUserData));
+        }
     }
 }

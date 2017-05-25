@@ -1,5 +1,5 @@
 package pkgDatabase.pkgListener;
 
-public interface OnGamesUpdatedListener {
+public interface OnGamesChangedListener {
     void gamesChanged();
 }

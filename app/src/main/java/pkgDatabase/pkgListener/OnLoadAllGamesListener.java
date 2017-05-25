@@ -1,10 +1,7 @@
 package pkgDatabase.pkgListener;
 
-import java.util.Collection;
-
-import pkgData.Game;
+import pkgDatabase.LoadAllGamesHandler;
 
 public interface OnLoadAllGamesListener {
-    void loadGamesSuccessful(Collection<Game> games);
-    void loadGamesFailed(Exception ex);
+    void loadGamesFinished(LoadAllGamesHandler handler);
 }

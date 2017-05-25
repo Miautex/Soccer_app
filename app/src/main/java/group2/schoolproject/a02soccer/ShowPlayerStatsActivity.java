@@ -5,8 +5,11 @@ import android.widget.TextView;
 
 import pkgData.Player;
 import pkgData.PlayerStatistics;
+import pkgDatabase.Database;
+import pkgDatabase.LoadSinglePlayerHandler;
+import pkgDatabase.pkgListener.OnLoadSinglePlayerListener;
 
-public class ShowPlayerStatsActivity extends BaseActivity {
+public class ShowPlayerStatsActivity extends BaseActivity implements OnLoadSinglePlayerListener {
     private TextView txvName,
             txvGamesPlayed,
             txvGameWins,
@@ -42,6 +45,7 @@ public class ShowPlayerStatsActivity extends BaseActivity {
             }
 
             displayPlayerStats();
+            Database.getInstance().loadSinglePlayer(player.getUsername(), this);
         }
         catch (Exception ex) {
             showMessage(getString(R.string.Error) + ": " + ex.getMessage());
@@ -88,5 +92,16 @@ public class ShowPlayerStatsActivity extends BaseActivity {
         txvPosDefense.setText(Integer.toString(s.getNumPosDefense()));
         txvPosMidfield.setText(Integer.toString(s.getNumPosMidfield()));
         txvPosGoal.setText(Integer.toString(s.getNumPosGoal()));
+    }
+
+    @Override
+    public void loadSinglePlayerFinished(LoadSinglePlayerHandler handler) {
+        if (handler.getException() == null) {
+            player = handler.getPlayer();
+            displayPlayerStats();
+        }
+        else {
+            showMessage(getString(R.string.msg_CouldNotUpdateStats));
+        }
     }
 }

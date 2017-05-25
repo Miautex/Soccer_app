@@ -1,6 +1,7 @@
 package pkgDatabase;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import pkgData.Participation;
 import pkgDatabase.pkgListener.OnLoadParticipationsListener;
@@ -10,7 +11,8 @@ import pkgResult.ParticipationResult;
 import pkgWSA.AccessorResponse;
 import pkgWSA.WebRequestTaskListener;
 
-public class LoadParticipationsHandler implements WebRequestTaskListener {
+public class LoadParticipationsHandler extends WebserviceResponseHandler
+        implements WebRequestTaskListener {
     private ArrayList<OnLoadParticipationsListener> listeners;
     private ArrayList<Participation> participations = null;
     private int gameID;
@@ -35,24 +37,28 @@ public class LoadParticipationsHandler implements WebRequestTaskListener {
                 for (Participation p: ps.getContent()) {
                     participations.add(p);
                 }
-                success(participations);
             }
         }
         catch (Exception ex) {
-            failed(ex);
+            setException(ex);
+        }
+        finally {
+            finished();
         }
     }
 
-    private void success(ArrayList<Participation> participations) {
+    private void finished() {
         for (OnLoadParticipationsListener listener: listeners) {
-            listener.loadParticipationsSuccessful(participations, gameID);
+            listener.loadParticipationsFinished(this);
         }
     }
 
-    private void failed(Exception ex) {
-        for (OnLoadParticipationsListener listener: listeners) {
-            listener.loadParticipationsFailed(ex);
-        }
+    public Collection<Participation> getPatrticipations() {
+        return this.participations;
+    }
+
+    public int getGameID() {
+        return this.gameID;
     }
 }
 

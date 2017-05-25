@@ -1,6 +1,7 @@
 package pkgDatabase.pkgListener;
 
+import pkgDatabase.LoginHandler;
+
 public interface OnLoginListener {
-    void loginSuccessful(String username);
-    void loginFailed(Exception ex);
+    void loginFinished(LoginHandler handler);
 }

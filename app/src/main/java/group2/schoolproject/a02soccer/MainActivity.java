@@ -2,7 +2,6 @@ package group2.schoolproject.a02soccer;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -24,28 +23,28 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.WriterException;
-import com.google.zxing.common.BitMatrix;
-import com.google.zxing.qrcode.QRCodeWriter;
-
-import java.util.Collection;
-
 import pkgAdapter.MainGameListAdapter;
 import pkgAdapter.MainPlayerListAdapter;
 import pkgData.Game;
 import pkgData.Player;
 import pkgDatabase.Database;
-import pkgDatabase.pkgListener.OnGamesUpdatedListener;
+import pkgDatabase.LoadAllGamesHandler;
+import pkgDatabase.LoadAllPlayersHandler;
+import pkgDatabase.RemoveGameHandler;
+import pkgDatabase.RemovePlayerHandler;
+import pkgDatabase.pkgListener.OnGameRemovedListener;
+import pkgDatabase.pkgListener.OnGamesChangedListener;
 import pkgDatabase.pkgListener.OnLoadAllGamesListener;
 import pkgDatabase.pkgListener.OnLoadAllPlayersListener;
-import pkgDatabase.pkgListener.OnPlayersUpdatedListener;
-import pkgException.CouldNotDeleteGameException;
+import pkgDatabase.pkgListener.OnPlayerRemovedListener;
+import pkgDatabase.pkgListener.OnPlayersChangedListener;
 import pkgException.CouldNotDeletePlayerException;
 
 public class MainActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener, OnPlayersUpdatedListener,
-        OnGamesUpdatedListener, AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener, SwipeRefreshLayout.OnRefreshListener, OnLoadAllPlayersListener, OnLoadAllGamesListener, View.OnClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener, OnPlayersChangedListener,
+        OnGamesChangedListener, AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener,
+        SwipeRefreshLayout.OnRefreshListener, OnLoadAllPlayersListener, OnLoadAllGamesListener, View.OnClickListener,
+        OnPlayerRemovedListener, OnGameRemovedListener {
     private ListView lsvPlayersGames = null;
     private Spinner spPlayersGames = null;
     private SwipeRefreshLayout swipeRefreshLayout = null;
@@ -108,37 +107,25 @@ public class MainActivity extends BaseActivity
     private void openQRCode(){
         Bitmap qr = null;
         try{
-            qr = generateQRBitmap(String.valueOf(db.getCurrentlyLoggedInPlayer().getId()));
+            if (db.isQRCodeReady()) {
+                qr = db.getQRCode();
+                ImageView image = new ImageView(this);
+                image.setImageBitmap(qr);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.ShowQRCode);
+                builder.setView(image);
+
+                builder.create().show();
+            }
+            else {
+                showMessage("QR not ready yet");
+            }
+
         } catch(Exception we){
             showMessage(getString(R.string.Error) + ": " + we.getMessage());
         }
-        ImageView image = new ImageView(this);
-        image.setImageBitmap(qr);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.ShowQRCode);
-        builder.setView(image);
-
-        builder.create().show();
     }
 
-    private static Bitmap generateQRBitmap(String content){
-        Bitmap bitmap = null;
-        int width=500,height=500;
-
-        QRCodeWriter writer = new QRCodeWriter();
-        try {
-            BitMatrix bitMatrix = writer.encode(content, BarcodeFormat.QR_CODE, width, height);//256, 256
-            bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
-            for (int x = 0; x < width; x++) {
-                for (int y = 0; y < height; y++) {
-                    bitmap.setPixel(x, y, bitMatrix.get(x, y) ? Color.BLACK : Color.WHITE);//guest_pass_background_color
-                }
-            }
-        } catch (WriterException e) {
-            e.printStackTrace();
-        }
-        return bitmap;
-    }
 
     private byte backPressedCount = 0;
 
@@ -295,12 +282,13 @@ public class MainActivity extends BaseActivity
     }
 
     private void onCtxMniDeleteGame(Game selectedGame) throws Exception {
-        try {
-            db.remove(selectedGame);
+        /*try {
+            db.remove(selectedGame, this);
         }
         catch (CouldNotDeleteGameException ex) {
             throw new CouldNotDeleteGameException(getString(R.string.msg_CouldNotDeleteGame));
-        }
+        }*/
+        db.remove(selectedGame, this);
     }
 
     private void onCtxMniEditPlayer(Player selectedPlayer) {
@@ -318,7 +306,28 @@ public class MainActivity extends BaseActivity
                 throw new Exception(getString(R.string.msg_CannotDeleteOwnPlayer));
             }
             else {
-                db.remove(selectedPlayer);
+                /*AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setView(R.layout.activity_login);
+
+                builder.setTitle(R.string.title_dialogDeletePlayer);
+                builder.setMessage(String.format(getString(R.string.msg_dialogDeletePlayer), selectedPlayer.getName()));
+                builder.setCancelable(false);
+                builder.setPositiveButton(getString(R.string.btnPositive_dialogDeletePlayer),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                showMessage("YES");
+                            }
+                        });
+                builder.setNegativeButton(getString(R.string.btnNegative_dialogDeletePlayer),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+
+                                dialog.cancel();
+                            }
+                        });
+
+                builder.create().show();*/
+                db.remove(selectedPlayer, this);
             }
         }
         catch (CouldNotDeletePlayerException ex) {
@@ -411,36 +420,56 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
-    public void loadPlayersSuccessful(Collection<Player> players) {
-        arePlayersRefreshed = true;
-        if (areGamesRefreshed) {
+    public void loadGamesFinished(LoadAllGamesHandler handler) {
+        if (handler.getException() == null) {
+            areGamesRefreshed = true;
+            if (arePlayersRefreshed) {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        }
+        else {
             swipeRefreshLayout.setRefreshing(false);
+            if (!hasRefreshFailed) {
+                hasRefreshFailed = true;
+                showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CouldNotRefreshData));
+            }
         }
     }
 
     @Override
-    public void loadPlayersFailed(Exception ex) {
-        swipeRefreshLayout.setRefreshing(false);
-        if (!hasRefreshFailed) {
-            hasRefreshFailed = true;
-            showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CouldNotRefreshData));
+    public void loadPlayersFinished(LoadAllPlayersHandler handler) {
+        if (handler.getException() == null) {
+            arePlayersRefreshed = true;
+            if (areGamesRefreshed) {
+                swipeRefreshLayout.setRefreshing(false);
+            }
         }
-    }
-
-    @Override
-    public void loadGamesSuccessful(Collection<Game> games) {
-        areGamesRefreshed = true;
-        if (arePlayersRefreshed) {
+        else {
             swipeRefreshLayout.setRefreshing(false);
+            if (!hasRefreshFailed) {
+                hasRefreshFailed = true;
+                showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CouldNotRefreshData));
+            }
         }
     }
 
     @Override
-    public void loadGamesFailed(Exception ex) {
-        swipeRefreshLayout.setRefreshing(false);
-        if (!hasRefreshFailed) {
-            hasRefreshFailed = true;
-            showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CouldNotRefreshData));
+    public void removePlayerFinished(RemovePlayerHandler handler) {
+        if (handler.getException() == null) {
+            //Player is removed from list by database via listener
+        }
+        else {
+            showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CouldNotDeletePlayer));
+        }
+    }
+
+    @Override
+    public void removeGameFinished(RemoveGameHandler handler) {
+        if (handler.getException() == null) {
+            //Game is removed from list by database via listener
+        }
+        else {
+            showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CouldNotDeleteGame));
         }
     }
 }

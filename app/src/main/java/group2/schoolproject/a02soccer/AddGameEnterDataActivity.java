@@ -8,20 +8,24 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import pkgAdapter.SectionsPageAdapter;
 import pkgData.Game;
 import pkgData.Participation;
 import pkgData.Team;
 import pkgDatabase.Database;
+import pkgDatabase.InsertGameHandler;
+import pkgDatabase.pkgListener.OnGameInsertedListener;
 import pkgListeners.OnScoreChangedListener;
 import pkgMisc.NamePWValidator;
-import pkgAdapter.SectionsPageAdapter;
 import pkgTab.TabAddGameEnterData;
 
-public class AddGameEnterDataActivity extends BaseActivity implements OnScoreChangedListener, View.OnClickListener {
+public class AddGameEnterDataActivity extends BaseActivity implements OnScoreChangedListener, View.OnClickListener,
+        OnGameInsertedListener {
 
     private SectionsPageAdapter adapter = null;
     private ViewPager mViewPager = null;
@@ -31,6 +35,7 @@ public class AddGameEnterDataActivity extends BaseActivity implements OnScoreCha
     private EditText edtRemark = null;
     private Button btnBack = null,
                    btnSave = null;
+    private ProgressBar pb = null;
 
     private Game tmpGame = null;
     private Database db = null;
@@ -77,6 +82,7 @@ public class AddGameEnterDataActivity extends BaseActivity implements OnScoreCha
         edtRemark = (EditText) findViewById(R.id.edtRemark);
         btnBack = (Button) findViewById(R.id.btnBack);
         btnSave = (Button) findViewById(R.id.btnSave);
+        pb = (ProgressBar) findViewById(R.id.progressBar);
     }
 
     private void registrateEventHandlers() {
@@ -159,16 +165,18 @@ public class AddGameEnterDataActivity extends BaseActivity implements OnScoreCha
 
             tmpGame.setRemark(edtRemark.getText().toString());
 
-            Game remoteGame = db.insert(tmpGame);
-            tmpGame.setId(remoteGame.getId());      //set webservice-generated id for game
+            db.insert(tmpGame, this);
 
-            for (Participation p : tmpGame.getParticipations()) {
-                db.insert(p);
-            }
+            toggleProgressBar(true);
+        }
+    }
 
-            showMessage(getString(R.string.msg_SavedGame));
-
-            db.loadAllPlayers(null);
+    private void toggleProgressBar(boolean isEnabled) {
+        if (isEnabled) {
+            pb.setVisibility(View.VISIBLE);
+        }
+        else {
+            pb.setVisibility(View.GONE);
         }
     }
 
@@ -177,9 +185,6 @@ public class AddGameEnterDataActivity extends BaseActivity implements OnScoreCha
         try {
             if (v.getId() == R.id.btnSave) {
                 onBtnSaveClick();
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
             }
             else if (v.getId() == R.id.btnBack) {
                 this.finish();
@@ -187,6 +192,21 @@ public class AddGameEnterDataActivity extends BaseActivity implements OnScoreCha
         } catch (Exception e) {
             showMessage(getString(R.string.Error) + ": " + e.getMessage());
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void insertGameFinished(InsertGameHandler handler) {
+        toggleProgressBar(false);
+        if (handler.getException() == null) {
+            showMessage(getString(R.string.msg_SavedGame));
+
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
+        else {
+            showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CouldNotInsertGame));
         }
     }
 }

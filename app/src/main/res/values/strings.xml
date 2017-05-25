@@ -162,10 +162,21 @@
     <string name="msg_NoPlayersToAssign">No players to assign</string>
     <string name="msg_CannotAssignGoalie">Goalkeeper cannot be assigned</string>
     <string name="msg_TooManyGoalkeeperOnlyPlayers">There are more than 2 players who can only play as Goalkeeper</string>
+    <string name="msg_CouldNotInsertGame">Could not insert game</string>
+    <string name="msg_CouldNotInsertPlayer">Could not insert player</string>
+    <string name="msg_CouldNotSetPassword">Could not set password</string>
+    <string name="msg_CouldNotUpdateGame">Could not update game</string>
+    <string name="msg_CouldNotUpdateStats">Could not update statistics</string>
 
     <!--Nav Drawer-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!--Confirmation Dialog-->
+    <string name="title_dialogDeletePlayer">Delete player?</string>
+    <string name="msg_dialogDeletePlayer">Are you sure you want to delete player \'%s\'?</string>
+    <string name="btnPositive_dialogDeletePlayer">Yes</string>
+    <string name="btnNegative_dialogDeletePlayer">No</string>
 
     <!--???????-->
     <string name="PosMidAbbrev">M</string>

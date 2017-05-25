@@ -92,7 +92,22 @@
         android:textSize="17sp" />
 
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:indeterminate="true"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/containerButtons"
+        android:layout_marginTop="18dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:visibility="gone"/>
+
     <LinearLayout
+        android:id="@+id/containerButtons"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"

@@ -9,18 +9,18 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.Locale;
 
+import pkgAdapter.SectionsPageAdapter;
 import pkgData.Game;
 import pkgData.Participation;
 import pkgData.Team;
 import pkgDatabase.Database;
+import pkgDatabase.LoadParticipationsHandler;
 import pkgDatabase.pkgListener.OnLoadParticipationsListener;
 import pkgListeners.OnScoreChangedListener;
 import pkgMisc.LocalizedDateFormatter;
-import pkgAdapter.SectionsPageAdapter;
 import pkgTab.TabAddGameEnterData;
 
 public class ShowGameActivity extends BaseActivity implements OnLoadParticipationsListener, OnScoreChangedListener {
@@ -142,26 +142,24 @@ public class ShowGameActivity extends BaseActivity implements OnLoadParticipatio
     }
 
     @Override
-    public void loadParticipationsSuccessful(Collection<Participation> participations, int gameID) {
-        tmpGame.removeAllParticipations();
-        for (Participation part: participations) {
-            tmpGame.addParticipation(part);
-        }
-
-        tabs[0].setParticipations(getParticipationsOfTeam(Team.TEAM1));
-        tabs[1].setParticipations(getParticipationsOfTeam(Team.TEAM2));
-
-        toggleProgressBar(false);
-    }
-
-    @Override
-    public void loadParticipationsFailed(Exception ex) {
-        showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CannotConnectToWebservice));
-        toggleProgressBar(false);
-    }
-
-    @Override
     public void onScoreUpdated(int sumGoalsShot, Fragment fragment) {
         //Only to display message from Tabs
+    }
+
+    @Override
+    public void loadParticipationsFinished(LoadParticipationsHandler handler) {
+        toggleProgressBar(false);
+        if (handler.getException() == null) {
+            tmpGame.removeAllParticipations();
+            for (Participation part: handler.getPatrticipations()) {
+                tmpGame.addParticipation(part);
+            }
+
+            tabs[0].setParticipations(getParticipationsOfTeam(Team.TEAM1));
+            tabs[1].setParticipations(getParticipationsOfTeam(Team.TEAM2));
+        }
+        else {
+            showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CannotConnectToWebservice));
+        }
     }
 }

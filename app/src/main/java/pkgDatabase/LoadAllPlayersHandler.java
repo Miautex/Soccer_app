@@ -1,6 +1,7 @@
 package pkgDatabase;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import pkgData.Player;
 import pkgDatabase.pkgListener.OnLoadAllPlayersListener;
@@ -10,7 +11,8 @@ import pkgWSA.AccessorResponse;
 import pkgWSA.WebRequestTaskListener;
 
 
-public class LoadAllPlayersHandler implements WebRequestTaskListener {
+public class LoadAllPlayersHandler extends WebserviceResponseHandler
+        implements WebRequestTaskListener {
     private ArrayList<OnLoadAllPlayersListener> listeners;
     private ArrayList<Player> players = null;
 
@@ -33,23 +35,23 @@ public class LoadAllPlayersHandler implements WebRequestTaskListener {
                 for (Player p: ps.getContent()) {
                     players.add(p);
                 }
-                success(players);
             }
         }
         catch (Exception ex) {
-            failed(ex);
+            setException(ex);
+        }
+        finally {
+            finished();
         }
     }
 
-    private void success(ArrayList<Player> players) {
+    private void finished() {
         for (OnLoadAllPlayersListener listener: listeners) {
-            listener.loadPlayersSuccessful(players);
+            listener.loadPlayersFinished(this);
         }
     }
 
-    private void failed(Exception ex) {
-        for (OnLoadAllPlayersListener listener: listeners) {
-            listener.loadPlayersFailed(ex);
-        }
+    public Collection<Player> getPlayers() {
+        return this.players;
     }
 }

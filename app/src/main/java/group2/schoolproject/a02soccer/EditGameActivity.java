@@ -11,20 +11,24 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import java.util.ArrayList;
-import java.util.Collection;
 
+import java.util.ArrayList;
+
+import pkgAdapter.SectionsPageAdapter;
 import pkgData.Game;
 import pkgData.Participation;
 import pkgData.Team;
 import pkgDatabase.Database;
+import pkgDatabase.LoadParticipationsHandler;
+import pkgDatabase.UpdateGameHandler;
+import pkgDatabase.pkgListener.OnGameUpdatedListener;
 import pkgDatabase.pkgListener.OnLoadParticipationsListener;
 import pkgListeners.OnScoreChangedListener;
 import pkgMisc.NamePWValidator;
-import pkgAdapter.SectionsPageAdapter;
 import pkgTab.TabAddGameEnterData;
 
-public class EditGameActivity extends BaseActivity implements OnScoreChangedListener, View.OnClickListener, OnLoadParticipationsListener {
+public class EditGameActivity extends BaseActivity implements OnScoreChangedListener, View.OnClickListener,
+        OnLoadParticipationsListener, OnGameUpdatedListener {
 
     private SectionsPageAdapter adapter = null;
     private ViewPager mViewPager = null;
@@ -182,15 +186,8 @@ public class EditGameActivity extends BaseActivity implements OnScoreChangedList
 
             gameToUpdate.setRemark(edtRemark.getText().toString());
 
-            db.update(gameToUpdate);
-
-            for (Participation p : gameToUpdate.getParticipations()) {
-                db.update(p);
-            }
-
-            showMessage(getString(R.string.msg_SavedGame));
-
-            db.loadAllPlayers(null);
+            toggleProgressBar(true);
+            db.update(gameToUpdate, this);
         }
     }
 
@@ -199,9 +196,6 @@ public class EditGameActivity extends BaseActivity implements OnScoreChangedList
         try {
             if (v.getId() == R.id.btnSave) {
                 onBtnSaveClick();
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
             }
             else if (v.getId() == R.id.btnBack) {
                 this.finish();
@@ -212,21 +206,37 @@ public class EditGameActivity extends BaseActivity implements OnScoreChangedList
     }
 
     @Override
-    public void loadParticipationsSuccessful(Collection<Participation> participations, int gameID) {
-        gameToUpdate.removeAllParticipations();
-        for (Participation part: participations) {
-            gameToUpdate.addParticipation(part);
-        }
-
-        tabs[0].setParticipations(getParticipationsOfTeam(Team.TEAM1));
-        tabs[1].setParticipations(getParticipationsOfTeam(Team.TEAM2));
-
+    public void updateGameFinished(UpdateGameHandler handler) {
         toggleProgressBar(false);
+        if (handler.getException() == null) {
+            showMessage(getString(R.string.msg_SavedGame));
+
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
+        else {
+            toggleProgressBar(false);
+            showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CouldNotUpdateGame));
+        }
     }
 
     @Override
-    public void loadParticipationsFailed(Exception ex) {
-        showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CannotConnectToWebservice));
-        toggleProgressBar(false);
+    public void loadParticipationsFinished(LoadParticipationsHandler handler) {
+        if (handler.getException() == null) {
+            gameToUpdate.removeAllParticipations();
+            for (Participation part: handler.getPatrticipations()) {
+                gameToUpdate.addParticipation(part);
+            }
+
+            tabs[0].setParticipations(getParticipationsOfTeam(Team.TEAM1));
+            tabs[1].setParticipations(getParticipationsOfTeam(Team.TEAM2));
+
+            toggleProgressBar(false);
+        }
+        else {
+            showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CannotConnectToWebservice));
+            toggleProgressBar(false);
+        }
     }
 }

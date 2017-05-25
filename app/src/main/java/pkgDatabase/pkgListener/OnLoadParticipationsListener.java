@@ -1,10 +1,7 @@
 package pkgDatabase.pkgListener;
 
-import java.util.Collection;
-
-import pkgData.Participation;
+import pkgDatabase.LoadParticipationsHandler;
 
 public interface OnLoadParticipationsListener {
-    void loadParticipationsSuccessful(Collection<Participation> participations, int gameID);
-    void loadParticipationsFailed(Exception ex);
+    void loadParticipationsFinished(LoadParticipationsHandler handler);
 }
