@@ -5,7 +5,6 @@ import java.util.Collection;
 
 import pkgData.Participation;
 import pkgDatabase.pkgListener.OnLoadParticipationsListener;
-import pkgException.CouldNotLoadParticipationsException;
 import pkgMisc.GsonSerializor;
 import pkgResult.ParticipationResult;
 import pkgWSA.AccessorResponse;
@@ -26,17 +25,12 @@ public class LoadParticipationsHandler extends WebserviceResponseHandler
     @Override
     public void done(AccessorResponse response) {
         try {
-            if (response.getException() != null) {
-                throw new CouldNotLoadParticipationsException();
-            }
-            else if (response.getResponseCode() == 500) {
-                throw new CouldNotLoadParticipationsException();
-            }
-            else {
-                ParticipationResult ps = GsonSerializor.deserializeParticipationResult(response.getJson());
-                for (Participation p: ps.getContent()) {
-                    participations.add(p);
-                }
+            //throws Exception if error happened
+            handleResponse(response);
+
+            ParticipationResult ps = GsonSerializor.deserializeParticipationResult(response.getJson());
+            for (Participation p: ps.getContent()) {
+                participations.add(p);
             }
         }
         catch (Exception ex) {

@@ -27,24 +27,21 @@ public class InsertPlayerHandler extends WebserviceResponseHandler
     @Override
     public void done(AccessorResponse response) {
         try {
-            if (response.getException() != null) {
-                throw response.getException();
-            } else if (response.getResponseCode() == 500) {
-                throw new Exception(response.getJson());
-            } else {
-                SinglePlayerResult r = GsonSerializor.deserializeSinglePlayerResult(response.getJson());
+            //throws Exception if error happened
+            handleResponse(response);
 
-                if (r.isSuccess()) {
-                    remote_player = r.getContent();
-                    setPositions();
-                }
-                else if (!r.isSuccess() && r.getError() != null && r.getError().getErrorMessage().
-                        contains("MySQLIntegrityConstraintViolationException")) {
-                    throw new DuplicateUsernameException(local_player.getUsername());
-                }
-                else {
-                    throw new CouldNotSetPlayerPositionsException();
-                }
+            SinglePlayerResult r = GsonSerializor.deserializeSinglePlayerResult(response.getJson());
+
+            if (r.isSuccess()) {
+                remote_player = r.getContent();
+                setPositions();
+            }
+            else if (!r.isSuccess() && r.getError() != null && r.getError().getErrorMessage().
+                    contains("MySQLIntegrityConstraintViolationException")) {
+                throw new DuplicateUsernameException(local_player.getUsername());
+            }
+            else {
+                throw new CouldNotSetPlayerPositionsException();
             }
         } catch (Exception ex) {
             setException(ex);

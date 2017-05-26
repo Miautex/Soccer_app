@@ -127,20 +127,15 @@ public class LoginActivity extends BaseActivity
     }
 
     private void toggleLoginInputs(final boolean setEnabled) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                btnLogin.setEnabled(setEnabled);
-                edtUsername.setEnabled(setEnabled);
-                edtPassword.setEnabled(setEnabled);
-                if (setEnabled) {
-                    progressIndicator.setVisibility(View.GONE);
-                }
-                else {
-                    progressIndicator.setVisibility(View.VISIBLE);
-                }
-            }
-        });
+        btnLogin.setEnabled(setEnabled);
+        edtUsername.setEnabled(setEnabled);
+        edtPassword.setEnabled(setEnabled);
+        if (setEnabled) {
+            progressIndicator.setVisibility(View.GONE);
+        }
+        else {
+            progressIndicator.setVisibility(View.VISIBLE);
+        }
     }
 
 

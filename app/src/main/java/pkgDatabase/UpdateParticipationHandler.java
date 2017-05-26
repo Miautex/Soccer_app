@@ -20,17 +20,12 @@ public class UpdateParticipationHandler extends WebserviceResponseHandler
     @Override
     public void done(AccessorResponse response) {
         try {
-            if (response.getException() != null) {
-                throw response.getException();
-            }
-            else if (response.getResponseCode() == 500) {
-                throw new Exception(response.getJson());
-            }
-            else {
-                Result r = GsonSerializor.deserializeResult(response.getJson());
-                if (!r.isSuccess()) {
-                    throw new CouldNotUpdateParticipationException();
-                }
+            //throws Exception if error happened
+            handleResponse(response);
+
+            Result r = GsonSerializor.deserializeResult(response.getJson());
+            if (!r.isSuccess()) {
+                throw new CouldNotUpdateParticipationException();
             }
         } catch (Exception ex) {
             setException(ex);

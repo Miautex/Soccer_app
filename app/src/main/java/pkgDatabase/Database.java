@@ -17,6 +17,7 @@ import java.util.TreeSet;
 import group2.schoolproject.a02soccer.BuildConfig;
 import pkgComparator.PlayerComparatorName;
 import pkgData.Game;
+import pkgData.LoginCredentials;
 import pkgData.Participation;
 import pkgData.Player;
 import pkgData.PlayerPosition;
@@ -57,8 +58,10 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
     private ArrayList<OnPlayersChangedListener> playersChangedListener;
     private SharedPreferences preferences;
     private Bitmap qrCode;
+    private String loginKey;
 
     private Database() {
+        this.loginKey = null;
         this.ctx = null;
         this.currentlyLoggedInPlayer = null;
         this.preferences = null;
@@ -187,7 +190,8 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         listeners.add(this);
 
         //Launch loading
-        Accessor.runRequestAsync(HttpMethod.GET, "player", null, null, new LoadAllPlayersHandler(listeners));
+        Accessor.runRequestAsync(HttpMethod.GET, "player", "loginKey="+loginKey,
+                null, new LoadAllPlayersHandler(listeners));
     }
 
     /**
@@ -219,7 +223,8 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         listeners.add(this);
 
         //Launch loading
-        Accessor.runRequestAsync(HttpMethod.GET, "player/" + username, null, null, new LoadSinglePlayerHandler(listeners));
+        Accessor.runRequestAsync(HttpMethod.GET, "player/" + username, "loginKey="+loginKey,
+                null, new LoadSinglePlayerHandler(listeners));
     }
 
     /**
@@ -276,7 +281,8 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         listeners.add(this);
 
         //Launch insertion
-        Accessor.runRequestAsync(HttpMethod.POST, "player", null, GsonSerializor.serializePlayer(p), new InsertPlayerHandler(listeners, p));
+        Accessor.runRequestAsync(HttpMethod.POST, "player", "loginKey="+loginKey,
+                GsonSerializor.serializePlayer(p), new InsertPlayerHandler(listeners, p));
     }
 
     /**
@@ -304,7 +310,8 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         listeners.add(this);
 
         //Launch update
-        Accessor.runRequestAsync(HttpMethod.PUT, "player", null, GsonSerializor.serializePlayer(p), new UpdatePlayerHandler(listeners, p));
+        Accessor.runRequestAsync(HttpMethod.PUT, "player", "loginKey="+loginKey,
+                GsonSerializor.serializePlayer(p), new UpdatePlayerHandler(listeners, p));
     }
 
     /**
@@ -337,7 +344,8 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         listeners.add(this);
 
         //Launch removal
-        Accessor.runRequestAsync(HttpMethod.DELETE, "player/" + p.getId(), null, null, new RemovePlayerHandler(listeners, p));
+        Accessor.runRequestAsync(HttpMethod.DELETE, "player/" + p.getId(), "loginKey="+loginKey,
+                null, new RemovePlayerHandler(listeners, p));
     }
 
     /**
@@ -373,7 +381,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         ppr.setMIDFIELD(p.getPositions().contains(PlayerPosition.MIDFIELD));
 
         //Launch update
-        Accessor.runRequestAsync(HttpMethod.PUT, "player/positions/" + p.getId(), null,
+        Accessor.runRequestAsync(HttpMethod.PUT, "player/positions/" + p.getId(), "loginKey="+loginKey,
                 GsonSerializor.serializePlayerPositionRequest(ppr), new SetPlayerPositionsHandler(listeners));
     }
 
@@ -386,14 +394,17 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         //Encrypt the passed password
         String local_pwEnc = encryptPassword(local_pw_Unencrypted);
         //Add passed listener and Database to list of listeners
-        ArrayList<OnLoginListener> listeners = new ArrayList<>();
+        ArrayList<OnLoginListener> listenersToInform = new ArrayList<>(),
+                                    listenersToStore = new ArrayList<>();
         if (listener != null) {
-            listeners.add(listener);
+            listenersToStore.add(listener);
         }
-        listeners.add(this);
+        listenersToInform.add(this);
 
         //Launch login
-        Accessor.runRequestAsync(HttpMethod.GET, "player/security/" + username, null, null, new LoginHandler(username, local_pwEnc, listeners));
+        Accessor.runRequestAsync(HttpMethod.POST, "player/security/login", "loginKey="+loginKey,
+                GsonSerializor.serializeLoginCredentials(new LoginCredentials(username, local_pwEnc)),
+                new LoginHandler(username, listenersToInform, listenersToStore));
     }
 
     /**
@@ -404,6 +415,9 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         //If login was successful
         if (handler.getException() == null) {
             try {
+                //set loginKey (loginKey is used for all further access to webservice)
+                loginKey = handler.getLoginKey();
+
                 //Set currentlyLoggedInPlayer to save the username of the logged in player
                 // so the setting of currentlyLoggedInPlayer in loadPlayersFinished works
                 // (This method is called before loadAllPlayers is finished, so otherwise
@@ -413,6 +427,15 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
                 e.printStackTrace();
             }
         }
+
+        for (OnLoginListener listener: handler.getStoredListeners()) {
+            listener.loginFinished(handler);
+        }
+    }
+
+    public void logout() {
+        setCurrentlyLoggedInPlayer(null);
+        loginKey = null;
     }
 
     /**
@@ -442,10 +465,10 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         }
 
         //Launch password update
-        Accessor.runRequestAsync(HttpMethod.PUT, "player/security/" + p.getId(), null,
-                GsonSerializor.serializePassword(encryptPassword(pw)), new SetPasswordHandler(listeners, p));
+        Accessor.runRequestAsync(HttpMethod.PUT, "player/security/" + p.getId(), "loginKey="+loginKey,
+                GsonSerializor.serializeLoginCredentials(new LoginCredentials(null, encryptPassword(pw))),
+                new SetPasswordHandler(listeners, p));
     }
-
 
 
     /**********************************************************************************
@@ -464,7 +487,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         listeners.add(this);
 
         //Launch loading
-        Accessor.runRequestAsync(HttpMethod.GET, "game", null, null, new LoadAllGamesHandler(listeners));
+        Accessor.runRequestAsync(HttpMethod.GET, "game", "loginKey="+loginKey, null, new LoadAllGamesHandler(listeners));
     }
 
     /**
@@ -518,7 +541,8 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         listeners.add(this);
 
         //Launch insertion
-        Accessor.runRequestAsync(HttpMethod.POST, "game", null, GsonSerializor.serializeGame(g), new InsertGameHandler(listeners, g));
+        Accessor.runRequestAsync(HttpMethod.POST, "game", "loginKey="+loginKey,
+                GsonSerializor.serializeGame(g), new InsertGameHandler(listeners, g));
     }
 
     /**
@@ -546,7 +570,9 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         }
 
         //Launch insertion
-        Accessor.runRequestAsync(HttpMethod.POST, "participation", "idGame=" + p.getGame().getId() + "&idPlayer=" + p.getPlayer().getId(), GsonSerializor.serializeParticipation(p), new InsertParticipationHandler(listeners));
+        Accessor.runRequestAsync(HttpMethod.POST, "participation",
+                "idGame=" + p.getGame().getId() + "&idPlayer=" + p.getPlayer().getId() + "&loginKey=" + loginKey,
+                GsonSerializor.serializeParticipation(p), new InsertParticipationHandler(listeners));
     }
 
     /**
@@ -561,7 +587,8 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         listeners.add(this);
 
         //Launch update
-        Accessor.runRequestAsync(HttpMethod.PUT, "game", null, GsonSerializor.serializeGame(g), new UpdateGameHandler(listeners, g));
+        Accessor.runRequestAsync(HttpMethod.PUT, "game", "loginKey="+loginKey,
+                GsonSerializor.serializeGame(g), new UpdateGameHandler(listeners, g));
     }
 
     /**
@@ -590,7 +617,9 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         }
 
         //Launch update
-        Accessor.runRequestAsync(HttpMethod.PUT, "participation", "idGame=" + p.getGame().getId() + "&idPlayer=" + p.getPlayer().getId(), GsonSerializor.serializeParticipation(p), new UpdateParticipationHandler(listeners));
+        Accessor.runRequestAsync(HttpMethod.PUT, "participation",
+                "idGame=" + p.getGame().getId() + "&idPlayer=" + p.getPlayer().getId() + "&loginKey=" + loginKey,
+                GsonSerializor.serializeParticipation(p), new UpdateParticipationHandler(listeners));
     }
 
     /**
@@ -605,7 +634,8 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         listeners.add(this);
 
         //Launch removal
-        Accessor.runRequestAsync(HttpMethod.DELETE, "game/" + g.getId(), null, null, new RemoveGameHandler(listeners, g));
+        Accessor.runRequestAsync(HttpMethod.DELETE, "game/" + g.getId(), "loginKey="+loginKey,
+                null, new RemoveGameHandler(listeners, g));
     }
 
     /**
@@ -633,7 +663,8 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         listeners.add(this);
 
         //Launch loading
-        Accessor.runRequestAsync(HttpMethod.GET, "participation/byGame/" + g.getId(), null, null, new LoadParticipationsHandler(listeners, g.getId()));
+        Accessor.runRequestAsync(HttpMethod.GET, "participation/byGame/" + g.getId(), "loginKey="+loginKey,
+                null, new LoadParticipationsHandler(listeners, g.getId()));
     }
 
     /**
@@ -702,10 +733,6 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
 
     public boolean isInitialLogin() {
         return this.initialLogin;
-    }
-
-    public void logout() {
-        setCurrentlyLoggedInPlayer(null);
     }
 
     public boolean isToast() {

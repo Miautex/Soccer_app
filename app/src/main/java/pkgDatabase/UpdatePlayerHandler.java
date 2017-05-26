@@ -25,23 +25,20 @@ public class UpdatePlayerHandler extends WebserviceResponseHandler
     @Override
     public void done(AccessorResponse response) {
         try {
-            if (response.getException() != null) {
-                throw response.getException();
-            } else if (response.getResponseCode() == 500) {
-                throw new Exception(response.getJson());
-            } else {
-                Result r = GsonSerializor.deserializeResult(response.getJson());
+            //throws Exception if error happened
+            handleResponse(response);
 
-                if (r.isSuccess()) {
-                    setPositions();
-                }
-                else if (!r.isSuccess() && r.getError() != null && r.getError().getErrorMessage().
-                        contains("MySQLIntegrityConstraintViolationException")) {
-                    throw new DuplicateUsernameException(local_player.getUsername());
-                }
-                else {
-                    throw new CouldNotUpdatePlayerException();
-                }
+            Result r = GsonSerializor.deserializeResult(response.getJson());
+
+            if (r.isSuccess()) {
+                setPositions();
+            }
+            else if (!r.isSuccess() && r.getError() != null && r.getError().getErrorMessage().
+                    contains("MySQLIntegrityConstraintViolationException")) {
+                throw new DuplicateUsernameException(local_player.getUsername());
+            }
+            else {
+                throw new CouldNotUpdatePlayerException();
             }
         } catch (Exception ex) {
             setException(ex);

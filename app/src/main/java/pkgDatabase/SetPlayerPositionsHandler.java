@@ -20,16 +20,13 @@ public class SetPlayerPositionsHandler extends WebserviceResponseHandler
     @Override
     public void done(AccessorResponse response) {
         try {
-            if (response.getException() != null) {
-                throw response.getException();
-            } else if (response.getResponseCode() == 500) {
-                throw new Exception(response.getJson());
-            } else {
-                Result r = GsonSerializor.deserializeResult(response.getJson());
+            //throws Exception if error happened
+            handleResponse(response);
 
-                if (!r.isSuccess()) {
-                    throw new CouldNotSetPlayerPositionsException();
-                }
+            Result r = GsonSerializor.deserializeResult(response.getJson());
+
+            if (!r.isSuccess()) {
+                throw new CouldNotSetPlayerPositionsException();
             }
         } catch (Exception ex) {
             setException(ex);

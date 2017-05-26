@@ -21,14 +21,11 @@ public class LoadSinglePlayerHandler extends WebserviceResponseHandler
     @Override
     public void done(AccessorResponse response) {
         try {
-            if (response.getException() != null) {
-                throw response.getException();
-            } else if (response.getResponseCode() == 500) {
-                throw new Exception(response.getJson());
-            } else {
-                SinglePlayerResult sps = GsonSerializor.deserializeSinglePlayerResult(response.getJson());
-                player = sps.getContent();
-            }
+            //throws Exception if error happened
+            handleResponse(response);
+
+            SinglePlayerResult sps = GsonSerializor.deserializeSinglePlayerResult(response.getJson());
+            player = sps.getContent();
         } catch (Exception ex) {
             setException(ex);
         } finally {

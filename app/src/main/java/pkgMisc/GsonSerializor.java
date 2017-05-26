@@ -6,6 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import pkgData.Game;
+import pkgData.LoginCredentials;
 import pkgData.Participation;
 import pkgData.Player;
 import pkgData.PlayerPositionRequest;
@@ -19,6 +20,14 @@ import pkgResult.SinglePlayerResult;
 
 public class GsonSerializor {
     private static Gson gson = new Gson();
+
+    public static String serializeLoginCredentials(LoginCredentials credentials) {
+        String retVal = null;
+
+        retVal = gson.toJson(credentials);
+
+        return retVal;
+    }
 
     public static String serializePlayer(Player p) {
         String retVal = null;

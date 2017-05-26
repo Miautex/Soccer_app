@@ -1,44 +1,42 @@
 package pkgDatabase;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import pkgDatabase.pkgListener.OnLoginListener;
 import pkgException.InvalidLoginDataException;
-import pkgMisc.GsonSerializor;
 import pkgWSA.AccessorResponse;
 import pkgWSA.WebRequestTaskListener;
 
 public class LoginHandler extends WebserviceResponseHandler
         implements WebRequestTaskListener {
-    private ArrayList<OnLoginListener> listeners;
-    private String local_pwEnc,
+    private ArrayList<OnLoginListener> listenersToInform,       //Listeners are notified directly by this handler
+                                        listenersToStore;       //Listeners are stored for access by Database
+    private String loginKey = null,
             username;
 
-    public LoginHandler(String username, String local_pwEnc, ArrayList<OnLoginListener> listeners) {
-        this.listeners = listeners;
-        this.local_pwEnc = local_pwEnc;
+    public LoginHandler(String username, ArrayList<OnLoginListener> listenersToInform,
+                        ArrayList<OnLoginListener> listenersToStore) {
+        this.listenersToInform = listenersToInform;
+        this.listenersToStore = listenersToStore;
         this.username = username;
     }
 
     @Override
     public void done(AccessorResponse response) {
         try {
-            if (response.getException() != null) {
-                throw response.getException();
-            }
-            else if (response.getResponseCode() == 500) {
-                throw new Exception(response.getJson());
-            }
-            else if (response.getResponseCode() == 204) {       //if user doesn't exist
+            //throws Exception if error happened
+            handleResponse(response);
+
+            if (response.getResponseCode() == 204) {       //if user doesn't exist
                 throw new InvalidLoginDataException();
             }
             else {
                 if (!response.getJson().isEmpty()) {
-                    String remote_pwEnc = GsonSerializor.deserializePassword(response.getJson());
-
-                    if (!local_pwEnc.equals(remote_pwEnc)) {
-                        throw new InvalidLoginDataException();
-                    }
+                    loginKey = response.getJson();
+                }
+                else {
+                    throw new InvalidLoginDataException();
                 }
             }
         }
@@ -51,7 +49,7 @@ public class LoginHandler extends WebserviceResponseHandler
     }
 
     private void finished() {
-        for (OnLoginListener listener: listeners) {
+        for (OnLoginListener listener: listenersToInform) {
             listener.loginFinished(this);
         }
     }
@@ -60,4 +58,9 @@ public class LoginHandler extends WebserviceResponseHandler
         return this.username;
     }
 
+    public String getLoginKey() {
+        return this.loginKey;
+    }
+
+    public Collection<OnLoginListener> getStoredListeners() { return this.listenersToStore; }
 }

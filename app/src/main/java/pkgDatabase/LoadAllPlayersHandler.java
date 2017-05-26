@@ -24,17 +24,12 @@ public class LoadAllPlayersHandler extends WebserviceResponseHandler
     @Override
     public void done(AccessorResponse response) {
         try {
-            if (response.getException() != null) {
-                throw response.getException();
-            }
-            else if (response.getResponseCode() == 500) {
-                throw new Exception(response.getJson());
-            }
-            else {
-                PlayerResult ps = GsonSerializor.deserializePlayerResult(response.getJson());
-                for (Player p: ps.getContent()) {
-                    players.add(p);
-                }
+            //throws Exception if error happened
+            handleResponse(response);
+
+            PlayerResult ps = GsonSerializor.deserializePlayerResult(response.getJson());
+            for (Player p: ps.getContent()) {
+                players.add(p);
             }
         }
         catch (Exception ex) {

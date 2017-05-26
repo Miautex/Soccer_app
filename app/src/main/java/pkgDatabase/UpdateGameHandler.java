@@ -26,20 +26,15 @@ public class UpdateGameHandler extends WebserviceResponseHandler
     @Override
     public void done(AccessorResponse response) {
         try {
-            if (response.getException() != null) {
-                throw response.getException();
-            }
-            else if (response.getResponseCode() == 500) {
-                throw new Exception(response.getJson());
+            //throws Exception if error happened
+            handleResponse(response);
+
+            Result r = GsonSerializor.deserializeResult(response.getJson());
+            if (r.isSuccess()) {
+                updateParticipations();
             }
             else {
-                Result r = GsonSerializor.deserializeResult(response.getJson());
-                if (r.isSuccess()) {
-                    updateParticipations();
-                }
-                else {
-                    throw new CouldNotUpdateGameException();
-                }
+                throw new CouldNotUpdateGameException();
             }
         } catch (Exception ex) {
             setException(ex);
@@ -63,7 +58,7 @@ public class UpdateGameHandler extends WebserviceResponseHandler
 
     @Override
     public void updateParticipationFinished(UpdateParticipationHandler handler) {
-        if (handler.getException() != null) {
+        if (handler.getException() == null) {
             partsToUpdate--;
             if (partsToUpdate == 0) {
                 finished();

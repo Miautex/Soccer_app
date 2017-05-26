@@ -28,22 +28,17 @@ public class InsertGameHandler extends WebserviceResponseHandler
     @Override
     public void done(AccessorResponse response) {
         try {
-            if (response.getException() != null) {
-                throw response.getException();
-            }
-            else if (response.getResponseCode() == 500) {
-                throw new Exception(response.getJson());
+            //throws Exception if error happened
+            handleResponse(response);
+
+            SingleGameResult gs = GsonSerializor.deserializeSingleGameResult(response.getJson());
+
+            if (gs.isSuccess()) {
+                remote_game = gs.getContent();
+                insertParticipations();
             }
             else {
-                SingleGameResult gs = GsonSerializor.deserializeSingleGameResult(response.getJson());
-
-                if (gs.isSuccess()) {
-                    remote_game = gs.getContent();
-                    insertParticipations();
-                }
-                else {
-                    throw new CouldNotInsertGameException();
-                }
+                throw new CouldNotInsertGameException();
             }
         }
         catch (Exception ex) {
@@ -72,7 +67,7 @@ public class InsertGameHandler extends WebserviceResponseHandler
 
     @Override
     public void insertParticipationFinished(InsertParticipationHandler handler) {
-        if (handler.getException() != null) {
+        if (handler.getException() == null) {
             partsToInsert--;
             if (partsToInsert == 0) {
                 finished();
