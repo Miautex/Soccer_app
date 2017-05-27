@@ -217,12 +217,14 @@ public class MainActivity extends BaseActivity
     }
 
     private void displayPlayers() throws Exception {
-        final MainPlayerListAdapter lsvAdapter = new MainPlayerListAdapter(this, db.getAllPlayers());
+        final MainPlayerListAdapter lsvAdapter = new MainPlayerListAdapter(this, db.getAllPlayers(), this,
+                db.getCurrentlyLoggedInPlayer().isAdmin());
         lsvPlayersGames.setAdapter(lsvAdapter);
     }
 
     private void displayGames() throws Exception {
-        final MainGameListAdapter lsvAdapter = new MainGameListAdapter(this, db.getAllGames());
+        final MainGameListAdapter lsvAdapter = new MainGameListAdapter(this, db.getAllGames(), this,
+                db.getCurrentlyLoggedInPlayer().isAdmin());
         lsvPlayersGames.setAdapter(lsvAdapter);
     }
 
@@ -246,10 +248,10 @@ public class MainActivity extends BaseActivity
 
                     switch (item.getItemId()) {
                         case R.id.edit:
-                            onCtxMniEditPlayer(selectedPlayer);
+                            onEditPlayer(selectedPlayer);
                             break;
                         case R.id.delete:
-                            onCtxMniDeletePlayer(selectedPlayer);
+                            onDeletePlayer(selectedPlayer);
                             break;
                     }
                 }
@@ -258,10 +260,10 @@ public class MainActivity extends BaseActivity
 
                     switch (item.getItemId()) {
                         case R.id.edit:
-                            onCtxMniEditGame(selectedGame);
+                            onEditGame(selectedGame);
                             break;
                         case R.id.delete:
-                            onCtxMniDeleteGame(selectedGame);
+                            onDeleteGame(selectedGame);
                             break;
                     }
                 }
@@ -275,27 +277,27 @@ public class MainActivity extends BaseActivity
         return false;
     }
 
-    private void onCtxMniEditGame(Game selectedGame) throws Exception {
+    public void onEditGame(Game selectedGame) throws Exception {
         Intent myIntent;
         myIntent = new Intent(this, EditGameActivity.class);
         myIntent.putExtra("game", selectedGame);
         this.startActivity(myIntent);
     }
 
-    private void onCtxMniDeleteGame(Game selectedGame) throws Exception {
+    public void onDeleteGame(Game selectedGame) throws Exception {
         String title = getString(R.string.msg_ConfirmGameDeletion);
         ConfirmDeleteDialog cdd = new ConfirmDeleteDialog(selectedGame, this, title);
         cdd.show();
     }
 
-    private void onCtxMniEditPlayer(Player selectedPlayer) {
+    public void onEditPlayer(Player selectedPlayer) {
         Intent myIntent;
         myIntent = new Intent(this, EditPlayerActivity.class);
         myIntent.putExtra("player", selectedPlayer);
         this.startActivity(myIntent);
     }
 
-    private void onCtxMniDeletePlayer(Player selectedPlayer) throws Exception {
+    public void onDeletePlayer(Player selectedPlayer) throws Exception {
 
         try {
             if (db.getCurrentlyLoggedInPlayer().equals(selectedPlayer)) {

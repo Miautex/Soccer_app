@@ -152,7 +152,9 @@ public final class Player implements Comparable, Serializable, Cloneable {
         if (obj != null) {
             if (obj instanceof Player) {
                 tmpP = (Player) obj;
-                eq = this.getId() == tmpP.getId();
+                if (this.getId() != null) {
+                    eq = this.getId().equals(tmpP.getId());
+                }
             }
         }
         return eq;

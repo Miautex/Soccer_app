@@ -1,14 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants">
 
     <TextView
-        android:id="@+id/text"
+        android:id="@+id/txvName"
         android:textColor="@color/black"
-        android:textSize="16dp"
-        android:layout_width="match_parent"
+        android:textSize="20dp"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_margin="1dp"
-        />
+        android:layout_weight="10"
+        android:layout_margin="1dp" />
+
+    <ImageButton
+        android:id="@+id/btnEdit"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:background="@null"
+        android:layout_weight="1"
+        app:srcCompat="@drawable/ic_edit" />
+
+    <ImageButton
+        android:id="@+id/btnDelete"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:background="@null"
+        android:layout_weight="1"
+        app:srcCompat="@drawable/ic_delete" />
 </LinearLayout>
