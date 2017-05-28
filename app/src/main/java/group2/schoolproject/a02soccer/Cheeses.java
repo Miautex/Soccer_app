@@ -1,8 +1,6 @@
 package group2.schoolproject.a02soccer;
 
-/**
- * Created by Raphael on 28.05.2017.
- */
+
 
 public class Cheeses {
 
