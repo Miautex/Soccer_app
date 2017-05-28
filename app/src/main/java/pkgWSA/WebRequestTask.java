@@ -9,6 +9,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.Charset;
+
+import pkgMisc.StringEscape;
 
 /**
  * @author Marco Wilscher
@@ -17,6 +20,7 @@ import java.net.URL;
 public final class WebRequestTask extends AsyncTask <RequestParameter, Void, AccessorResponse> {
 
     private static final int TIMEOUT = 5000;
+    private static final Charset CHARSET = Charset.forName("UTF-8");
 
     private WebRequestTaskListener listener = null;
 
@@ -40,7 +44,6 @@ public final class WebRequestTask extends AsyncTask <RequestParameter, Void, Acc
                         listener = parameter.getListener();
                         fullUri.append(parameter.getUri());
                         if (parameter.getUriPath() != null) {
-                            //TODO check for '/'
                             fullUri.append(parameter.getUriPath());
                         }
 
@@ -54,24 +57,25 @@ public final class WebRequestTask extends AsyncTask <RequestParameter, Void, Acc
 
                         con.setConnectTimeout(TIMEOUT);
                         con.setRequestMethod(parameter.getHttpMethod().toString());
-                        con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-                        con.setRequestProperty("Accept", "application/json; charset=UTF-8");
-                        con.setRequestProperty("Charset", "UTF-8");
+                        con.setRequestProperty("Content-Type", "application/json; Charset=" + getCharsetName());
+                        con.setRequestProperty("Accept", "application/json; Charset=" + getCharsetName());
+                        con.setRequestProperty("Charset", getCharsetName());
 
                         if (parameter.getRequestBody() != null && !parameter.getRequestBody().isEmpty()) {
-                            con.setRequestProperty("Content-Length", Integer.toString(parameter.getRequestBody().getBytes("UTF-8").length));
-                            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(con.getOutputStream(), "UTF-8"));
-                            writer.write(parameter.getRequestBody());
+                            String bodyData = StringEscape.escapeString(parameter.getRequestBody());
+                            con.setRequestProperty("Content-Length", Integer.toString(bodyData.getBytes(CHARSET).length));
+                            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(con.getOutputStream(), CHARSET));
+                            writer.write(bodyData);
                             writer.flush();
                             writer.close();
                         }
                         response.setCode(con.getResponseCode());
-                        reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                        reader = new BufferedReader(new InputStreamReader(con.getInputStream(), CHARSET));
                         responseContent = new StringBuilder();
                         while ((inputLine = reader.readLine()) != null) {
                             responseContent.append(inputLine);
                         }
-                        response.setJson(responseContent.toString());
+                        response.setJson(StringEscape.unescapeString(responseContent.toString()));
                     }
                     else {
                         response.setException(new Exception("uri required"));
@@ -108,5 +112,9 @@ public final class WebRequestTask extends AsyncTask <RequestParameter, Void, Acc
         if (listener != null) {
             listener.done(accessorResponse);
         }
+    }
+
+    private String getCharsetName() {
+        return CHARSET.toString();
     }
 }
