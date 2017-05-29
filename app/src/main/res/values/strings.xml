@@ -191,4 +191,9 @@
 
     <string name="msg_DoubleBackPress">Press again to exit</string>
     <string name="title_activity_team_division2">TeamDivision2</string>
+    <string name="preference_sitenotice_title">Site notice</string>
+    <string name="preference_teamassignment_layout_title">Team Assignment Layout</string>
+    <string name="preference_teamassignment_layout_summary">Select a Team Assignment Layout</string>
+    <string name="preference_teamassignment_layout_positiveBtn">OK</string>
+    <string name="preference_teamassignment_layout_negativeBtn">Cancel</string>
 </resources>

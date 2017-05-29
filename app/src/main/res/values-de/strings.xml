@@ -169,4 +169,8 @@
     <string name="PositionAbbrev">P</string>
 
     <string name="msg_DoubleBackPress">Erneut drücken um zu beenden</string>
+    <string name="preference_teamassignment_layout_negativeBtn">Abbrechen</string>
+    <string name="preference_teamassignment_layout_positiveBtn">OK</string>
+    <string name="preference_teamassignment_layout_title">Teamzuweisungdarstellung</string>
+    <string name="preference_teamassignment_layout_summary">Wähle eine Teamzuweisungsdarstellung</string>
 </resources>

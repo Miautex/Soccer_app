@@ -11,6 +11,13 @@
             android:defaultValue="true"
             android:key="preference_usesnackbar"
             android:title="@string/preference_general_usesnackbar"/>
+        <pkgPreference.LayoutPickerPreference
+            android:title="@string/preference_teamassignment_layout_title"
+            android:summary="@string/preference_teamassignment_layout_summary"
+            android:key="preference_assignment_layout"
+            android:positiveButtonText="@string/preference_teamassignment_layout_positiveBtn"
+            android:negativeButtonText="@string/preference_teamassignment_layout_negativeBtn"
+            />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/preference_category_user_title">
         <EditTextPreference
