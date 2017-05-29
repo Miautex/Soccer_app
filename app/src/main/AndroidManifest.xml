@@ -16,7 +16,7 @@
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name=".LoginActivity"
+            android:name=".StartActivity"
             android:label="Moskito&apos;s Soccer App">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -89,8 +89,8 @@
             android:label="@string/title_activity_team_division2"
             android:theme="@style/Theme.App.Base"></activity>
         <activity
-            android:name=".ListViewRemovalAnimation"
-            android:label="@string/title_activity_team_division2"
+            android:name=".LoginActivity"
+            android:label="@string/title_activity_login"
             android:theme="@style/Theme.App.Base"></activity>
     </application>
 

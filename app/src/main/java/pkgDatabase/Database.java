@@ -6,6 +6,10 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.preference.PreferenceManager;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -17,6 +21,7 @@ import java.util.TreeSet;
 import group2.schoolproject.a02soccer.BuildConfig;
 import pkgComparator.PlayerComparatorName;
 import pkgData.Game;
+import pkgData.LocalUserData;
 import pkgData.LoginCredentials;
 import pkgData.Participation;
 import pkgData.Player;
@@ -737,5 +742,34 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
 
     public boolean isToast() {
         return !this.preferences.getBoolean("preference_usesnackbar", true);
+    }
+
+    public LocalUserData loadUserLocally() throws Exception {
+        String FILENAME = "localUser.dat";
+        LocalUserData userData;
+
+        try {
+            FileInputStream fis = this.openFileInput(FILENAME);
+            ObjectInputStream is = new ObjectInputStream(fis);
+            userData = (LocalUserData) is.readObject();
+            is.close();
+            fis.close();
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+            userData = null;
+        }
+
+        return userData;
+    }
+
+    private void saveUserLocally(LocalUserData data) throws Exception {
+        String FILENAME = "localUser.dat";
+
+        FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
+        ObjectOutputStream os = new ObjectOutputStream(fos);
+        os.writeObject(data);
+        os.close();
+        fos.close();
     }
 }
