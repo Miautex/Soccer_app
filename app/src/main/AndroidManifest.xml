@@ -87,11 +87,11 @@
         <activity
             android:name=".TeamDivision2"
             android:label="@string/title_activity_team_division2"
-            android:theme="@style/Theme.App.Base"></activity>
+            android:theme="@style/Theme.App.Base" />
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login"
-            android:theme="@style/Theme.App.Base"></activity>
+            android:theme="@style/Theme.App.Base" />
     </application>
 
 </manifest>
