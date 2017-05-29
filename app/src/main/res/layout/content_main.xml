@@ -9,7 +9,7 @@
     tools:showIn="@layout/app_bar_main"
     tools:layout_editor_absoluteY="81dp"
     tools:layout_editor_absoluteX="0dp"
-    android:background="@drawable/lol">
+    android:background="@drawable/background">
 
     <RelativeLayout
         android:id="@+id/spinnerContainer"
