@@ -17,6 +17,7 @@ import pkgComparator.PlayerComparatorGoalsGot;
 import pkgComparator.PlayerComparatorGoalsShot;
 import pkgComparator.PlayerComparatorWins;
 import pkgData.Player;
+import pkgData.PlayerWithScore;
 import pkgDatabase.Database;
 
 public class ScoreboardActivity extends BaseActivity implements AdapterView.OnItemSelectedListener, AdapterView.OnItemClickListener {

@@ -1,4 +1,4 @@
-package group2.schoolproject.a02soccer;
+package pkgData;
 
 /**
  * Created by Raphael on 20.05.2017.
