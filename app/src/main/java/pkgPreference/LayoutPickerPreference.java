@@ -12,15 +12,16 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import group2.schoolproject.a02soccer.R;
+import pkgMisc.AssignmentLayout;
 
 /**
- * Created by Wilscher Marco
+ * @author Marco Wilscher
  */
 
 public class LayoutPickerPreference extends DialogPreference implements View.OnClickListener {
-    private TreeMap<Integer, OptionEntity<ImageButton, String>> optionButtons;
+    private TreeMap<Integer, OptionEntity<ImageButton, AssignmentLayout>> optionButtons;
     private SharedPreferences preferences;
-    private ImageButton selectedButton;
+    private OptionEntity<ImageButton, AssignmentLayout> selectedOption;
 
     public LayoutPickerPreference (Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -32,9 +33,9 @@ public class LayoutPickerPreference extends DialogPreference implements View.OnC
     @Override
     protected void onBindDialogView (View view) {
         super.onBindDialogView(view);
-        optionButtons.put(R.id.optionLayout1, new OptionEntity<>((ImageButton) view.findViewById(R.id.optionLayout1), "layout1"));
-        optionButtons.put(R.id.optionLayout2, new OptionEntity<>((ImageButton) view.findViewById(R.id.optionLayout2), "layout2"));
-        optionButtons.put(R.id.optionLayout3, new OptionEntity<>((ImageButton) view.findViewById(R.id.optionLayout3), "layout3"));
+        optionButtons.put(R.id.optionLayout1, new OptionEntity<>((ImageButton) view.findViewById(R.id.optionLayout1), AssignmentLayout.TAB_LAYOUT));
+        optionButtons.put(R.id.optionLayout2, new OptionEntity<>((ImageButton) view.findViewById(R.id.optionLayout2), AssignmentLayout.SLIDE_LAYOUT));
+        optionButtons.put(R.id.optionLayout3, new OptionEntity<>((ImageButton) view.findViewById(R.id.optionLayout3), AssignmentLayout.RADIO_LAYOUT));
 
         optionButtons.get(R.id.optionLayout1).getView().setOnClickListener(this);
         optionButtons.get(R.id.optionLayout2).getView().setOnClickListener(this);
@@ -42,22 +43,16 @@ public class LayoutPickerPreference extends DialogPreference implements View.OnC
 
         preferences = getSharedPreferences();
 
-        String layout = preferences.getString(getKey(), "layout1");
+        AssignmentLayout layout = AssignmentLayout.valueOf(preferences.getString(getKey(), AssignmentLayout.TAB_LAYOUT.toString()));
 
-        OptionEntity<ImageButton, String>[] oentities = optionButtons.values().toArray(new OptionEntity[0]);
-        Boolean found = false;
-        for (int i = 0; i < optionButtons.size() && !found; i++) {
-            if(oentities[i].getValue().equals(layout)){
-                setSelectedOption(oentities[i].getView().getId());
-                found = true;
-            }
-        }
+        selectedOption = getOptionEntityByLayout(layout);
+        highlightSelectedOption(selectedOption);
     }
 
     @Override
     public void onClick (View view) {
-        selectedButton = (ImageButton)view;
-        setSelectedOption(selectedButton.getId());
+        selectedOption = optionButtons.get(view.getId());
+        highlightSelectedOption(selectedOption);
     }
 
     @Override
@@ -65,19 +60,31 @@ public class LayoutPickerPreference extends DialogPreference implements View.OnC
         super.onDialogClosed(positiveResult);
         if (positiveResult) {
             SharedPreferences.Editor editor = getEditor();
-            editor.putString(getKey(), optionButtons.get(selectedButton.getId()).getValue());
+            editor.putString(getKey(), selectedOption.getValue().toString());
             editor.commit();
         }
     }
 
-    private void setSelectedOption(int resId) {
-        for (Map.Entry<Integer, OptionEntity<ImageButton, String>> entry: optionButtons.entrySet()) {
-            if (entry.getKey() == resId) {
+    private void highlightSelectedOption (OptionEntity<ImageButton, AssignmentLayout> option) {
+        for (Map.Entry<Integer, OptionEntity<ImageButton, AssignmentLayout>> entry: optionButtons.entrySet()) {
+            if (entry.getKey() == option.getView().getId()) {
                 entry.getValue().getView().setColorFilter(Color.RED);
             }
             else {
                 entry.getValue().getView().setColorFilter(Color.TRANSPARENT);
             }
         }
+    }
+
+    private OptionEntity<ImageButton, AssignmentLayout> getOptionEntityByLayout(AssignmentLayout layout) {
+        OptionEntity<ImageButton, AssignmentLayout> entity = null;
+        OptionEntity<ImageButton, AssignmentLayout>[] entities = optionButtons.values().toArray(new OptionEntity[0]);
+        Boolean found = false;
+        for (int i = 0; i < optionButtons.size() && !found; i++) {
+            if(entities[i].getValue() == layout){
+                entity = entities[i];
+            }
+        }
+        return entity;
     }
 }
