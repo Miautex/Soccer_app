@@ -48,9 +48,11 @@ public class TeamDivision2 extends BaseActivity /*implements View.OnTouchListene
         BackgroundContainerTeam1 = (BackgroundContainer) findViewById(R.id.listViewBackgroundTeam1);
         BackgroundContainerTeam2 = (BackgroundContainer) findViewById(R.id.listViewBackgroundTeam2);
 
-        adapterAll = new StableArrayAdapter(this, R.layout.opaque_text_view, allPlayers, mTouchListenerAll);
-        adapterTeam1 = new StableArrayAdapter(this, R.layout.opaque_text_view, team1, mTouchListenerTeam1);
-        adapterTeam2 = new StableArrayAdapter(this, R.layout.opaque_text_view, team2, mTouchListenerTeam2);
+        adapterAll = new StableArrayAdapter(this, allPlayers, mTouchListenerAll);
+        adapterTeam1 = new StableArrayAdapter(this, team1, mTouchListenerTeam1);
+        adapterTeam2 = new StableArrayAdapter(this, team2, mTouchListenerTeam2);
+
+       // adapterTeam2 = new StableArrayAdapter(this, R.layout.opaque_text_view, team2, mTouchListenerTeam2);
 
         lvAllPlayers = (ListView) findViewById(R.id.lvAllPlayer);
         lvTeam1 = (ListView) findViewById(R.id.lvTeam1);
