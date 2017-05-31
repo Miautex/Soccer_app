@@ -46,4 +46,12 @@
         <item name="windowFixedWidthMinor">90%</item>
     </style>
 
+    <style name="dlgConfirmDeleteStyle">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:background">@drawable/background</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:buttonBarStyle">@drawable/buttonshape</item>
+    </style>
+
 </resources>

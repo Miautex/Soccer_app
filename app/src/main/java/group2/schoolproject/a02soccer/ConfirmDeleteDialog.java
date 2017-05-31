@@ -23,7 +23,7 @@ public class ConfirmDeleteDialog extends Dialog implements
     private String title;
 
     public ConfirmDeleteDialog(Object selectedObject, OnDeleteDialogButtonPressedListener listener, String title) {
-        super((Activity) listener);
+        super((Activity) listener, R.style.dlgConfirmDeleteStyle);
         this.listener = listener;
         this.selectedObject = selectedObject;
         this.title = title;

@@ -38,7 +38,6 @@ public class AddGameSelectPlayersActivity extends BaseActivity implements View.O
 
     private Database db = null;
     private HashMap<Integer, Player> hmPlayers = null;
-
     private int numSelectedCheckboxes = 0;
 
     @Override

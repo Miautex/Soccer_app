@@ -5,12 +5,16 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
+
+import com.google.zxing.Result;
 
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.TreeMap;
 
+import me.dm7.barcodescanner.zxing.ZXingScannerView;
 import pkgAdapter.SectionsPageAdapter;
 import pkgData.Game;
 import pkgData.Participation;
@@ -19,13 +23,14 @@ import pkgData.Team;
 import pkgListeners.OnTeamChangedListener;
 import pkgTab.TeamDivisionTab;
 
-public class TeamDivisionActivity extends BaseActivity implements OnTeamChangedListener, View.OnClickListener {
+public class TeamDivisionActivity extends BaseActivity implements ZXingScannerView.ResultHandler , OnTeamChangedListener, View.OnClickListener {
 
     private SectionsPageAdapter mSectionsPageAdapter;
     private Game game = null;
     private ArrayList<Participation> participations = null;
     private TreeMap<Integer, Player> allPlayers = null;
     private OnTeamChangedListener[] listener = new OnTeamChangedListener[2];
+    private ZXingScannerView scanner;
 
 
     @Override
@@ -52,6 +57,7 @@ public class TeamDivisionActivity extends BaseActivity implements OnTeamChangedL
         this.findViewById(R.id.btnContinue).setOnClickListener(this);
         this.findViewById(R.id.btnCancel).setOnClickListener(this);
         this.findViewById(R.id.btnShuffle).setOnClickListener(this);
+        this.findViewById(R.id.btnQRScan).setOnClickListener(this);
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -129,10 +135,19 @@ public class TeamDivisionActivity extends BaseActivity implements OnTeamChangedL
             } else if (button.getId() == R.id.btnShuffle) {
                 //showMessage("folgt");
                 shuffle();
+            } else if (button.getId() == R.id.btnQRScan){
+                openQRScanner();
             }
         } catch (Exception e) {
             showMessage(e.getMessage());
         }
+    }
+
+    private void openQRScanner(){
+        scanner = new ZXingScannerView(this);
+        setContentView(scanner);
+        scanner.setResultHandler(this);
+        scanner.startCamera();
     }
 
 
@@ -215,6 +230,12 @@ public class TeamDivisionActivity extends BaseActivity implements OnTeamChangedL
                 showMessage(getString(R.string.msg_NoPlayersToAssign));
             }
         }
+    }
+
+    @Override
+    public void handleResult(Result rawResult){
+        Log.i("SCANN RESULT", rawResult.getText());
+        scanner.resumeCameraPreview(this);
     }
 }
 
