@@ -27,6 +27,9 @@ public class StartActivity extends BaseActivity implements WebRequestTaskListene
 
             db = Database.getInstance();
             localUserData = db.loadLocalUserData(this);
+            db.setContext(this);
+            Accessor.init(getApplicationContext());
+            db.initPreferences(getApplicationContext());
 
             /*if (localUserData != null) {
                 System.out.println("------------ username=" + localUserData.getPlayer());
@@ -45,12 +48,13 @@ public class StartActivity extends BaseActivity implements WebRequestTaskListene
                     startIsServerAvailableCheck();
                 }
                 else {
+                    //if offline and logged in
                     if (localUserData.isLoggedIn()) {
-                        openLoginWithParams(localUserData.getPlayer().getUsername(), localUserData.getPassword(),
-                                localUserData.isLoggedIn(), false);
+                        tryLocalLogin();
                     }
                     else {
-
+                        openLoginWithParams(localUserData.getPlayer().getUsername(), localUserData.getPassword(),
+                                false, false);
                     }
                 }
             }
@@ -62,9 +66,31 @@ public class StartActivity extends BaseActivity implements WebRequestTaskListene
         }
     }
 
+    private void tryLocalLogin() {
+        try {
+            if (db.loginLocal(localUserData.getPlayer().getUsername(), localUserData.getPassword(), this)) {
+                openMainActivity();
+            } else {
+                throw new Exception("cannot login locally");
+            }
+        }
+        catch (Exception ex) {
+            //If login locally fails, open login activity
+            openLogin();
+        }
+    }
+
+    private void openMainActivity(){
+        finish();
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
+
     private void startIsServerAvailableCheck() throws Exception {
         try {
             Accessor.init(this);
+            //Check to see if server responds or if timeout happens
             Accessor.runRequestAsync(HttpMethod.GET, "", null, null, this);
         }
         catch (Exception ex) {
@@ -75,8 +101,7 @@ public class StartActivity extends BaseActivity implements WebRequestTaskListene
     @Override
     public void done(AccessorResponse response) {
         if (response.getException() != null && response.getException().getClass().equals(SocketTimeoutException.class)) {
-            openLoginWithParams(localUserData.getPlayer().getUsername(), localUserData.getPassword(),
-                    localUserData.isLoggedIn(), false);
+            tryLocalLogin();
         }
         else {
             openLoginWithParams(localUserData.getPlayer().getUsername(), localUserData.getPassword(),

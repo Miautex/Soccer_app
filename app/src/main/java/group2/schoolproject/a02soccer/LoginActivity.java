@@ -9,9 +9,11 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+
 import java.io.FileNotFoundException;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
+
 import pkgDatabase.Database;
 import pkgDatabase.LoadAllGamesHandler;
 import pkgDatabase.LoadAllPlayersHandler;
@@ -21,7 +23,6 @@ import pkgDatabase.pkgListener.OnLoadAllPlayersListener;
 import pkgDatabase.pkgListener.OnLoginListener;
 import pkgException.InvalidLoginDataException;
 import pkgException.NoLocalDataException;
-import pkgWSA.Accessor;
 
 public class LoginActivity extends BaseActivity
         implements OnClickListener, OnLoginListener, OnLoadAllPlayersListener, OnLoadAllGamesListener {
@@ -44,16 +45,15 @@ public class LoginActivity extends BaseActivity
         getAllViews();
         registrateEventHandlers();
         try {
-            Accessor.init(getApplicationContext());
             db = Database.getInstance();
-            db.initPreferences(this);
-            db.setContext(this);
 
             /*setDefaultCredentials();
             if (db.isInitialLogin() && db.isAutologin()) {
                 db.setInitialLogin(false);
                 tryLogin();
             }*/
+
+            System.out.println("------------- LOGIN OPENED");
 
             String username = (String) this.getIntent().getSerializableExtra("username");
             String password = (String) this.getIntent().getSerializableExtra("password");
@@ -207,13 +207,15 @@ public class LoginActivity extends BaseActivity
                     tryLogin(false);
                 }
                 catch (ConnectException e) {
-                    msg = getString(R.string.msg_NetworkUnreachable);
+                    //msg = getString(R.string.msg_NetworkUnreachable);
+                    tryLogin(false);
                 }
                 catch (InvalidLoginDataException e) {
                     msg = getString(R.string.msg_UsernameOrPasswordInvalid);
                 }
                 catch (FileNotFoundException e) {
-                    msg = getString(R.string.msg_NetworkUnreachable);
+                    //msg = getString(R.string.msg_NetworkUnreachable);
+                    tryLogin(false);
                 }
                 catch (Exception e) {
                     msg = getString(R.string.msg_CannotConnectToWebservice);

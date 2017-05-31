@@ -421,7 +421,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         listenersToInform.add(this);
 
         //Launch login
-        Accessor.runRequestAsync(HttpMethod.POST, "player/security/login", "loginKey="+loginKey,
+        Accessor.runRequestAsync(HttpMethod.POST, "player/security/login", null,
                 GsonSerializor.serializeLoginCredentials(new LoginCredentials(username, local_pwEnc)),
                 new LoginHandler(username, local_pw_Unencrypted, listenersToInform, listenersToStore));
     }
@@ -455,13 +455,12 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         }
     }
 
-    public void logout() {
+    public void logout(Context ctx) {
         setCurrentlyLoggedInPlayer(null);
         loginKey = null;
 
-        LocalUserData localUserData = loadLocalUserData(getContext());
-        saveLocalUserData(new LocalUserData(localUserData.getPlayer(), localUserData.getPassword(), false), getContext());
-
+        LocalUserData localUserData = loadLocalUserData(ctx);
+        saveLocalUserData(new LocalUserData(localUserData.getPlayer(), localUserData.getPassword(), false), ctx);
     }
 
     /**
