@@ -9,6 +9,10 @@ import pkgResult.Result;
 import pkgWSA.AccessorResponse;
 import pkgWSA.WebRequestTaskListener;
 
+/**
+ * @author Elias Santner
+ */
+
 public class InsertParticipationHandler extends WebserviceResponseHandler
         implements WebRequestTaskListener {
     private ArrayList<OnParticipationInsertedListener> listeners;

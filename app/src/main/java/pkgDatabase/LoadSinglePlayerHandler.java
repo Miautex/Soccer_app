@@ -9,6 +9,10 @@ import pkgResult.SinglePlayerResult;
 import pkgWSA.AccessorResponse;
 import pkgWSA.WebRequestTaskListener;
 
+/**
+ * @author Elias Santner
+ */
+
 public class LoadSinglePlayerHandler extends WebserviceResponseHandler
         implements WebRequestTaskListener {
     private ArrayList<OnLoadSinglePlayerListener> listeners;

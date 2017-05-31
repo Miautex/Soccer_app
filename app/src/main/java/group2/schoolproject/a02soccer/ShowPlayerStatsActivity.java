@@ -9,6 +9,10 @@ import pkgDatabase.Database;
 import pkgDatabase.LoadSinglePlayerHandler;
 import pkgDatabase.pkgListener.OnLoadSinglePlayerListener;
 
+/**
+ * @author Elias Santner
+ */
+
 public class ShowPlayerStatsActivity extends BaseActivity implements OnLoadSinglePlayerListener {
     private TextView txvName,
             txvGamesPlayed,

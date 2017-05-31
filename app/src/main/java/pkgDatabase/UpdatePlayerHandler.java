@@ -12,6 +12,10 @@ import pkgResult.Result;
 import pkgWSA.AccessorResponse;
 import pkgWSA.WebRequestTaskListener;
 
+/**
+ * @author Elias Santner
+ */
+
 public class UpdatePlayerHandler extends WebserviceResponseHandler
         implements WebRequestTaskListener, OnSetPlayerPosListener {
     private ArrayList<OnPlayerUpdatedListener> listeners;

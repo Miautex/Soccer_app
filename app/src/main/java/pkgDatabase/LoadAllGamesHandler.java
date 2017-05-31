@@ -10,6 +10,9 @@ import pkgResult.GameResult;
 import pkgWSA.AccessorResponse;
 import pkgWSA.WebRequestTaskListener;
 
+/**
+ * @author Elias Santner
+ */
 
 public class LoadAllGamesHandler extends WebserviceResponseHandler
         implements WebRequestTaskListener {

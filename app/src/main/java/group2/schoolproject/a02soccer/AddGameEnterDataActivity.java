@@ -28,6 +28,10 @@ import pkgListeners.OnScoreChangedListener;
 import pkgMisc.NamePWValidator;
 import pkgTab.TabAddGameEnterData;
 
+/**
+ * @author Elias Santner
+ */
+
 public class AddGameEnterDataActivity extends BaseActivity implements OnScoreChangedListener, View.OnClickListener,
         OnGameInsertedListener, TabLayout.OnTabSelectedListener, TextView.OnEditorActionListener {
 

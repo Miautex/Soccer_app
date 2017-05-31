@@ -51,6 +51,10 @@ import pkgMisc.GsonSerializor;
 import pkgWSA.Accessor;
 import pkgWSA.HttpMethod;
 
+/**
+ * @author Elias Santner
+ */
+
 public class Database extends Application implements OnLoginListener, OnLoadAllPlayersListener, OnLoadAllGamesListener, OnLoadParticipationsListener, OnGameInsertedListener, OnPlayerInsertedListener, OnGameUpdatedListener, OnPlayerUpdatedListener, OnPlayerRemovedListener, OnGameRemovedListener, OnLoadSinglePlayerListener, OnQRCodeGeneratedListener {
     public static final int MIN_LENGTH_PASSWORD = 5;
     private final String USERDATA_FILE = "localUser.dat",
@@ -777,7 +781,6 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
             fis.close();
         }
         catch (Exception ex) {
-            ex.printStackTrace();
             userData = null;
         }
 

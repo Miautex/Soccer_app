@@ -18,6 +18,10 @@ import pkgResult.Result;
 import pkgResult.SingleGameResult;
 import pkgResult.SinglePlayerResult;
 
+/**
+ * @author Elias Santner
+ */
+
 public class GsonSerializor {
     private static Gson gson = new Gson();
 

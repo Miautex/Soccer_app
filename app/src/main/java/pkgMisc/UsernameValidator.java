@@ -3,6 +3,10 @@ package pkgMisc;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * @author Elias Santner
+ */
+
 public class UsernameValidator {
     private static Pattern usernamePattern = Pattern.compile("^[a-zA-Z0-9]*$");
     private static Matcher matcher;

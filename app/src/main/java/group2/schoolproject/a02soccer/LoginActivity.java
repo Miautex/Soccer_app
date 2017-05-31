@@ -53,8 +53,6 @@ public class LoginActivity extends BaseActivity
                 tryLogin();
             }*/
 
-            System.out.println("------------- LOGIN OPENED");
-
             String username = (String) this.getIntent().getSerializableExtra("username");
             String password = (String) this.getIntent().getSerializableExtra("password");
             Boolean doAutoLogin = (Boolean) this.getIntent().getSerializableExtra("doAutoLogin");
@@ -76,7 +74,6 @@ public class LoginActivity extends BaseActivity
             }
         }
         catch (Exception ex) {
-            ex.printStackTrace();
             showMessage(getString(R.string.Error) + ": " + ex.getMessage());
         }
     }
@@ -151,7 +148,6 @@ public class LoginActivity extends BaseActivity
         catch (Exception ex) {
             toggleLoginInputs(true);
             showMessage(ex.getMessage());
-            ex.printStackTrace();
         }
     }
 
@@ -196,8 +192,6 @@ public class LoginActivity extends BaseActivity
                 db.loadAllGames(this);
             }
             else {
-
-                handler.getException().printStackTrace();
                 String msg = null;
                 toggleLoginInputs(true);
 

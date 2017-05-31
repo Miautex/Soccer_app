@@ -26,6 +26,10 @@ import pkgData.Player;
 import pkgDatabase.Database;
 import pkgMisc.PxDpConverter;
 
+/**
+ * @author Elias Santner
+ */
+
 public class AddGameSelectPlayersActivity extends BaseActivity implements View.OnClickListener {
     private static final int MIN_PLAYERS_REQUIRED = 4;
 
