@@ -108,14 +108,14 @@ public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeL
         scoreChangedListener = listener;
     }
 
-    public void setParticipations(Collection<Participation> participations) {
+    public void setParticipations(Collection<Participation> participation) {
         try {
             hmParticipations.clear();
-            for (Participation p : participations) {
+            for (Participation p : participation) {
                 hmParticipations.put(p.getPlayer().getId(), p);
             }
 
-            displayParticipationsInTable(new TreeSet<Participation>(participations));
+            displayParticipationsInTable(new TreeSet<>(participation));
         }
         catch (Exception e) {
             showMessage(getString(R.string.Error) + ": " + e.getMessage());
@@ -123,7 +123,7 @@ public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeL
     }
 
     private Participation getParticipationFromRow(int index) throws Exception {
-        TableRow row = null;
+        TableRow row;
         TextView[] editTexts = new TextView[7];
 
         if (index>=table_PlayersData.getChildCount()) {
@@ -256,10 +256,10 @@ public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeL
     }
 
     public ArrayList<Participation> getParticipationsFromTable() {
-        ArrayList<Participation> participations = new ArrayList<Participation>();
+        ArrayList<Participation> participations = new ArrayList<>();
 
         for (int i=0; i<table_PlayersData.getChildCount(); i++) {
-            Participation tmpP = null;
+            Participation tmpP;
             try {
                 tmpP = getParticipationFromRow(i);
 

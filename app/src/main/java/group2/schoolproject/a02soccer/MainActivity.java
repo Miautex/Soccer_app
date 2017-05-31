@@ -44,6 +44,7 @@ import pkgDatabase.pkgListener.OnPlayersChangedListener;
 import pkgException.CouldNotDeletePlayerException;
 import pkgListeners.OnDeleteDialogButtonPressedListener;
 
+@SuppressWarnings("ConstantConditions")
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnPlayersChangedListener,
         OnGamesChangedListener, AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener,
@@ -120,7 +121,7 @@ public class MainActivity extends BaseActivity
     }
 
     private void openQRCode(){
-        Bitmap qr = null;
+        Bitmap qr;
         try{
             if (db.isQRCodeReady()) {
                 qr = db.getQRCode();
@@ -500,20 +501,14 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void removePlayerFinished(RemovePlayerHandler handler) {
-        if (handler.getException() == null) {
-            //Player is removed from list by database via listener
-        }
-        else {
+        if (handler.getException() != null) {
             showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CouldNotDeletePlayer));
         }
     }
 
     @Override
     public void removeGameFinished(RemoveGameHandler handler) {
-        if (handler.getException() == null) {
-            //Game is removed from list by database via listener
-        }
-        else {
+        if (handler.getException() != null) {
             showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CouldNotDeleteGame));
         }
     }

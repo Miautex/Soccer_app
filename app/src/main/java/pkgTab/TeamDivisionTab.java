@@ -68,10 +68,10 @@ public class TeamDivisionTab extends Fragment implements View.OnClickListener, O
     }
 
     public void onClick(View bttn) {
-        if(bttn.getClass() == new Button(this.getContext()).getClass()){
+        if(bttn.getClass() == Button.class){
             movePlayerRow(bttn);
         }
-        else if (bttn.getClass() == new TextView(this.getContext()).getClass()){
+        else if (bttn.getClass() == TextView.class){
             TableRow row = (TableRow) bttn.getParent();
             Player p = players.get(Integer.parseInt(((TextView) row.getChildAt(0)).getText().toString()));
             showFullName(p.toString());
