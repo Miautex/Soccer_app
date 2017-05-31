@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.support.annotation.Nullable;
 
+/**
+ * @author Marco Wilscher
+ */
 public class DebugSettingsFragment extends PreferenceFragment {
     @Override
     public void onCreate (@Nullable Bundle savedInstanceState) {

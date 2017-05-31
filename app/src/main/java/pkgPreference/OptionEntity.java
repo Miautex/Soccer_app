@@ -1,7 +1,7 @@
 package pkgPreference;
 
 /**
- * Created by Wilscher Marco
+ * @author Marco Wilscher
  */
 
 public class OptionEntity<ViewType, ValueType> {

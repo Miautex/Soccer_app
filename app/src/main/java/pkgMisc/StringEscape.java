@@ -3,7 +3,7 @@ package pkgMisc;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 /**
- * Created by Wilscher Marco
+ * @author Marco Wilscher
  */
 
 public class StringEscape {
