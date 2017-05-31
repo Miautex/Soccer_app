@@ -57,6 +57,7 @@ public final class WebRequestTask extends AsyncTask <RequestParameter, Void, Acc
 
                         con.setConnectTimeout(TIMEOUT);
                         con.setRequestMethod(parameter.getHttpMethod().toString());
+
                         con.setRequestProperty("Content-Type", "application/json; Charset=" + getCharsetName());
                         con.setRequestProperty("Accept", "application/json; Charset=" + getCharsetName());
                         con.setRequestProperty("Charset", getCharsetName());
@@ -115,6 +116,6 @@ public final class WebRequestTask extends AsyncTask <RequestParameter, Void, Acc
     }
 
     private String getCharsetName() {
-        return CHARSET.toString();
+        return CHARSET.name();
     }
 }
