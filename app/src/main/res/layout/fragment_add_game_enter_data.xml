@@ -16,6 +16,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true">
 
+
         <TableRow
             android:background="@color/redLogo"
             android:paddingTop="5dp"

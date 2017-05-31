@@ -58,6 +58,8 @@ public class TeamDivisionActivity extends BaseActivity implements ZXingScannerVi
         this.findViewById(R.id.btnCancel).setOnClickListener(this);
         this.findViewById(R.id.btnShuffle).setOnClickListener(this);
         this.findViewById(R.id.btnQRScan).setOnClickListener(this);
+
+
     }
 
     private void setupViewPager(ViewPager viewPager) {
