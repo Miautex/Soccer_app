@@ -196,6 +196,8 @@ public class LoginActivity extends BaseActivity
                 db.loadAllGames(this);
             }
             else {
+
+                handler.getException().printStackTrace();
                 String msg = null;
                 toggleLoginInputs(true);
 

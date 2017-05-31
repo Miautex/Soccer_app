@@ -10,6 +10,8 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import pkgAdapter.StableArrayAdapter;
+
 public class TeamDivision2 extends BaseActivity /*implements View.OnTouchListener*/ {
 
     StableArrayAdapter adapterAll, adapterTeam1, adapterTeam2;
@@ -52,7 +54,7 @@ public class TeamDivision2 extends BaseActivity /*implements View.OnTouchListene
         adapterTeam1 = new StableArrayAdapter(this, team1, mTouchListenerTeam1);
         adapterTeam2 = new StableArrayAdapter(this, team2, mTouchListenerTeam2);
 
-       // adapterTeam2 = new StableArrayAdapter(this, R.layout.opaque_text_view, team2, mTouchListenerTeam2);
+        // adapterTeam2 = new StableArrayAdapter(this, R.layout.opaque_text_view, team2, mTouchListenerTeam2);
 
         lvAllPlayers = (ListView) findViewById(R.id.lvAllPlayer);
         lvTeam1 = (ListView) findViewById(R.id.lvTeam1);
@@ -63,45 +65,7 @@ public class TeamDivision2 extends BaseActivity /*implements View.OnTouchListene
         lvTeam2.setAdapter(adapterTeam2);
 
         lvAllPlayers.setAdapter(adapterAll);
-
-        /*super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_view_deletion);
-
-        BackgroundContainerAll = (BackgroundContainer) findViewById(R.id.listViewBackground);
-        lvAllPlayers = (ListView) findViewById(R.id.listview);
-        final ArrayList<String> cheeseList = new ArrayList<String>();
-        for (int i = 0; i < Cheeses.sCheeseStrings.length; ++i) {
-            cheeseList.add(Cheeses.sCheeseStrings[i]);
-        }
-        adapterAll = new StableArrayAdapter(this, R.layout.opaque_text_view, cheeseList,
-                mTouchListener);
-        lvAllPlayers.setAdapter(adapterAll);*/
     }
-
-    //@Override
-    /*public boolean onTouch(View v, MotionEvent event) {
-        int pos = ((ListView)v).pointToPosition((int)event.getX(), (int)event.getY());
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                position = ((ListView)v).pointToPosition((int)event.getX(), (int)event.getY());
-                historicX = event.getX();
-                historicY = event.getY();
-                break;
-            case MotionEvent.ACTION_UP:
-                if (event.getX() - historicX < -DELTA) {
-                    showMessage("left " + ((ListView) v).getItemAtPosition(position));
-                    return true;
-                } else if (event.getX() - historicX > DELTA) {
-                    showMessage("right " + ((ListView) v).getItemAtPosition(position));
-                    return true;
-                }
-                break;
-
-            default:
-                return false;
-        }
-        return false;
-    }*/
 
     private View.OnTouchListener mTouchListenerAll = new View.OnTouchListener() {
 
@@ -260,7 +224,7 @@ public class TeamDivision2 extends BaseActivity /*implements View.OnTouchListene
                         float endX;
                         float endAlpha;
                         final boolean remove;
-                        if (deltaXAbs > v.getWidth() / 8) {
+                        if (deltaXAbs > v.getWidth() / 10) {
                             if (x < mDownX) {
                                 direction = Direction.LEFT;
                             } else if (x > mDownX) {
@@ -364,7 +328,7 @@ public class TeamDivision2 extends BaseActivity /*implements View.OnTouchListene
                         float endX;
                         float endAlpha;
                         final boolean remove;
-                        if (deltaXAbs > v.getWidth() / 8) {
+                        if (deltaXAbs > (v.getWidth() / 100)) {
                             if (x < mDownX) {
                                 direction = Direction.LEFT;
                             } else if (x > mDownX) {
@@ -426,6 +390,10 @@ public class TeamDivision2 extends BaseActivity /*implements View.OnTouchListene
             adapterTeam1.notifyDataSetChanged();
             adapterAll.remove(adapterAll.getItem(position));
         }
+        if (adapterAll.getCount() == 0) {
+            BackgroundContainerAll.setVisibility(View.INVISIBLE);
+            lvAllPlayers.setVisibility(View.INVISIBLE);
+        }
 
     }
 
@@ -474,7 +442,7 @@ public class TeamDivision2 extends BaseActivity /*implements View.OnTouchListene
                 mItemIdTopMapAll.put(itemId, child.getTop());
             }
         }
-        // Delete the item from the adapter
+        // Moves the Item to Team
         movePlayerFromAll(viewToRemove);
 
         final ViewTreeObserver observer = listview.getViewTreeObserver();
