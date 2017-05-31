@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Soccer</string>
     <!--Activitytitles-->
+    <string name="title_activity_main">Soccer</string>
+    <string name="title_activity_main_offline">Soccer (Offline)</string>
     <string name="title_activity_add_game_select_players">Select Players</string>
     <string name="title_activity_team_management">Team Division</string>
     <string name="title_activity_add_game_enter_data">Enter Data</string>

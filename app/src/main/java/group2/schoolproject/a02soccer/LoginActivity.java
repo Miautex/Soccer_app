@@ -9,11 +9,9 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-
 import java.io.FileNotFoundException;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
-
 import pkgDatabase.Database;
 import pkgDatabase.LoadAllGamesHandler;
 import pkgDatabase.LoadAllPlayersHandler;
@@ -22,6 +20,7 @@ import pkgDatabase.pkgListener.OnLoadAllGamesListener;
 import pkgDatabase.pkgListener.OnLoadAllPlayersListener;
 import pkgDatabase.pkgListener.OnLoginListener;
 import pkgException.InvalidLoginDataException;
+import pkgException.NoLocalDataException;
 import pkgWSA.Accessor;
 
 public class LoginActivity extends BaseActivity
@@ -34,7 +33,8 @@ public class LoginActivity extends BaseActivity
 
     Database db = null;
     Boolean arePlayersLoaded = false,
-            areGamesLoaded = false;
+            areGamesLoaded = false,
+            isOnline = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,14 +47,36 @@ public class LoginActivity extends BaseActivity
             Accessor.init(getApplicationContext());
             db = Database.getInstance();
             db.initPreferences(this);
+            db.setContext(this);
 
-            setDefaultCredentials();
+            /*setDefaultCredentials();
             if (db.isInitialLogin() && db.isAutologin()) {
                 db.setInitialLogin(false);
                 tryLogin();
+            }*/
+
+            String username = (String) this.getIntent().getSerializableExtra("username");
+            String password = (String) this.getIntent().getSerializableExtra("password");
+            Boolean doAutoLogin = (Boolean) this.getIntent().getSerializableExtra("doAutoLogin");
+            isOnline = (Boolean) this.getIntent().getSerializableExtra("isOnline");
+
+            if (isOnline == null) {
+                isOnline = true;
+            }
+
+            if (username != null) {
+                edtUsername.setText(username);
+            }
+            if (password != null) {
+                edtPassword.setText(password);
+            }
+
+            if (doAutoLogin != null && doAutoLogin) {
+                tryLogin(isOnline);
             }
         }
         catch (Exception ex) {
+            ex.printStackTrace();
             showMessage(getString(R.string.Error) + ": " + ex.getMessage());
         }
     }
@@ -80,7 +102,7 @@ public class LoginActivity extends BaseActivity
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if(keyCode == event.KEYCODE_ENTER){
                     try {
-                        tryLogin();
+                        tryLogin(isOnline);
                     }catch(Exception ex){
                         showMessage(getString(R.string.Error) + ": " + ex.getMessage());
                     }
@@ -93,26 +115,43 @@ public class LoginActivity extends BaseActivity
     public void onClick(View arg0) {
         try {
             if (arg0.getId() == R.id.btnLogin) {
-                tryLogin();
+                tryLogin(isOnline);
             }
         } catch (Exception e) {
             showMessage(getString(R.string.Error) + ": " + e.getMessage());
         }
     }
 
-    private void tryLogin() {
+    private void tryLogin(Boolean isOnline) {
         try {
             if (edtUsername.getText().toString().isEmpty() || edtPassword.getText().toString().isEmpty()) {
                 throw new Exception(getString(R.string.msg_EnterUsernamePassword));
             }
             else {
                 toggleLoginInputs(false);
-                db.login(edtUsername.getText().toString(), edtPassword.getText().toString(), this);
+
+                if (isOnline) {
+                    db.login(edtUsername.getText().toString(), edtPassword.getText().toString(), this);
+                }
+                else {
+                    toggleLoginInputs(true);
+                    try {
+                        if (db.loginLocal(edtUsername.getText().toString(), edtPassword.getText().toString(), this)) {
+                            openMainActivity();
+                        } else {
+                            showMessage(getString(R.string.msg_UsernameOrPasswordInvalid));
+                        }
+                    }
+                    catch (NoLocalDataException ex) {
+                        showMessage(getString(R.string.msg_CannotConnectToWebservice));
+                    }
+                }
             }
         }
         catch (Exception ex) {
             toggleLoginInputs(true);
             showMessage(ex.getMessage());
+            ex.printStackTrace();
         }
     }
 
@@ -164,7 +203,8 @@ public class LoginActivity extends BaseActivity
                     throw handler.getException();
                 }
                 catch (SocketTimeoutException e) {
-                    msg = getString(R.string.msg_ConnectionTimeout);
+                    //msg = getString(R.string.msg_ConnectionTimeout);
+                    tryLogin(false);
                 }
                 catch (ConnectException e) {
                     msg = getString(R.string.msg_NetworkUnreachable);
@@ -179,7 +219,9 @@ public class LoginActivity extends BaseActivity
                     msg = getString(R.string.msg_CannotConnectToWebservice);
                 }
                 finally {
-                    showMessage(msg);
+                    if (msg != null) {
+                        showMessage(msg);
+                    }
                 }
             }
         }

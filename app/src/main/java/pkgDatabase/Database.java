@@ -21,6 +21,7 @@ import java.util.TreeSet;
 import group2.schoolproject.a02soccer.BuildConfig;
 import pkgComparator.PlayerComparatorName;
 import pkgData.Game;
+import pkgData.LocalData;
 import pkgData.LocalUserData;
 import pkgData.LoginCredentials;
 import pkgData.Participation;
@@ -45,12 +46,16 @@ import pkgDatabase.pkgListener.OnPlayersChangedListener;
 import pkgDatabase.pkgListener.OnQRCodeGeneratedListener;
 import pkgDatabase.pkgListener.OnSetPasswordListener;
 import pkgDatabase.pkgListener.OnSetPlayerPosListener;
+import pkgException.NoLocalDataException;
 import pkgMisc.GsonSerializor;
 import pkgWSA.Accessor;
 import pkgWSA.HttpMethod;
 
 public class Database extends Application implements OnLoginListener, OnLoadAllPlayersListener, OnLoadAllGamesListener, OnLoadParticipationsListener, OnGameInsertedListener, OnPlayerInsertedListener, OnGameUpdatedListener, OnPlayerUpdatedListener, OnPlayerRemovedListener, OnGameRemovedListener, OnLoadSinglePlayerListener, OnQRCodeGeneratedListener {
     public static final int MIN_LENGTH_PASSWORD = 5;
+    private final String USERDATA_FILE = "localUser.dat",
+                         DATA_FILE = "localData.dat";
+
     private static Database instance = null;
     private TreeSet<Game> allGames;
     private TreeSet<Player> allPlayers;
@@ -64,6 +69,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
     private SharedPreferences preferences;
     private Bitmap qrCode;
     private String loginKey;
+    private boolean isOnline;
 
     private Database() {
         this.loginKey = null;
@@ -77,6 +83,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         this.allGames = new TreeSet<>();
         this.playersChangedListener = new ArrayList<>();
         this.gamesChangedListener = new ArrayList<>();
+        this.isOnline = true;
     }
 
     public static Database getInstance() {
@@ -120,6 +127,8 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
                 listener.playersChanged();
             }
         }
+
+        saveLocalData(new LocalData(allPlayers, allGames), getContext());
     }
 
     private void notifyOnGamesUpdatedListener() {
@@ -130,6 +139,8 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
                 listener.gamesChanged();
             }
         }
+
+        saveLocalData(new LocalData(allPlayers, allGames), getContext());
     }
 
 
@@ -148,17 +159,16 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
      */
     private void setCurrentlyLoggedInPlayer(Player p) {
         //if currentlyLoggedInPlayer is changed to a different player and this player has an ID
-        if (!(p == null || p.getId() == null || this.currentlyLoggedInPlayer.equals(p))) {
-            generateQRBitmap();     //Start generation of QR-Code
+        if (p != null && p.getId() != null && !p.equals(this.currentlyLoggedInPlayer)) {
+            generateQRBitmap(p.getId());     //Start generation of QR-Code
         }
         this.currentlyLoggedInPlayer = p;
     }
 
-    private void generateQRBitmap() {
-        String content = String.valueOf(getCurrentlyLoggedInPlayer().getId());
+    private void generateQRBitmap(int id) {
         setQRCodeReady(false);
         //Generate QR-Code is separate AsyncTask
-        new GenerateQRCodeTask().execute(content, this);
+        new GenerateQRCodeTask().execute(Integer.toString(id), this);
     }
 
     /**
@@ -213,6 +223,10 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
             }
             setCurrentlyLoggedInPlayer(getPlayerByUsername(getCurrentlyLoggedInPlayer().getUsername()));
             notifyOnPlayersChangedListener();
+
+            //Store logged in player locally
+            saveLocalUserData(new LocalUserData(currentlyLoggedInPlayer, loadLocalUserData(getContext()).getPassword(), true),
+                    getContext());
         }
     }
 
@@ -409,7 +423,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         //Launch login
         Accessor.runRequestAsync(HttpMethod.POST, "player/security/login", "loginKey="+loginKey,
                 GsonSerializor.serializeLoginCredentials(new LoginCredentials(username, local_pwEnc)),
-                new LoginHandler(username, listenersToInform, listenersToStore));
+                new LoginHandler(username, local_pw_Unencrypted, listenersToInform, listenersToStore));
     }
 
     /**
@@ -422,12 +436,15 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
             try {
                 //set loginKey (loginKey is used for all further access to webservice)
                 loginKey = handler.getLoginKey();
+                setOnline(true);
 
                 //Set currentlyLoggedInPlayer to save the username of the logged in player
                 // so the setting of currentlyLoggedInPlayer in loadPlayersFinished works
                 // (This method is called before loadAllPlayers is finished, so otherwise
                 // getPlayerByUsername(getCurrentlyLoggedInPlayer().getUsername()) wouldn't work)
                 setCurrentlyLoggedInPlayer(new Player(handler.getUsername(), "tmpname", false));
+
+                saveLocalUserData(new LocalUserData(null, handler.getPassword(), true), getContext());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -441,6 +458,10 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
     public void logout() {
         setCurrentlyLoggedInPlayer(null);
         loginKey = null;
+
+        LocalUserData localUserData = loadLocalUserData(getContext());
+        saveLocalUserData(new LocalUserData(localUserData.getPlayer(), localUserData.getPassword(), false), getContext());
+
     }
 
     /**
@@ -687,6 +708,8 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
             for (Participation p : handler.getPatrticipations()) {
                 game.addParticipation(p);
             }
+
+            notifyOnGamesUpdatedListener();
         }
     }
 
@@ -744,12 +767,11 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         return !this.preferences.getBoolean("preference_usesnackbar", true);
     }
 
-    public LocalUserData loadUserLocally() throws Exception {
-        String FILENAME = "localUser.dat";
-        LocalUserData userData;
+    public LocalUserData loadLocalUserData(Context ctx) {
+        LocalUserData userData = null;
 
         try {
-            FileInputStream fis = this.openFileInput(FILENAME);
+            FileInputStream fis = ctx.openFileInput(USERDATA_FILE);
             ObjectInputStream is = new ObjectInputStream(fis);
             userData = (LocalUserData) is.readObject();
             is.close();
@@ -763,13 +785,84 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         return userData;
     }
 
-    private void saveUserLocally(LocalUserData data) throws Exception {
-        String FILENAME = "localUser.dat";
+    private void saveLocalUserData(LocalUserData data, Context ctx) {
 
-        FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
-        ObjectOutputStream os = new ObjectOutputStream(fos);
-        os.writeObject(data);
-        os.close();
-        fos.close();
+        try {
+            FileOutputStream fos = ctx.openFileOutput(USERDATA_FILE, Context.MODE_PRIVATE);
+            ObjectOutputStream os = new ObjectOutputStream(fos);
+            os.writeObject(data);
+            os.close();
+            fos.close();
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+
+    public boolean loginLocal(String username, String password, Context ctx) throws Exception {
+        boolean isSuccess = false;
+        LocalUserData lud = loadLocalUserData(ctx);
+
+        setOnline(false);
+
+        if (lud != null) {
+            if (lud.getPlayer().getUsername().equals(username) && lud.getPassword().equals(password)) {
+                setCurrentlyLoggedInPlayer(lud.getPlayer());
+                isSuccess = true;
+
+                LocalData localData = loadLocalData(ctx);
+                allPlayers = localData.getAllPlayers();
+                allGames = localData.getAllGames();
+
+                lud.setLoggedIn(true);
+                saveLocalUserData(lud, ctx);
+            }
+        }
+        else {
+            throw new NoLocalDataException();
+        }
+
+        return isSuccess;
+    }
+
+
+    private LocalData loadLocalData(Context ctx) {
+        LocalData data = null;
+
+        try {
+            FileInputStream fis = ctx.openFileInput(DATA_FILE);
+            ObjectInputStream is = new ObjectInputStream(fis);
+            data = (LocalData) is.readObject();
+            is.close();
+            fis.close();
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+            data = null;
+        }
+
+        return data;
+    }
+
+    private void saveLocalData(LocalData data, Context ctx) {
+        try {
+            FileOutputStream fos = ctx.openFileOutput(DATA_FILE, Context.MODE_PRIVATE);
+            ObjectOutputStream os = new ObjectOutputStream(fos);
+            os.writeObject(data);
+            os.close();
+            fos.close();
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public boolean isOnline() {
+        return isOnline;
+    }
+
+    private void setOnline(boolean online) {
+        isOnline = online;
     }
 }

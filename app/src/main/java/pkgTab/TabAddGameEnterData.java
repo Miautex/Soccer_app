@@ -411,12 +411,12 @@ public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeL
 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+        //unused
     }
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+        //unused
     }
 
     @Override

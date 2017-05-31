@@ -8,23 +8,22 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_vertical"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
         app:srcCompat="@drawable/logo_moskitos"
         android:foregroundGravity="center"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/progressIndicator"
-        android:layout_toEndOf="@+id/progressIndicator"
-        android:layout_margin="30dp"/>
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:paddingTop="20dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"/>
 
     <ProgressBar
         android:id="@+id/progressIndicator"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="false"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="24dp"
-        android:visibility="gone" />
+        android:layout_below="@id/imageView"/>
 
 </RelativeLayout>

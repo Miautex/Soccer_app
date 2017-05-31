@@ -26,6 +26,7 @@ import android.widget.TextView;
 import pkgAdapter.MainGameListAdapter;
 import pkgAdapter.MainPlayerListAdapter;
 import pkgData.Game;
+import pkgData.LocalUserData;
 import pkgData.Player;
 import pkgDatabase.Database;
 import pkgDatabase.LoadAllGamesHandler;
@@ -46,6 +47,7 @@ public class MainActivity extends BaseActivity
         OnGamesChangedListener, AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener,
         SwipeRefreshLayout.OnRefreshListener, OnLoadAllPlayersListener, OnLoadAllGamesListener, View.OnClickListener,
         OnPlayerRemovedListener, OnGameRemovedListener, OnDeleteDialogButtonPressedListener {
+
     private ListView lsvPlayersGames = null;
     private Spinner spPlayersGames = null;
     private SwipeRefreshLayout swipeRefreshLayout = null;
@@ -61,6 +63,9 @@ public class MainActivity extends BaseActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        db = Database.getInstance();
+        setTitle();
         getAllViews();
 
         try {
@@ -74,7 +79,6 @@ public class MainActivity extends BaseActivity
             navigationView.setNavigationItemSelectedListener(this);
 
             //Accessor.init(getApplicationContext());
-            db = Database.getInstance();
             //db.initPreferences(this);
 
             if (db.getCurrentlyLoggedInPlayer() == null || !db.getCurrentlyLoggedInPlayer().isAdmin()) {
@@ -90,6 +94,15 @@ public class MainActivity extends BaseActivity
         }
         catch (Exception ex) {
             showMessage(getString(R.string.Error) + ": " + ex.getMessage());
+        }
+    }
+
+    public void setTitle() {
+        if (db.isOnline()) {
+            setTitle(R.string.title_activity_main);
+        }
+        else {
+            setTitle(R.string.title_activity_main_offline);
         }
     }
 
@@ -171,8 +184,7 @@ public class MainActivity extends BaseActivity
             openActivity(ScoreboardActivity.class);
         } else if (id == R.id.mniLogin) {
             db.logout();
-            finish();
-            openActivity(LoginActivity.class);
+            openLoginActivity();
         } else if (id == R.id.nav_settings) {
             openActivity(SettingsActivity.class);
         }
@@ -202,6 +214,18 @@ public class MainActivity extends BaseActivity
         db.addOnPlayersUpdatedListener(this);
         db.addOnGamesUpdatedListener(this);
         imgQRCode.setOnClickListener(this);
+    }
+
+    private void openLoginActivity() {
+        LocalUserData localUserData = db.loadLocalUserData(this);
+
+        finish();
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("username", localUserData.getPlayer().getUsername());
+        intent.putExtra("password", localUserData.getPassword());
+        intent.putExtra("doAutoLogin", false);
+        startActivity(intent);
     }
 
     private void displayLoggedInUser() {

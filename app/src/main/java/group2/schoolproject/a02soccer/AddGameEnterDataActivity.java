@@ -1,11 +1,15 @@
 package group2.schoolproject.a02soccer;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -25,7 +29,7 @@ import pkgMisc.NamePWValidator;
 import pkgTab.TabAddGameEnterData;
 
 public class AddGameEnterDataActivity extends BaseActivity implements OnScoreChangedListener, View.OnClickListener,
-        OnGameInsertedListener {
+        OnGameInsertedListener, TabLayout.OnTabSelectedListener, TextView.OnEditorActionListener {
 
     private SectionsPageAdapter adapter = null;
     private ViewPager mViewPager = null;
@@ -66,6 +70,7 @@ public class AddGameEnterDataActivity extends BaseActivity implements OnScoreCha
             adapter = new SectionsPageAdapter(getSupportFragmentManager());
             setupViewPager(mViewPager);
             tablayout.setupWithViewPager(mViewPager);
+            tablayout.setOnTabSelectedListener(this);
 
             //Initially display score
             updateScoreDisplay(tmpGame.getScoreTeamA(), tmpGame.getScoreTeamB());
@@ -88,6 +93,7 @@ public class AddGameEnterDataActivity extends BaseActivity implements OnScoreCha
     private void registrateEventHandlers() {
         btnBack.setOnClickListener(this);
         btnSave.setOnClickListener(this);
+        edtRemark.setOnEditorActionListener(this);
     }
 
     private void setupViewPager(ViewPager viewPager){
@@ -208,5 +214,33 @@ public class AddGameEnterDataActivity extends BaseActivity implements OnScoreCha
         else {
             showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CouldNotInsertGame));
         }
+    }
+
+    private void closeKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
+    }
+
+    @Override
+    public void onTabSelected(TabLayout.Tab tab) {
+        closeKeyboard();
+    }
+
+    @Override
+    public void onTabUnselected(TabLayout.Tab tab) {
+        closeKeyboard();
+    }
+
+    @Override
+    public void onTabReselected(TabLayout.Tab tab) {
+        closeKeyboard();
+    }
+
+    @Override
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        if (actionId == EditorInfo.IME_ACTION_DONE) {
+            closeKeyboard();
+        }
+        return false;
     }
 }

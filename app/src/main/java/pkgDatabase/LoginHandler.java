@@ -13,13 +13,15 @@ public class LoginHandler extends WebserviceResponseHandler
     private ArrayList<OnLoginListener> listenersToInform,       //Listeners are notified directly by this handler
                                         listenersToStore;       //Listeners are stored for access by Database
     private String loginKey = null,
-            username;
+            username,
+            local_pw_Unencrypted;
 
-    public LoginHandler(String username, ArrayList<OnLoginListener> listenersToInform,
+    public LoginHandler(String username, String local_pw_Unencrypted, ArrayList<OnLoginListener> listenersToInform,
                         ArrayList<OnLoginListener> listenersToStore) {
         this.listenersToInform = listenersToInform;
         this.listenersToStore = listenersToStore;
         this.username = username;
+        this.local_pw_Unencrypted = local_pw_Unencrypted;
     }
 
     @Override
@@ -56,6 +58,10 @@ public class LoginHandler extends WebserviceResponseHandler
 
     public String getUsername() {
         return this.username;
+    }
+
+    public String getPassword() {
+        return this.local_pw_Unencrypted;
     }
 
     public String getLoginKey() {
