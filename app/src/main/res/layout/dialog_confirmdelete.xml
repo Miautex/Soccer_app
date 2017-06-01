@@ -29,7 +29,7 @@
         android:layout_marginTop="18dp">
 
         <Button
-            android:id="@+id/btnYes"
+            android:id="@+id/btnNo"
             style="@style/buttonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
