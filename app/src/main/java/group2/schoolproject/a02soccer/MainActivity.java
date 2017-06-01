@@ -37,6 +37,7 @@ import pkgDatabase.pkgListener.OnGameRemovedListener;
 import pkgDatabase.pkgListener.OnGamesChangedListener;
 import pkgDatabase.pkgListener.OnLoadAllGamesListener;
 import pkgDatabase.pkgListener.OnLoadAllPlayersListener;
+import pkgDatabase.pkgListener.OnOnlineStatusChangedListener;
 import pkgDatabase.pkgListener.OnPlayerRemovedListener;
 import pkgDatabase.pkgListener.OnPlayersChangedListener;
 import pkgException.CouldNotDeletePlayerException;
@@ -46,7 +47,8 @@ public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnPlayersChangedListener,
         OnGamesChangedListener, AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener,
         SwipeRefreshLayout.OnRefreshListener, OnLoadAllPlayersListener, OnLoadAllGamesListener, View.OnClickListener,
-        OnPlayerRemovedListener, OnGameRemovedListener, OnDeleteDialogButtonPressedListener {
+        OnPlayerRemovedListener, OnGameRemovedListener, OnDeleteDialogButtonPressedListener,
+        OnOnlineStatusChangedListener {
 
     private ListView lsvPlayersGames = null;
     private Spinner spPlayersGames = null;
@@ -212,6 +214,7 @@ public class MainActivity extends BaseActivity
         swipeRefreshLayout.setOnRefreshListener(this);
         db.addOnPlayersUpdatedListener(this);
         db.addOnGamesUpdatedListener(this);
+        db.addOnOnlineStatusChangedListener(this);
         imgQRCode.setOnClickListener(this);
     }
 
@@ -431,11 +434,11 @@ public class MainActivity extends BaseActivity
             arePlayersRefreshed = false;
             areGamesRefreshed = false;
             hasRefreshFailed = false;
-            db.loadAllPlayers(this);
-            db.loadAllGames(this);
+            db.tryRefreshData(this, this, this);
         } catch (Exception e) {
-            showMessage(getString(R.string.Error) + ": " + e.getMessage());
             e.printStackTrace();
+            swipeRefreshLayout.setRefreshing(false);
+            showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CouldNotRefreshData));
         }
     }
 
@@ -491,5 +494,10 @@ public class MainActivity extends BaseActivity
         else {
             showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CouldNotDeleteGame));
         }
+    }
+
+    @Override
+    public void onlineStatusChanged(boolean isOnline) {
+        setTitle();
     }
 }
