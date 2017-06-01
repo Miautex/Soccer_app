@@ -18,8 +18,6 @@ import pkgMisc.StringEscape;
  */
 
 public final class WebRequestTask extends AsyncTask <RequestParameter, Void, AccessorResponse> {
-
-    private static final int TIMEOUT = 5000;
     private static final Charset CHARSET = Charset.forName("UTF-8");
 
     private WebRequestTaskListener listener = null;
@@ -55,7 +53,7 @@ public final class WebRequestTask extends AsyncTask <RequestParameter, Void, Acc
                         url = new URL(fullUri.toString());
                         con = (HttpURLConnection) url.openConnection();
 
-                        con.setConnectTimeout(TIMEOUT);
+                        con.setConnectTimeout(parameter.getTimeout());
                         con.setRequestMethod(parameter.getHttpMethod().toString());
 
                         con.setRequestProperty("Content-Type", "application/json; Charset=" + getCharsetName());

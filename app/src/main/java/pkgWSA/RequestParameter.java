@@ -8,6 +8,7 @@ final class RequestParameter {
     private HttpMethod httpMethod;
     private String uri, uriPath, uriQuery, requestBody;
     private boolean async;
+    private int timeout;
     private WebRequestTaskListener listener;
 
     public RequestParameter (String uri, HttpMethod method, String path, String query, String body) {
@@ -19,6 +20,7 @@ final class RequestParameter {
         setRequestBody(body);
         setAsync(false);
         setListener(null);
+        timeout = 1000;
     }
 
     public RequestParameter (String uri, HttpMethod method, String path, String query, String body, boolean async, WebRequestTaskListener listener) {
@@ -77,6 +79,14 @@ final class RequestParameter {
 
     public void setListener (WebRequestTaskListener listener) {
         this.listener = listener;
+    }
+
+    public void setTimeout (int timeout) {
+        this.timeout = timeout;
+    }
+
+    public int getTimeout () {
+        return timeout;
     }
 
     public WebRequestTaskListener getListener () {
