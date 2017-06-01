@@ -4,7 +4,10 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+
+import java.net.NoRouteToHostException;
 import java.net.SocketTimeoutException;
+
 import pkgData.LocalUserData;
 import pkgDatabase.Database;
 import pkgWSA.Accessor;
@@ -81,19 +84,16 @@ public class StartActivity extends BaseActivity implements WebRequestTaskListene
     }
 
     private void startIsServerAvailableCheck() throws Exception {
-        try {
-            Accessor.init(this);
-            //Check to see if server responds or if timeout happens
-            Accessor.runRequestAsync(HttpMethod.GET, "", null, null, this);
-        }
-        catch (Exception ex) {
-            throw ex;
-        }
+        Accessor.init(this);
+        //Check to see if server responds or if timeout happens
+        Accessor.runRequestAsync(HttpMethod.GET, "", null, null, this);
     }
 
     @Override
     public void done(AccessorResponse response) {
-        if (response.getException() != null && response.getException().getClass().equals(SocketTimeoutException.class)) {
+        if (response.getException() != null && (
+                response.getException().getClass().equals(SocketTimeoutException.class)) ||
+                response.getException().getClass().equals(NoRouteToHostException.class)) {
             tryLocalLogin();
         }
         else {
@@ -103,7 +103,7 @@ public class StartActivity extends BaseActivity implements WebRequestTaskListene
     }
 
     private boolean isDeviceOnline() {
-        ConnectivityManager cm = (ConnectivityManager) this.getSystemService(this.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) this.getSystemService(CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }

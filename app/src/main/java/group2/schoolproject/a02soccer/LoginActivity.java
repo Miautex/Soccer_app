@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 
 import java.io.FileNotFoundException;
 import java.net.ConnectException;
+import java.net.NoRouteToHostException;
 import java.net.SocketTimeoutException;
 
 import pkgDatabase.Database;
@@ -97,7 +98,7 @@ public class LoginActivity extends BaseActivity
         edtPassword.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if(keyCode == event.KEYCODE_ENTER){
+                if(keyCode == KeyEvent.KEYCODE_ENTER){
                     try {
                         tryLogin(isOnline);
                     }catch(Exception ex){
@@ -198,19 +199,10 @@ public class LoginActivity extends BaseActivity
                 try {
                     throw handler.getException();
                 }
-                catch (SocketTimeoutException e) {
-                    //msg = getString(R.string.msg_ConnectionTimeout);
-                    tryLogin(false);
-                }
-                catch (ConnectException e) {
-                    //msg = getString(R.string.msg_NetworkUnreachable);
-                    tryLogin(false);
-                }
                 catch (InvalidLoginDataException e) {
                     msg = getString(R.string.msg_UsernameOrPasswordInvalid);
                 }
-                catch (FileNotFoundException e) {
-                    //msg = getString(R.string.msg_NetworkUnreachable);
+                catch (ConnectException | FileNotFoundException | SocketTimeoutException | NoRouteToHostException e) {
                     tryLogin(false);
                 }
                 catch (Exception e) {
