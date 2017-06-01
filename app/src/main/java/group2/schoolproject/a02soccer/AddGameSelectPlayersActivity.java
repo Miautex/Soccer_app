@@ -3,7 +3,6 @@ package group2.schoolproject.a02soccer;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,8 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.google.zxing.Result;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -23,7 +23,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.TreeSet;
 
-import me.dm7.barcodescanner.zxing.ZXingScannerView;
 import pkgComparator.PlayerComparatorName;
 import pkgData.Game;
 import pkgData.Player;
@@ -34,7 +33,7 @@ import pkgMisc.PxDpConverter;
  * @author Elias Santner
  */
 
-public class AddGameSelectPlayersActivity extends BaseActivity implements View.OnClickListener, ZXingScannerView.ResultHandler {
+public class AddGameSelectPlayersActivity extends BaseActivity implements View.OnClickListener{
     private static final int MIN_PLAYERS_REQUIRED = 4;
 
     private DatePicker datePicker = null;
@@ -44,7 +43,6 @@ public class AddGameSelectPlayersActivity extends BaseActivity implements View.O
             btnCancel = null,
             btnQRScan = null;
     private CheckBox ckbParticipationHeader = null;
-    private ZXingScannerView scanner;
 
     private Database db = null;
     private HashMap<Integer, Player> hmPlayers = null;
@@ -190,19 +188,22 @@ public class AddGameSelectPlayersActivity extends BaseActivity implements View.O
         this.startActivity(myIntent);
     }
 
-    private void openQRScanner(){
-        scanner = new ZXingScannerView(this);
-        setContentView(scanner);
-        scanner.setResultHandler(this);
-        scanner.startCamera();
-    }
-
     @Override
-    public void handleResult(Result rawResult){
-        Log.i("SCANN RESULT", rawResult.getText());
-        scanner.resumeCameraPreview(this);
-    }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if(result != null) {
+            if(result.getContents() == null) {
 
+            } else {
+
+            }
+
+        } else {
+
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+
+    }
     @Override
     public void onClick(View v) {
         try {
@@ -213,7 +214,7 @@ public class AddGameSelectPlayersActivity extends BaseActivity implements View.O
                 this.finish();
             }
             else if(v.getId() == R.id.btnQRScan){
-                openQRScanner();
+                new IntentIntegrator (this).initiateScan();
             }
             else if (v.getId() == R.id.ckbParticipationHeader) {
                 TableRow row = null;
