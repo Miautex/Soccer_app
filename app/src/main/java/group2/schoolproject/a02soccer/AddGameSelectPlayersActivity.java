@@ -3,6 +3,7 @@ package group2.schoolproject.a02soccer;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +15,15 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.google.zxing.Result;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.TreeSet;
 
+import me.dm7.barcodescanner.zxing.ZXingScannerView;
 import pkgComparator.PlayerComparatorName;
 import pkgData.Game;
 import pkgData.Player;
@@ -30,15 +34,17 @@ import pkgMisc.PxDpConverter;
  * @author Elias Santner
  */
 
-public class AddGameSelectPlayersActivity extends BaseActivity implements View.OnClickListener {
+public class AddGameSelectPlayersActivity extends BaseActivity implements View.OnClickListener, ZXingScannerView.ResultHandler {
     private static final int MIN_PLAYERS_REQUIRED = 4;
 
     private DatePicker datePicker = null;
     private TableLayout tablePlayers = null;
     private TableLayout tablePlayersHeader = null;
     private Button btnContinue = null,
-            btnCancel = null;
+            btnCancel = null,
+            btnQRScan = null;
     private CheckBox ckbParticipationHeader = null;
+    private ZXingScannerView scanner;
 
     private Database db = null;
     private HashMap<Integer, Player> hmPlayers = null;
@@ -80,12 +86,14 @@ public class AddGameSelectPlayersActivity extends BaseActivity implements View.O
         tablePlayersHeader = (TableLayout) findViewById(R.id.table_PlayersHeader);
         btnContinue = (Button) findViewById(R.id.btnSave);
         btnCancel = (Button) findViewById(R.id.btnCancel);
+        btnQRScan = (Button) findViewById(R.id.btnQRScan);
         ckbParticipationHeader = (CheckBox) findViewById(R.id.ckbParticipationHeader);
     }
 
     private void registrateEventHandlers() {
         btnContinue.setOnClickListener(this);
         btnCancel.setOnClickListener(this);
+        btnQRScan.setOnClickListener(this);
         ckbParticipationHeader.setOnClickListener(this);
     }
 
@@ -182,6 +190,19 @@ public class AddGameSelectPlayersActivity extends BaseActivity implements View.O
         this.startActivity(myIntent);
     }
 
+    private void openQRScanner(){
+        scanner = new ZXingScannerView(this);
+        setContentView(scanner);
+        scanner.setResultHandler(this);
+        scanner.startCamera();
+    }
+
+    @Override
+    public void handleResult(Result rawResult){
+        Log.i("SCANN RESULT", rawResult.getText());
+        scanner.resumeCameraPreview(this);
+    }
+
     @Override
     public void onClick(View v) {
         try {
@@ -190,6 +211,9 @@ public class AddGameSelectPlayersActivity extends BaseActivity implements View.O
             }
             else if (v.getId() == R.id.btnCancel) {
                 this.finish();
+            }
+            else if(v.getId() == R.id.btnQRScan){
+                openQRScanner();
             }
             else if (v.getId() == R.id.ckbParticipationHeader) {
                 TableRow row = null;

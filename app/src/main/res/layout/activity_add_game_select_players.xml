@@ -107,6 +107,14 @@
                 android:text="@string/btnCancel" />
 
             <Button
+                android:id="@+id/btnQRScan"
+                style="@style/buttonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="QRCode" />
+
+            <Button
                 android:id="@+id/btnSave"
                 style="@style/buttonStyle"
                 android:layout_width="0dp"
