@@ -66,7 +66,6 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
     private Context ctx;
     private Player currentlyLoggedInPlayer;
     private ArrayList<OnGamesChangedListener> gamesChangedListener;
-    private boolean initialLogin;
     private boolean isQRCodeReady;
     private Locale locale;
     private ArrayList<OnPlayersChangedListener> playersChangedListener;
@@ -80,7 +79,6 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         this.ctx = null;
         this.currentlyLoggedInPlayer = null;
         this.preferences = null;
-        this.initialLogin = true;
         this.qrCode = null;
         this.isQRCodeReady = false;
         this.allPlayers = new TreeSet<>();
@@ -752,18 +750,6 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
 
     public String getStoredPassword() {
         return this.preferences.getString("preference_user_password", BuildConfig.FLAVOR);
-    }
-
-    public boolean isAutologin() {
-        return this.preferences.getBoolean("preference_user_autologin", false);
-    }
-
-    public void setInitialLogin(boolean initialLogin) {
-        this.initialLogin = initialLogin;
-    }
-
-    public boolean isInitialLogin() {
-        return this.initialLogin;
     }
 
     public boolean isToast() {
