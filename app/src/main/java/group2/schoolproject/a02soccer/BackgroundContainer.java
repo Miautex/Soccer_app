@@ -7,7 +7,7 @@ import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
 /**
- * Created by Raphael on 28.05.2017.
+ * @author Raphael Moser
  */
 
     public class BackgroundContainer extends FrameLayout {

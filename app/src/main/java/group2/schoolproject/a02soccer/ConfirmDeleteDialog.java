@@ -11,6 +11,10 @@ import android.widget.TextView;
 
 import pkgListeners.OnDeleteDialogButtonPressedListener;
 
+/**
+ * @author Martin Sonnberger
+ */
+
 public class ConfirmDeleteDialog extends Dialog implements
         android.view.View.OnClickListener {
 
