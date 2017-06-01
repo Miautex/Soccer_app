@@ -47,14 +47,6 @@
             android:id="@+id/linearLayout">
 
             <Button
-                android:id="@+id/btnQRScan"
-                style="@style/buttonStyle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="QRScan" />
-
-            <Button
                 android:id="@+id/btnCancel"
                 style="@style/buttonStyle"
                 android:layout_width="0dp"

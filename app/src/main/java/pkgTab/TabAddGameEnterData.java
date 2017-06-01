@@ -35,6 +35,9 @@ import pkgData.PlayerPosition;
 import pkgListeners.OnScoreChangedListener;
 import pkgMisc.PxDpConverter;
 
+/**
+ * @author Elias Santner
+ */
 
 public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeListener, View.OnKeyListener,
         View.OnClickListener, TextWatcher {

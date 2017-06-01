@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 
 import java.io.FileNotFoundException;
 import java.net.ConnectException;
+import java.net.NoRouteToHostException;
 import java.net.SocketTimeoutException;
 
 import pkgDatabase.Database;
@@ -53,8 +54,6 @@ public class LoginActivity extends BaseActivity
                 tryLogin();
             }*/
 
-            System.out.println("------------- LOGIN OPENED");
-
             String username = (String) this.getIntent().getSerializableExtra("username");
             String password = (String) this.getIntent().getSerializableExtra("password");
             Boolean doAutoLogin = (Boolean) this.getIntent().getSerializableExtra("doAutoLogin");
@@ -76,7 +75,6 @@ public class LoginActivity extends BaseActivity
             }
         }
         catch (Exception ex) {
-            ex.printStackTrace();
             showMessage(getString(R.string.Error) + ": " + ex.getMessage());
         }
     }
@@ -100,7 +98,7 @@ public class LoginActivity extends BaseActivity
         edtPassword.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if(keyCode == event.KEYCODE_ENTER){
+                if(keyCode == KeyEvent.KEYCODE_ENTER){
                     try {
                         tryLogin(isOnline);
                     }catch(Exception ex){
@@ -196,27 +194,16 @@ public class LoginActivity extends BaseActivity
                 db.loadAllGames(this);
             }
             else {
-
-                handler.getException().printStackTrace();
                 String msg = null;
                 toggleLoginInputs(true);
 
                 try {
                     throw handler.getException();
                 }
-                catch (SocketTimeoutException e) {
-                    //msg = getString(R.string.msg_ConnectionTimeout);
-                    tryLogin(false);
-                }
-                catch (ConnectException e) {
-                    //msg = getString(R.string.msg_NetworkUnreachable);
-                    tryLogin(false);
-                }
                 catch (InvalidLoginDataException e) {
                     msg = getString(R.string.msg_UsernameOrPasswordInvalid);
                 }
-                catch (FileNotFoundException e) {
-                    //msg = getString(R.string.msg_NetworkUnreachable);
+                catch (ConnectException | FileNotFoundException | SocketTimeoutException | NoRouteToHostException e) {
                     tryLogin(false);
                 }
                 catch (Exception e) {

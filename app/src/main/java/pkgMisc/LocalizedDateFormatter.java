@@ -5,6 +5,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+/**
+ * @author Elias Santner
+ */
+
 public class LocalizedDateFormatter {
     public static String format(Date date, Locale loc) {
         SimpleDateFormat sdf = new SimpleDateFormat("EEE", loc);

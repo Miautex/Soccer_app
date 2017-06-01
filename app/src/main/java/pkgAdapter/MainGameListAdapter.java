@@ -16,6 +16,10 @@ import group2.schoolproject.a02soccer.R;
 import pkgData.Game;
 import pkgMisc.LocalizedDateFormatter;
 
+/**
+ * @author Elias Santner
+ */
+
 public class MainGameListAdapter extends ArrayAdapter<Game> {
     private final Context context;
     private ArrayList<Game> values;

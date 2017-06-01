@@ -1,6 +1,5 @@
 package group2.schoolproject.a02soccer;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -18,7 +17,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -39,6 +37,7 @@ import pkgDatabase.pkgListener.OnGameRemovedListener;
 import pkgDatabase.pkgListener.OnGamesChangedListener;
 import pkgDatabase.pkgListener.OnLoadAllGamesListener;
 import pkgDatabase.pkgListener.OnLoadAllPlayersListener;
+import pkgDatabase.pkgListener.OnOnlineStatusChangedListener;
 import pkgDatabase.pkgListener.OnPlayerRemovedListener;
 import pkgDatabase.pkgListener.OnPlayersChangedListener;
 import pkgException.CouldNotDeletePlayerException;
@@ -49,7 +48,8 @@ public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnPlayersChangedListener,
         OnGamesChangedListener, AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener,
         SwipeRefreshLayout.OnRefreshListener, OnLoadAllPlayersListener, OnLoadAllGamesListener, View.OnClickListener,
-        OnPlayerRemovedListener, OnGameRemovedListener, OnDeleteDialogButtonPressedListener {
+        OnPlayerRemovedListener, OnGameRemovedListener, OnDeleteDialogButtonPressedListener,
+        OnOnlineStatusChangedListener {
 
     private ListView lsvPlayersGames = null;
     private Spinner spPlayersGames = null;
@@ -215,6 +215,7 @@ public class MainActivity extends BaseActivity
         swipeRefreshLayout.setOnRefreshListener(this);
         db.addOnPlayersUpdatedListener(this);
         db.addOnGamesUpdatedListener(this);
+        db.addOnOnlineStatusChangedListener(this);
         imgQRCode.setOnClickListener(this);
     }
 
@@ -312,33 +313,9 @@ public class MainActivity extends BaseActivity
 
     public void onDeleteGame(Game selectedGame) throws Exception {
         String msg = getString(R.string.msg_ConfirmGameDeletion);
-        openConfirmDeleteDialog(selectedGame, msg);
-    }
-
-    private void openConfirmDeleteDialog(final Object selectedObject, String msg){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.ConfirmDeleteDialog);
-        builder.setMessage(msg);
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
-            public void onClick(DialogInterface dialog, int which) {
-                deleteDialogButtonPressed(selectedObject, true);
-            }
-        });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener(){
-            public void onClick(DialogInterface dialog, int which) {
-                deleteDialogButtonPressed(selectedObject, false);
-            }
-        });
-        AlertDialog ad = builder.create();
-        ad.show();
-        Button pos = ad.getButton(DialogInterface.BUTTON_POSITIVE);
-        Button neg = ad.getButton(DialogInterface.BUTTON_NEGATIVE);
-        ad.getWindow().setLayout(1000, 500);
-        pos.setBackground(getResources().getDrawable(R.drawable.buttonshape));
-        pos.setTextColor(getResources().getColor(R.color.black));
-        pos.setWidth(425);
-        neg.setBackground(getResources().getDrawable(R.drawable.buttonshape));
-        neg.setTextColor(getResources().getColor(R.color.black));
-        neg.setWidth(425);
+        String title = String.format(getString(R.string.msg_ConfirmPlayerDeletion), msg);
+        ConfirmDeleteDialog cdd = new ConfirmDeleteDialog(selectedGame, this, title);
+        cdd.show();
     }
 
     public void onEditPlayer(Player selectedPlayer) {
@@ -356,8 +333,9 @@ public class MainActivity extends BaseActivity
                 throw new Exception(getString(R.string.msg_CannotDeleteOwnPlayer));
             }
             else {
-                String msg = String.format(getString(R.string.msg_ConfirmPlayerDeletion), selectedPlayer.getName());
-                openConfirmDeleteDialog(selectedPlayer, msg);
+                String title = String.format(getString(R.string.msg_ConfirmPlayerDeletion), selectedPlayer.getName());
+                ConfirmDeleteDialog cdd = new ConfirmDeleteDialog(selectedPlayer, this, title);
+                cdd.show();
             }
         }
         catch (CouldNotDeletePlayerException ex) {
@@ -457,11 +435,11 @@ public class MainActivity extends BaseActivity
             arePlayersRefreshed = false;
             areGamesRefreshed = false;
             hasRefreshFailed = false;
-            db.loadAllPlayers(this);
-            db.loadAllGames(this);
+            db.tryRefreshData(this, this, this);
         } catch (Exception e) {
-            showMessage(getString(R.string.Error) + ": " + e.getMessage());
             e.printStackTrace();
+            swipeRefreshLayout.setRefreshing(false);
+            showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CouldNotRefreshData));
         }
     }
 
@@ -511,5 +489,10 @@ public class MainActivity extends BaseActivity
         if (handler.getException() != null) {
             showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CouldNotDeleteGame));
         }
+    }
+
+    @Override
+    public void onlineStatusChanged(boolean isOnline) {
+        setTitle();
     }
 }

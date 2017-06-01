@@ -12,6 +12,10 @@ import pkgResult.Result;
 import pkgWSA.AccessorResponse;
 import pkgWSA.WebRequestTaskListener;
 
+/**
+ * @author Elias Santner
+ */
+
 public class UpdateGameHandler extends WebserviceResponseHandler
         implements WebRequestTaskListener, OnParticipationUpdatedListener {
     private ArrayList<OnGameUpdatedListener> listeners;

@@ -3,6 +3,10 @@ package pkgDatabase;
 import pkgException.UnauthorizedWebserviceAccessException;
 import pkgWSA.AccessorResponse;
 
+/**
+ * @author Elias Santner
+ */
+
 public abstract class WebserviceResponseHandler {
     private Exception exception = null;
 

@@ -14,6 +14,10 @@ import group2.schoolproject.a02soccer.MainActivity;
 import group2.schoolproject.a02soccer.R;
 import pkgData.Player;
 
+/**
+ * @author Elias Santner
+ */
+
 public class MainPlayerListAdapter extends ArrayAdapter<Player> {
     private final Context context;
     private ArrayList<Player> values;

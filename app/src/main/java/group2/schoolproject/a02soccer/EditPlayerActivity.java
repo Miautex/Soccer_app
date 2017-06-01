@@ -24,6 +24,9 @@ import pkgException.UsernameTooLongException;
 import pkgException.UsernameTooShortException;
 import pkgMisc.NamePWValidator;
 
+/**
+ * @author Elias Santner
+ */
 
 public class EditPlayerActivity extends BaseActivity
         implements View.OnClickListener, OnPlayerUpdatedListener, OnSetPasswordListener {

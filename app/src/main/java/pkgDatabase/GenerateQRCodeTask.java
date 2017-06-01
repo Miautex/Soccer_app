@@ -11,6 +11,10 @@ import com.google.zxing.qrcode.QRCodeWriter;
 
 import pkgDatabase.pkgListener.OnQRCodeGeneratedListener;
 
+/**
+ * @author Elias Santner, Martin Sonnberger
+ */
+
 public class GenerateQRCodeTask extends AsyncTask<Object, Void, Bitmap> {
     OnQRCodeGeneratedListener listener = null;
 

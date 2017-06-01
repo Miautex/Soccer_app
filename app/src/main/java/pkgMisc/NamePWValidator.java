@@ -3,6 +3,10 @@ package pkgMisc;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * @author Elias Santner
+ */
+
 public class NamePWValidator {
     private static Pattern usernamePattern = Pattern.compile("\\A\\p{ASCII}*\\z");
     private static Matcher matcher;

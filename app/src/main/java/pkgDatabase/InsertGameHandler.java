@@ -12,6 +12,10 @@ import pkgResult.SingleGameResult;
 import pkgWSA.AccessorResponse;
 import pkgWSA.WebRequestTaskListener;
 
+/**
+ * @author Elias Santner
+ */
+
 public class InsertGameHandler extends WebserviceResponseHandler
         implements WebRequestTaskListener, OnParticipationInsertedListener {
 

@@ -23,6 +23,10 @@ import pkgListeners.OnScoreChangedListener;
 import pkgMisc.LocalizedDateFormatter;
 import pkgTab.TabAddGameEnterData;
 
+/**
+ * @author Elias Santner
+ */
+
 public class ShowGameActivity extends BaseActivity implements OnLoadParticipationsListener, OnScoreChangedListener {
 
     private SectionsPageAdapter adapter = null;

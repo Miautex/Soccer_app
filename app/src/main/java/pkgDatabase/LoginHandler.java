@@ -8,6 +8,10 @@ import pkgException.InvalidLoginDataException;
 import pkgWSA.AccessorResponse;
 import pkgWSA.WebRequestTaskListener;
 
+/**
+ * @author Elias Santner
+ */
+
 public class LoginHandler extends WebserviceResponseHandler
         implements WebRequestTaskListener {
     private ArrayList<OnLoginListener> listenersToInform,       //Listeners are notified directly by this handler

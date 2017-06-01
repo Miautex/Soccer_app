@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 
+import java.net.NoRouteToHostException;
 import java.net.SocketTimeoutException;
 
 import pkgData.LocalUserData;
@@ -13,6 +14,10 @@ import pkgWSA.Accessor;
 import pkgWSA.AccessorResponse;
 import pkgWSA.HttpMethod;
 import pkgWSA.WebRequestTaskListener;
+
+/**
+ * @author Elias Santner
+ */
 
 public class StartActivity extends BaseActivity implements WebRequestTaskListener {
     Database db;
@@ -26,19 +31,11 @@ public class StartActivity extends BaseActivity implements WebRequestTaskListene
             setTitle(R.string.app_name);
 
             db = Database.getInstance();
-            localUserData = db.loadLocalUserData(this);
             db.setContext(this);
             Accessor.init(getApplicationContext());
             db.initPreferences(getApplicationContext());
 
-            /*if (localUserData != null) {
-                System.out.println("------------ username=" + localUserData.getPlayer());
-                System.out.println("------------ pw=" + localUserData.getPassword());
-                System.out.println("------------ isloggedin=" + localUserData.isLoggedIn());
-            }
-            else {
-                System.out.println("------------ localUserData==null");
-            }*/
+            localUserData = db.loadLocalUserData(this);
 
             if (localUserData == null || localUserData.getPlayer() == null || localUserData.getPassword() == null) {
                 openLogin();
@@ -62,7 +59,6 @@ public class StartActivity extends BaseActivity implements WebRequestTaskListene
         }
         catch (Exception ex) {
             ex.printStackTrace();
-            //showMessage(getString(R.string.Error) + ": " + ex.getMessage());
         }
     }
 
@@ -88,19 +84,16 @@ public class StartActivity extends BaseActivity implements WebRequestTaskListene
     }
 
     private void startIsServerAvailableCheck() throws Exception {
-        try {
-            Accessor.init(this);
-            //Check to see if server responds or if timeout happens
-            Accessor.runRequestAsync(HttpMethod.GET, "", null, null, this);
-        }
-        catch (Exception ex) {
-            throw ex;
-        }
+        Accessor.init(this);
+        //Check to see if server responds or if timeout happens
+        Accessor.runRequestAsync(HttpMethod.GET, "", null, null, this);
     }
 
     @Override
     public void done(AccessorResponse response) {
-        if (response.getException() != null && response.getException().getClass().equals(SocketTimeoutException.class)) {
+        if (response.getException() != null && (
+                response.getException().getClass().equals(SocketTimeoutException.class)) ||
+                response.getException().getClass().equals(NoRouteToHostException.class)) {
             tryLocalLogin();
         }
         else {
@@ -110,7 +103,7 @@ public class StartActivity extends BaseActivity implements WebRequestTaskListene
     }
 
     private boolean isDeviceOnline() {
-        ConnectivityManager cm = (ConnectivityManager) this.getSystemService(this.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) this.getSystemService(CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }

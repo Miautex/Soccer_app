@@ -10,6 +10,10 @@ import pkgResult.Result;
 import pkgWSA.AccessorResponse;
 import pkgWSA.WebRequestTaskListener;
 
+/**
+ * @author Elias Santner
+ */
+
 public class SetPasswordHandler extends WebserviceResponseHandler
         implements WebRequestTaskListener {
     private ArrayList<OnSetPasswordListener> listeners;

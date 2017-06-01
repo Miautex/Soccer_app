@@ -13,6 +13,10 @@ import pkgResult.SinglePlayerResult;
 import pkgWSA.AccessorResponse;
 import pkgWSA.WebRequestTaskListener;
 
+/**
+ * @author Elias Santner
+ */
+
 public class InsertPlayerHandler extends WebserviceResponseHandler
         implements WebRequestTaskListener, OnSetPlayerPosListener {
     private ArrayList<OnPlayerInsertedListener> listeners;

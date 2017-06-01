@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.preference.PreferenceManager;
-
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
@@ -17,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.TreeSet;
-
 import group2.schoolproject.a02soccer.BuildConfig;
 import pkgComparator.PlayerComparatorName;
 import pkgData.Game;
@@ -37,6 +35,7 @@ import pkgDatabase.pkgListener.OnLoadAllPlayersListener;
 import pkgDatabase.pkgListener.OnLoadParticipationsListener;
 import pkgDatabase.pkgListener.OnLoadSinglePlayerListener;
 import pkgDatabase.pkgListener.OnLoginListener;
+import pkgDatabase.pkgListener.OnOnlineStatusChangedListener;
 import pkgDatabase.pkgListener.OnParticipationInsertedListener;
 import pkgDatabase.pkgListener.OnParticipationUpdatedListener;
 import pkgDatabase.pkgListener.OnPlayerInsertedListener;
@@ -51,6 +50,10 @@ import pkgMisc.GsonSerializor;
 import pkgWSA.Accessor;
 import pkgWSA.HttpMethod;
 
+/**
+ * @author Elias Santner
+ */
+
 public class Database extends Application implements OnLoginListener, OnLoadAllPlayersListener, OnLoadAllGamesListener, OnLoadParticipationsListener, OnGameInsertedListener, OnPlayerInsertedListener, OnGameUpdatedListener, OnPlayerUpdatedListener, OnPlayerRemovedListener, OnGameRemovedListener, OnLoadSinglePlayerListener, OnQRCodeGeneratedListener {
     public static final int MIN_LENGTH_PASSWORD = 5;
     private final String USERDATA_FILE = "localUser.dat",
@@ -62,10 +65,10 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
     private Context ctx;
     private Player currentlyLoggedInPlayer;
     private ArrayList<OnGamesChangedListener> gamesChangedListener;
-    private boolean initialLogin;
     private boolean isQRCodeReady;
     private Locale locale;
     private ArrayList<OnPlayersChangedListener> playersChangedListener;
+    private ArrayList<OnOnlineStatusChangedListener> onlineStatusChangedListeners;
     private SharedPreferences preferences;
     private Bitmap qrCode;
     private String loginKey;
@@ -76,13 +79,13 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         this.ctx = null;
         this.currentlyLoggedInPlayer = null;
         this.preferences = null;
-        this.initialLogin = true;
         this.qrCode = null;
         this.isQRCodeReady = false;
         this.allPlayers = new TreeSet<>();
         this.allGames = new TreeSet<>();
         this.playersChangedListener = new ArrayList<>();
         this.gamesChangedListener = new ArrayList<>();
+        onlineStatusChangedListeners = new ArrayList<>();
         this.isOnline = true;
     }
 
@@ -141,6 +144,26 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         }
 
         saveLocalData(new LocalData(allPlayers, allGames), getContext());
+    }
+
+    public void addOnOnlineStatusChangedListener(OnOnlineStatusChangedListener listener) {
+        if (listener == null) {
+            throw new IllegalArgumentException("listener must not be null");
+        } else if (this.onlineStatusChangedListeners.contains(listener)) {
+            throw new IllegalArgumentException("listener already registered");
+        } else {
+            this.onlineStatusChangedListeners.add(listener);
+        }
+    }
+
+    private void notifyOnOnlineStatusChangedListener() {
+        Iterator it = this.onlineStatusChangedListeners.iterator();
+        while (it.hasNext()) {
+            OnOnlineStatusChangedListener listener = (OnOnlineStatusChangedListener) it.next();
+            if (listener != null) {
+                listener.onlineStatusChanged(isOnline());
+            }
+        }
     }
 
 
@@ -203,6 +226,8 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
             listeners.add(listener);
         }
         listeners.add(this);
+
+
 
         //Launch loading
         Accessor.runRequestAsync(HttpMethod.GET, "player", "loginKey="+loginKey,
@@ -750,18 +775,6 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         return this.preferences.getString("preference_user_password", BuildConfig.FLAVOR);
     }
 
-    public boolean isAutologin() {
-        return this.preferences.getBoolean("preference_user_autologin", false);
-    }
-
-    public void setInitialLogin(boolean initialLogin) {
-        this.initialLogin = initialLogin;
-    }
-
-    public boolean isInitialLogin() {
-        return this.initialLogin;
-    }
-
     public boolean isToast() {
         return !this.preferences.getBoolean("preference_usesnackbar", true);
     }
@@ -777,7 +790,6 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
             fis.close();
         }
         catch (Exception ex) {
-            ex.printStackTrace();
             userData = null;
         }
 
@@ -863,5 +875,46 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
 
     private void setOnline(boolean online) {
         isOnline = online;
+        notifyOnOnlineStatusChangedListener();
+
+    }
+
+    public void tryRefreshData(Context ctx, final OnLoadAllPlayersListener loadPListener,
+                                final OnLoadAllGamesListener loadGListener) throws Exception {
+
+        if (!isOnline()) {
+            LocalUserData lud = loadLocalUserData(ctx);
+            if (lud != null) {
+                login(lud.getPlayer().getUsername(), lud.getPassword(), new OnLoginListener() {
+                    @Override
+                    public void loginFinished(LoginHandler handler) {
+                        try {
+                            if (handler.getException() == null) {
+                                //set loginKey (loginKey is used for all further access to webservice)
+                                loginKey = handler.getLoginKey();
+                                setOnline(true);
+
+                                //Set currentlyLoggedInPlayer to save the username of the logged in player
+                                // so the setting of currentlyLoggedInPlayer in loadPlayersFinished works
+                                // (This method is called before loadAllPlayers is finished, so otherwise
+                                // getPlayerByUsername(getCurrentlyLoggedInPlayer().getUsername()) wouldn't work)
+                                setCurrentlyLoggedInPlayer(new Player(handler.getUsername(), "tmpname", false));
+                            }
+
+                            //causes exception if login failed
+                            loadAllPlayers(loadPListener);
+                            loadAllGames(loadGListener);
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        }
+        else {
+            loadAllPlayers(loadPListener);
+            loadAllGames(loadGListener);
+        }
     }
 }

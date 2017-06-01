@@ -20,7 +20,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:background="@null"
-        android:layout_weight="1"
+        android:layout_weight="1.5"
         app:srcCompat="@drawable/ic_edit" />
 
     <ImageButton
@@ -28,6 +28,6 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:background="@null"
-        android:layout_weight="1"
+        android:layout_weight="1.5"
         app:srcCompat="@drawable/ic_delete" />
 </LinearLayout>
