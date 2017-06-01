@@ -149,6 +149,7 @@ public class LoginActivity extends BaseActivity
         catch (Exception ex) {
             toggleLoginInputs(true);
             showMessage(ex.getMessage());
+            ex.printStackTrace();
         }
     }
 
