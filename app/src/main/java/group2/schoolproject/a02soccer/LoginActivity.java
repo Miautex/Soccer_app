@@ -15,6 +15,7 @@ import java.net.ConnectException;
 import java.net.NoRouteToHostException;
 import java.net.SocketTimeoutException;
 
+import pkgData.LocalUserData;
 import pkgDatabase.Database;
 import pkgDatabase.LoadAllGamesHandler;
 import pkgDatabase.LoadAllPlayersHandler;
@@ -48,16 +49,12 @@ public class LoginActivity extends BaseActivity
         try {
             db = Database.getInstance();
 
-            /*setDefaultCredentials();
-            if (db.isInitialLogin() && db.isAutologin()) {
-                db.setInitialLogin(false);
-                tryLogin();
-            }*/
-
             String username = (String) this.getIntent().getSerializableExtra("username");
             String password = (String) this.getIntent().getSerializableExtra("password");
             Boolean doAutoLogin = (Boolean) this.getIntent().getSerializableExtra("doAutoLogin");
             isOnline = (Boolean) this.getIntent().getSerializableExtra("isOnline");
+
+            LocalUserData lud = null;
 
             if (isOnline == null) {
                 isOnline = true;
@@ -66,8 +63,20 @@ public class LoginActivity extends BaseActivity
             if (username != null) {
                 edtUsername.setText(username);
             }
+            else {
+                lud = db.loadLocalUserData(this);
+                if (lud != null) {
+                    edtUsername.setText(lud.getPlayer().getUsername());
+                }
+            }
+
             if (password != null) {
                 edtPassword.setText(password);
+            }
+            else {
+                if (lud != null) {
+                    edtPassword.setText(lud.getPassword());
+                }
             }
 
             if (doAutoLogin != null && doAutoLogin) {
@@ -137,7 +146,7 @@ public class LoginActivity extends BaseActivity
                         if (db.loginLocal(edtUsername.getText().toString(), edtPassword.getText().toString(), this)) {
                             openMainActivity();
                         } else {
-                            showMessage(getString(R.string.msg_UsernameOrPasswordInvalid));
+                            showMessage(getString(R.string.msg_CannotConnectToWebservice));
                         }
                     }
                     catch (NoLocalDataException ex) {

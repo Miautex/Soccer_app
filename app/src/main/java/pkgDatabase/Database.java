@@ -62,6 +62,10 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
     private static Database instance = null;
     private TreeSet<Game> allGames;
     private TreeSet<Player> allPlayers;
+    //Collections for saving local games/players
+    private TreeSet<Game> localGames;
+    private TreeSet<Player> localPlayers;
+
     private Context ctx;
     private Player currentlyLoggedInPlayer;
     private ArrayList<OnGamesChangedListener> gamesChangedListener;
@@ -83,6 +87,8 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         this.isQRCodeReady = false;
         this.allPlayers = new TreeSet<>();
         this.allGames = new TreeSet<>();
+        this.localPlayers = new TreeSet<>();
+        this.localGames = new TreeSet<>();
         this.playersChangedListener = new ArrayList<>();
         this.gamesChangedListener = new ArrayList<>();
         onlineStatusChangedListeners = new ArrayList<>();
@@ -292,7 +298,14 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
     public ArrayList<Player> getAllPlayers() {
         TreeSet<Player> sortingTs = new TreeSet<>(new PlayerComparatorName());
         sortingTs.addAll(this.allPlayers);
-        return new ArrayList<>(sortingTs);
+
+        //Put logged in player first, then the rest ordered by name
+        ArrayList<Player> returnList = new ArrayList<>();
+        returnList.add(getCurrentlyLoggedInPlayer());
+        sortingTs.remove(getCurrentlyLoggedInPlayer());
+        returnList.addAll(sortingTs);
+
+        return returnList;
     }
 
     /**
@@ -312,7 +325,6 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         return player;
     }
 
-
     /**
      * Starts the insertion of passed player
      */
@@ -324,9 +336,14 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         }
         listeners.add(this);
 
-        //Launch insertion
-        Accessor.runRequestAsync(HttpMethod.POST, "player", "loginKey="+loginKey,
-                GsonSerializor.serializePlayer(p), new InsertPlayerHandler(listeners, p));
+        if (isOnline()) {
+            //Launch insertion
+            Accessor.runRequestAsync(HttpMethod.POST, "player", "loginKey=" + loginKey,
+                    GsonSerializor.serializePlayer(p), new InsertPlayerHandler(listeners, p));
+        }
+        else {
+            localPlayers.add(p);
+        }
     }
 
     /**
@@ -879,6 +896,11 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
 
     }
 
+
+    /*
+     * If app is online, try to load all players and games
+     * If offline, tries to log in and then load data
+     */
     public void tryRefreshData(Context ctx, final OnLoadAllPlayersListener loadPListener,
                                 final OnLoadAllGamesListener loadGListener) throws Exception {
 

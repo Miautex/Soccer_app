@@ -120,7 +120,6 @@ public class StartActivity extends BaseActivity implements WebRequestTaskListene
         Intent intent = new Intent(this, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra("username", username);
-        intent.putExtra("password", password);
         intent.putExtra("doAutoLogin", doAutoLogin);
         intent.putExtra("isOnline", isOnline);
         startActivity(intent);
