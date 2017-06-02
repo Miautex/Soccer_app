@@ -1,5 +1,6 @@
 package group2.schoolproject.a02soccer;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,6 +26,7 @@ public class TeamDivision2 extends BaseActivity /*implements View.OnTouchListene
     HashMap<Long, Integer> mItemIdTopMapTeam1 = new HashMap<>();
     HashMap<Long, Integer> mItemIdTopMapTeam2 = new HashMap<>();
     Direction direction = null;
+    Boolean isTouchTeamActive = false;
     ArrayList<Player> players;
 
     private static final int SWIPE_DURATION = 250;
@@ -37,13 +39,6 @@ public class TeamDivision2 extends BaseActivity /*implements View.OnTouchListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team_division2);
-        ArrayList<String> allPlayers = new ArrayList<>();
-        allPlayers.add("a");
-        allPlayers.add("b");
-        allPlayers.add("c");
-        allPlayers.add("d");
-        allPlayers.add("e");
-        allPlayers.add("f");
         players = Database.getInstance().getAllPlayers();
         ArrayList<Player> team1 = new ArrayList<>();
         ArrayList<Player> team2 = new ArrayList<>();
@@ -54,8 +49,8 @@ public class TeamDivision2 extends BaseActivity /*implements View.OnTouchListene
 
         //adapterAll = new StableArrayAdapter(this, allPlayers, mTouchListenerAll);
         adapterAll = new StableArrayAdapter(this, players, mTouchListenerAll);
-        adapterTeam1 = new StableArrayAdapter(this, team1, mTouchListenerTeam1);
-        adapterTeam2 = new StableArrayAdapter(this, team2, mTouchListenerTeam2);
+        adapterAll.setColor(Color.WHITE);
+
 
         // adapterTeam2 = new StableArrayAdapter(this, R.layout.opaque_text_view, team2, mTouchListenerTeam2);
 
@@ -64,6 +59,10 @@ public class TeamDivision2 extends BaseActivity /*implements View.OnTouchListene
         lvTeam2 = (ListView) findViewById(R.id.lvTeam2);
 
         lvAllPlayers.setAdapter(adapterAll);
+        adapterTeam1 = new StableArrayAdapter(this, team1, mTouchListenerTeam1);
+        adapterTeam1.setColor(Color.GRAY);
+        adapterTeam2 = new StableArrayAdapter(this, team2, mTouchListenerTeam2);
+        adapterTeam2.setColor(Color.GRAY);
         lvTeam1.setAdapter(adapterTeam1);
         lvTeam2.setAdapter(adapterTeam2);
 
@@ -178,12 +177,12 @@ public class TeamDivision2 extends BaseActivity /*implements View.OnTouchListene
 
         float mDownX;
         private int mSwipeSlop = -1;
-
         @Override
         public boolean onTouch(final View v, MotionEvent event) {
-            if (mSwipeSlop < 0) {
-                mSwipeSlop = ViewConfiguration.get(TeamDivision2.this).getScaledTouchSlop();
-            }
+            if (isTouchTeamActive){
+                if (mSwipeSlop < 0) {
+                    mSwipeSlop = ViewConfiguration.get(TeamDivision2.this).getScaledTouchSlop();
+                }
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     BackgroundContainerTeam1.showBackground(v.getTop(), v.getHeight());
@@ -275,6 +274,8 @@ public class TeamDivision2 extends BaseActivity /*implements View.OnTouchListene
                     return false;
             }
             return true;
+        }
+        return false;
         }
     };
 
@@ -396,6 +397,12 @@ public class TeamDivision2 extends BaseActivity /*implements View.OnTouchListene
         if (adapterAll.getCount() == 0) {
             BackgroundContainerAll.setVisibility(View.INVISIBLE);
             lvAllPlayers.setVisibility(View.INVISIBLE);
+            adapterTeam1.setColor(Color.WHITE);
+            adapterTeam1.notifyDataSetChanged();
+            adapterTeam2.setColor(Color.WHITE);
+            adapterTeam2.notifyDataSetChanged();
+            isTouchTeamActive = true;
+
         }
 
     }

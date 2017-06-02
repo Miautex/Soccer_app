@@ -1,12 +1,14 @@
 package pkgAdapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
@@ -28,11 +30,16 @@ import pkgData.PlayerPosition;
     private ArrayList<Player> values = new ArrayList<>();
     private View.OnTouchListener mTouchListener;
     private final Context context;
+    private int color = Color.WHITE;
 
     @Override
     public void add(@Nullable Player object) {
         super.add(object);
         values.add(object);
+    }
+
+    public void setColor(int color){
+        this.color = color;
     }
 
     @Override
@@ -63,8 +70,10 @@ import pkgData.PlayerPosition;
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View linea = inflater.inflate(R.layout.opaque_text_view, parent, false);
-        TextView test = (TextView) linea.findViewById(R.id.listItem);
-        Spinner test2 = (Spinner) linea.findViewById(R.id.spinner);
+        linea.setBackgroundColor(color);
+        View linea2 = linea.findViewById(R.id.linearLayout2);
+        TextView test = (TextView) linea2.findViewById(R.id.listItem);
+        Spinner test2 = (Spinner) linea2.findViewById(R.id.spinner);
         if (values != null && values.size() >= 0) {
             test.setText(values.get(position).toString());
             createSpinner(test2,values.get(position).getPositions());
