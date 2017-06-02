@@ -191,10 +191,14 @@ public class AddGameSelectPlayersActivity extends BaseActivity implements View.O
     }
 
     private void openQRScanner(){
-        scanner = new ZXingScannerView(this);
-        setContentView(scanner);
-        scanner.setResultHandler(this);
-        scanner.startCamera();
+        //scanner = new ZXingScannerView(this);
+        //setContentView(scanner);
+        //scanner.setResultHandler(this);
+        //scanner.startCamera();
+
+        Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+        intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+        startActivityForResult(intent, 0);
     }
 
     @Override

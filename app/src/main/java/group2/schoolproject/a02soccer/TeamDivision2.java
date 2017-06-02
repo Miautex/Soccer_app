@@ -433,17 +433,18 @@ public class TeamDivision2 extends BaseActivity /*implements View.OnTouchListene
      * layout, and then to run animations between all of those start/end positions.
      */
     private void animateRemovalAll(final ListView listview, View viewToRemove) {
+        final View viewToRemove2 = viewToRemove;
         int firstVisiblePosition = listview.getFirstVisiblePosition();
         for (int i = 0; i < listview.getChildCount(); ++i) {
             View child = listview.getChildAt(i);
-            if (child != viewToRemove) {
+            if (child != viewToRemove2) {
                 int position = firstVisiblePosition + i;
                 long itemId = adapterAll.getItemId(position);
                 mItemIdTopMapAll.put(itemId, child.getTop());
             }
         }
         // Moves the Item to Team
-        movePlayerFromAll(viewToRemove);
+        //movePlayerFromAll(viewToRemove);
 
         final ViewTreeObserver observer = listview.getViewTreeObserver();
         observer.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
@@ -471,6 +472,7 @@ public class TeamDivision2 extends BaseActivity /*implements View.OnTouchListene
                                     }
                                 });
                                 firstAnimation = false;
+                                movePlayerFromAll(viewToRemove2);
                             }
                         }
                     } else {
@@ -491,6 +493,7 @@ public class TeamDivision2 extends BaseActivity /*implements View.OnTouchListene
                                 }
                             });
                             firstAnimation = false;
+                            movePlayerFromAll(viewToRemove2);
                         }
                     }
                 }
@@ -502,6 +505,7 @@ public class TeamDivision2 extends BaseActivity /*implements View.OnTouchListene
     }
 
     private void animateRemovalTeam1(final ListView listview, View viewToRemove) {
+        final View viewToRemove2 = viewToRemove;
         int firstVisiblePosition = listview.getFirstVisiblePosition();
         for (int i = 0; i < listview.getChildCount(); ++i) {
             View child = listview.getChildAt(i);
@@ -512,7 +516,7 @@ public class TeamDivision2 extends BaseActivity /*implements View.OnTouchListene
             }
         }
         // Delete the item from the adapter
-        movePlayerFromTeam1(viewToRemove);
+        //movePlayerFromTeam1(viewToRemove);
 
         final ViewTreeObserver observer = listview.getViewTreeObserver();
         observer.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
@@ -540,6 +544,7 @@ public class TeamDivision2 extends BaseActivity /*implements View.OnTouchListene
                                     }
                                 });
                                 firstAnimation = false;
+                                movePlayerFromTeam1(viewToRemove2);
                             }
                         }
                     } else {
@@ -560,6 +565,7 @@ public class TeamDivision2 extends BaseActivity /*implements View.OnTouchListene
                                 }
                             });
                             firstAnimation = false;
+                            movePlayerFromTeam1(viewToRemove2);
                         }
                     }
                 }
@@ -571,6 +577,7 @@ public class TeamDivision2 extends BaseActivity /*implements View.OnTouchListene
     }
 
     private void animateRemovalTeam2(final ListView listview, View viewToRemove) {
+        final View viewToRemove2 = viewToRemove;
         int firstVisiblePosition = listview.getFirstVisiblePosition();
         for (int i = 0; i < listview.getChildCount(); ++i) {
             View child = listview.getChildAt(i);
@@ -581,7 +588,7 @@ public class TeamDivision2 extends BaseActivity /*implements View.OnTouchListene
             }
         }
         // Delete the item from the adapter
-        movePlayerFromTeam2(viewToRemove);
+        //movePlayerFromTeam2(viewToRemove);
 
         final ViewTreeObserver observer = listview.getViewTreeObserver();
         observer.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
@@ -609,6 +616,7 @@ public class TeamDivision2 extends BaseActivity /*implements View.OnTouchListene
                                     }
                                 });
                                 firstAnimation = false;
+                                movePlayerFromTeam2(viewToRemove2);
                             }
                         }
                     } else {
@@ -629,6 +637,7 @@ public class TeamDivision2 extends BaseActivity /*implements View.OnTouchListene
                                 }
                             });
                             firstAnimation = false;
+                            movePlayerFromTeam2(viewToRemove2);
                         }
                     }
                 }

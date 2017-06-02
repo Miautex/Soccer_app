@@ -19,7 +19,6 @@ public class ConfirmDeleteDialog extends Dialog implements
         android.view.View.OnClickListener {
 
     private OnDeleteDialogButtonPressedListener listener;
-    private Dialog dialog;
     private Button btnYes, btnNo;
     private TextView msg;
     private Object selectedObject;
