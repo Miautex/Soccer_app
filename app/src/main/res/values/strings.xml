@@ -36,10 +36,10 @@
     <string name="mniTeam">Team(test)</string>
     <string name="mniGerman">Deutsch</string>
     <string name="mniEnglish">English</string>
-    <string name="mniLogin">Logout</string>
-    <string name="mniAdd">Add Player</string>
-    <string name="mniAddGame">Add Game</string>
+    <string name="mniLogout">Logout</string>
+    <string name="mniAdd">Add</string>
     <string name="mniEdit">Edit Userdata</string>
+    <string name="mniDisplay">Display</string>
     <string name="ctxMniEditPlayer">Edit</string>
     <string name="ctxMniDeletePlayer">Delete</string>
 
@@ -102,6 +102,9 @@
     <string name="position">Position</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="player">Player</string>
+    <string name="game">Game</string>
+    <string name="misc">Miscellaneous</string>
 
     <!--Spinner Arrays-->
     <string-array name="spinnerPlayerGameValues">
@@ -173,6 +176,7 @@
     <string name="msg_CouldNotUpdateStats">Could not update statistics</string>
     <string name="msg_ConfirmGameDeletion">Do you really want to delete this game ?</string>
     <string name="msg_ConfirmPlayerDeletion">Do you really want to delete player \'%s\' ?</string>
+    <string name="msg_DataSavedLocally">Data saved locally</string>
 
     <!--Nav Drawer-->
     <string name="navigation_drawer_open">Open navigation drawer</string>

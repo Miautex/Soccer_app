@@ -4,44 +4,56 @@
     <group android:checkableBehavior="single">
 
         <item
-            android:id="@+id/mniEditPlayer"
-            android:icon="@drawable/ic_mosquito"
-            android:title="@string/mniEdit" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_mosquito"
-            android:title="@string/title_activity_scoreboard" />
-        <item
-            android:id="@+id/mniLogin"
-            android:icon="@drawable/ic_mosquito"
-            android:title="@string/mniLogin" />
-        <item
-            android:id="@+id/nav_settings"
-            android:icon="@drawable/ic_mosquito"
-            android:title="@string/nav_settings_title" />
-        <item
-            android:id="@+id/nav_test"
-            android:icon="@drawable/ic_mosquito"
-            android:title="test" />
+            android:id="@+id/menuPlayer"
+            android:title="@string/player">
+            <menu>
+                <item
+                    android:id="@+id/mniDisplayPlayer"
+                    android:icon="@drawable/ic_mosquito"
+                    android:title="@string/mniDisplay" />
+                <item
+                    android:id="@+id/mniEditPlayer"
+                    android:icon="@drawable/ic_edit"
+                    android:title="@string/mniEdit" />
+                <item
+                    android:id="@+id/mniScoreboard"
+                    android:icon="@drawable/ic_scoreboard"
+                    android:title="@string/title_activity_scoreboard" />
+                <item
+                    android:id="@+id/mniAddPlayer"
+                    android:icon="@drawable/ic_add"
+                    android:title="@string/mniAdd" />
+            </menu>
+        </item>
 
-        <group
-            android:id="@+id/menuGroupAdmin"
-            android:checkableBehavior="single">
-            <item
-                android:id="@+id/menuAdmin"
-                android:title="Admin">
-                <menu>
-                    <item
-                        android:id="@+id/mniAddPlayer"
-                        android:icon="@drawable/ic_mosquito"
-                        android:title="@string/mniAdd" />
-                    <item
-                        android:id="@+id/mniAddGame"
-                        android:icon="@drawable/ic_mosquito"
-                        android:title="@string/mniAddGame" />
-                </menu>
-            </item>
-        </group>
+        <item
+            android:id="@+id/menuGame"
+            android:title="@string/game">
+            <menu>
+                <item
+                    android:id="@+id/mniDisplayGames"
+                    android:icon="@drawable/ic_mosquito"
+                    android:title="@string/mniDisplay" />
+                <item
+                    android:id="@+id/mniAddGame"
+                    android:icon="@drawable/ic_add"
+                    android:title="@string/mniAdd" />
+            </menu>
+        </item>
+
+        <item
+            android:id="@+id/menuMisc"
+            android:title="@string/misc">
+            <menu>
+                <item
+                    android:id="@+id/mniSettings"
+                    android:icon="@drawable/ic_settings"
+                    android:title="@string/title_activity_settings" />
+                <item
+                    android:id="@+id/mniLogout"
+                    android:icon="@drawable/ic_mosquito"
+                    android:title="@string/mniLogout" />
+            </menu>
+        </item>
     </group>
-
 </menu>

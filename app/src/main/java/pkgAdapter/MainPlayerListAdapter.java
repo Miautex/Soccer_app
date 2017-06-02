@@ -63,6 +63,9 @@ public class MainPlayerListAdapter extends ArrayAdapter<Player> {
     private void setContent(int position) {
         Player player = values.get(position);
         txvName.setText(player.toString());
+        if (player.isLocallySavedOnly()) {
+            txvName.setTextColor(getContext().getResources().getColor(R.color.redLogo));
+        }
     }
 
     private void setListeners(final int position) {

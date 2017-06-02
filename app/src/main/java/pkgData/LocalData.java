@@ -14,6 +14,13 @@ public class LocalData implements Serializable {
         this.allGames = allGames;
     }
 
+    public LocalData(TreeSet<Player> allPlayers, TreeSet<Game> allGames,
+                     TreeSet<Player> localPlayers, TreeSet<Game> localGames) {
+        this(allPlayers,allGames);
+        this.localPlayers = localPlayers;
+        this.localGames = localGames;
+    }
+
     public TreeSet<Player> getAllPlayers() {
         return allPlayers;
     }

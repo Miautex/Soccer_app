@@ -41,6 +41,7 @@ public class GsonSerializor {
             jsonObject = new JSONObject(gson.toJson(p));
             jsonObject.remove("positions");
             jsonObject.remove("statistics");
+            jsonObject.remove("isLocallySavedOnly");
             jsonObject.put("admin", jsonObject.get("isAdmin"));     //it's "admin" and not "isAdmin" for webservice for some reason...
             jsonObject.remove("isAdmin");
             retVal = jsonObject.toString();

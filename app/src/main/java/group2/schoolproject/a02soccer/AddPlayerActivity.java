@@ -18,6 +18,7 @@ import pkgException.DuplicateUsernameException;
 import pkgException.NameTooLongException;
 import pkgException.NameTooShortException;
 import pkgException.PasswordTooShortException;
+import pkgException.SavedDataLocallyException;
 import pkgException.UsernameTooLongException;
 import pkgException.UsernameTooShortException;
 import pkgMisc.NamePWValidator;
@@ -129,6 +130,18 @@ public class AddPlayerActivity extends BaseActivity
         catch (PasswordTooShortException ex) {
             throw new PasswordTooShortException(String.format(getString(R.string.msg_PasswordTooShort),
                     ex.getMinLenght()), ex.getMinLenght());
+        }
+        catch (DuplicateUsernameException ex) {
+            toggleProgressBar(false);
+            throw new DuplicateUsernameException(String.format(getString(R.string.msg_UsernameNotAvailable),
+                    newPlayer.getUsername()));
+        }
+        catch (SavedDataLocallyException ex) {
+            showMessage(getString(R.string.msg_DataSavedLocally));
+            toggleProgressBar(false);
+        }
+        catch (Exception ex) {
+            toggleProgressBar(false);
         }
     }
 

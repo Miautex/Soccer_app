@@ -33,7 +33,6 @@ public class InsertPlayerHandler extends WebserviceResponseHandler
         try {
             //throws Exception if error happened
             handleResponse(response);
-
             SinglePlayerResult r = GsonSerializor.deserializeSinglePlayerResult(response.getJson());
 
             if (r.isSuccess()) {
@@ -79,6 +78,6 @@ public class InsertPlayerHandler extends WebserviceResponseHandler
     }
 
     public Player getPlayer() {
-        return this.remote_player;
+        return this.remote_player == null ? this.local_player : this.remote_player;
     }
 }

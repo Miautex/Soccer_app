@@ -21,6 +21,21 @@ public class PlayerStatistics implements Serializable {
 
     public PlayerStatistics() {
         super();
+        numWins = 0;
+        numDefeats = 0;
+        numDraws = 0;
+        numGoalsShot = 0;
+        numGoalsShotHead = 0;
+        numGoalsShotHeadSnow = 0;
+        numGoalsShotPenalty = 0;
+        numGoalsGot = 0;
+        numNutmeg = 0;
+        numGamesPlayed = 0;
+        numPosAttack = 0;
+        numPosDefense = 0;
+        numPosMidfield = 0;
+        numPosGoal = 0;
+        avgGoalDifference = 0f;
     }
 
     public Float getAvgGoalDifference() {

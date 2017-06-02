@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
@@ -80,22 +81,29 @@ public class MainActivity extends BaseActivity
             drawer.setDrawerListener(toggle);
             toggle.syncState();
 
-            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-            navigationView.setNavigationItemSelectedListener(this);
-
-            if (db.getCurrentlyLoggedInPlayer() == null || !db.getCurrentlyLoggedInPlayer().isAdmin()) {
-                navigationView.getMenu().setGroupVisible(R.id.menuGroupAdmin, false);
-            }
-            else {
-                navigationView.getMenu().setGroupVisible(R.id.menuGroupAdmin, true);
-            }
-
+            setupMenu(db.getCurrentlyLoggedInPlayer().isAdmin());
             registrateEventHandlers();
             displayPlayers();
             displayLoggedInUser();
         }
         catch (Exception ex) {
+            ex.printStackTrace();
             showMessage(getString(R.string.Error) + ": " + ex.getMessage());
+        }
+    }
+
+    private void setupMenu(boolean isAdmin) {
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        if (!isAdmin) {
+            MenuItem myMoveGroupItem = navigationView.getMenu().getItem(0);
+            SubMenu subMenu = myMoveGroupItem.getSubMenu();
+            subMenu.findItem(R.id.mniAddPlayer).setVisible(false);
+
+            myMoveGroupItem = navigationView.getMenu().getItem(1);
+            subMenu = myMoveGroupItem.getSubMenu();
+            subMenu.findItem(R.id.mniAddGame).setVisible(false);
         }
     }
 
@@ -174,28 +182,44 @@ public class MainActivity extends BaseActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.mniAddPlayer) {
-            openActivity(AddPlayerActivity.class);
-        } else if (id == R.id.mniAddGame) {
-            openActivity(AddGameSelectPlayersActivity.class);
-        } else if (id == R.id.mniEditPlayer) {
-            Intent myIntent = new Intent(this, EditPlayerActivity.class);
-            myIntent.putExtra("player", db.getCurrentlyLoggedInPlayer());
-            startActivity(myIntent);
-        } else if (id == R.id.nav_manage) {
-            openActivity(ScoreboardActivity.class);
-        } else if (id == R.id.mniLogin) {
-            db.logout(this);
-            openLoginActivity();
-        } else if (id == R.id.nav_settings) {
-            openActivity(SettingsActivity.class);
+        try {
+            switch (id) {
+                case R.id.mniDisplayPlayer:
+                    displayPlayers();
+                    break;
+                case R.id.mniEditPlayer:
+                    Intent myIntent = new Intent(this, EditPlayerActivity.class);
+                    myIntent.putExtra("player", db.getCurrentlyLoggedInPlayer());
+                    startActivity(myIntent);
+                    break;
+                case R.id.mniScoreboard:
+                    openActivity(ScoreboardActivity.class);
+                    break;
+                case R.id.mniAddPlayer:
+                    openActivity(AddPlayerActivity.class);
+                    break;
+                case R.id.mniDisplayGames:
+                    displayGames();
+                    break;
+                case R.id.mniAddGame:
+                    openActivity(AddGameSelectPlayersActivity.class);
+                    break;
+                case R.id.mniSettings:
+                    openActivity(SettingsActivity.class);
+                    break;
+                case R.id.mniLogout:
+                    db.logout(this);
+                    openLoginActivity();
+                    break;
+            }
+
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
         }
-        else if(id == R.id.nav_test){
-            openActivity(TeamDivision2.class);
+        catch (Exception ex) {
+            ex.printStackTrace();
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 

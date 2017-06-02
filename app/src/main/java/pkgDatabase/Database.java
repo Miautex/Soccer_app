@@ -18,6 +18,7 @@ import java.util.Locale;
 import java.util.TreeSet;
 import group2.schoolproject.a02soccer.BuildConfig;
 import pkgComparator.PlayerComparatorName;
+import pkgComparator.PlayerComparatorUsername;
 import pkgData.Game;
 import pkgData.LocalData;
 import pkgData.LocalUserData;
@@ -45,7 +46,9 @@ import pkgDatabase.pkgListener.OnPlayersChangedListener;
 import pkgDatabase.pkgListener.OnQRCodeGeneratedListener;
 import pkgDatabase.pkgListener.OnSetPasswordListener;
 import pkgDatabase.pkgListener.OnSetPlayerPosListener;
+import pkgException.DuplicateUsernameException;
 import pkgException.NoLocalDataException;
+import pkgException.SavedDataLocallyException;
 import pkgMisc.GsonSerializor;
 import pkgWSA.Accessor;
 import pkgWSA.HttpMethod;
@@ -137,7 +140,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
             }
         }
 
-        saveLocalData(new LocalData(allPlayers, allGames), getContext());
+        saveLocalData(new LocalData(allPlayers, allGames, localPlayers, localGames), getContext());
     }
 
     private void notifyOnGamesUpdatedListener() {
@@ -149,7 +152,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
             }
         }
 
-        saveLocalData(new LocalData(allPlayers, allGames), getContext());
+        saveLocalData(new LocalData(allPlayers, allGames, localPlayers, localGames), getContext());
     }
 
     public void addOnOnlineStatusChangedListener(OnOnlineStatusChangedListener listener) {
@@ -283,7 +286,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
     @Override
     public void loadSinglePlayerFinished(LoadSinglePlayerHandler handler) {
         //If loading was successful
-        if (handler.getException() == null) {
+        if (handler.getException() == null && handler.getPlayer() != null) {
             //Update player loaded player in allPlayers
             this.allPlayers.remove(handler.getPlayer());
             this.allPlayers.add(handler.getPlayer());
@@ -297,7 +300,9 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
      */
     public ArrayList<Player> getAllPlayers() {
         TreeSet<Player> sortingTs = new TreeSet<>(new PlayerComparatorName());
+
         sortingTs.addAll(this.allPlayers);
+        sortingTs.addAll(this.localPlayers);
 
         //Put logged in player first, then the rest ordered by name
         ArrayList<Player> returnList = new ArrayList<>();
@@ -315,10 +320,31 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
      */
     public Player getPlayerByUsername(String username) {
         Player player = null;
-        Iterator<Player> iteratorPlayers = this.allPlayers.iterator();
+        ArrayList<Player> localAndAllPlayers = new ArrayList<>();
+        localAndAllPlayers.addAll(allPlayers);
+        localAndAllPlayers.addAll(localPlayers);
+
+        Iterator<Player> iteratorPlayers = localAndAllPlayers.iterator();
         while (iteratorPlayers.hasNext() && player == null) {
             Player tmpPl = iteratorPlayers.next();
             if (tmpPl.getUsername().equals(username)) {
+                player = tmpPl;
+            }
+        }
+        return player;
+    }
+
+    /**
+     * Returns a Player by id
+     * NOTE: Only the local collection is searched, if you want the most recent player from the Webservice,
+     * please call loadSinglePlayer() first
+     */
+    public Player getPlayerByID(int id) {
+        Player player = null;
+        Iterator<Player> iteratorPlayers = this.allPlayers.iterator();
+        while (iteratorPlayers.hasNext() && player == null) {
+            Player tmpPl = iteratorPlayers.next();
+            if (tmpPl.getId().equals(id)) {
                 player = tmpPl;
             }
         }
@@ -342,7 +368,9 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
                     GsonSerializor.serializePlayer(p), new InsertPlayerHandler(listeners, p));
         }
         else {
-            localPlayers.add(p);
+            insertPlayerLocally(p);
+            //Throw exception to inform Activity of local save
+            throw new SavedDataLocallyException();
         }
     }
 
@@ -355,6 +383,11 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         if (handler.getException() == null) {
             //Add new player to allPlayers (Player has already received an ID from the webservice)
             this.allPlayers.add(handler.getPlayer());
+            removePlayerLocally(handler.getPlayer());
+            notifyOnPlayersChangedListener();
+        }
+        else if (handler.getException().getClass().equals(DuplicateUsernameException.class)) {
+            removePlayerLocally(handler.getPlayer());
             notifyOnPlayersChangedListener();
         }
     }
@@ -465,7 +498,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         //Launch login
         Accessor.runRequestAsync(HttpMethod.POST, "player/security/login", null,
                 GsonSerializor.serializeLoginCredentials(new LoginCredentials(username, local_pwEnc)),
-                new LoginHandler(username, local_pw_Unencrypted, listenersToInform, listenersToStore));
+                new LoginHandler(username, local_pw_Unencrypted, listenersToInform, listenersToStore), 2000);
     }
 
     /**
@@ -478,7 +511,6 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
             try {
                 //set loginKey (loginKey is used for all further access to webservice)
                 loginKey = handler.getLoginKey();
-                setOnline(true);
 
                 //Set currentlyLoggedInPlayer to save the username of the logged in player
                 // so the setting of currentlyLoggedInPlayer in loadPlayersFinished works
@@ -487,6 +519,8 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
                 setCurrentlyLoggedInPlayer(new Player(handler.getUsername(), "tmpname", false));
 
                 saveLocalUserData(new LocalUserData(null, handler.getPassword(), true), getContext());
+                initLocallySavedData(getContext());
+                setOnline(true);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -840,8 +874,16 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
                 isSuccess = true;
 
                 LocalData localData = loadLocalData(ctx);
-                allPlayers = localData.getAllPlayers();
-                allGames = localData.getAllGames();
+                if (localData != null) {
+                    if (localData.getAllPlayers() != null) {
+                        allPlayers = localData.getAllPlayers();
+                    }
+                    if (localData.getAllGames() != null) {
+                        allGames = localData.getAllGames();
+                    }
+                }
+
+                initLocallySavedData(ctx);
 
                 lud.setLoggedIn(true);
                 saveLocalUserData(lud, ctx);
@@ -894,6 +936,22 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         isOnline = online;
         notifyOnOnlineStatusChangedListener();
 
+        //if is online, try to upload locally saved data
+        if (online) {
+            uploadLocallySavedData();
+        }
+    }
+
+    private void uploadLocallySavedData() {
+        try {
+            for (Player p : localPlayers) {
+                System.out.println("------------ UPLOAD DATA STARTED");
+                insert(p, null);
+            }
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
 
@@ -910,26 +968,26 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
                 login(lud.getPlayer().getUsername(), lud.getPassword(), new OnLoginListener() {
                     @Override
                     public void loginFinished(LoginHandler handler) {
-                        try {
-                            if (handler.getException() == null) {
-                                //set loginKey (loginKey is used for all further access to webservice)
-                                loginKey = handler.getLoginKey();
-                                setOnline(true);
+                    try {
+                        if (handler.getException() == null) {
+                            //set loginKey (loginKey is used for all further access to webservice)
+                            loginKey = handler.getLoginKey();
+                            setOnline(true);
 
-                                //Set currentlyLoggedInPlayer to save the username of the logged in player
-                                // so the setting of currentlyLoggedInPlayer in loadPlayersFinished works
-                                // (This method is called before loadAllPlayers is finished, so otherwise
-                                // getPlayerByUsername(getCurrentlyLoggedInPlayer().getUsername()) wouldn't work)
-                                setCurrentlyLoggedInPlayer(new Player(handler.getUsername(), "tmpname", false));
-                            }
+                            //Set currentlyLoggedInPlayer to save the username of the logged in player
+                            // so the setting of currentlyLoggedInPlayer in loadPlayersFinished works
+                            // (This method is called before loadAllPlayers is finished, so otherwise
+                            // getPlayerByUsername(getCurrentlyLoggedInPlayer().getUsername()) wouldn't work)
+                            setCurrentlyLoggedInPlayer(new Player(handler.getUsername(), "tmpname", false));
+                        }
 
-                            //causes exception if login failed
-                            loadAllPlayers(loadPListener);
-                            loadAllGames(loadGListener);
-                        }
-                        catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                        //causes exception if login failed
+                        loadAllPlayers(loadPListener);
+                        loadAllGames(loadGListener);
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     }
                 });
             }
@@ -937,6 +995,59 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         else {
             loadAllPlayers(loadPListener);
             loadAllGames(loadGListener);
+        }
+    }
+
+    public void insertPlayerLocally(Player p) throws SavedDataLocallyException, DuplicateUsernameException {
+        TreeSet<Player> onlineAndLocalPlayers = new TreeSet<>(new PlayerComparatorUsername());
+        onlineAndLocalPlayers.addAll(allPlayers);
+        onlineAndLocalPlayers.addAll(localPlayers);
+
+        if (!onlineAndLocalPlayers.contains(p)) {
+            p.setLocallySavedOnly(true);
+            //set id (negative for local players)
+            if (localPlayers.size() > 0) {
+                p.setId(localPlayers.first().getId() - 1);
+            } else {
+                p.setId(-1);
+            }
+            localPlayers.add(p);
+            notifyOnPlayersChangedListener();
+        }
+        else {
+            throw new DuplicateUsernameException();
+        }
+    }
+
+    private void removePlayerLocally(Player p) {
+        boolean removed = false;
+
+        Iterator<Player> iterator = localPlayers.iterator();
+        while (iterator.hasNext() && !removed) {
+            Player currPl = iterator.next();
+            if (currPl.getUsername().equals(p.getUsername())) {
+                localPlayers.remove(currPl);
+                removed = true;
+            }
+        }
+
+
+        System.out.println("------------ LOCAL PLAYERS: ");
+        for (Player pl: localPlayers) {
+            System.out.println("------------ " + pl.getUsername());
+        }
+        System.out.println("------------ PLAYER TO REMOVE: " + p.getUsername());
+        System.out.println("------------ REMOVED PLAYER; SIZE= " + localPlayers.size());
+    }
+
+    private void initLocallySavedData(Context ctx) {
+        LocalData localData = loadLocalData(ctx);
+
+        if (localData.getLocalPlayers() != null) {
+            localPlayers = localData.getLocalPlayers();
+        }
+        if (localData.getLocalGames() != null) {
+            localGames = localData.getLocalGames();
         }
     }
 }
