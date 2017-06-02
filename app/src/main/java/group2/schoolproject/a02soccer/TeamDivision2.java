@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import pkgAdapter.StableArrayAdapter;
+import pkgData.Player;
+import pkgDatabase.Database;
 
 public class TeamDivision2 extends BaseActivity /*implements View.OnTouchListener*/ {
 
@@ -23,6 +25,7 @@ public class TeamDivision2 extends BaseActivity /*implements View.OnTouchListene
     HashMap<Long, Integer> mItemIdTopMapTeam1 = new HashMap<>();
     HashMap<Long, Integer> mItemIdTopMapTeam2 = new HashMap<>();
     Direction direction = null;
+    ArrayList<Player> players;
 
     private static final int SWIPE_DURATION = 250;
     private static final int MOVE_DURATION = 150;
@@ -41,15 +44,16 @@ public class TeamDivision2 extends BaseActivity /*implements View.OnTouchListene
         allPlayers.add("d");
         allPlayers.add("e");
         allPlayers.add("f");
-
-        ArrayList<String> team1 = new ArrayList<>();
-        ArrayList<String> team2 = new ArrayList<>();
+        players = Database.getInstance().getAllPlayers();
+        ArrayList<Player> team1 = new ArrayList<>();
+        ArrayList<Player> team2 = new ArrayList<>();
 
         BackgroundContainerAll = (BackgroundContainer) findViewById(R.id.listViewBackgroundAllPlayers);
         BackgroundContainerTeam1 = (BackgroundContainer) findViewById(R.id.listViewBackgroundTeam1);
         BackgroundContainerTeam2 = (BackgroundContainer) findViewById(R.id.listViewBackgroundTeam2);
 
-        adapterAll = new StableArrayAdapter(this, allPlayers, mTouchListenerAll);
+        //adapterAll = new StableArrayAdapter(this, allPlayers, mTouchListenerAll);
+        adapterAll = new StableArrayAdapter(this, players, mTouchListenerAll);
         adapterTeam1 = new StableArrayAdapter(this, team1, mTouchListenerTeam1);
         adapterTeam2 = new StableArrayAdapter(this, team2, mTouchListenerTeam2);
 

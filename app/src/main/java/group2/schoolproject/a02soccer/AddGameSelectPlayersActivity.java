@@ -220,8 +220,8 @@ public class AddGameSelectPlayersActivity extends BaseActivity implements View.O
                 openQRScanner();
             }
             else if (v.getId() == R.id.ckbParticipationHeader) {
-                TableRow row = null;
-                CheckBox checkBox = null;
+                TableRow row;
+                CheckBox checkBox;
 
                 for (int i = 0; i < tablePlayers.getChildCount(); i++) {
                     row = (TableRow) tablePlayers.getChildAt(i);
