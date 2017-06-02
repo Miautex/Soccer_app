@@ -19,9 +19,9 @@ public class TeamDivision2 extends BaseActivity /*implements View.OnTouchListene
     BackgroundContainer BackgroundContainerAll, BackgroundContainerTeam1, BackgroundContainerTeam2;
     boolean mSwiping = false;
     boolean mItemPressed = false;
-    HashMap<Long, Integer> mItemIdTopMapAll = new HashMap<Long, Integer>();
-    HashMap<Long, Integer> mItemIdTopMapTeam1 = new HashMap<Long, Integer>();
-    HashMap<Long, Integer> mItemIdTopMapTeam2 = new HashMap<Long, Integer>();
+    HashMap<Long, Integer> mItemIdTopMapAll = new HashMap<>();
+    HashMap<Long, Integer> mItemIdTopMapTeam1 = new HashMap<>();
+    HashMap<Long, Integer> mItemIdTopMapTeam2 = new HashMap<>();
     Direction direction = null;
 
     private static final int SWIPE_DURATION = 250;
@@ -29,7 +29,6 @@ public class TeamDivision2 extends BaseActivity /*implements View.OnTouchListene
 
     private enum Direction {RIGHT, LEFT}
 
-    ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,7 +119,7 @@ public class TeamDivision2 extends BaseActivity /*implements View.OnTouchListene
                         float endX;
                         float endAlpha;
                         final boolean remove;
-                        if (deltaXAbs > v.getWidth() / 2) {
+                        if (deltaXAbs > v.getWidth() / 4) {
                             if (x < mDownX) {
                                 direction = Direction.LEFT;
                             } else if (x > mDownX) {
@@ -224,7 +223,7 @@ public class TeamDivision2 extends BaseActivity /*implements View.OnTouchListene
                         float endX;
                         float endAlpha;
                         final boolean remove;
-                        if (deltaXAbs > v.getWidth() / 10) {
+                        if (deltaXAbs > v.getWidth() / 4) {
                             if (x < mDownX) {
                                 direction = Direction.LEFT;
                             } else if (x > mDownX) {
@@ -328,7 +327,7 @@ public class TeamDivision2 extends BaseActivity /*implements View.OnTouchListene
                         float endX;
                         float endAlpha;
                         final boolean remove;
-                        if (deltaXAbs > (v.getWidth() / 100)) {
+                        if (deltaXAbs > (v.getWidth() / 4)) {
                             if (x < mDownX) {
                                 direction = Direction.LEFT;
                             } else if (x > mDownX) {
