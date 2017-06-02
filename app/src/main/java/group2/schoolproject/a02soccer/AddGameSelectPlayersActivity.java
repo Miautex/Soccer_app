@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.TreeSet;
 
+import group2.schoolproject.a02soccer.pkgBarcodeScanner.BarcodeCaptureActivity;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 import pkgComparator.PlayerComparatorName;
 import pkgData.Game;
@@ -49,6 +50,7 @@ public class AddGameSelectPlayersActivity extends BaseActivity implements View.O
     private Database db = null;
     private HashMap<Integer, Player> hmPlayers = null;
     private int numSelectedCheckboxes = 0;
+    private static final int RC_BARCODE_CAPTURE = 9001;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -190,21 +192,28 @@ public class AddGameSelectPlayersActivity extends BaseActivity implements View.O
         this.startActivity(myIntent);
     }
 
-    private void openQRScanner(){
+    private void openQRScanner() {
         //scanner = new ZXingScannerView(this);
         //setContentView(scanner);
         //scanner.setResultHandler(this);
         //scanner.startCamera();
+        // launch barcode activity.
+            Intent intent = new Intent(this, BarcodeCaptureActivity.class);
+            intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
+            intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
+            startActivityForResult(intent, RC_BARCODE_CAPTURE);
 
-        Intent intent = new Intent("com.google.zxing.client.android.SCAN");
-        intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
-        startActivityForResult(intent, 0);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
     public void handleResult(Result rawResult){
-        Log.i("SCANN RESULT", rawResult.getText());
-        scanner.resumeCameraPreview(this);
+       //Log.i("SCANN RESULT", rawResult.getText());
+       // scanner.resumeCameraPreview(this);
     }
 
     @Override

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/topLayout"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:keepScreenOn="true">
+
+        <group2.schoolproject.a02soccer.pkgBarcodeScanner.camera.CameraSourcePreview
+        android:id="@+id/preview"
+        android:layout_width="match_parent"
+        android:layout_height="435dp">
+
+            <group2.schoolproject.a02soccer.pkgBarcodeScanner.camera.GraphicOverlay
+            android:id="@+id/graphicOverlay"
+            android:layout_width="match_parent"
+            android:layout_height="405dp" />
+
+    </group2.schoolproject.a02soccer.pkgBarcodeScanner.camera.CameraSourcePreview>
+
+    <ListView
+        android:id="@+id/lol"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

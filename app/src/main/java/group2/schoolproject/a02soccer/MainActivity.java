@@ -211,6 +211,12 @@ public class MainActivity extends BaseActivity
                     db.logout(this);
                     openLoginActivity();
                     break;
+                case R.id.test:
+                    openActivity(TeamDivision2.class);
+                    break;
+                case R.id.qr:
+                    //openActivity(TeamDivision2.class);
+                    break;
             }
 
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
