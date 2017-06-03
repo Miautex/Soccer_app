@@ -48,7 +48,7 @@ public class BaseActivity extends AppCompatActivity {
             } else if (item.getItemId() == DynamicMenuItem.SPANISCH.ordinal()) {
                 editor.putString("preference_general_language", "es");
             }
-            editor.commit();
+            editor.apply();
             finish();
             startActivity(new Intent(this, this.getClass()).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
         }

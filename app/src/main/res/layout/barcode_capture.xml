@@ -2,27 +2,50 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:id="@+id/topLayout"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:keepScreenOn="true">
 
-        <group2.schoolproject.a02soccer.pkgBarcodeScanner.camera.CameraSourcePreview
-        android:id="@+id/preview"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="435dp">
+        android:layout_height="match_parent">
+
+        <group2.schoolproject.a02soccer.pkgBarcodeScanner.camera.CameraSourcePreview
+            android:id="@+id/preview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <group2.schoolproject.a02soccer.pkgBarcodeScanner.camera.GraphicOverlay
-            android:id="@+id/graphicOverlay"
+                android:id="@+id/graphicOverlay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </group2.schoolproject.a02soccer.pkgBarcodeScanner.camera.CameraSourcePreview>
+
+        <AutoCompleteTextView
+            android:id="@+id/autoCompleteTextView"
             android:layout_width="match_parent"
-            android:layout_height="405dp" />
+            android:layout_height="34dp"
+            android:background="@drawable/background" />
 
-    </group2.schoolproject.a02soccer.pkgBarcodeScanner.camera.CameraSourcePreview>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="204dp"
+            android:layout_gravity="bottom"
+            android:background="@drawable/background"
+            android:orientation="vertical">
 
-    <ListView
-        android:id="@+id/lol"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+            <ListView
+                android:id="@+id/lol"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/tablelayoutred" />
+        </LinearLayout>
+
+    </FrameLayout>
 
 </LinearLayout>

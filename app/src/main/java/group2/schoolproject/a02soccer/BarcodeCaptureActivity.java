@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package group2.schoolproject.a02soccer.pkgBarcodeScanner;
+package group2.schoolproject.a02soccer;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -26,39 +26,41 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import group2.schoolproject.a02soccer.BaseActivity;
 import group2.schoolproject.a02soccer.R;
+import group2.schoolproject.a02soccer.pkgBarcodeScanner.BarcodeGraphic;
+import group2.schoolproject.a02soccer.pkgBarcodeScanner.BarcodeTrackerFactory;
 import group2.schoolproject.a02soccer.pkgBarcodeScanner.camera.*;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.common.api.CommonStatusCodes;
-import group2.schoolproject.a02soccer.pkgBarcodeScanner.camera.*;
+import pkgData.Player;
+import pkgDatabase.Database;
+
 import com.google.android.gms.vision.MultiProcessor;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.TreeSet;
 
 /**
+ * @author Raphael Moser
  * Activity for the multi-tracker app.  This app detects barcodes and displays the value with the
  * rear facing camera. During detection overlay graphics are drawn to indicate the position,
  * size, and ID of each barcode.
@@ -76,7 +78,8 @@ public final class BarcodeCaptureActivity extends BaseActivity {
     // constants used to pass extra data in the intent
     public static final String AutoFocus = "AutoFocus";
     public static final String UseFlash = "UseFlash";
-    public static final String BarcodeObject = "Barcode";
+
+    private AutoCompleteTextView actv;
 
     private CameraSource mCameraSource;
     private CameraSourcePreview mPreview;
@@ -104,15 +107,19 @@ public final class BarcodeCaptureActivity extends BaseActivity {
         arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,test);
 
         lol.setAdapter(arrayAdapter);
-        // read parameters from the intent used to launch the activity.
-       // boolean autoFocus = getIntent().getBooleanExtra(AutoFocus, false);
-        //boolean useFlash = getIntent().getBooleanExtra(UseFlash, false);
+        actv = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView);
+        ArrayList<Player> test = Database.getInstance().getAllPlayers();
+        ArrayList<String> test2 = new ArrayList<>();
+        for(Player p : test){
+            test2.add(p.getUsername());
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,test2);
+        actv.setAdapter(adapter);
 
         // Check for the camera permission before accessing the camera.  If the
         // permission is not granted yet, request permission.
         int rc = ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
         if (rc == PackageManager.PERMISSION_GRANTED) {
-            //createCameraSource(autoFocus, useFlash);
             createCameraSource(true,false);
         } else {
             requestCameraPermission();
@@ -132,31 +139,14 @@ public final class BarcodeCaptureActivity extends BaseActivity {
      * sending the request.
      */
     private void requestCameraPermission() {
-        //Log.w(TAG, "Camera permission is not granted. Requesting permission");
 
         final String[] permissions = new String[]{Manifest.permission.CAMERA};
 
         if (!ActivityCompat.shouldShowRequestPermissionRationale(this,
                 Manifest.permission.CAMERA)) {
             ActivityCompat.requestPermissions(this, permissions, RC_HANDLE_CAMERA_PERM);
-            return;
         }
 
-        final Activity thisActivity = this;
-
-        View.OnClickListener listener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ActivityCompat.requestPermissions(thisActivity, permissions,
-                        RC_HANDLE_CAMERA_PERM);
-            }
-        };
-
-        findViewById(R.id.topLayout).setOnClickListener(listener);
-        Snackbar.make(mGraphicOverlay, R.string.permission_camera_rationale,
-                Snackbar.LENGTH_INDEFINITE)
-                .setAction(R.string.ok, listener)
-                .show();
     }
 
     @Override
@@ -220,10 +210,8 @@ public final class BarcodeCaptureActivity extends BaseActivity {
                 .setRequestedFps(15.0f);
 
         // make sure that auto focus is an available option
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            builder = builder.setFocusMode(
-                    autoFocus ? Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE : null);
-        }
+        builder = builder.setFocusMode(
+                autoFocus ? Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE : null);
 
         mCameraSource = builder
                 .setFlashMode(useFlash ? Camera.Parameters.FLASH_MODE_TORCH : null)
