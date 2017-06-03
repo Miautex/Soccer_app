@@ -1,6 +1,7 @@
 package pkgAdapter;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,8 +40,9 @@ public class MainGameListAdapter extends ArrayAdapter<Game> {
         this.isAdminView = isAdminView;
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.list_main_game, parent, false);
         getAllViews(rowView);
@@ -68,6 +70,11 @@ public class MainGameListAdapter extends ArrayAdapter<Game> {
         Game game = values.get(position);
         txvDate.setText(LocalizedDateFormatter.format(game.getDate(), Locale.getDefault()));
         txvScore.setText(game.getScoreTeamA() + ":" + game.getScoreTeamB());
+
+        if (game.isLocallySavedOnly()) {
+            txvDate.setTextColor(getContext().getResources().getColor(R.color.redLogo));
+            txvScore.setTextColor(getContext().getResources().getColor(R.color.redLogo));
+        }
     }
 
     private void setListeners(final int position) {

@@ -80,4 +80,8 @@ public class InsertPlayerHandler extends WebserviceResponseHandler
     public Player getPlayer() {
         return this.remote_player == null ? this.local_player : this.remote_player;
     }
+
+    public Player getPlayerLocal() {
+        return this.local_player;
+    }
 }

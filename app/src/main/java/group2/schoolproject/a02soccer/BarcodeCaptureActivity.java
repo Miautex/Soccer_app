@@ -17,7 +17,6 @@ package group2.schoolproject.a02soccer;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -34,23 +33,13 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import group2.schoolproject.a02soccer.BaseActivity;
-import group2.schoolproject.a02soccer.R;
-import group2.schoolproject.a02soccer.pkgBarcodeScanner.BarcodeGraphic;
-import group2.schoolproject.a02soccer.pkgBarcodeScanner.BarcodeTrackerFactory;
-import group2.schoolproject.a02soccer.pkgBarcodeScanner.camera.*;
-
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import pkgData.Player;
-import pkgDatabase.Database;
-
 import com.google.android.gms.vision.MultiProcessor;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
@@ -58,6 +47,14 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.TreeSet;
+
+import group2.schoolproject.a02soccer.pkgBarcodeScanner.BarcodeGraphic;
+import group2.schoolproject.a02soccer.pkgBarcodeScanner.BarcodeTrackerFactory;
+import group2.schoolproject.a02soccer.pkgBarcodeScanner.camera.CameraSource;
+import group2.schoolproject.a02soccer.pkgBarcodeScanner.camera.CameraSourcePreview;
+import group2.schoolproject.a02soccer.pkgBarcodeScanner.camera.GraphicOverlay;
+import pkgData.Player;
+import pkgDatabase.Database;
 
 /**
  * @author Raphael Moser
@@ -108,7 +105,7 @@ public final class BarcodeCaptureActivity extends BaseActivity {
 
         lol.setAdapter(arrayAdapter);
         actv = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView);
-        ArrayList<Player> test = Database.getInstance().getAllPlayers();
+        ArrayList<Player> test = Database.getInstance().getCachedPlayers();
         ArrayList<String> test2 = new ArrayList<>();
         for(Player p : test){
             test2.add(p.getUsername());

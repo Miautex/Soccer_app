@@ -67,12 +67,12 @@ public class AddGameSelectPlayersActivity extends BaseActivity implements View.O
                 this.finish();
             }
 
-            for (Player p: db.getAllPlayers()) {
+            for (Player p: db.getCachedPlayers()) {
                 hmPlayers.put(p.getId(), p);
             }
 
             TreeSet<Player> tsPlayers = new TreeSet<>(new PlayerComparatorName());      //for sorting
-            tsPlayers.addAll(db.getAllPlayers());
+            tsPlayers.addAll(db.getCachedPlayers());
             displayPlayersInTable(tsPlayers);
 
         } catch (Exception ex) {
@@ -136,8 +136,6 @@ public class AddGameSelectPlayersActivity extends BaseActivity implements View.O
     }
 
     /**
-     *
-     * @param datePicker
      * @return a java.util.Date
      */
     public static java.util.Date getDateFromDatePicker(DatePicker datePicker){
@@ -152,7 +150,7 @@ public class AddGameSelectPlayersActivity extends BaseActivity implements View.O
     }
 
     private ArrayList<Player> getSelectedPlayersFromTable() {
-        ArrayList<Player> selectedPlayers = new ArrayList<Player>();
+        ArrayList<Player> selectedPlayers = new ArrayList<>();
         TableRow row;
         CheckBox checkBox;
         TextView textViewId;

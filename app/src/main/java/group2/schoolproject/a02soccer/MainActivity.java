@@ -83,8 +83,18 @@ public class MainActivity extends BaseActivity
 
             setupMenu(db.getCurrentlyLoggedInPlayer().isAdmin());
             registrateEventHandlers();
-            displayPlayers();
             displayLoggedInUser();
+
+            //Set selection (either players or games displayed; default: players)
+            Boolean showPlayers = (Boolean) this.getIntent().getSerializableExtra("showPlayers");
+            if (showPlayers == null || showPlayers) {
+                displayPlayers();
+                spPlayersGames.setSelection(0);
+            }
+            else {
+                displayGames();
+                spPlayersGames.setSelection(1);
+            }
         }
         catch (Exception ex) {
             ex.printStackTrace();
@@ -186,6 +196,8 @@ public class MainActivity extends BaseActivity
             switch (id) {
                 case R.id.mniDisplayPlayer:
                     displayPlayers();
+                    //select players in spinner
+                    spPlayersGames.setSelection(0);
                     break;
                 case R.id.mniEditPlayer:
                     Intent myIntent = new Intent(this, EditPlayerActivity.class);
@@ -200,6 +212,8 @@ public class MainActivity extends BaseActivity
                     break;
                 case R.id.mniDisplayGames:
                     displayGames();
+                    //select games in spinner
+                    spPlayersGames.setSelection(1);
                     break;
                 case R.id.mniAddGame:
                     openActivity(AddGameSelectPlayersActivity.class);
@@ -274,13 +288,13 @@ public class MainActivity extends BaseActivity
     }
 
     private void displayPlayers() throws Exception {
-        final MainPlayerListAdapter lsvAdapter = new MainPlayerListAdapter(this, db.getAllPlayers(), this,
+        final MainPlayerListAdapter lsvAdapter = new MainPlayerListAdapter(this, db.getCachedPlayers(), this,
                 db.getCurrentlyLoggedInPlayer().isAdmin());
         lsvPlayersGames.setAdapter(lsvAdapter);
     }
 
     private void displayGames() throws Exception {
-        final MainGameListAdapter lsvAdapter = new MainGameListAdapter(this, db.getAllGames(), this,
+        final MainGameListAdapter lsvAdapter = new MainGameListAdapter(this, db.getCachedGames(), this,
                 db.getCurrentlyLoggedInPlayer().isAdmin());
         lsvPlayersGames.setAdapter(lsvAdapter);
     }
@@ -386,8 +400,13 @@ public class MainActivity extends BaseActivity
                 }
             }
             else if (isPositive && selectedObject.getClass().equals(Game.class)) {
-                //TODO
-                db.remove((Game) selectedObject, this);
+                Game selectedGame = (Game) selectedObject;
+                if (!selectedGame.isLocallySavedOnly()) {
+                    db.remove(selectedGame, this);
+                }
+                else {
+                    db.removeGameLocally(selectedGame);
+                }
             }
         }
         catch (Exception ex) {

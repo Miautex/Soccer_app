@@ -92,4 +92,8 @@ public class InsertGameHandler extends WebserviceResponseHandler
     public Game getGame() {
         return this.remote_game;
     }
+
+    public Game getGameLocal() {
+        return this.local_game;
+    }
 }

@@ -23,6 +23,7 @@ import pkgDatabase.LoadParticipationsHandler;
 import pkgDatabase.UpdateGameHandler;
 import pkgDatabase.pkgListener.OnGameUpdatedListener;
 import pkgDatabase.pkgListener.OnLoadParticipationsListener;
+import pkgException.CouldNotUpdateGameException;
 import pkgListeners.OnScoreChangedListener;
 import pkgMisc.NamePWValidator;
 import pkgTab.TabAddGameEnterData;
@@ -191,7 +192,18 @@ public class EditGameActivity extends BaseActivity implements OnScoreChangedList
             gameToUpdate.setRemark(edtRemark.getText().toString());
 
             toggleProgressBar(true);
-            db.update(gameToUpdate, this);
+
+            if (db.isOnline()) {
+                db.update(gameToUpdate, this);
+            }
+            else if (!db.isOnline() && gameToUpdate.isLocallySavedOnly()){
+                db.updateGameLocally(gameToUpdate);
+                showMessage(getString(R.string.msg_DataSavedLocally));
+                toggleProgressBar(false);
+            }
+            else {
+                throw new CouldNotUpdateGameException(getString(R.string.msg_CouldNotUpdateGame));
+            }
         }
     }
 
@@ -206,6 +218,7 @@ public class EditGameActivity extends BaseActivity implements OnScoreChangedList
             }
         } catch (Exception e) {
             showMessage(getString(R.string.Error) + ": " + e.getMessage());
+            toggleProgressBar(false);
         }
     }
 

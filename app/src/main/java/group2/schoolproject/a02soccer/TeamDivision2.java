@@ -39,7 +39,7 @@ public class TeamDivision2 extends BaseActivity /*implements View.OnTouchListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team_division2);
-        players = Database.getInstance().getAllPlayers();
+        players = Database.getInstance().getCachedPlayers();
         ArrayList<Player> team1 = new ArrayList<>();
         ArrayList<Player> team2 = new ArrayList<>();
 

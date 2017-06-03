@@ -1,5 +1,6 @@
 package group2.schoolproject.a02soccer;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -111,6 +112,10 @@ public class AddPlayerActivity extends BaseActivity
                     db.insertPlayerLocally(newPlayer, edtPassword.getText().toString());
                     showMessage(getString(R.string.msg_DataSavedLocally));
                     toggleProgressBar(false);
+
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
                 }
             }
 
@@ -178,6 +183,10 @@ public class AddPlayerActivity extends BaseActivity
         toggleProgressBar(false);
         if (handler.getException() == null) {
             showMessage(String.format(getString(R.string.msg_PlayerAdded), handler.getPlayer().getName()));
+
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
         }
         else {
             showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CouldNotSetPassword));
