@@ -84,7 +84,7 @@ public class LoginActivity extends BaseActivity
             }
         }
         catch (Exception ex) {
-            showMessage(getString(R.string.Error) + ": " + ex.getMessage());
+            showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CannotConnectToWebservice));
         }
     }
 

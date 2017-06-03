@@ -18,7 +18,6 @@ import pkgException.DuplicateUsernameException;
 import pkgException.NameTooLongException;
 import pkgException.NameTooShortException;
 import pkgException.PasswordTooShortException;
-import pkgException.SavedDataLocallyException;
 import pkgException.UsernameTooLongException;
 import pkgException.UsernameTooShortException;
 import pkgMisc.NamePWValidator;
@@ -104,7 +103,15 @@ public class AddPlayerActivity extends BaseActivity
                 newPlayer.addPosition(PlayerPosition.GOAL);
 
                 toggleProgressBar(true);
-                db.insert(newPlayer, this);
+
+                if (db.isOnline()) {
+                    db.insert(newPlayer, this);
+                }
+                else {
+                    db.insertPlayerLocally(newPlayer, edtPassword.getText().toString());
+                    showMessage(getString(R.string.msg_DataSavedLocally));
+                    toggleProgressBar(false);
+                }
             }
 
         }
@@ -136,11 +143,8 @@ public class AddPlayerActivity extends BaseActivity
             throw new DuplicateUsernameException(String.format(getString(R.string.msg_UsernameNotAvailable),
                     newPlayer.getUsername()));
         }
-        catch (SavedDataLocallyException ex) {
-            showMessage(getString(R.string.msg_DataSavedLocally));
-            toggleProgressBar(false);
-        }
         catch (Exception ex) {
+            ex.printStackTrace();
             toggleProgressBar(false);
         }
     }

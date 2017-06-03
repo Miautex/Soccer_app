@@ -6,7 +6,7 @@ import java.util.TreeSet;
 public class LocalData implements Serializable {
     private TreeSet<Player> allPlayers;
     private TreeSet<Game> allGames;
-    private TreeSet<Player> localPlayers;
+    private TreeSet<PlayerWithPassword> localPlayers;
     private TreeSet<Game> localGames;
 
     public LocalData(TreeSet<Player> allPlayers, TreeSet<Game> allGames) {
@@ -15,7 +15,7 @@ public class LocalData implements Serializable {
     }
 
     public LocalData(TreeSet<Player> allPlayers, TreeSet<Game> allGames,
-                     TreeSet<Player> localPlayers, TreeSet<Game> localGames) {
+                     TreeSet<PlayerWithPassword> localPlayers, TreeSet<Game> localGames) {
         this(allPlayers,allGames);
         this.localPlayers = localPlayers;
         this.localGames = localGames;
@@ -37,11 +37,11 @@ public class LocalData implements Serializable {
         this.allGames = allGames;
     }
 
-    public TreeSet<Player> getLocalPlayers() {
+    public TreeSet<PlayerWithPassword> getLocalPlayers() {
         return localPlayers;
     }
 
-    public void setLocalPlayers(TreeSet<Player> localPlayers) {
+    public void setLocalPlayers(TreeSet<PlayerWithPassword> localPlayers) {
         this.localPlayers = localPlayers;
     }
 

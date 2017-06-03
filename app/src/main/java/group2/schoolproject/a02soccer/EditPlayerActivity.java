@@ -16,6 +16,7 @@ import pkgDatabase.SetPasswordHandler;
 import pkgDatabase.UpdatePlayerHandler;
 import pkgDatabase.pkgListener.OnPlayerUpdatedListener;
 import pkgDatabase.pkgListener.OnSetPasswordListener;
+import pkgException.CouldNotUpdatePlayerException;
 import pkgException.DuplicateUsernameException;
 import pkgException.NameTooLongException;
 import pkgException.NameTooShortException;
@@ -213,7 +214,23 @@ public class EditPlayerActivity extends BaseActivity
                 }
 
                 toggleProgressBar(true);
-                db.update(playerToEdit, this);
+
+                if (db.isOnline()) {
+                    db.update(playerToEdit, this);
+                }
+                else if (!db.isOnline() && playerToEdit.isLocallySavedOnly()){
+                    if (ckbUpdatePassword.isChecked()) {
+                        db.updatePlayerLocally(playerToEdit, edtPassword.getText().toString());
+                    }
+                    else {
+                        db.updatePlayerLocally(playerToEdit);
+                    }
+                    showMessage(getString(R.string.msg_DataSavedLocally));
+                    toggleProgressBar(false);
+                }
+                else {
+                    throw new CouldNotUpdatePlayerException(getString(R.string.msg_CouldNotUpdateUserData));
+                }
             }
         }
         catch (DuplicateUsernameException ex) {
@@ -241,6 +258,9 @@ public class EditPlayerActivity extends BaseActivity
         catch (PasswordTooShortException ex) {
             throw new PasswordTooShortException(String.format(getString(R.string.msg_PasswordTooShort),
                     ex.getMinLenght()), ex.getMinLenght());
+        }
+        finally {
+            toggleProgressBar(false);
         }
     }
 

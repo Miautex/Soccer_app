@@ -377,9 +377,16 @@ public class MainActivity extends BaseActivity
     public void deleteDialogButtonPressed(Object selectedObject, boolean isPositive) {
         try {
             if (isPositive && selectedObject.getClass().equals(Player.class)) {
-                db.remove((Player) selectedObject, this);
+                Player selectedPlayer = (Player) selectedObject;
+                if (!selectedPlayer.isLocallySavedOnly()) {
+                    db.remove(selectedPlayer, this);
+                }
+                else {
+                    db.removePlayerLocally(selectedPlayer);
+                }
             }
             else if (isPositive && selectedObject.getClass().equals(Game.class)) {
+                //TODO
                 db.remove((Game) selectedObject, this);
             }
         }
