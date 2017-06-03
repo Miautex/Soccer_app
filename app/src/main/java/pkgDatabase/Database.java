@@ -512,7 +512,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
                 setCurrentlyLoggedInPlayer(new Player(handler.getUsername(), "tmpname", false));
 
                 saveLocalUserData(new LocalUserData(null, handler.getPassword(), true), getContext());
-                initLocallySavedData(getContext());
+                initOfflineSavedData(getContext());
                 setOnline(true);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -884,6 +884,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
                 isSuccess = true;
 
                 initLocallySavedData(ctx);
+                initOfflineSavedData(ctx);
 
                 lud.setLoggedIn(true);
                 saveLocalUserData(lud, ctx);
@@ -896,10 +897,10 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
     }
 
     /**
-     * Loads the locally saved data (players and games created in offline mode)
+     * Loads the offline saved data (players and games created in offline mode)
      * and set the collection in this class if load was successful
      */
-    private void initLocallySavedData(Context ctx) {
+    private void initOfflineSavedData(Context ctx) {
         LocalData localData = loadLocalData(ctx);
 
         if (localData.getLocalPlayers() != null) {
@@ -907,6 +908,21 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         }
         if (localData.getLocalGames() != null) {
             localGames = localData.getLocalGames();
+        }
+    }
+
+    /**
+     * Loads the locally saved data of players and games which are cached
+     * and set the collection in this class if load was successful
+     */
+    private void initLocallySavedData(Context ctx) {
+        LocalData localData = loadLocalData(ctx);
+
+        if (localData.getLocalPlayers() != null) {
+            allPlayers = localData.getAllPlayers();
+        }
+        if (localData.getLocalGames() != null) {
+            allGames = localData.getAllGames();
         }
     }
 
@@ -925,6 +941,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
             fis.close();
         }
         catch (Exception ex) {
+            ex.printStackTrace();
             data = null;
         }
 
