@@ -77,7 +77,7 @@ public class AddPlayerActivity extends BaseActivity
         btnCancel.setOnClickListener(this);
     }
 
-    private void onBtnAddClick() throws Exception {
+    private void onBtnAddClick(boolean isOnline) throws Exception {
         Player newPlayer = null;
 
         if (edtName.getText().toString().isEmpty() || edtUsername.getText().toString().isEmpty() || edtPassword.getText().toString().isEmpty()) {
@@ -105,17 +105,14 @@ public class AddPlayerActivity extends BaseActivity
 
                 toggleProgressBar(true);
 
-                if (db.isOnline()) {
+                if (isOnline) {
                     db.insert(newPlayer, this);
                 }
                 else {
                     db.insertPlayerLocally(newPlayer, edtPassword.getText().toString());
                     showMessage(getString(R.string.msg_DataSavedLocally));
                     toggleProgressBar(false);
-
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
+                    openMainActivity();
                 }
             }
 
@@ -163,11 +160,18 @@ public class AddPlayerActivity extends BaseActivity
         }
     }
 
+    private void openMainActivity() {
+        finish();
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
+
     @Override
     public void onClick(View v) {
         try {
             if (v.getId() == R.id.btnAdd) {
-                onBtnAddClick();
+                onBtnAddClick(db.isOnline());
             }
             else if (v.getId() == R.id.btnCancel) {
                 this.finish();
@@ -183,10 +187,7 @@ public class AddPlayerActivity extends BaseActivity
         toggleProgressBar(false);
         if (handler.getException() == null) {
             showMessage(String.format(getString(R.string.msg_PlayerAdded), handler.getPlayer().getName()));
-
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
+            openMainActivity();
         }
         else {
             showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CouldNotSetPassword));
@@ -207,12 +208,13 @@ public class AddPlayerActivity extends BaseActivity
                             String.format(getString(R.string.msg_UsernameNotAvailable), handler.getPlayer().getUsername()));
                 }
                 else {
-                    showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CouldNotInsertPlayer));
+                    //if insert fails because of connection issues insert player locally
+                    onBtnAddClick(false);
                 }
             }
         }
         catch (Exception ex) {
-            showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CouldNotInsertPlayer));
+            showMessage(getString(R.string.Error) + ": " + ex.getMessage());
         }
     }
 }

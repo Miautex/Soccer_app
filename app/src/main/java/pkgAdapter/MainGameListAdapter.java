@@ -27,7 +27,9 @@ public class MainGameListAdapter extends ArrayAdapter<Game> {
     private MainActivity activity;
     private boolean isAdminView;
 
-    private TextView txvDate = null,
+    private TextView txvDayOfWeek = null,
+                     txvSeparator = null,
+                     txvDate = null,
                      txvScore = null;
     private ImageButton btnEdit = null,
                         btnDelete = null;
@@ -60,6 +62,8 @@ public class MainGameListAdapter extends ArrayAdapter<Game> {
     }
 
     private void getAllViews(View parent) {
+        txvDayOfWeek = (TextView) parent.findViewById(R.id.txvDayOfWeek);
+        txvSeparator = (TextView) parent.findViewById(R.id.txvSeparator);
         txvDate = (TextView) parent.findViewById(R.id.txvDate);
         txvScore = (TextView) parent.findViewById(R.id.txvScore);
         btnEdit = (ImageButton) parent.findViewById(R.id.btnEdit);
@@ -68,7 +72,9 @@ public class MainGameListAdapter extends ArrayAdapter<Game> {
 
     private void setContent(int position) {
         Game game = values.get(position);
-        txvDate.setText(LocalizedDateFormatter.format(game.getDate(), Locale.getDefault()));
+        txvDayOfWeek.setText(LocalizedDateFormatter.getDayOfWeek(game.getDate(), Locale.getDefault()));
+        txvSeparator.setText("-");
+        txvDate.setText(LocalizedDateFormatter.getDate(game.getDate(), Locale.getDefault()));
         txvScore.setText(game.getScoreTeamA() + ":" + game.getScoreTeamB());
 
         if (game.isLocallySavedOnly()) {

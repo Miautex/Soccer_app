@@ -41,6 +41,7 @@ public class InsertPlayerHandler extends WebserviceResponseHandler
             }
             else if (!r.isSuccess() && r.getError() != null && r.getError().getErrorMessage().
                     contains("MySQLIntegrityConstraintViolationException")) {
+                remote_player = r.getContent();
                 throw new DuplicateUsernameException(local_player.getUsername());
             }
             else {

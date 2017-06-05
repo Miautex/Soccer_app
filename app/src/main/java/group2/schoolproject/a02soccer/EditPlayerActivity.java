@@ -9,14 +9,13 @@ import android.widget.ProgressBar;
 
 import java.util.ArrayList;
 
+import pkgData.Player;
 import pkgData.PlayerPosition;
 import pkgDatabase.Database;
-import pkgData.Player;
 import pkgDatabase.SetPasswordHandler;
 import pkgDatabase.UpdatePlayerHandler;
 import pkgDatabase.pkgListener.OnPlayerUpdatedListener;
 import pkgDatabase.pkgListener.OnSetPasswordListener;
-import pkgException.CouldNotUpdatePlayerException;
 import pkgException.DuplicateUsernameException;
 import pkgException.NameTooLongException;
 import pkgException.NameTooShortException;
@@ -215,10 +214,10 @@ public class EditPlayerActivity extends BaseActivity
 
                 toggleProgressBar(true);
 
-                if (db.isOnline()) {
+                if (!playerToEdit.isLocallySavedOnly()) {
                     db.update(playerToEdit, this);
                 }
-                else if (!db.isOnline() && playerToEdit.isLocallySavedOnly()){
+                else {
                     if (ckbUpdatePassword.isChecked()) {
                         db.updatePlayerLocally(playerToEdit, edtPassword.getText().toString());
                     }
@@ -227,9 +226,6 @@ public class EditPlayerActivity extends BaseActivity
                     }
                     showMessage(getString(R.string.msg_DataSavedLocally));
                     toggleProgressBar(false);
-                }
-                else {
-                    throw new CouldNotUpdatePlayerException(getString(R.string.msg_CouldNotUpdateUserData));
                 }
             }
         }

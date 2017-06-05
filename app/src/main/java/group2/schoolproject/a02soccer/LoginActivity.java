@@ -60,6 +60,7 @@ public class LoginActivity extends BaseActivity
                 isOnline = true;
             }
 
+            //set username (if not set, try to use default from files)
             if (username != null) {
                 edtUsername.setText(username);
             }
@@ -70,6 +71,7 @@ public class LoginActivity extends BaseActivity
                 }
             }
 
+            //set password (if not set, try to use default from files)
             if (password != null) {
                 edtPassword.setText(password);
             }
@@ -119,14 +121,21 @@ public class LoginActivity extends BaseActivity
         });
     }
 
+    @Override
     public void onClick(View arg0) {
         try {
             if (arg0.getId() == R.id.btnLogin) {
                 tryLogin(isOnline);
             }
         } catch (Exception e) {
+            e.printStackTrace();
             showMessage(getString(R.string.Error) + ": " + e.getMessage());
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        //disable back during login
     }
 
     private void tryLogin(Boolean isOnline) {
@@ -188,11 +197,6 @@ public class LoginActivity extends BaseActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         return true;
-    }
-
-    private void setDefaultCredentials() {
-        edtUsername.setText(db.getStoredUsername());
-        edtPassword.setText(db.getStoredPassword());
     }
 
     @Override

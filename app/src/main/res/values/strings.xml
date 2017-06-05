@@ -177,6 +177,7 @@
     <string name="msg_ConfirmGameDeletion">Do you really want to delete this game ?</string>
     <string name="msg_ConfirmPlayerDeletion">Do you really want to delete player \'%s\' ?</string>
     <string name="msg_DataSavedLocally">Data saved locally</string>
+    <string name="msg_CannotDeletePlayerInLocalGame">Cannot delete player who is participating in locally saved game</string>
 
     <!--Nav Drawer-->
     <string name="navigation_drawer_open">Open navigation drawer</string>

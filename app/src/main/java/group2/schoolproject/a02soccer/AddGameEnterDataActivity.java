@@ -148,7 +148,7 @@ public class AddGameEnterDataActivity extends BaseActivity implements OnScoreCha
         txtScore.setText(scoreTeamA + ":" + scoreTeamB);
     }
 
-    private void onBtnSaveClick() throws Exception {
+    private void onBtnSaveClick(boolean isOnline) throws Exception {
         int[][] goalData = new int[2][2];
 
         for (int i = 0; i < tabs.length; i++) {
@@ -177,7 +177,7 @@ public class AddGameEnterDataActivity extends BaseActivity implements OnScoreCha
 
             toggleProgressBar(true);
 
-            if (db.isOnline()) {
+            if (isOnline) {
                 db.insert(game, this);
             }
             else {
@@ -202,7 +202,7 @@ public class AddGameEnterDataActivity extends BaseActivity implements OnScoreCha
     public void onClick(View v) {
         try {
             if (v.getId() == R.id.btnSave) {
-                onBtnSaveClick();
+                onBtnSaveClick(db.isOnline());
             }
             else if (v.getId() == R.id.btnBack) {
                 this.finish();
@@ -221,7 +221,12 @@ public class AddGameEnterDataActivity extends BaseActivity implements OnScoreCha
             openMainActivity();
         }
         else {
-            showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CouldNotInsertGame));
+            try {
+                onBtnSaveClick(false);
+            }
+            catch (Exception ex) {
+                showMessage(ex.getMessage());
+            }
         }
     }
 

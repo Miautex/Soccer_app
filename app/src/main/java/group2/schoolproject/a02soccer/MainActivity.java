@@ -41,6 +41,7 @@ import pkgDatabase.pkgListener.OnLoadAllPlayersListener;
 import pkgDatabase.pkgListener.OnOnlineStatusChangedListener;
 import pkgDatabase.pkgListener.OnPlayerRemovedListener;
 import pkgDatabase.pkgListener.OnPlayersChangedListener;
+import pkgException.CannotDeletePlayerOfLocalGameException;
 import pkgException.CouldNotDeletePlayerException;
 import pkgListeners.OnDeleteDialogButtonPressedListener;
 
@@ -409,6 +410,9 @@ public class MainActivity extends BaseActivity
                 }
             }
         }
+        catch (CannotDeletePlayerOfLocalGameException ex) {
+            showMessage(getString(R.string.msg_CannotDeletePlayerInLocalGame));
+        }
         catch (Exception ex) {
             showMessage(ex.getMessage());
             ex.printStackTrace();
@@ -493,7 +497,6 @@ public class MainActivity extends BaseActivity
             hasRefreshFailed = false;
             db.tryRefreshData(this, this, this);
         } catch (Exception e) {
-            e.printStackTrace();
             swipeRefreshLayout.setRefreshing(false);
             showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CouldNotRefreshData));
         }

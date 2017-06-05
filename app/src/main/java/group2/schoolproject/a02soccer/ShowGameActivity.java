@@ -37,7 +37,7 @@ public class ShowGameActivity extends BaseActivity implements OnLoadParticipatio
                      txvRemark = null,
                      txvDate = null;
 
-    private Game tmpGame = null;
+    private Game game = null;
     private Database db = null;
 
     private TabAddGameEnterData[] tabs = null;
@@ -51,9 +51,9 @@ public class ShowGameActivity extends BaseActivity implements OnLoadParticipatio
             getAllViews();
 
             db = Database.getInstance();
-            tmpGame = (Game) this.getIntent().getSerializableExtra("game");
+            game = (Game) this.getIntent().getSerializableExtra("game");
 
-            if (tmpGame == null) {
+            if (game == null) {
                 throw new Exception("Please call activity with intent-extra 'game'");
             }
 
@@ -61,9 +61,13 @@ public class ShowGameActivity extends BaseActivity implements OnLoadParticipatio
             setupViewPager(mViewPager);
             tablayout.setupWithViewPager(mViewPager);
 
-            db.getParticipationsOfGame(tmpGame, this);
-            toggleProgressBar(true);
-            init();
+            //Load participations if game is saved online
+            if (!game.isLocallySavedOnly()) {
+                db.getParticipationsOfGame(game, this);
+                toggleProgressBar(true);
+            }
+
+            initTextFields();
         }
         catch (Exception ex) {
             ex.printStackTrace();
@@ -79,10 +83,10 @@ public class ShowGameActivity extends BaseActivity implements OnLoadParticipatio
         }
     }
 
-    private void init() {
-        updateScoreDisplay(tmpGame.getScoreTeamA(), tmpGame.getScoreTeamB());
-        displayRemark(tmpGame.getRemark());
-        displayDate(tmpGame.getDate());
+    private void initTextFields() {
+        updateScoreDisplay(game.getScoreTeamA(), game.getScoreTeamB());
+        displayRemark(game.getRemark());
+        displayDate(game.getDate());
     }
 
     private void displayRemark(String remark) {
@@ -132,7 +136,7 @@ public class ShowGameActivity extends BaseActivity implements OnLoadParticipatio
     private ArrayList<Participation> getParticipationsOfTeam(Team team) {
         ArrayList<Participation> participationsOfTeam = new ArrayList<>();
 
-        for (Participation p: tmpGame.getParticipations()) {
+        for (Participation p: game.getParticipations()) {
             if (p.getTeam().equals(team)) {
                 participationsOfTeam.add(p);
             }
@@ -154,9 +158,9 @@ public class ShowGameActivity extends BaseActivity implements OnLoadParticipatio
     public void loadParticipationsFinished(LoadParticipationsHandler handler) {
         toggleProgressBar(false);
         if (handler.getException() == null) {
-            tmpGame.removeAllParticipations();
+            game.removeAllParticipations();
             for (Participation part: handler.getPatrticipations()) {
-                tmpGame.addParticipation(part);
+                game.addParticipation(part);
             }
 
             tabs[0].setParticipations(getParticipationsOfTeam(Team.TEAM1));
