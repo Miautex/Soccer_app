@@ -12,12 +12,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import pkgAdapter.StableArrayAdapter;
+import pkgAdapter.StableArrayAdapter2;
 import pkgData.Player;
 import pkgDatabase.Database;
 
 public class TeamDivision2 extends BaseActivity /*implements View.OnTouchListener*/ {
 
-    StableArrayAdapter adapterAll, adapterTeam1, adapterTeam2;
+    StableArrayAdapter adapterAll;
+    StableArrayAdapter2 adapterTeam1, adapterTeam2;
     ListView lvAllPlayers, lvTeam1, lvTeam2;
     BackgroundContainer BackgroundContainerAll, BackgroundContainerTeam1, BackgroundContainerTeam2;
     boolean mSwiping = false;
@@ -59,9 +61,9 @@ public class TeamDivision2 extends BaseActivity /*implements View.OnTouchListene
         lvTeam2 = (ListView) findViewById(R.id.lvTeam2);
 
         lvAllPlayers.setAdapter(adapterAll);
-        adapterTeam1 = new StableArrayAdapter(this, team1, mTouchListenerTeam1);
+        adapterTeam1 = new StableArrayAdapter2(this, team1, mTouchListenerTeam1);
         adapterTeam1.setColor(Color.GRAY);
-        adapterTeam2 = new StableArrayAdapter(this, team2, mTouchListenerTeam2);
+        adapterTeam2 = new StableArrayAdapter2(this, team2, mTouchListenerTeam2);
         adapterTeam2.setColor(Color.GRAY);
         lvTeam1.setAdapter(adapterTeam1);
         lvTeam2.setAdapter(adapterTeam2);

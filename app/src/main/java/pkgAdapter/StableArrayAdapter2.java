@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
@@ -27,7 +26,7 @@ import pkgData.PlayerPosition;
  *
  */
 
-    public class StableArrayAdapter extends ArrayAdapter<Player> {
+    public class StableArrayAdapter2 extends ArrayAdapter<Player> {
     private ArrayList<Player> values = new ArrayList<>();
     private View.OnTouchListener mTouchListener;
     private final Context context;
@@ -50,7 +49,7 @@ import pkgData.PlayerPosition;
         values.remove(object);
     }
 
-    public StableArrayAdapter(Context context, List<Player> objects, View.OnTouchListener listener) {
+    public StableArrayAdapter2(Context context, List<Player> objects, View.OnTouchListener listener) {
         super(context, -1, objects);
         playerwithPos = new TreeMap<>();
         this.context = context;
@@ -79,7 +78,7 @@ import pkgData.PlayerPosition;
         Spinner test2 = (Spinner) linea2.findViewById(R.id.spinner);
         if (values != null && values.size() >= 0) {
             test.setText(values.get(position).toString());
-            test2.setVisibility(View.GONE);
+            createSpinner(test2,values.get(position).getPositions());
         }
         linea.setOnTouchListener(mTouchListener);
         return linea;
