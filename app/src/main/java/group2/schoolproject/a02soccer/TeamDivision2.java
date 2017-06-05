@@ -54,7 +54,7 @@ public class TeamDivision2 extends BaseActivity /*implements View.OnTouchListene
         adapterAll.setColor(Color.WHITE);
 
 
-        // adapterTeam2 = new StableArrayAdapter(this, R.layout.opaque_text_view, team2, mTouchListenerTeam2);
+        // adapterTeam2 = new StableArrayAdapter(this, R.layout.swipe_list, team2, mTouchListenerTeam2);
 
         lvAllPlayers = (ListView) findViewById(R.id.lvAllPlayer);
         lvTeam1 = (ListView) findViewById(R.id.lvTeam1);

@@ -33,8 +33,10 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -53,6 +55,7 @@ import group2.schoolproject.a02soccer.pkgBarcodeScanner.BarcodeTrackerFactory;
 import group2.schoolproject.a02soccer.pkgBarcodeScanner.camera.CameraSource;
 import group2.schoolproject.a02soccer.pkgBarcodeScanner.camera.CameraSourcePreview;
 import group2.schoolproject.a02soccer.pkgBarcodeScanner.camera.GraphicOverlay;
+import pkgAdapter.Player_QrList;
 import pkgData.Player;
 import pkgDatabase.Database;
 
@@ -62,9 +65,10 @@ import pkgDatabase.Database;
  * rear facing camera. During detection overlay graphics are drawn to indicate the position,
  * size, and ID of each barcode.
  */
-public final class BarcodeCaptureActivity extends BaseActivity {
+public final class BarcodeCaptureActivity extends BaseActivity implements View.OnClickListener{
     private static final String TAG = "Barcode-reader";
     private TreeSet<String> result = new TreeSet<>();
+    private Database db;
 
     // intent request code to handle updating play services if needed.
     private static final int RC_HANDLE_GMS = 9001;
@@ -82,7 +86,8 @@ public final class BarcodeCaptureActivity extends BaseActivity {
     private CameraSourcePreview mPreview;
     private GraphicOverlay<BarcodeGraphic> mGraphicOverlay;
     private ListView lol;
-    ArrayAdapter<String> arrayAdapter;
+    Player_QrList arrayAdapter;
+    //ArrayAdapter<String> arrayAdapter;
     private ArrayList<String> test = new ArrayList<>();
 
     // helper objects for detecting taps and pinches.
@@ -96,12 +101,18 @@ public final class BarcodeCaptureActivity extends BaseActivity {
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         setContentView(R.layout.barcode_capture);
+        db = Database.getInstance();
 
 
         mPreview = (CameraSourcePreview) findViewById(R.id.preview);
         mGraphicOverlay = (GraphicOverlay<BarcodeGraphic>) findViewById(R.id.graphicOverlay);
+        ImageButton imgButton = (ImageButton) findViewById(R.id.imgbAdd);
+        imgButton.setOnClickListener(this);
         lol = (ListView) findViewById(R.id.lol);
-        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,test);
+        arrayAdapter = new Player_QrList(this);
+        //user can't scan its QR-Code, therefore he is added on
+        arrayAdapter.add(db.getCurrentlyLoggedInPlayer());
+        //arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,test);
 
         lol.setAdapter(arrayAdapter);
         actv = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView);
@@ -111,6 +122,7 @@ public final class BarcodeCaptureActivity extends BaseActivity {
             test2.add(p.getUsername());
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,test2);
+        //adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
         actv.setAdapter(adapter);
 
         // Check for the camera permission before accessing the camera.  If the
@@ -359,9 +371,26 @@ public final class BarcodeCaptureActivity extends BaseActivity {
         }
 
         if (best != null) {
-            result.add(best.displayValue);
-            test.add(best.displayValue);
-            arrayAdapter.notifyDataSetChanged();
+            try{
+                int id = Integer.parseInt(best.displayValue);
+                Player p = db.getPlayerByID(id);
+                showMessage(p.toString());
+                if(p == null){
+                    //// TODO: 05.06.2017 values.xml bearbeiten
+                    throw new Exception("keinen Spieler gefunden");
+                }
+                if(arrayAdapter.contains(p.getId())){
+                    throw new Exception("Spieler ist bereits hinzugefügt");
+                }
+                arrayAdapter.add(p);
+                arrayAdapter.notifyDataSetChanged();
+            }
+            catch(Exception e){
+                showMessage(e.getMessage());
+            }
+            //result.add(best.displayValue);
+            //test.add(best.displayValue);
+            //arrayAdapter.notifyDataSetChanged();
             //Intent data = new Intent();
             //data.putExtra(BarcodeObject, best);
             //setResult(CommonStatusCodes.SUCCESS, data);
@@ -374,6 +403,24 @@ public final class BarcodeCaptureActivity extends BaseActivity {
             }
         }
         return false;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.imgbAdd) {
+            String s = actv.getText().toString();
+            Player p = db.getPlayerByUsername(s);
+            if (p != null) {
+                if (!arrayAdapter.contains(p.getId())) {
+                    arrayAdapter.add(p);
+                    actv.setText("");
+                } else {
+                    showMessage("spieler bereits hinzugefügt");
+                }
+            } else {
+                showMessage("spieler gibt es nicht");
+            }
+        }
     }
 
     private class CaptureGestureListener extends GestureDetector.SimpleOnGestureListener {

@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
@@ -72,7 +71,7 @@ import pkgData.PlayerPosition;
     @Override
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View linea = inflater.inflate(R.layout.opaque_text_view, parent, false);
+        View linea = inflater.inflate(R.layout.swipe_list, parent, false);
         linea.setBackgroundColor(color);
         View linea2 = linea.findViewById(R.id.linearLayout2);
         TextView test = (TextView) linea2.findViewById(R.id.listItem);
