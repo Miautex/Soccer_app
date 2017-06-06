@@ -21,6 +21,7 @@
     <string name="Scoreboard_titles_goalsshot">Scoreboard: Goals Shot</string>
     <string name="nav_settings_title">Settings</string>
     <string name="title_activity_score_board">Scoreboard</string>
+    <string name="title_activity_site_notice">Site Notice</string>
 
     <!--Buttons-->
     <string name="btnLogin">Login</string>
@@ -203,6 +204,42 @@
     <string name="preference_teamassignment_layout_summary">Select a Team Assignment Layout</string>
     <string name="preference_teamassignment_layout_positiveBtn">OK</string>
     <string name="preference_teamassignment_layout_negativeBtn">Cancel</string>
+    <string name="nav_site_notice_title">Site Notice</string>
+
+    <string name="site_notice"><![CDATA[
+        <!doctype html>
+        <html>
+            <head>
+                <title>Impressum</title>
+                <style>
+                    h1, h2, h3 {
+                        text-align: center;
+                    }
+                </style>
+            </head>
+            <body>
+                <!--<h1>Impressum</h1>-->
+                <h2>Mitwirkende</h2>
+                <ul>
+                    <li>SANTNER Elias</li>
+                    <li>MOSER Raphael</li>
+                    <li>WILSCHER Marco</li>
+                    <li>SONNBERGER Martin</li>
+                </ul>
+                <h2>Verwendete Bibliotheken</h2>
+                <ul>
+                    <li><a href="https://github.com/google/gson">Gson</a></li>
+                    <li><a href="https://github.com/apache/commons-lang">Apache Commons Lang</a></li>
+                    <li><a href="https://github.com/zxing/zxing">ZXing</a></li>
+                    <li><a href="https://github.com/martin-stone/hsv-alpha-color-picker-android">Colorpicker</a></li>
+                    <li><a href="https://github.com/dm77/barcodescanner">Barcodescanner</a></li>
+                </ul>
+                <br />
+                <h3>Developed by</h3>
+                <h1>Kelch Crew</h1>
+            </body>
+        </html>
+    ]]></string>
 
     <!--qrcode-->
     <string name="ok">OK</string>

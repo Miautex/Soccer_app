@@ -91,6 +91,12 @@
             android:theme="@style/Theme.App.Base"/>
         <activity
             android:name=".LoginActivity"
+            android:label="@string/title_activity_login"
+            android:theme="@style/Theme.App.Base"/>
+        <activity android:name=".PictureTestActivity">
+        </activity>
+        <activity android:name=".SiteNoticeActivity">
+        </activity>
             android:theme="@style/Theme.App.Base"
             android:label="@string/title_activity_login" />
         <activity

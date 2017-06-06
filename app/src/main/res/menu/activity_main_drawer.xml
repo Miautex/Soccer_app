@@ -54,6 +54,10 @@
                     android:icon="@drawable/ic_mosquito"
                     android:title="@string/mniLogout" />
                 <item
+                    android:id="@+id/mniSiteNotice"
+                    android:icon="@drawable/ic_sitenotice"
+                    android:title="@string/nav_site_notice_title"/>
+                <item
                     android:id="@+id/test"
                     android:title="Test"
                 />

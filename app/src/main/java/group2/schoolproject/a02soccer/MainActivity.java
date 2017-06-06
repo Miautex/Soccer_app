@@ -232,6 +232,9 @@ public class MainActivity extends BaseActivity
                 case R.id.qr:
                     //openActivity(TeamDivision2.class);
                     break;
+                case R.id.mniSiteNotice:
+                    openActivity(SiteNoticeActivity.class);
+                    break;
             }
 
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -240,7 +243,6 @@ public class MainActivity extends BaseActivity
         catch (Exception ex) {
             ex.printStackTrace();
         }
-
         return true;
     }
 
