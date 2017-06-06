@@ -604,13 +604,25 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
      */
     @Override
     public void loadGamesFinished(LoadAllGamesHandler handler) {
+        ArrayList<Game> tmpListGames = new ArrayList<>();
+
         //If loading was successful
         if (handler.getException() == null) {
             //Refresh cachedGames using loaded games from LoadAllGamesHandler
-            this.cachedGames.clear();
             for (Game g : handler.getGames()) {
-                this.cachedGames.add(g);
+                //if game was already loaded, copy over participations
+                Game tmpGame = this.cachedGames.ceiling(g);
+                if (tmpGame.equals(g)) {
+                    for (Participation part: tmpGame.getParticipations()) {
+                        g.addParticipation(part);
+                    }
+                }
+                tmpListGames.add(g);
             }
+
+            this.cachedGames.clear();
+            this.cachedGames.addAll(tmpListGames);
+
             notifyOnGamesUpdatedListener();
         }
     }
