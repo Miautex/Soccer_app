@@ -1,6 +1,7 @@
 package group2.schoolproject.a02soccer;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -135,6 +136,34 @@ public class AddGameSelectPlayersActivity extends BaseActivity implements View.O
         }
     }
 
+    private void setCheckPlayers(ArrayList<Player> players) {
+        TableRow row;
+        CheckBox checkBox;
+        TextView textViewId;
+        int id, numAllPlayers;
+        int count = 0;
+        numAllPlayers = tablePlayers.getChildCount();
+        ckbParticipationHeader.setChecked(false);
+
+        for (int i = 0; i < numAllPlayers; i++) {
+            row = (TableRow) tablePlayers.getChildAt(i);
+            checkBox = (CheckBox) row.getChildAt(0);
+            checkBox.setChecked(false);
+            textViewId = (TextView) row.getChildAt(2);
+            id = Integer.parseInt(textViewId.getText().toString());
+            for (Player p : players) {
+                if (id == p.getId()) {
+                    count++;
+                    checkBox.setChecked(true);
+                    break;
+                }
+            }
+        }
+        if(count == numAllPlayers){
+            ckbParticipationHeader.setChecked(true);
+        }
+    }
+
     /**
      * @return a java.util.Date
      */
@@ -198,12 +227,21 @@ public class AddGameSelectPlayersActivity extends BaseActivity implements View.O
             intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
             intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
             startActivityForResult(intent, RC_BARCODE_CAPTURE);
-
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_BARCODE_CAPTURE) {
+            if(resultCode == Activity.RESULT_OK){
+                ArrayList<Player> result = (ArrayList<Player>) data.getSerializableExtra("Result");
+                setCheckPlayers(result);
+
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                showMessage("Something went wrong");
+            }
+        }
+
     }
 
     @Override

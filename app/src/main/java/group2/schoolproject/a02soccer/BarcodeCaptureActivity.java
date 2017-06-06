@@ -17,6 +17,7 @@ package group2.schoolproject.a02soccer;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -36,6 +37,7 @@ import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -69,6 +71,7 @@ public final class BarcodeCaptureActivity extends BaseActivity implements View.O
     private static final String TAG = "Barcode-reader";
     private TreeSet<String> result = new TreeSet<>();
     private Database db;
+    private Button btnConitnue, btnCancel;
 
     // intent request code to handle updating play services if needed.
     private static final int RC_HANDLE_GMS = 9001;
@@ -107,13 +110,15 @@ public final class BarcodeCaptureActivity extends BaseActivity implements View.O
         mPreview = (CameraSourcePreview) findViewById(R.id.preview);
         mGraphicOverlay = (GraphicOverlay<BarcodeGraphic>) findViewById(R.id.graphicOverlay);
         ImageButton imgButton = (ImageButton) findViewById(R.id.imgbAdd);
+        btnCancel = (Button) findViewById(R.id.btnBack);
+        btnConitnue = (Button) findViewById(R.id.btnSave);
+        btnCancel.setOnClickListener(this);
+        btnConitnue.setOnClickListener(this);
         imgButton.setOnClickListener(this);
         lol = (ListView) findViewById(R.id.lol);
         arrayAdapter = new Player_QrList(this);
-        //user can't scan its QR-Code, therefore he is added on
+        //user can't scan its QR-Code, therefore he is added on startup
         arrayAdapter.add(db.getCurrentlyLoggedInPlayer());
-        //arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,test);
-
         lol.setAdapter(arrayAdapter);
         actv = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView);
         ArrayList<Player> test = Database.getInstance().getCachedPlayers();
@@ -122,7 +127,6 @@ public final class BarcodeCaptureActivity extends BaseActivity implements View.O
             test2.add(p.getUsername());
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,test2);
-        //adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
         actv.setAdapter(adapter);
 
         // Check for the camera permission before accessing the camera.  If the
@@ -388,19 +392,12 @@ public final class BarcodeCaptureActivity extends BaseActivity implements View.O
             catch(Exception e){
                 showMessage(e.getMessage());
             }
-            //result.add(best.displayValue);
-            //test.add(best.displayValue);
-            //arrayAdapter.notifyDataSetChanged();
+
             //Intent data = new Intent();
             //data.putExtra(BarcodeObject, best);
             //setResult(CommonStatusCodes.SUCCESS, data);
             //finish();
             //return true;
-        }
-        else{
-            for(String o:result) {
-                showMessage(o);
-            }
         }
         return false;
     }
@@ -420,6 +417,15 @@ public final class BarcodeCaptureActivity extends BaseActivity implements View.O
             } else {
                 showMessage("spieler gibt es nicht");
             }
+        }
+        else if(v.getId() == R.id.btnSave){
+            Intent data = new Intent();
+            data.putExtra("Result",arrayAdapter.getAllPlayers());
+            setResult(Activity.RESULT_OK,data);
+            finish();
+        }
+        else if(v.getId() == R.id.btnBack){
+            this.finish();
         }
     }
 

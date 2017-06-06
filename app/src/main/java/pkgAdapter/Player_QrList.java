@@ -1,6 +1,7 @@
 package pkgAdapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ public class Player_QrList extends ArrayAdapter<Player> implements View.OnClickL
     private final Context context;
     private TreeMap<Integer,Player> players;
     private ArrayList<Integer> ids;
+    private Drawable drawable;
 
 
     public Player_QrList(@NonNull Context context) {
@@ -48,9 +50,13 @@ public class Player_QrList extends ArrayAdapter<Player> implements View.OnClickL
         btnRemove.setOnClickListener(this);
         id.setText(String.valueOf(ids.get(position)));
         playerName.setText(players.get(ids.get(position)).toString());
+        rowView.setBackground(context.getResources().getDrawable(R.drawable.tablelayoutred));
         return rowView;
     }
 
+    public void setBackground(Drawable drawable){
+        this.drawable = drawable;
+    }
     @Override
     public void add(@Nullable Player object) {
         super.add(object);
