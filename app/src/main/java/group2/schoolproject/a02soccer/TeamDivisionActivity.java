@@ -1,5 +1,7 @@
 package group2.schoolproject.a02soccer;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -26,6 +28,7 @@ public class TeamDivisionActivity extends BaseActivity implements OnTeamChangedL
     private ArrayList<Participation> participations = null;
     private TreeMap<Integer, Player> allPlayers = null;
     private OnTeamChangedListener[] listener = new OnTeamChangedListener[2];
+    private boolean warned = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +89,27 @@ public class TeamDivisionActivity extends BaseActivity implements OnTeamChangedL
         participations = list1;
     }
 
+    public void setWarnedTrue(){
+        warned=true;
+    }
+
+    private void createWarning(String s){
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+        builder1.setMessage(s);
+        builder1.setCancelable(true);
+
+        builder1.setPositiveButton(
+                "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        setWarnedTrue();
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
+    }
+
     @Override
     public void onTeamUpdated(Player p, Team t, boolean remove) {
         try {
@@ -122,12 +146,12 @@ public class TeamDivisionActivity extends BaseActivity implements OnTeamChangedL
                 Intent myIntent = new Intent(this, AddGameEnterDataActivity.class);
                 myIntent.putExtra("game", game);
                 this.startActivity(myIntent);
-
             } else if (button.getId() == R.id.btnCancel) {
                 this.finish();
             } else if (button.getId() == R.id.btnShuffle) {
-                //showMessage("folgt");
+                //// TODO: 06.06.2017 Values eintragen 
                 shuffle();
+                createWarning("Teams sollten von Manuel überprüft werden");
             }
         } catch (Exception e) {
             showMessage(e.getMessage());

@@ -201,19 +201,23 @@ public class TeamDivisionTab extends Fragment implements View.OnClickListener, O
         return list;
     }
 
-    public boolean hasOnlyOneGoalkeeper() throws Exception {
-        boolean hasGoalie = false;
+    public boolean hasOnlyOneGoalkeeper(){
+        boolean hasTwoGoalies = false;
+        boolean onlyOneGoalie = false;
         for (int i = 0; i < tableTeam1.getChildCount(); i++) {
             TableRow row = (TableRow) tableTeam1.getChildAt(i);
             Spinner sp = (Spinner) row.getChildAt(2);
             if (getString(R.string.PosGoal).equals(sp.getSelectedItem().toString())){
-                if(hasGoalie){
-                    throw new Exception(getString(R.string.msg_TooManyGoalkeeperOnlyPlayers) + " in: " + team);
+                if(onlyOneGoalie){
+                    hasTwoGoalies = true;
                 }
-                hasGoalie = true;
+                onlyOneGoalie = true;
             }
         }
-        return hasGoalie;
+        if(hasTwoGoalies){
+            onlyOneGoalie = false;
+        }
+        return onlyOneGoalie;
     }
 
     private void setLayouts() {
