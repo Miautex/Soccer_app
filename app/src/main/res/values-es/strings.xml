@@ -118,7 +118,7 @@
     <string name="nav_site_notice_title">Aviso del sitio</string>
     <string name="navigation_drawer_close">Cerrar el cajón de navegación</string>
     <string name="navigation_drawer_open">Abrir el cajón de navegación</string>
-    <string name="no">No</string>
+    <string name="no">¡No!</string>
     <string name="no_camera_permission">Esta aplicación no se puede ejecutar porque no tiene el permiso de cámara. La aplicación saldrá ahora.</string>
     <string name="ok">DE ACUERDO</string>
     <string name="permission_camera_rationale">El acceso a la cámara es necesario para la detección</string>
@@ -164,4 +164,16 @@
     <string name="title_dialogDeletePlayer">¿Eliminar jugador?</string>
     <string name="use_flash">Utilizar Flash</string>
     <string name="yes">Sí</string>
+
+    <!--Spinner Arrays-->
+    <string-array name="spinnerPlayerGameValues">
+        <item>Jugador</item>
+        <item>Jugo</item>
+    </string-array>
+    <string-array name="spinnerScoreboard">
+        <item>Ghana</item>
+        <item>Goles marcados</item>
+        <item>Goles en contra</item>
+        <item>Derrotas</item>
+    </string-array>
 </resources>

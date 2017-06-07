@@ -94,7 +94,13 @@ public class StartActivity extends BaseActivity implements WebRequestTaskListene
         if (response.getException() != null && (
                 response.getException().getClass().equals(SocketTimeoutException.class)) ||
                 response.getException().getClass().equals(NoRouteToHostException.class)) {
-            tryLocalLogin();
+            //if offline and logged in
+            if (localUserData.isLoggedIn()) {
+                tryLocalLogin();
+            }
+            else {
+                openLogin();
+            }
         }
         else {
             openLoginWithParams(localUserData.getPlayer().getUsername(), localUserData.getPassword(),
@@ -124,7 +130,7 @@ public class StartActivity extends BaseActivity implements WebRequestTaskListene
         intent.putExtra("isOnline", isOnline);
 
         if (doAutoLogin) {
-            intent.putExtra("password", localUserData.getPassword());
+            intent.putExtra("password", password);
         }
         startActivity(intent);
 
