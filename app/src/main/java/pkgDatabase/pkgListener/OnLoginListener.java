@@ -1,6 +1,6 @@
 package pkgDatabase.pkgListener;
 
-import pkgDatabase.LoginHandler;
+import pkgDatabase.pkgHandler.LoginHandler;
 
 public interface OnLoginListener {
     void loginFinished(LoginHandler handler);

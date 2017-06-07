@@ -223,9 +223,9 @@ public class AddGameSelectPlayersActivity extends BaseActivity implements View.O
         //scanner.setResultHandler(this);
         //scanner.startCamera();
         // launch barcode activity.
-            Intent intent = new Intent(this, BarcodeCaptureActivity.class);
-            intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
-            intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
+            Intent intent = new Intent(this, QRScannerActivity.class);
+            intent.putExtra(QRScannerActivity.AutoFocus, true);
+            intent.putExtra(QRScannerActivity.UseFlash, false);
             startActivityForResult(intent, RC_BARCODE_CAPTURE);
     }
 

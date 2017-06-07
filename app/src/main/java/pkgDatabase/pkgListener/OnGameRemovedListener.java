@@ -1,6 +1,6 @@
 package pkgDatabase.pkgListener;
 
-import pkgDatabase.RemoveGameHandler;
+import pkgDatabase.pkgHandler.RemoveGameHandler;
 
 public interface OnGameRemovedListener {
     void removeGameFinished(RemoveGameHandler handler);

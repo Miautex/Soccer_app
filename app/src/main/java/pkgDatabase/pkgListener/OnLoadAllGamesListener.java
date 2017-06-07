@@ -1,6 +1,6 @@
 package pkgDatabase.pkgListener;
 
-import pkgDatabase.LoadAllGamesHandler;
+import pkgDatabase.pkgHandler.LoadAllGamesHandler;
 
 public interface OnLoadAllGamesListener {
     void loadGamesFinished(LoadAllGamesHandler handler);

@@ -6,7 +6,7 @@ import android.widget.TextView;
 import pkgData.Player;
 import pkgData.PlayerStatistics;
 import pkgDatabase.Database;
-import pkgDatabase.LoadSinglePlayerHandler;
+import pkgDatabase.pkgHandler.LoadSinglePlayerHandler;
 import pkgDatabase.pkgListener.OnLoadSinglePlayerListener;
 
 /**

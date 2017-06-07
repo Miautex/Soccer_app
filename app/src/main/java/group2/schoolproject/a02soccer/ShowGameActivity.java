@@ -17,7 +17,7 @@ import pkgData.Game;
 import pkgData.Participation;
 import pkgData.Team;
 import pkgDatabase.Database;
-import pkgDatabase.LoadParticipationsHandler;
+import pkgDatabase.pkgHandler.LoadParticipationsHandler;
 import pkgDatabase.pkgListener.OnLoadParticipationsListener;
 import pkgListeners.OnScoreChangedListener;
 import pkgMisc.LocalizedDateFormatter;

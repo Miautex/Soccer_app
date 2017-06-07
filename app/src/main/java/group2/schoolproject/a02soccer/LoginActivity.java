@@ -15,11 +15,11 @@ import java.net.ConnectException;
 import java.net.NoRouteToHostException;
 import java.net.SocketTimeoutException;
 
-import pkgData.LocalUserData;
+import pkgMisc.LocalUserData;
 import pkgDatabase.Database;
-import pkgDatabase.LoadAllGamesHandler;
-import pkgDatabase.LoadAllPlayersHandler;
-import pkgDatabase.LoginHandler;
+import pkgDatabase.pkgHandler.LoadAllGamesHandler;
+import pkgDatabase.pkgHandler.LoadAllPlayersHandler;
+import pkgDatabase.pkgHandler.LoginHandler;
 import pkgDatabase.pkgListener.OnLoadAllGamesListener;
 import pkgDatabase.pkgListener.OnLoadAllPlayersListener;
 import pkgDatabase.pkgListener.OnLoginListener;

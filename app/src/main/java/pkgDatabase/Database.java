@@ -18,18 +18,32 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.TreeSet;
 
-import group2.schoolproject.a02soccer.BuildConfig;
 import pkgComparator.PlayerComparatorName;
 import pkgComparator.PlayerComparatorUsername;
 import pkgData.Game;
-import pkgData.LocalData;
-import pkgData.LocalUserData;
-import pkgData.LoginCredentials;
+import pkgDatabase.pkgHandler.InsertGameHandler;
+import pkgDatabase.pkgHandler.InsertParticipationHandler;
+import pkgDatabase.pkgHandler.InsertPlayerHandler;
+import pkgDatabase.pkgHandler.LoadAllGamesHandler;
+import pkgDatabase.pkgHandler.LoadAllPlayersHandler;
+import pkgDatabase.pkgHandler.LoadParticipationsHandler;
+import pkgDatabase.pkgHandler.LoadSinglePlayerHandler;
+import pkgDatabase.pkgHandler.LoginHandler;
+import pkgDatabase.pkgHandler.RemoveGameHandler;
+import pkgDatabase.pkgHandler.RemovePlayerHandler;
+import pkgDatabase.pkgHandler.SetPasswordHandler;
+import pkgDatabase.pkgHandler.SetPlayerPositionsHandler;
+import pkgDatabase.pkgHandler.UpdateGameHandler;
+import pkgDatabase.pkgHandler.UpdateParticipationHandler;
+import pkgDatabase.pkgHandler.UpdatePlayerHandler;
+import pkgMisc.LocalData;
+import pkgMisc.LocalUserData;
+import pkgMisc.LoginCredentials;
 import pkgData.Participation;
 import pkgData.Player;
 import pkgData.PlayerPosition;
-import pkgData.PlayerPositionRequest;
-import pkgData.PlayerWithPassword;
+import pkgMisc.PlayerPositionRequest;
+import pkgMisc.PlayerWithPassword;
 import pkgDatabase.pkgListener.OnGameInsertedListener;
 import pkgDatabase.pkgListener.OnGameRemovedListener;
 import pkgDatabase.pkgListener.OnGameUpdatedListener;
@@ -460,7 +474,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
      * (Positions are taken directly from passed player)
      * NOTE: This method is automatically called by UpdatePlayerHandler during update of player
      */
-    protected void setPlayerPositions(Player p, OnSetPlayerPosListener listener) throws Exception {
+    public void setPlayerPositions(Player p, OnSetPlayerPosListener listener) throws Exception {
         //Add passed listener (UpdatePlayerHandler) to list of listeners
         ArrayList<OnSetPlayerPosListener> listeners = new ArrayList<>();
         if (listener != null) {
@@ -689,7 +703,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
      * Starts the insertion of passed participation
      * NOTE: This method is automatically called by InsertGameHandler during the insertion of a new Game
      */
-    protected void insert(Participation p, OnParticipationInsertedListener listener) throws Exception {
+    public void insert(Participation p, OnParticipationInsertedListener listener) throws Exception {
         //Add passed listener to list of listeners
         ArrayList<OnParticipationInsertedListener> listeners = new ArrayList<>();
         if (listener != null) {
@@ -842,14 +856,6 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
 
     public void initPreferences(Context ctx) {
         this.preferences = PreferenceManager.getDefaultSharedPreferences(ctx);
-    }
-
-    public String getStoredUsername() {
-        return this.preferences.getString("preference_user_username", BuildConfig.FLAVOR);
-    }
-
-    public String getStoredPassword() {
-        return this.preferences.getString("preference_user_password", BuildConfig.FLAVOR);
     }
 
     public boolean isToast() {

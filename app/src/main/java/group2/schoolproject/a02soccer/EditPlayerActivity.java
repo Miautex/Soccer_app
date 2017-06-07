@@ -1,5 +1,6 @@
 package group2.schoolproject.a02soccer;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,8 +13,8 @@ import java.util.ArrayList;
 import pkgData.Player;
 import pkgData.PlayerPosition;
 import pkgDatabase.Database;
-import pkgDatabase.SetPasswordHandler;
-import pkgDatabase.UpdatePlayerHandler;
+import pkgDatabase.pkgHandler.SetPasswordHandler;
+import pkgDatabase.pkgHandler.UpdatePlayerHandler;
 import pkgDatabase.pkgListener.OnPlayerUpdatedListener;
 import pkgDatabase.pkgListener.OnSetPasswordListener;
 import pkgException.DuplicateUsernameException;
@@ -226,6 +227,7 @@ public class EditPlayerActivity extends BaseActivity
                     }
                     showMessage(getString(R.string.msg_DataSavedLocally));
                     toggleProgressBar(false);
+                    openMainActivity();
                 }
             }
         }
@@ -289,6 +291,7 @@ public class EditPlayerActivity extends BaseActivity
                 } else {
                     toggleProgressBar(false);
                     showMessage(getString(R.string.msg_UpdatedUserData));
+                    openMainActivity();
                 }
             }
             else {
@@ -306,5 +309,12 @@ public class EditPlayerActivity extends BaseActivity
         catch (Exception ex) {
             showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CouldNotUpdateUserData));
         }
+    }
+
+    private void openMainActivity() {
+        finish();
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 }

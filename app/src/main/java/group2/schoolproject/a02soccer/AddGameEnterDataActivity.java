@@ -22,7 +22,7 @@ import pkgData.Game;
 import pkgData.Participation;
 import pkgData.Team;
 import pkgDatabase.Database;
-import pkgDatabase.InsertGameHandler;
+import pkgDatabase.pkgHandler.InsertGameHandler;
 import pkgDatabase.pkgListener.OnGameInsertedListener;
 import pkgListeners.OnScoreChangedListener;
 import pkgMisc.NamePWValidator;

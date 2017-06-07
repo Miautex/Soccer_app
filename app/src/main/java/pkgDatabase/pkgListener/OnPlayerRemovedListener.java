@@ -1,6 +1,6 @@
 package pkgDatabase.pkgListener;
 
-import pkgDatabase.RemovePlayerHandler;
+import pkgDatabase.pkgHandler.RemovePlayerHandler;
 
 public interface OnPlayerRemovedListener {
     void removePlayerFinished(RemovePlayerHandler handler);

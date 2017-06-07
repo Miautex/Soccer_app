@@ -1,6 +1,6 @@
 package pkgDatabase.pkgListener;
 
-import pkgDatabase.SetPasswordHandler;
+import pkgDatabase.pkgHandler.SetPasswordHandler;
 
 public interface OnSetPasswordListener {
     void setPasswordFinished(SetPasswordHandler handler);

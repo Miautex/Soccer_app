@@ -1,6 +1,6 @@
 package pkgDatabase.pkgListener;
 
-import pkgDatabase.LoadSinglePlayerHandler;
+import pkgDatabase.pkgHandler.LoadSinglePlayerHandler;
 
 public interface OnLoadSinglePlayerListener {
     void loadSinglePlayerFinished(LoadSinglePlayerHandler handler);

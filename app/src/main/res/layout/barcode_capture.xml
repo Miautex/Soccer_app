@@ -15,17 +15,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <group2.schoolproject.a02soccer.pkgBarcodeScanner.camera.CameraSourcePreview
+        <pkgBarcodeScanner.camera.CameraSourcePreview
             android:id="@+id/preview"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <group2.schoolproject.a02soccer.pkgBarcodeScanner.camera.GraphicOverlay
+            <pkgBarcodeScanner.camera.GraphicOverlay
                 android:id="@+id/graphicOverlay"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
-        </group2.schoolproject.a02soccer.pkgBarcodeScanner.camera.CameraSourcePreview>
+        </pkgBarcodeScanner.camera.CameraSourcePreview>
 
         <LinearLayout
             android:layout_width="match_parent"

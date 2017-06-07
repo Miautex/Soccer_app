@@ -1,6 +1,6 @@
 package pkgDatabase.pkgListener;
 
-import pkgDatabase.SetPlayerPositionsHandler;
+import pkgDatabase.pkgHandler.SetPlayerPositionsHandler;
 
 public interface OnSetPlayerPosListener {
     void setPosFinished(SetPlayerPositionsHandler handler);

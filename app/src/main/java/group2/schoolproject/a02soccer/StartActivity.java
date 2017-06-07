@@ -8,7 +8,7 @@ import android.os.Bundle;
 import java.net.NoRouteToHostException;
 import java.net.SocketTimeoutException;
 
-import pkgData.LocalUserData;
+import pkgMisc.LocalUserData;
 import pkgDatabase.Database;
 import pkgWSA.Accessor;
 import pkgWSA.AccessorResponse;

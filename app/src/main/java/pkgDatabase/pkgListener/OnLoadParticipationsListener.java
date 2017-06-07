@@ -1,6 +1,6 @@
 package pkgDatabase.pkgListener;
 
-import pkgDatabase.LoadParticipationsHandler;
+import pkgDatabase.pkgHandler.LoadParticipationsHandler;
 
 public interface OnLoadParticipationsListener {
     void loadParticipationsFinished(LoadParticipationsHandler handler);

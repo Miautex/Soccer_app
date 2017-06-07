@@ -6,10 +6,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import pkgData.Game;
-import pkgData.LoginCredentials;
 import pkgData.Participation;
 import pkgData.Player;
-import pkgData.PlayerPositionRequest;
 import pkgResult.GameResult;
 import pkgResult.ParticipationResult;
 import pkgResult.PlayerResult;

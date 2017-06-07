@@ -1,6 +1,6 @@
 package pkgDatabase.pkgListener;
 
-import pkgDatabase.UpdatePlayerHandler;
+import pkgDatabase.pkgHandler.UpdatePlayerHandler;
 
 public interface OnPlayerUpdatedListener {
     void updatePlayerFinished(UpdatePlayerHandler handler);

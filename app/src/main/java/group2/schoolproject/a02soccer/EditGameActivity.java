@@ -19,8 +19,8 @@ import pkgData.Game;
 import pkgData.Participation;
 import pkgData.Team;
 import pkgDatabase.Database;
-import pkgDatabase.LoadParticipationsHandler;
-import pkgDatabase.UpdateGameHandler;
+import pkgDatabase.pkgHandler.LoadParticipationsHandler;
+import pkgDatabase.pkgHandler.UpdateGameHandler;
 import pkgDatabase.pkgListener.OnGameUpdatedListener;
 import pkgDatabase.pkgListener.OnLoadParticipationsListener;
 import pkgListeners.OnScoreChangedListener;
@@ -201,6 +201,7 @@ public class EditGameActivity extends BaseActivity implements OnScoreChangedList
                 db.updateGameLocally(gameToUpdate);
                 showMessage(getString(R.string.msg_DataSavedLocally));
                 toggleProgressBar(false);
+                openMainActivity();
             }
         }
     }
@@ -226,9 +227,7 @@ public class EditGameActivity extends BaseActivity implements OnScoreChangedList
         if (handler.getException() == null) {
             showMessage(getString(R.string.msg_SavedGame));
 
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
+            openMainActivity();
         }
         else {
             toggleProgressBar(false);
@@ -253,5 +252,13 @@ public class EditGameActivity extends BaseActivity implements OnScoreChangedList
             showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CannotConnectToWebservice));
             toggleProgressBar(false);
         }
+    }
+
+    private void openMainActivity() {
+        finish();
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("showPlayers", false);
+        startActivity(intent);
     }
 }

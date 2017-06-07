@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import pkgData.PlayerWithScore;
+import pkgMisc.PlayerWithScore;
 import group2.schoolproject.a02soccer.R;
 
 /**

@@ -100,7 +100,7 @@
             android:theme="@style/Theme.App.Base"
             android:label="@string/title_activity_login" />
         <activity
-            android:name=".BarcodeCaptureActivity"
+            android:name=".QRScannerActivity"
             android:windowSoftInputMode="adjustNothing"
             android:theme="@style/AppTheme.NoActionBar"
             android:label="Read Barcode"/>

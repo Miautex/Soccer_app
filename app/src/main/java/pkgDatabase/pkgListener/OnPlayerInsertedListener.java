@@ -1,6 +1,6 @@
 package pkgDatabase.pkgListener;
 
-import pkgDatabase.InsertPlayerHandler;
+import pkgDatabase.pkgHandler.InsertPlayerHandler;
 
 public interface OnPlayerInsertedListener {
     void insertPlayerFinished(InsertPlayerHandler handler);
