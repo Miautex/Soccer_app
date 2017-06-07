@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
@@ -37,16 +38,20 @@ import pkgDatabase.pkgListener.OnGameRemovedListener;
 import pkgDatabase.pkgListener.OnGamesChangedListener;
 import pkgDatabase.pkgListener.OnLoadAllGamesListener;
 import pkgDatabase.pkgListener.OnLoadAllPlayersListener;
+import pkgDatabase.pkgListener.OnOnlineStatusChangedListener;
 import pkgDatabase.pkgListener.OnPlayerRemovedListener;
 import pkgDatabase.pkgListener.OnPlayersChangedListener;
+import pkgException.CannotDeletePlayerOfLocalGameException;
 import pkgException.CouldNotDeletePlayerException;
 import pkgListeners.OnDeleteDialogButtonPressedListener;
 
+@SuppressWarnings("ConstantConditions")
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnPlayersChangedListener,
         OnGamesChangedListener, AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener,
         SwipeRefreshLayout.OnRefreshListener, OnLoadAllPlayersListener, OnLoadAllGamesListener, View.OnClickListener,
-        OnPlayerRemovedListener, OnGameRemovedListener, OnDeleteDialogButtonPressedListener {
+        OnPlayerRemovedListener, OnGameRemovedListener, OnDeleteDialogButtonPressedListener,
+        OnOnlineStatusChangedListener {
 
     private ListView lsvPlayersGames = null;
     private Spinner spPlayersGames = null;
@@ -77,22 +82,39 @@ public class MainActivity extends BaseActivity
             drawer.setDrawerListener(toggle);
             toggle.syncState();
 
-            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-            navigationView.setNavigationItemSelectedListener(this);
+            setupMenu(db.getCurrentlyLoggedInPlayer().isAdmin());
+            registrateEventHandlers();
+            displayLoggedInUser();
 
-            if (db.getCurrentlyLoggedInPlayer() == null || !db.getCurrentlyLoggedInPlayer().isAdmin()) {
-                navigationView.getMenu().setGroupVisible(R.id.menuGroupAdmin, false);
+            //Set selection (either players or games displayed; default: players)
+            Boolean showPlayers = (Boolean) this.getIntent().getSerializableExtra("showPlayers");
+            if (showPlayers == null || showPlayers) {
+                displayPlayers();
+                spPlayersGames.setSelection(0);
             }
             else {
-                navigationView.getMenu().setGroupVisible(R.id.menuGroupAdmin, true);
+                displayGames();
+                spPlayersGames.setSelection(1);
             }
-
-            registrateEventHandlers();
-            displayPlayers();
-            displayLoggedInUser();
         }
         catch (Exception ex) {
+            ex.printStackTrace();
             showMessage(getString(R.string.Error) + ": " + ex.getMessage());
+        }
+    }
+
+    private void setupMenu(boolean isAdmin) {
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        if (!isAdmin) {
+            MenuItem myMoveGroupItem = navigationView.getMenu().getItem(0);
+            SubMenu subMenu = myMoveGroupItem.getSubMenu();
+            subMenu.findItem(R.id.mniAddPlayer).setVisible(false);
+
+            myMoveGroupItem = navigationView.getMenu().getItem(1);
+            subMenu = myMoveGroupItem.getSubMenu();
+            subMenu.findItem(R.id.mniAddGame).setVisible(false);
         }
     }
 
@@ -118,7 +140,7 @@ public class MainActivity extends BaseActivity
     }
 
     private void openQRCode(){
-        Bitmap qr = null;
+        Bitmap qr;
         try{
             if (db.isQRCodeReady()) {
                 qr = db.getQRCode();
@@ -171,28 +193,56 @@ public class MainActivity extends BaseActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.mniAddPlayer) {
-            openActivity(AddPlayerActivity.class);
-        } else if (id == R.id.mniAddGame) {
-            openActivity(AddGameSelectPlayersActivity.class);
-        } else if (id == R.id.mniEditPlayer) {
-            Intent myIntent = new Intent(this, EditPlayerActivity.class);
-            myIntent.putExtra("player", db.getCurrentlyLoggedInPlayer());
-            startActivity(myIntent);
-        } else if (id == R.id.nav_manage) {
-            openActivity(ScoreboardActivity.class);
-        } else if (id == R.id.mniLogin) {
-            db.logout(this);
-            openLoginActivity();
-        } else if (id == R.id.nav_settings) {
-            openActivity(SettingsActivity.class);
-        }
-        else if(id == R.id.nav_test){
-            openActivity(TeamDivision2.class);
-        }
+        try {
+            switch (id) {
+                case R.id.mniDisplayPlayer:
+                    displayPlayers();
+                    //select players in spinner
+                    spPlayersGames.setSelection(0);
+                    break;
+                case R.id.mniEditPlayer:
+                    Intent myIntent = new Intent(this, EditPlayerActivity.class);
+                    myIntent.putExtra("player", db.getCurrentlyLoggedInPlayer());
+                    startActivity(myIntent);
+                    break;
+                case R.id.mniScoreboard:
+                    openActivity(ScoreboardActivity.class);
+                    break;
+                case R.id.mniAddPlayer:
+                    openActivity(AddPlayerActivity.class);
+                    break;
+                case R.id.mniDisplayGames:
+                    displayGames();
+                    //select games in spinner
+                    spPlayersGames.setSelection(1);
+                    break;
+                case R.id.mniAddGame:
+                    openActivity(AddGameSelectPlayersActivity.class);
+                    break;
+                case R.id.mniSettings:
+                    openActivity(SettingsActivity.class);
+                    break;
+                case R.id.mniLogout:
+                    db.logout(this);
+                    openLoginActivity();
+                    break;
+                case R.id.test:
+                    openActivity(TeamDivision2.class);
+                    break;
+                case R.id.qr:
+                    //openActivity(TeamDivision2.class);
+                    break;
+                case R.id.mniSiteNotice:
+                    openActivity(SiteNoticeActivity.class);
+                    break;
+            }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
         return true;
     }
 
@@ -212,6 +262,7 @@ public class MainActivity extends BaseActivity
         swipeRefreshLayout.setOnRefreshListener(this);
         db.addOnPlayersUpdatedListener(this);
         db.addOnGamesUpdatedListener(this);
+        db.addOnOnlineStatusChangedListener(this);
         imgQRCode.setOnClickListener(this);
     }
 
@@ -240,13 +291,13 @@ public class MainActivity extends BaseActivity
     }
 
     private void displayPlayers() throws Exception {
-        final MainPlayerListAdapter lsvAdapter = new MainPlayerListAdapter(this, db.getAllPlayers(), this,
+        final MainPlayerListAdapter lsvAdapter = new MainPlayerListAdapter(this, db.getCachedPlayers(), this,
                 db.getCurrentlyLoggedInPlayer().isAdmin());
         lsvPlayersGames.setAdapter(lsvAdapter);
     }
 
     private void displayGames() throws Exception {
-        final MainGameListAdapter lsvAdapter = new MainGameListAdapter(this, db.getAllGames(), this,
+        final MainGameListAdapter lsvAdapter = new MainGameListAdapter(this, db.getCachedGames(), this,
                 db.getCurrentlyLoggedInPlayer().isAdmin());
         lsvPlayersGames.setAdapter(lsvAdapter);
     }
@@ -343,11 +394,26 @@ public class MainActivity extends BaseActivity
     public void deleteDialogButtonPressed(Object selectedObject, boolean isPositive) {
         try {
             if (isPositive && selectedObject.getClass().equals(Player.class)) {
-                db.remove((Player) selectedObject, this);
+                Player selectedPlayer = (Player) selectedObject;
+                if (!selectedPlayer.isLocallySavedOnly()) {
+                    db.remove(selectedPlayer, this);
+                }
+                else {
+                    db.removePlayerLocally(selectedPlayer);
+                }
             }
             else if (isPositive && selectedObject.getClass().equals(Game.class)) {
-                db.remove((Game) selectedObject, this);
+                Game selectedGame = (Game) selectedObject;
+                if (!selectedGame.isLocallySavedOnly()) {
+                    db.remove(selectedGame, this);
+                }
+                else {
+                    db.removeGameLocally(selectedGame);
+                }
             }
+        }
+        catch (CannotDeletePlayerOfLocalGameException ex) {
+            showMessage(getString(R.string.msg_CannotDeletePlayerInLocalGame));
         }
         catch (Exception ex) {
             showMessage(ex.getMessage());
@@ -431,11 +497,10 @@ public class MainActivity extends BaseActivity
             arePlayersRefreshed = false;
             areGamesRefreshed = false;
             hasRefreshFailed = false;
-            db.loadAllPlayers(this);
-            db.loadAllGames(this);
+            db.tryRefreshData(this, this, this);
         } catch (Exception e) {
-            showMessage(getString(R.string.Error) + ": " + e.getMessage());
-            e.printStackTrace();
+            swipeRefreshLayout.setRefreshing(false);
+            showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CouldNotRefreshData));
         }
     }
 
@@ -475,21 +540,20 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void removePlayerFinished(RemovePlayerHandler handler) {
-        if (handler.getException() == null) {
-            //Player is removed from list by database via listener
-        }
-        else {
+        if (handler.getException() != null) {
             showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CouldNotDeletePlayer));
         }
     }
 
     @Override
     public void removeGameFinished(RemoveGameHandler handler) {
-        if (handler.getException() == null) {
-            //Game is removed from list by database via listener
-        }
-        else {
+        if (handler.getException() != null) {
             showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CouldNotDeleteGame));
         }
+    }
+
+    @Override
+    public void onlineStatusChanged(boolean isOnline) {
+        setTitle();
     }
 }

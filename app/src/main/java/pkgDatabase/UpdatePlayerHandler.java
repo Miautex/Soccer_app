@@ -29,6 +29,8 @@ public class UpdatePlayerHandler extends WebserviceResponseHandler
     @Override
     public void done(AccessorResponse response) {
         try {
+            System.out.println("-------------- " + response.getJson());
+
             //throws Exception if error happened
             handleResponse(response);
 

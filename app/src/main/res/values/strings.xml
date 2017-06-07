@@ -21,6 +21,7 @@
     <string name="Scoreboard_titles_goalsshot">Scoreboard: Goals Shot</string>
     <string name="nav_settings_title">Settings</string>
     <string name="title_activity_score_board">Scoreboard</string>
+    <string name="title_activity_site_notice">Site Notice</string>
 
     <!--Buttons-->
     <string name="btnLogin">Login</string>
@@ -36,10 +37,10 @@
     <string name="mniTeam">Team(test)</string>
     <string name="mniGerman">Deutsch</string>
     <string name="mniEnglish">English</string>
-    <string name="mniLogin">Logout</string>
-    <string name="mniAdd">Add Player</string>
-    <string name="mniAddGame">Add Game</string>
+    <string name="mniLogout">Logout</string>
+    <string name="mniAdd">Add</string>
     <string name="mniEdit">Edit Userdata</string>
+    <string name="mniDisplay">Display</string>
     <string name="ctxMniEditPlayer">Edit</string>
     <string name="ctxMniDeletePlayer">Delete</string>
 
@@ -102,6 +103,9 @@
     <string name="position">Position</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="player">Player</string>
+    <string name="game">Game</string>
+    <string name="misc">Miscellaneous</string>
 
     <!--Spinner Arrays-->
     <string-array name="spinnerPlayerGameValues">
@@ -173,6 +177,8 @@
     <string name="msg_CouldNotUpdateStats">Could not update statistics</string>
     <string name="msg_ConfirmGameDeletion">Do you really want to delete this game ?</string>
     <string name="msg_ConfirmPlayerDeletion">Do you really want to delete player \'%s\' ?</string>
+    <string name="msg_DataSavedLocally">Data saved locally</string>
+    <string name="msg_CannotDeletePlayerInLocalGame">Cannot delete player who is participating in locally saved game</string>
 
     <!--Nav Drawer-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -198,4 +204,53 @@
     <string name="preference_teamassignment_layout_summary">Select a Team Assignment Layout</string>
     <string name="preference_teamassignment_layout_positiveBtn">OK</string>
     <string name="preference_teamassignment_layout_negativeBtn">Cancel</string>
+    <string name="nav_site_notice_title">Site Notice</string>
+
+    <string name="site_notice"><![CDATA[
+        <!doctype html>
+        <html>
+            <head>
+                <title>Impressum</title>
+                <style>
+                    h1, h2, h3 {
+                        text-align: center;
+                    }
+                </style>
+            </head>
+            <body>
+                <!--<h1>Impressum</h1>-->
+                <h2>Mitwirkende</h2>
+                <ul>
+                    <li>SANTNER Elias</li>
+                    <li>MOSER Raphael</li>
+                    <li>WILSCHER Marco</li>
+                    <li>SONNBERGER Martin</li>
+                </ul>
+                <h2>Verwendete Bibliotheken</h2>
+                <ul>
+                    <li><a href="https://github.com/google/gson">Gson</a></li>
+                    <li><a href="https://github.com/apache/commons-lang">Apache Commons Lang</a></li>
+                    <li><a href="https://github.com/zxing/zxing">ZXing</a></li>
+                    <li><a href="https://github.com/martin-stone/hsv-alpha-color-picker-android">Colorpicker</a></li>
+                    <li><a href="https://github.com/dm77/barcodescanner">Barcodescanner</a></li>
+                </ul>
+                <br />
+                <h3>Developed by</h3>
+                <h1>Kelch Crew</h1>
+            </body>
+        </html>
+    ]]></string>
+
+    <!--qrcode-->
+    <string name="ok">OK</string>
+    <string name="permission_camera_rationale">Access to the camera is needed for detection</string>
+    <string name="no_camera_permission">This application cannot run because it does not have the camera permission.  The application will now exit.</string>
+    <string name="low_storage_error">Face detector dependencies cannot be downloaded due to low device storage</string>
+    <string name="barcode_header">Click &quot;Read Barcode&quot; to read a barcode</string>
+    <string name="read_barcode">Read Barcode</string>
+    <string name="auto_focus">Auto Focus</string>
+    <string name="use_flash">Use Flash</string>
+    <string name="barcode_success">Barcode read successfully</string>
+    <string name="barcode_failure">No barcode captured</string>
+    <string name="barcode_error">"Error reading barcode: %1$s"</string>
 </resources>

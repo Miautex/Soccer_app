@@ -1,6 +1,7 @@
 package group2.schoolproject.a02soccer;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -14,8 +15,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
+import com.google.zxing.Result;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.TreeSet;
 
+import me.dm7.barcodescanner.zxing.ZXingScannerView;
 import pkgComparator.PlayerComparatorName;
 import pkgData.Game;
 import pkgData.Player;
@@ -33,7 +34,7 @@ import pkgMisc.PxDpConverter;
  * @author Elias Santner
  */
 
-public class AddGameSelectPlayersActivity extends BaseActivity implements View.OnClickListener{
+public class AddGameSelectPlayersActivity extends BaseActivity implements View.OnClickListener, ZXingScannerView.ResultHandler {
     private static final int MIN_PLAYERS_REQUIRED = 4;
 
     private DatePicker datePicker = null;
@@ -43,10 +44,12 @@ public class AddGameSelectPlayersActivity extends BaseActivity implements View.O
             btnCancel = null,
             btnQRScan = null;
     private CheckBox ckbParticipationHeader = null;
+    private ZXingScannerView scanner;
 
     private Database db = null;
     private HashMap<Integer, Player> hmPlayers = null;
     private int numSelectedCheckboxes = 0;
+    private static final int RC_BARCODE_CAPTURE = 9001;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,12 +68,12 @@ public class AddGameSelectPlayersActivity extends BaseActivity implements View.O
                 this.finish();
             }
 
-            for (Player p: db.getAllPlayers()) {
+            for (Player p: db.getCachedPlayers()) {
                 hmPlayers.put(p.getId(), p);
             }
 
             TreeSet<Player> tsPlayers = new TreeSet<>(new PlayerComparatorName());      //for sorting
-            tsPlayers.addAll(db.getAllPlayers());
+            tsPlayers.addAll(db.getCachedPlayers());
             displayPlayersInTable(tsPlayers);
 
         } catch (Exception ex) {
@@ -133,9 +136,35 @@ public class AddGameSelectPlayersActivity extends BaseActivity implements View.O
         }
     }
 
+    private void setCheckPlayers(ArrayList<Player> players) {
+        TableRow row;
+        CheckBox checkBox;
+        TextView textViewId;
+        int id, numAllPlayers;
+        int count = 0;
+        numAllPlayers = tablePlayers.getChildCount();
+        ckbParticipationHeader.setChecked(false);
+
+        for (int i = 0; i < numAllPlayers; i++) {
+            row = (TableRow) tablePlayers.getChildAt(i);
+            checkBox = (CheckBox) row.getChildAt(0);
+            checkBox.setChecked(false);
+            textViewId = (TextView) row.getChildAt(2);
+            id = Integer.parseInt(textViewId.getText().toString());
+            for (Player p : players) {
+                if (id == p.getId()) {
+                    count++;
+                    checkBox.setChecked(true);
+                    break;
+                }
+            }
+        }
+        if(count == numAllPlayers){
+            ckbParticipationHeader.setChecked(true);
+        }
+    }
+
     /**
-     *
-     * @param datePicker
      * @return a java.util.Date
      */
     public static java.util.Date getDateFromDatePicker(DatePicker datePicker){
@@ -150,7 +179,7 @@ public class AddGameSelectPlayersActivity extends BaseActivity implements View.O
     }
 
     private ArrayList<Player> getSelectedPlayersFromTable() {
-        ArrayList<Player> selectedPlayers = new ArrayList<Player>();
+        ArrayList<Player> selectedPlayers = new ArrayList<>();
         TableRow row;
         CheckBox checkBox;
         TextView textViewId;
@@ -188,22 +217,39 @@ public class AddGameSelectPlayersActivity extends BaseActivity implements View.O
         this.startActivity(myIntent);
     }
 
+    private void openQRScanner() {
+        //scanner = new ZXingScannerView(this);
+        //setContentView(scanner);
+        //scanner.setResultHandler(this);
+        //scanner.startCamera();
+        // launch barcode activity.
+            Intent intent = new Intent(this, BarcodeCaptureActivity.class);
+            intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
+            intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
+            startActivityForResult(intent, RC_BARCODE_CAPTURE);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if(result != null) {
-            if(result.getContents() == null) {
-
-            } else {
+        if (requestCode == RC_BARCODE_CAPTURE) {
+            if(resultCode == Activity.RESULT_OK){
+                ArrayList<Player> result = (ArrayList<Player>) data.getSerializableExtra("Result");
+                setCheckPlayers(result);
 
             }
-
-        } else {
-
-            super.onActivityResult(requestCode, resultCode, data);
+            if (resultCode == Activity.RESULT_CANCELED) {
+                showMessage("Something went wrong");
+            }
         }
 
     }
+
+    @Override
+    public void handleResult(Result rawResult){
+       //Log.i("SCANN RESULT", rawResult.getText());
+       // scanner.resumeCameraPreview(this);
+    }
+
     @Override
     public void onClick(View v) {
         try {
@@ -214,11 +260,11 @@ public class AddGameSelectPlayersActivity extends BaseActivity implements View.O
                 this.finish();
             }
             else if(v.getId() == R.id.btnQRScan){
-                new IntentIntegrator (this).initiateScan();
+                openQRScanner();
             }
             else if (v.getId() == R.id.ckbParticipationHeader) {
-                TableRow row = null;
-                CheckBox checkBox = null;
+                TableRow row;
+                CheckBox checkBox;
 
                 for (int i = 0; i < tablePlayers.getChildCount(); i++) {
                     row = (TableRow) tablePlayers.getChildAt(i);

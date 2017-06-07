@@ -100,7 +100,7 @@ public class ShowPlayerStatsActivity extends BaseActivity implements OnLoadSingl
 
     @Override
     public void loadSinglePlayerFinished(LoadSinglePlayerHandler handler) {
-        if (handler.getException() == null) {
+        if (handler.getException() == null && handler.getPlayer() != null) {
             player = handler.getPlayer();
             displayPlayerStats();
         }

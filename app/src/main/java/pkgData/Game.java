@@ -1,5 +1,7 @@
 package pkgData;
 
+import android.support.annotation.NonNull;
+
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,6 +17,7 @@ public final class Game implements Serializable, Comparable<Game> {
     private String date;
     private String remark;
     private HashSet<Participation> participations;
+    private boolean isLocallySavedOnly;
 
     private Game() {
         id = -1;
@@ -22,6 +25,7 @@ public final class Game implements Serializable, Comparable<Game> {
         scoreTeamB = -1;
         date = null;
         participations = new HashSet<>();
+        isLocallySavedOnly = false;
     }
 
     public Game(int id, Date date, int scoreA, int scoreB) {
@@ -117,6 +121,14 @@ public final class Game implements Serializable, Comparable<Game> {
         participations.clear();
     }
 
+    public boolean isLocallySavedOnly() {
+        return isLocallySavedOnly;
+    }
+
+    public void setLocallySavedOnly(boolean locallySavedOnly) {
+        isLocallySavedOnly = locallySavedOnly;
+    }
+
     @Override
     public int hashCode() {
         return id;
@@ -146,7 +158,7 @@ public final class Game implements Serializable, Comparable<Game> {
     }
 
     @Override
-    public int compareTo( Game game) {
+    public int compareTo(@NonNull Game game) {
         int cp;
         cp = game.getDate().compareTo(getDate());
         if (cp == 0) {

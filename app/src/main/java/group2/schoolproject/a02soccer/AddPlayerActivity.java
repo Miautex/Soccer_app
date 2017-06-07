@@ -1,5 +1,6 @@
 package group2.schoolproject.a02soccer;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +23,9 @@ import pkgException.UsernameTooLongException;
 import pkgException.UsernameTooShortException;
 import pkgMisc.NamePWValidator;
 
+/**
+ * @author Elias Santner
+ */
 
 public class AddPlayerActivity extends BaseActivity
         implements View.OnClickListener, OnPlayerInsertedListener, OnSetPasswordListener {
@@ -73,7 +77,7 @@ public class AddPlayerActivity extends BaseActivity
         btnCancel.setOnClickListener(this);
     }
 
-    private void onBtnAddClick() throws Exception {
+    private void onBtnAddClick(boolean isOnline) throws Exception {
         Player newPlayer = null;
 
         if (edtName.getText().toString().isEmpty() || edtUsername.getText().toString().isEmpty() || edtPassword.getText().toString().isEmpty()) {
@@ -100,7 +104,16 @@ public class AddPlayerActivity extends BaseActivity
                 newPlayer.addPosition(PlayerPosition.GOAL);
 
                 toggleProgressBar(true);
-                db.insert(newPlayer, this);
+
+                if (isOnline) {
+                    db.insert(newPlayer, this);
+                }
+                else {
+                    db.insertPlayerLocally(newPlayer, edtPassword.getText().toString());
+                    showMessage(getString(R.string.msg_DataSavedLocally));
+                    toggleProgressBar(false);
+                    openMainActivity();
+                }
             }
 
         }
@@ -127,6 +140,15 @@ public class AddPlayerActivity extends BaseActivity
             throw new PasswordTooShortException(String.format(getString(R.string.msg_PasswordTooShort),
                     ex.getMinLenght()), ex.getMinLenght());
         }
+        catch (DuplicateUsernameException ex) {
+            toggleProgressBar(false);
+            throw new DuplicateUsernameException(String.format(getString(R.string.msg_UsernameNotAvailable),
+                    newPlayer.getUsername()));
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+            toggleProgressBar(false);
+        }
     }
 
     private void toggleProgressBar(boolean isEnabled) {
@@ -138,11 +160,18 @@ public class AddPlayerActivity extends BaseActivity
         }
     }
 
+    private void openMainActivity() {
+        finish();
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
+
     @Override
     public void onClick(View v) {
         try {
             if (v.getId() == R.id.btnAdd) {
-                onBtnAddClick();
+                onBtnAddClick(db.isOnline());
             }
             else if (v.getId() == R.id.btnCancel) {
                 this.finish();
@@ -158,6 +187,7 @@ public class AddPlayerActivity extends BaseActivity
         toggleProgressBar(false);
         if (handler.getException() == null) {
             showMessage(String.format(getString(R.string.msg_PlayerAdded), handler.getPlayer().getName()));
+            openMainActivity();
         }
         else {
             showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CouldNotSetPassword));
@@ -178,12 +208,13 @@ public class AddPlayerActivity extends BaseActivity
                             String.format(getString(R.string.msg_UsernameNotAvailable), handler.getPlayer().getUsername()));
                 }
                 else {
-                    showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CouldNotInsertPlayer));
+                    //if insert fails because of connection issues insert player locally
+                    onBtnAddClick(false);
                 }
             }
         }
         catch (Exception ex) {
-            showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CouldNotInsertPlayer));
+            showMessage(getString(R.string.Error) + ": " + ex.getMessage());
         }
     }
 }

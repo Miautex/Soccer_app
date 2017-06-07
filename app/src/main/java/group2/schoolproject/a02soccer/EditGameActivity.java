@@ -75,9 +75,11 @@ public class EditGameActivity extends BaseActivity implements OnScoreChangedList
             setupViewPager(mViewPager);
             tablayout.setupWithViewPager(mViewPager);
 
-            //Load participations
-            db.getParticipationsOfGame(gameToUpdate, this);
-            toggleProgressBar(true);
+            //Load participations if game is saved online
+            if (!gameToUpdate.isLocallySavedOnly()) {
+                db.getParticipationsOfGame(gameToUpdate, this);
+                toggleProgressBar(true);
+            }
 
             //Initially display score
             updateScoreDisplay(gameToUpdate.getScoreTeamA(), gameToUpdate.getScoreTeamB());
@@ -191,7 +193,15 @@ public class EditGameActivity extends BaseActivity implements OnScoreChangedList
             gameToUpdate.setRemark(edtRemark.getText().toString());
 
             toggleProgressBar(true);
-            db.update(gameToUpdate, this);
+
+            if (!gameToUpdate.isLocallySavedOnly()) {
+                db.update(gameToUpdate, this);
+            }
+            else {
+                db.updateGameLocally(gameToUpdate);
+                showMessage(getString(R.string.msg_DataSavedLocally));
+                toggleProgressBar(false);
+            }
         }
     }
 
@@ -206,6 +216,7 @@ public class EditGameActivity extends BaseActivity implements OnScoreChangedList
             }
         } catch (Exception e) {
             showMessage(getString(R.string.Error) + ": " + e.getMessage());
+            toggleProgressBar(false);
         }
     }
 

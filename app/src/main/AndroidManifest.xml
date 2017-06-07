@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="group2.schoolproject.a02soccer">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="group2.schoolproject.a02soccer">
 
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-feature android:name="android.hardware.camera" />
 
     <application
         android:allowBackup="true"
@@ -14,6 +14,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.App.Base">
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.gms.vision.DEPENDENCIES"
+            android:value="barcode" />
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
@@ -22,15 +28,9 @@
             android:label="Moskito&apos;s Soccer App">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <!--
-            <activity
-            android:name=".EditPlayerOwnActivity"
-            android:label="@string/title_activity_edit_player_own" />
-        -->
         <activity
             android:name=".EditPlayerActivity"
             android:label="@string/title_activity_edit_player_admin"
@@ -43,7 +43,6 @@
             android:name=".TeamDivisionActivity"
             android:label="@string/title_activity_team_management"
             android:screenOrientation="portrait"/>
-        <!-- android:theme="@style/AppTheme.NoActionBar"></activity> -->
         <activity
             android:name=".AddGameSelectPlayersActivity"
             android:label="@string/title_activity_add_game_select_players"
@@ -94,6 +93,16 @@
             android:name=".LoginActivity"
             android:label="@string/title_activity_login"
             android:theme="@style/Theme.App.Base"/>
+        <activity android:name=".PictureTestActivity">
+        </activity>
+        <activity android:name=".SiteNoticeActivity">
+        </activity>
+            android:theme="@style/Theme.App.Base"
+            android:label="@string/title_activity_login" />
+        <activity
+            android:name=".BarcodeCaptureActivity"
+            android:windowSoftInputMode="adjustNothing"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="Read Barcode"/>
     </application>
-
 </manifest>

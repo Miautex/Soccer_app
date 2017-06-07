@@ -47,7 +47,7 @@ public class ScoreboardActivity extends BaseActivity implements AdapterView.OnIt
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         TreeSet<Player> ts = new TreeSet<>();
         try {
-            ts.addAll(Database.getInstance().getAllPlayers());
+            ts.addAll(Database.getInstance().getCachedPlayers());
             switch (position) {
                 case 0:
                     lsv.setAdapter(createAdapter(ts,getString(R.string.Scoreboard_titles_wins),new PlayerComparatorWins()));

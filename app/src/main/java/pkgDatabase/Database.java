@@ -20,6 +20,7 @@ import java.util.TreeSet;
 
 import group2.schoolproject.a02soccer.BuildConfig;
 import pkgComparator.PlayerComparatorName;
+import pkgComparator.PlayerComparatorUsername;
 import pkgData.Game;
 import pkgData.LocalData;
 import pkgData.LocalUserData;
@@ -28,6 +29,7 @@ import pkgData.Participation;
 import pkgData.Player;
 import pkgData.PlayerPosition;
 import pkgData.PlayerPositionRequest;
+import pkgData.PlayerWithPassword;
 import pkgDatabase.pkgListener.OnGameInsertedListener;
 import pkgDatabase.pkgListener.OnGameRemovedListener;
 import pkgDatabase.pkgListener.OnGameUpdatedListener;
@@ -37,6 +39,7 @@ import pkgDatabase.pkgListener.OnLoadAllPlayersListener;
 import pkgDatabase.pkgListener.OnLoadParticipationsListener;
 import pkgDatabase.pkgListener.OnLoadSinglePlayerListener;
 import pkgDatabase.pkgListener.OnLoginListener;
+import pkgDatabase.pkgListener.OnOnlineStatusChangedListener;
 import pkgDatabase.pkgListener.OnParticipationInsertedListener;
 import pkgDatabase.pkgListener.OnParticipationUpdatedListener;
 import pkgDatabase.pkgListener.OnPlayerInsertedListener;
@@ -46,6 +49,10 @@ import pkgDatabase.pkgListener.OnPlayersChangedListener;
 import pkgDatabase.pkgListener.OnQRCodeGeneratedListener;
 import pkgDatabase.pkgListener.OnSetPasswordListener;
 import pkgDatabase.pkgListener.OnSetPlayerPosListener;
+import pkgException.CannotDeletePlayerOfLocalGameException;
+import pkgException.CouldNotUpdateGameException;
+import pkgException.CouldNotUpdatePlayerException;
+import pkgException.DuplicateUsernameException;
 import pkgException.NoLocalDataException;
 import pkgMisc.GsonSerializor;
 import pkgWSA.Accessor;
@@ -61,32 +68,40 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
                          DATA_FILE = "localData.dat";
 
     private static Database instance = null;
-    private TreeSet<Game> allGames;
-    private TreeSet<Player> allPlayers;
+    private TreeSet<Game> cachedGames;
+    private TreeSet<Player> cachedPlayers;
+    //Collections for saving local games/players
+    private TreeSet<Game> localGames;
+    private TreeSet<PlayerWithPassword> localPlayers;
+
     private Context ctx;
     private Player currentlyLoggedInPlayer;
     private ArrayList<OnGamesChangedListener> gamesChangedListener;
-    private boolean initialLogin;
     private boolean isQRCodeReady;
     private Locale locale;
     private ArrayList<OnPlayersChangedListener> playersChangedListener;
+    private ArrayList<OnOnlineStatusChangedListener> onlineStatusChangedListeners;
     private SharedPreferences preferences;
     private Bitmap qrCode;
     private String loginKey;
     private boolean isOnline;
+    //For uploading data of offline mode to webservice (see uploadLocallySavedPlayers() and onUploadPlayerFinished())
+    private int numPlayersToUpload;
 
     private Database() {
         this.loginKey = null;
         this.ctx = null;
         this.currentlyLoggedInPlayer = null;
         this.preferences = null;
-        this.initialLogin = true;
         this.qrCode = null;
         this.isQRCodeReady = false;
-        this.allPlayers = new TreeSet<>();
-        this.allGames = new TreeSet<>();
+        this.cachedPlayers = new TreeSet<>();
+        this.cachedGames = new TreeSet<>();
+        this.localPlayers = new TreeSet<>();
+        this.localGames = new TreeSet<>();
         this.playersChangedListener = new ArrayList<>();
         this.gamesChangedListener = new ArrayList<>();
+        onlineStatusChangedListeners = new ArrayList<>();
         this.isOnline = true;
     }
 
@@ -100,7 +115,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
 
     /**********************************************************************************
      *                          LISTENER RELATED METHODS                              *
-     *  Listeners which are called when the allPlayers/allGames changes               *
+     *  Listeners which are called when the cachedPlayers/cachedGames changes               *
      *              (notify...) has to be called manually                             *
      **********************************************************************************/
     public void addOnPlayersUpdatedListener(OnPlayersChangedListener listener) {
@@ -124,27 +139,41 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
     }
 
     private void notifyOnPlayersChangedListener() {
-        Iterator it = this.playersChangedListener.iterator();
-        while (it.hasNext()) {
-            OnPlayersChangedListener listener = (OnPlayersChangedListener) it.next();
+        for (OnPlayersChangedListener listener: playersChangedListener) {
             if (listener != null) {
                 listener.playersChanged();
             }
         }
 
-        saveLocalData(new LocalData(allPlayers, allGames), getContext());
+        saveLocalData(new LocalData(cachedPlayers, cachedGames, localPlayers, localGames), getContext());
     }
 
     private void notifyOnGamesUpdatedListener() {
-        Iterator it = this.gamesChangedListener.iterator();
-        while (it.hasNext()) {
-            OnGamesChangedListener listener = (OnGamesChangedListener) it.next();
+        for (OnGamesChangedListener listener: gamesChangedListener) {
             if (listener != null) {
                 listener.gamesChanged();
             }
         }
 
-        saveLocalData(new LocalData(allPlayers, allGames), getContext());
+        saveLocalData(new LocalData(cachedPlayers, cachedGames, localPlayers, localGames), getContext());
+    }
+
+    public void addOnOnlineStatusChangedListener(OnOnlineStatusChangedListener listener) {
+        if (listener == null) {
+            throw new IllegalArgumentException("listener must not be null");
+        } else if (this.onlineStatusChangedListeners.contains(listener)) {
+            throw new IllegalArgumentException("listener already registered");
+        } else {
+            this.onlineStatusChangedListeners.add(listener);
+        }
+    }
+
+    private void notifyOnOnlineStatusChangedListener() {
+        for(OnOnlineStatusChangedListener listener: onlineStatusChangedListeners) {
+            if (listener != null) {
+                listener.onlineStatusChanged(isOnline());
+            }
+        }
     }
 
 
@@ -208,6 +237,8 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         }
         listeners.add(this);
 
+
+
         //Launch loading
         Accessor.runRequestAsync(HttpMethod.GET, "player", "loginKey="+loginKey,
                 null, new LoadAllPlayersHandler(listeners));
@@ -220,16 +251,22 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
     public void loadPlayersFinished(LoadAllPlayersHandler handler) {
         //If loading was successful
         if (handler.getException() == null) {
-            //Refresh allPlayers using loaded players from LoadAllPlayersHandler
-            this.allPlayers.clear();
+            //Refresh cachedPlayers using loaded players from LoadAllPlayersHandler
+            this.cachedPlayers.clear();
             for (Player p : handler.getPlayers()) {
-                this.allPlayers.add(p);
+                this.cachedPlayers.add(p);
             }
             setCurrentlyLoggedInPlayer(getPlayerByUsername(getCurrentlyLoggedInPlayer().getUsername()));
             notifyOnPlayersChangedListener();
 
             //Store logged in player locally
-            saveLocalUserData(new LocalUserData(currentlyLoggedInPlayer, loadLocalUserData(getContext()).getPassword(), true),
+            LocalUserData lud = loadLocalUserData(getContext());
+            String pw = "";
+            if (lud != null) {
+                pw = lud.getPassword();
+            }
+
+            saveLocalUserData(new LocalUserData(currentlyLoggedInPlayer, pw, true),
                     getContext());
         }
     }
@@ -256,10 +293,10 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
     @Override
     public void loadSinglePlayerFinished(LoadSinglePlayerHandler handler) {
         //If loading was successful
-        if (handler.getException() == null) {
-            //Update player loaded player in allPlayers
-            this.allPlayers.remove(handler.getPlayer());
-            this.allPlayers.add(handler.getPlayer());
+        if (handler.getException() == null && handler.getPlayer() != null) {
+            //Update player loaded player in cachedPlayers
+            this.cachedPlayers.remove(handler.getPlayer());
+            this.cachedPlayers.add(handler.getPlayer());
             setCurrentlyLoggedInPlayer(getPlayerByUsername(getCurrentlyLoggedInPlayer().getUsername()));
             notifyOnPlayersChangedListener();
         }
@@ -268,10 +305,21 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
     /**
      * Returns an ArrayList of all loaded Players ordered by name
      */
-    public ArrayList<Player> getAllPlayers() {
+    public ArrayList<Player> getCachedPlayers() {
         TreeSet<Player> sortingTs = new TreeSet<>(new PlayerComparatorName());
-        sortingTs.addAll(this.allPlayers);
-        return new ArrayList<>(sortingTs);
+
+        sortingTs.addAll(this.cachedPlayers);
+        for (PlayerWithPassword pl: localPlayers) {
+            sortingTs.add(pl.getPlayer());
+        }
+
+        //Put logged in player first, then the rest ordered by name
+        ArrayList<Player> returnList = new ArrayList<>();
+        returnList.add(getCurrentlyLoggedInPlayer());
+        sortingTs.remove(getCurrentlyLoggedInPlayer());
+        returnList.addAll(sortingTs);
+
+        return returnList;
     }
 
     /**
@@ -281,7 +329,13 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
      */
     public Player getPlayerByUsername(String username) {
         Player player = null;
-        Iterator<Player> iteratorPlayers = this.allPlayers.iterator();
+        ArrayList<Player> localAndAllPlayers = new ArrayList<>();
+        localAndAllPlayers.addAll(cachedPlayers);
+        for (PlayerWithPassword pl: localPlayers) {
+            localAndAllPlayers.add(pl.getPlayer());
+        }
+
+        Iterator<Player> iteratorPlayers = localAndAllPlayers.iterator();
         while (iteratorPlayers.hasNext() && player == null) {
             Player tmpPl = iteratorPlayers.next();
             if (tmpPl.getUsername().equals(username)) {
@@ -291,6 +345,22 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         return player;
     }
 
+    /**
+     * Returns a Player by id
+     * NOTE: Only the local collection is searched, if you want the most recent player from the Webservice,
+     * please call loadSinglePlayer() first
+     */
+    public Player getPlayerByID(int id) {
+        Player player = null;
+        Iterator<Player> iteratorPlayers = this.cachedPlayers.iterator();
+        while (iteratorPlayers.hasNext() && player == null) {
+            Player tmpPl = iteratorPlayers.next();
+            if (tmpPl.getId().equals(id)) {
+                player = tmpPl;
+            }
+        }
+        return player;
+    }
 
     /**
      * Starts the insertion of passed player
@@ -304,7 +374,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         listeners.add(this);
 
         //Launch insertion
-        Accessor.runRequestAsync(HttpMethod.POST, "player", "loginKey="+loginKey,
+        Accessor.runRequestAsync(HttpMethod.POST, "player", "loginKey=" + loginKey,
                 GsonSerializor.serializePlayer(p), new InsertPlayerHandler(listeners, p));
     }
 
@@ -315,9 +385,8 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
     public void insertPlayerFinished(InsertPlayerHandler handler) {
         //If insertion was successful
         if (handler.getException() == null) {
-            //Add new player to allPlayers (Player has already received an ID from the webservice)
-            this.allPlayers.add(handler.getPlayer());
-            notifyOnPlayersChangedListener();
+            //Add new player to cachedPlayers (Player has already received an ID from the webservice)
+            this.cachedPlayers.add(handler.getPlayer());
         }
     }
 
@@ -344,9 +413,9 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
     public void updatePlayerFinished(UpdatePlayerHandler handler) {
         //If update was successful
         if (handler.getException() == null) {
-            //Update player in allPlayers
-            this.allPlayers.remove(handler.getPlayer());
-            this.allPlayers.add(handler.getPlayer());
+            //Update player in cachedPlayers
+            this.cachedPlayers.remove(handler.getPlayer());
+            this.cachedPlayers.add(handler.getPlayer());
             //If currently logged in player was updated, set currentlyLoggedInPlayer to updated player
             if (getCurrentlyLoggedInPlayer().equals(handler.getPlayer())) {
                 setCurrentlyLoggedInPlayer(handler.getPlayer());
@@ -378,8 +447,8 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
     public void removePlayerFinished(RemovePlayerHandler handler) {
         //If removal was successful
         if (handler.getException() == null) {
-            //Remove player from allPlayers
-            this.allPlayers.remove(handler.getPlayer());
+            //Remove player from cachedPlayers
+            this.cachedPlayers.remove(handler.getPlayer());
             notifyOnPlayersChangedListener();
         }
     }
@@ -427,7 +496,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         //Launch login
         Accessor.runRequestAsync(HttpMethod.POST, "player/security/login", null,
                 GsonSerializor.serializeLoginCredentials(new LoginCredentials(username, local_pwEnc)),
-                new LoginHandler(username, local_pw_Unencrypted, listenersToInform, listenersToStore));
+                new LoginHandler(username, local_pw_Unencrypted, listenersToInform, listenersToStore), 2000);
     }
 
     /**
@@ -440,7 +509,6 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
             try {
                 //set loginKey (loginKey is used for all further access to webservice)
                 loginKey = handler.getLoginKey();
-                setOnline(true);
 
                 //Set currentlyLoggedInPlayer to save the username of the logged in player
                 // so the setting of currentlyLoggedInPlayer in loadPlayersFinished works
@@ -448,7 +516,19 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
                 // getPlayerByUsername(getCurrentlyLoggedInPlayer().getUsername()) wouldn't work)
                 setCurrentlyLoggedInPlayer(new Player(handler.getUsername(), "tmpname", false));
 
-                saveLocalUserData(new LocalUserData(null, handler.getPassword(), true), getContext());
+                //save password as it's not available in loadPlayersFinished()
+                LocalUserData lud = loadLocalUserData(getContext());
+                if (lud != null) {
+                    lud.setPassword(handler.getPassword());
+                    lud.setLoggedIn(true);
+                }
+                else {
+                    lud = new LocalUserData(null, handler.getPassword(), true);
+                }
+
+                saveLocalUserData(lud, getContext());
+                initOfflineSavedData(getContext());
+                setOnline(true);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -484,7 +564,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
 
     /**
      * Starts the update of a players password
-     * NOTE: THis method is automatically called by InsertPlayerHandler and if updatePassword is checked by UpdatePlayerHandler
+     * NOTE: This method is automatically called by InsertPlayerHandler and if updatePassword is checked by UpdatePlayerHandler
      */
     public void setPassword(Player p, String pw, OnSetPasswordListener listener) throws Exception {
         //Add passed listener to list of listeners
@@ -524,13 +604,25 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
      */
     @Override
     public void loadGamesFinished(LoadAllGamesHandler handler) {
+        ArrayList<Game> tmpListGames = new ArrayList<>();
+
         //If loading was successful
         if (handler.getException() == null) {
-            //Refresh allGames using loaded games from LoadAllGamesHandler
-            this.allGames.clear();
+            //Refresh cachedGames using loaded games from LoadAllGamesHandler
             for (Game g : handler.getGames()) {
-                this.allGames.add(g);
+                //if game was already loaded, copy over participations
+                Game tmpGame = this.cachedGames.ceiling(g);
+                if (tmpGame.equals(g)) {
+                    for (Participation part: tmpGame.getParticipations()) {
+                        g.addParticipation(part);
+                    }
+                }
+                tmpListGames.add(g);
             }
+
+            this.cachedGames.clear();
+            this.cachedGames.addAll(tmpListGames);
+
             notifyOnGamesUpdatedListener();
         }
     }
@@ -538,8 +630,12 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
     /**
      * Returns an ArrayList of all loaded Games
      */
-    public ArrayList<Game> getAllGames() {
-        return new ArrayList<>(this.allGames);
+    public ArrayList<Game> getCachedGames() {
+        TreeSet<Game> localAndOnlineGames = new TreeSet<>();
+        localAndOnlineGames.addAll(cachedGames);
+        localAndOnlineGames.addAll(localGames);
+
+        return new ArrayList<>(localAndOnlineGames);
     }
 
     /**
@@ -548,9 +644,9 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
      */
     public Game getGameByID(int id) {
         Game game = null;
-        Iterator<Game> iteratorGames = this.allGames.iterator();
+        Iterator<Game> iteratorGames = this.cachedGames.iterator();
         while (iteratorGames.hasNext() && game == null) {
-            Game tmpG = (Game) iteratorGames.next();
+            Game tmpG = iteratorGames.next();
             if (tmpG.getId() == id) {
                 game = tmpG;
             }
@@ -581,8 +677,8 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
     public void insertGameFinished(InsertGameHandler handler) {
         //If insertion was successful
         if (handler.getException() == null) {
-            //Add game to allGames
-            this.allGames.add(handler.getGame());
+            //Add game to cachedGames
+            this.cachedGames.add(handler.getGame());
             notifyOnGamesUpdatedListener();
         }
     }
@@ -627,9 +723,9 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
     public void updateGameFinished(UpdateGameHandler handler) {
         //If update was successful
         if (handler.getException() == null) {
-            //Update game in allGames
-            this.allGames.remove(handler.getGame());
-            this.allGames.add(handler.getGame());
+            //Update game in cachedGames
+            this.cachedGames.remove(handler.getGame());
+            this.cachedGames.add(handler.getGame());
             notifyOnGamesUpdatedListener();
         }
     }
@@ -674,8 +770,8 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
     public void removeGameFinished(RemoveGameHandler handler) {
         //If removal was successful
         if (handler.getException() == null) {
-            //Remove game from allGames
-            this.allGames.remove(handler.getGame());
+            //Remove game from cachedGames
+            this.cachedGames.remove(handler.getGame());
             notifyOnGamesUpdatedListener();
         }
     }
@@ -754,24 +850,21 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         return this.preferences.getString("preference_user_password", BuildConfig.FLAVOR);
     }
 
-    public boolean isAutologin() {
-        return this.preferences.getBoolean("preference_user_autologin", false);
-    }
-
-    public void setInitialLogin(boolean initialLogin) {
-        this.initialLogin = initialLogin;
-    }
-
-    public boolean isInitialLogin() {
-        return this.initialLogin;
-    }
-
     public boolean isToast() {
         return !this.preferences.getBoolean("preference_usesnackbar", true);
     }
 
+    /**********************************************************************************
+     *                              OFFLINE MODE METHODS                              *
+     **********************************************************************************/
+
+
+    /**
+     * Loads the locally saved userdata (for offline login)
+     * @return Local User Data of logged in player or null if data is not found
+     */
     public LocalUserData loadLocalUserData(Context ctx) {
-        LocalUserData userData = null;
+        LocalUserData userData;
 
         try {
             FileInputStream fis = ctx.openFileInput(USERDATA_FILE);
@@ -787,12 +880,17 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         return userData;
     }
 
+    /**
+     * Saves local userdata (for offline login)
+     */
     private void saveLocalUserData(LocalUserData data, Context ctx) {
 
         try {
             FileOutputStream fos = ctx.openFileOutput(USERDATA_FILE, Context.MODE_PRIVATE);
             ObjectOutputStream os = new ObjectOutputStream(fos);
             os.writeObject(data);
+            os.flush();
+            fos.flush();
             os.close();
             fos.close();
         }
@@ -801,7 +899,10 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         }
     }
 
-
+    /**
+     * Offline login:
+     * Allows the user to log in without internet/server connection based on their last logged in user account
+     */
     public boolean loginLocal(String username, String password, Context ctx) throws Exception {
         boolean isSuccess = false;
         LocalUserData lud = loadLocalUserData(ctx);
@@ -813,9 +914,8 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
                 setCurrentlyLoggedInPlayer(lud.getPlayer());
                 isSuccess = true;
 
-                LocalData localData = loadLocalData(ctx);
-                allPlayers = localData.getAllPlayers();
-                allGames = localData.getAllGames();
+                initLocallySavedData(ctx);
+                initOfflineSavedData(ctx);
 
                 lud.setLoggedIn(true);
                 saveLocalUserData(lud, ctx);
@@ -824,13 +924,45 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         else {
             throw new NoLocalDataException();
         }
-
         return isSuccess;
     }
 
+    /**
+     * Loads the offline saved data (players and games created in offline mode)
+     * and set the collection in this class if load was successful
+     */
+    private void initOfflineSavedData(Context ctx) {
+        LocalData localData = loadLocalData(ctx);
 
+        if (localData.getLocalPlayers() != null) {
+            localPlayers = localData.getLocalPlayers();
+        }
+        if (localData.getLocalGames() != null) {
+            localGames = localData.getLocalGames();
+        }
+    }
+
+    /**
+     * Loads the locally saved data of players and games which are cached
+     * and set the collection in this class if load was successful
+     */
+    private void initLocallySavedData(Context ctx) {
+        LocalData localData = loadLocalData(ctx);
+
+        if (localData.getLocalPlayers() != null) {
+            cachedPlayers = localData.getAllPlayers();
+        }
+        if (localData.getLocalGames() != null) {
+            cachedGames = localData.getAllGames();
+        }
+    }
+
+    /**
+     * Loads the locally saved data (players and games created in offline mode)
+     * @return Local Data or null if file doesn't exist / cannot be loaded
+     */
     private LocalData loadLocalData(Context ctx) {
-        LocalData data = null;
+        LocalData data;
 
         try {
             FileInputStream fis = ctx.openFileInput(DATA_FILE);
@@ -847,11 +979,16 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         return data;
     }
 
+    /**
+     * Saves the Local Data (players and games created in offline mode)
+     */
     private void saveLocalData(LocalData data, Context ctx) {
         try {
             FileOutputStream fos = ctx.openFileOutput(DATA_FILE, Context.MODE_PRIVATE);
             ObjectOutputStream os = new ObjectOutputStream(fos);
             os.writeObject(data);
+            os.flush();
+            fos.flush();
             os.close();
             fos.close();
         }
@@ -860,11 +997,331 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         }
     }
 
+    /**
+     * @return Connection status of the app (online/offline)
+     */
     public boolean isOnline() {
         return isOnline;
     }
 
+    /**
+     * Sets the connection status of the app,
+     * notifies listeners and
+     * tires to upload local data to webservice if app is online
+     */
     private void setOnline(boolean online) {
+        notifyOnOnlineStatusChangedListener();
+
+        //if was offline and is now online, try to upload locally saved data
+        if (!this.isOnline && online && isLocallySavedDataAvailable()) {
+            uploadLocallySavedData();
+        }
+
         isOnline = online;
+    }
+
+    /**
+     * Uploads local data to webservice
+     */
+    private void uploadLocallySavedData() {
+        try {
+            uploadLocallySavedPlayers();
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+
+    /**
+     * Uploads local players to webservice (sets password as well)
+     */
+    private void uploadLocallySavedPlayers() throws Exception {
+        numPlayersToUpload = localPlayers.size();
+
+        //Upload locally saved players
+        for (final PlayerWithPassword p : localPlayers) {
+            insert(p.getPlayer(), new OnPlayerInsertedListener() {
+                @Override
+                public void insertPlayerFinished(InsertPlayerHandler handler) {
+                    try {
+                        if (handler.getException() == null) {
+                            setIdForPlayersOfLocalGames(handler.getPlayerLocal(), handler.getPlayer());
+                            setPassword(handler.getPlayer(), p.getPassword(), null);
+                            removePlayerLocallyForce(handler.getPlayerLocal());
+                            onUploadPlayerFinished();
+                        }
+                        else if (handler.getException().getClass().equals(DuplicateUsernameException.class)) {
+                            setIdForPlayersOfLocalGames(handler.getPlayerLocal(), handler.getPlayer());
+                            removePlayerLocallyForce(handler.getPlayerLocal());
+                            onUploadPlayerFinished();
+                        }
+                    }
+                    catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            });
+        }
+    }
+
+    /**
+     * replaces the player with a temp. local id with the real one after webservice insertion
+     */
+    private void setIdForPlayersOfLocalGames(Player oldPlayer, Player newPlayer) {
+        for (Game g: localGames) {
+            for (Participation part: g.getParticipations()) {
+                if (part.getPlayer().equals(oldPlayer)) {
+                    part.setPlayer(newPlayer);
+                }
+            }
+        }
+    }
+
+    /**
+     * Checks if a player is participating in any local games
+     */
+    private boolean isPlayerParticipationInLocalGame(Player player) {
+        boolean isParticipating = false;
+
+        Iterator<Game> itLocalGames = localGames.iterator();
+        Iterator<Participation> itParticipations;
+
+        while (itLocalGames.hasNext() && !isParticipating) {
+            itParticipations = itLocalGames.next().getParticipations().iterator();
+            while (itParticipations.hasNext() && !isParticipating) {
+                if (itParticipations.next().getPlayer().equals(player)) {
+                    isParticipating = true;
+                }
+            }
+        }
+
+        return isParticipating;
+    }
+
+    /**
+     * Uploads local games to webservice once all players are inserted (otherwise problems with foreign keys in DB)
+     */
+    private void onUploadPlayerFinished() {
+        try {
+            numPlayersToUpload--;
+
+            if (numPlayersToUpload <= 0) {
+                uploadLocallySavedGames();
+            }
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    /**
+     * Uploads local games to webservice (inserts participations as well)
+     */
+    private void uploadLocallySavedGames() throws Exception {
+        //Upload locally saved games
+        for (Game g : localGames) {
+            insert(g, new OnGameInsertedListener() {
+                @Override
+                public void insertGameFinished(InsertGameHandler handler) {
+                    try {
+                        if (handler.getException() == null) {
+                            removeGameLocally(handler.getGameLocal());
+                        }
+                    }
+                    catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            });
+        }
+    }
+
+
+    /*
+     * If app is online, try to load all players and games
+     * If offline, tries to log in and then load data
+     */
+    public void tryRefreshData(Context ctx, final OnLoadAllPlayersListener loadPListener,
+                                final OnLoadAllGamesListener loadGListener) throws Exception {
+
+        if (!isOnline()) {
+            LocalUserData lud = loadLocalUserData(ctx);
+            if (lud != null) {
+                login(lud.getPlayer().getUsername(), lud.getPassword(), new OnLoginListener() {
+                    @Override
+                    public void loginFinished(LoginHandler handler) {
+                    try {
+                        if (handler.getException() == null) {
+                            //set loginKey (loginKey is used for all further access to webservice)
+                            loginKey = handler.getLoginKey();
+                            setOnline(true);
+
+                            //Set currentlyLoggedInPlayer to save the username of the logged in player
+                            // so the setting of currentlyLoggedInPlayer in loadPlayersFinished works
+                            // (This method is called before loadAllPlayers is finished, so otherwise
+                            // getPlayerByUsername(getCurrentlyLoggedInPlayer().getUsername()) wouldn't work)
+                            setCurrentlyLoggedInPlayer(new Player(handler.getUsername(), "tmpname", false));
+                        }
+
+                        //causes exception if login failed
+                        loadAllPlayers(loadPListener);
+                        loadAllGames(loadGListener);
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    }
+                });
+            }
+        }
+        else {
+            //if db is only but there is locally saved data available for upload, upload data
+            if (isLocallySavedDataAvailable()) {
+                uploadLocallySavedData();
+            }
+
+            loadAllPlayers(loadPListener);
+            loadAllGames(loadGListener);
+        }
+    }
+
+    private boolean isLocallySavedDataAvailable() {
+        return !localGames.isEmpty() || !localPlayers.isEmpty();
+    }
+
+
+    /**
+     * Inserts a new player locally (in offline mode)
+     */
+    public void insertPlayerLocally(Player p, String password) throws DuplicateUsernameException {
+        TreeSet<Player> onlineAndLocalPlayers = new TreeSet<>(new PlayerComparatorUsername());
+        onlineAndLocalPlayers.addAll(getCachedPlayers());
+
+        if (!onlineAndLocalPlayers.contains(p)) {
+            p.setLocallySavedOnly(true);
+            //set id (negative for local players)
+            if (localPlayers.size() > 0) {
+                p.setId(localPlayers.first().getPlayer().getId() - 1);
+            } else {
+                p.setId(-1);
+            }
+            localPlayers.add(new PlayerWithPassword(p, password));
+            notifyOnPlayersChangedListener();
+        }
+        else {
+            throw new DuplicateUsernameException();
+        }
+    }
+
+    /**
+     * Updates an player (has to exist locally) locally
+     */
+    public void updatePlayerLocally(Player p, String password) throws CouldNotUpdatePlayerException, DuplicateUsernameException {
+        PlayerWithPassword updatedPlayer = new PlayerWithPassword(p, password);
+
+        if (localPlayers.contains(updatedPlayer)) {
+            TreeSet<Player> onlineAndLocalPlayers = new TreeSet<>(new PlayerComparatorUsername());
+            onlineAndLocalPlayers.addAll(getCachedPlayers());
+
+            //if username is not used or user with same username equals this user (happens when username is not changed in update)
+            if (!onlineAndLocalPlayers.contains(p) ||
+                    onlineAndLocalPlayers.ceiling(updatedPlayer.getPlayer()).getId().equals(updatedPlayer.getPlayer().getId())) {
+
+                //if password should not be updated
+                if (password == null) {
+                    PlayerWithPassword originalPl = localPlayers.ceiling(updatedPlayer);
+                    updatedPlayer.setPassword(originalPl.getPassword());
+                }
+
+                //remove old player and add new one (player is identified by id)
+                localPlayers.remove(updatedPlayer);
+                localPlayers.add(updatedPlayer);
+                notifyOnPlayersChangedListener();
+            }
+            else {
+                throw new DuplicateUsernameException(p.getUsername());
+            }
+        }
+        else {
+            throw new CouldNotUpdatePlayerException("Player not found locally");
+        }
+    }
+
+    /**
+     * Updates an player (has to exist locally) locally
+     * Does not change password
+     */
+    public void updatePlayerLocally(Player p) throws CouldNotUpdatePlayerException, DuplicateUsernameException {
+        updatePlayerLocally(p, null);
+    }
+
+    /**
+     * Removes locally saved player (checks if player is participating in local game)
+     */
+    public void removePlayerLocally(Player p) throws CannotDeletePlayerOfLocalGameException {
+        if (!isPlayerParticipationInLocalGame(p)) {
+            removePlayerLocallyForce(p);
+        }
+        else {
+            throw new CannotDeletePlayerOfLocalGameException();
+        }
+    }
+
+    /**
+     * Removes locally saved player (does NOT check if player is participating in local game)
+     */
+    private void removePlayerLocallyForce(Player p) {
+        boolean removed = false;
+
+        Iterator<PlayerWithPassword> iterator = localPlayers.iterator();
+        while (iterator.hasNext() && !removed) {
+            PlayerWithPassword currPl = iterator.next();
+
+            if (currPl.getPlayer().getUsername().equals(p.getUsername())) {
+                localPlayers.remove(currPl);
+                removed = true;
+            }
+        }
+
+        notifyOnPlayersChangedListener();
+    }
+
+    /**
+     * Inserts a new game locally (in offline mode)
+     */
+    public void insertGameLocally(Game g) {
+        g.setLocallySavedOnly(true);
+        //set id (negative for local players)
+        if (localGames.size() > 0) {
+            g.setId(localGames.first().getId() - 1);
+        } else {
+            g.setId(-1);
+        }
+        localGames.add(g);
+        notifyOnGamesUpdatedListener();
+    }
+
+    /**
+     * Updates a game locally (in offline mode)
+     */
+    public void updateGameLocally(Game g) throws CouldNotUpdateGameException {
+        if (localGames.contains(g)) {
+            //remove old game and add new one (game is identified by date and id)
+            localGames.remove(g);
+            localGames.add(g);
+            notifyOnGamesUpdatedListener();
+        }
+        else {
+            throw new CouldNotUpdateGameException("Game not found locally");
+        }
+    }
+
+    /**
+     * Removes locally saved game
+     */
+    public void removeGameLocally(Game g) {
+        localGames.remove(g);
+        notifyOnGamesUpdatedListener();
     }
 }

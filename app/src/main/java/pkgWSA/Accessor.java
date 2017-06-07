@@ -26,13 +26,19 @@ public final class Accessor {
     }
 
     public static void runRequestAsync(HttpMethod httpMethod, String uriPath, String uriQuery, String requetsBody, WebRequestTaskListener listener) throws Exception {
+        runRequestAsync(httpMethod, uriPath, uriQuery, requetsBody, listener, 5000);
+    }
+
+    public static void runRequestAsync(HttpMethod httpMethod, String uriPath, String uriQuery, String requetsBody, WebRequestTaskListener listener, int timeout) throws Exception {
         if (!initialized) {
             throw new Exception("Accessor not initialized");
         }
         RequestParameter parameter = new RequestParameter(generateUrl(), httpMethod, uriPath, uriQuery, requetsBody, true, listener);
+        parameter.setTimeout(timeout);
         WebRequestTask requestTask = new WebRequestTask();
         requestTask.execute(parameter);
     }
+
     public static AccessorResponse runRequestSync(HttpMethod httpMethod, String uriPath, String uriQuery, String requetsBody) throws Exception {
         if (!initialized) {
             throw new Exception("Accessor not initialized");

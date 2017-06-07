@@ -26,7 +26,7 @@ public class GsonSerializor {
     private static Gson gson = new Gson();
 
     public static String serializeLoginCredentials(LoginCredentials credentials) {
-        String retVal = null;
+        String retVal;
 
         retVal = gson.toJson(credentials);
 
@@ -35,12 +35,13 @@ public class GsonSerializor {
 
     public static String serializePlayer(Player p) {
         String retVal = null;
-        JSONObject jsonObject = null;
+        JSONObject jsonObject;
 
         try {
             jsonObject = new JSONObject(gson.toJson(p));
             jsonObject.remove("positions");
             jsonObject.remove("statistics");
+            jsonObject.remove("isLocallySavedOnly");
             jsonObject.put("admin", jsonObject.get("isAdmin"));     //it's "admin" and not "isAdmin" for webservice for some reason...
             jsonObject.remove("isAdmin");
             retVal = jsonObject.toString();
@@ -52,7 +53,7 @@ public class GsonSerializor {
     }
 
     public static String serializePlayerPositionRequest(PlayerPositionRequest ppr) {
-        String retVal = null;
+        String retVal;
 
         retVal = gson.toJson(ppr);
 
@@ -60,7 +61,7 @@ public class GsonSerializor {
     }
 
     public static PositionResult deserializePositionResult(String pr) {
-        PositionResult retVal = null;
+        PositionResult retVal;
 
         retVal = gson.fromJson(pr, PositionResult.class);
 
@@ -69,11 +70,12 @@ public class GsonSerializor {
 
     public static String serializeGame(Game g) {
         String retVal = null;
-        JSONObject jsonObject = null;
+        JSONObject jsonObject;
 
         try {
             jsonObject = new JSONObject(gson.toJson(g));
             jsonObject.remove("participations");
+            jsonObject.remove("isLocallySavedOnly");
             retVal = jsonObject.toString();
         } catch (JSONException e) {
             e.printStackTrace();
@@ -84,7 +86,7 @@ public class GsonSerializor {
 
     public static String serializeParticipation(Participation p) {
         String retVal = null;
-        JSONObject jsonObject = null;
+        JSONObject jsonObject;
 
         try {
             jsonObject = new JSONObject(gson.toJson(p));
@@ -99,41 +101,29 @@ public class GsonSerializor {
 
 
     public static Result deserializeResult(String strResult) {
-        Result r = gson.fromJson(strResult, Result.class);
-
-        return r;
+        return gson.fromJson(strResult, Result.class);
     }
 
     public static GameResult deserializeGameResult(String strGameResult) {
-        GameResult gr = gson.fromJson(strGameResult, GameResult.class);
-
-        return gr;
+        return gson.fromJson(strGameResult, GameResult.class);
     }
 
     public static SingleGameResult deserializeSingleGameResult(String strSingleGameResult) {
-        SingleGameResult sgr = gson.fromJson(strSingleGameResult, SingleGameResult.class);
-
-        return sgr;
+        return gson.fromJson(strSingleGameResult, SingleGameResult.class);
     }
 
     public static PlayerResult deserializePlayerResult(String strPlayerResult) {
         strPlayerResult = strPlayerResult.replaceAll("\"admin\":", "\"isAdmin\":");            //it's "admin" and not "isAdmin" for webservice for some reason...
-        PlayerResult pr = gson.fromJson(strPlayerResult, PlayerResult.class);
-
-        return pr;
+        return gson.fromJson(strPlayerResult, PlayerResult.class);
     }
 
     public static SinglePlayerResult deserializeSinglePlayerResult(String strSinglePlayerResult) {
         strSinglePlayerResult = strSinglePlayerResult.replace("\"admin\":", "\"isAdmin\":");             //it's "admin" and not "isAdmin" for webservice for some reason...
-        SinglePlayerResult spr = gson.fromJson(strSinglePlayerResult, SinglePlayerResult.class);
-
-        return spr;
+        return gson.fromJson(strSinglePlayerResult, SinglePlayerResult.class);
     }
 
     public static ParticipationResult deserializeParticipationResult(String strParticipationResult) {
-        ParticipationResult pr = gson.fromJson(strParticipationResult, ParticipationResult.class);
-
-        return pr;
+        return gson.fromJson(strParticipationResult, ParticipationResult.class);
     }
 
     private static class Password {

@@ -34,9 +34,8 @@
     <string name="mniTeam">Team(test)</string>
     <string name="mniGerman">Deutsch</string>
     <string name="mniEnglish">Englisch</string>
-    <string name="mniLogin">Abmelden</string>
-    <string name="mniAdd">Spieler hinzufügen</string>
-    <string name="mniAddGame">Spiel hinzufügen</string>
+    <string name="mniLogout">Abmelden</string>
+    <string name="mniAdd">Hinzufügen</string>
     <string name="mniEdit">Benutzerdaten bearbeiten</string>
     <string name="ctxMniEditPlayer">Bearbeiten</string>
     <string name="ctxMniDeletePlayer">Löschen</string>
@@ -146,7 +145,6 @@
     <string name="msg_IllegalPassword">Passwort darf nur aus Buchstaben und Zahlen bestehen</string>
     <string name="msg_IllegalRemark">Anmerkung darf nur aus Buchstaben und Zahlen bestehen</string>
     <string name="msg_TooManyGoalies">Nur ein Torwart pro Team ist erlaubt</string>
-    <string name="msg_NoPlayersToAsign">Keine Spieler zum aufteilen</string>
     <string name="msg_CannotAssignGoalie">Torwart kann nicht zugewiesen werden</string>
     <string name="msg_TooManyGoalkeeperOnlyPlayers">Es gibt mehr als 2 Spieler, die nur Torwart spielen können</string>
     <string name="msg_CouldNotInsertGame">Spiel konnte nicht erstellt werden</string>
@@ -173,4 +171,16 @@
     <string name="preference_teamassignment_layout_positiveBtn">OK</string>
     <string name="preference_teamassignment_layout_title">Teamzuweisungdarstellung</string>
     <string name="preference_teamassignment_layout_summary">Wähle eine Teamzuweisungsdarstellung</string>
+    <string name="btnNegative_dialogDeletePlayer">Nein</string>
+    <string name="btnPositive_dialogDeletePlayer">Ja</string>
+    <string name="game">Spiel</string>
+    <string name="misc">Sonstiges</string>
+    <string name="mniDisplay">Anzeigen</string>
+    <string name="msg_DataSavedLocally">Daten lokal gespeichert</string>
+    <string name="msg_NoPlayersToAssign">Keine Spieler zum aufteilen</string>
+    <string name="msg_dialogDeletePlayer">Wollen Sie Spieler \'%s\' wirklich löschen?</string>
+    <string name="player">Spieler</string>
+    <string name="title_activity_main"></string>
+    <string name="title_activity_site_notice">Impressum</string>
+    <string name="nav_site_notice_title">Impressum</string>
 </resources>

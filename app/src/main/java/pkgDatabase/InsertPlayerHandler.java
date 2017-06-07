@@ -33,7 +33,6 @@ public class InsertPlayerHandler extends WebserviceResponseHandler
         try {
             //throws Exception if error happened
             handleResponse(response);
-
             SinglePlayerResult r = GsonSerializor.deserializeSinglePlayerResult(response.getJson());
 
             if (r.isSuccess()) {
@@ -42,6 +41,7 @@ public class InsertPlayerHandler extends WebserviceResponseHandler
             }
             else if (!r.isSuccess() && r.getError() != null && r.getError().getErrorMessage().
                     contains("MySQLIntegrityConstraintViolationException")) {
+                remote_player = r.getContent();
                 throw new DuplicateUsernameException(local_player.getUsername());
             }
             else {
@@ -79,6 +79,10 @@ public class InsertPlayerHandler extends WebserviceResponseHandler
     }
 
     public Player getPlayer() {
-        return this.remote_player;
+        return this.remote_player == null ? this.local_player : this.remote_player;
+    }
+
+    public Player getPlayerLocal() {
+        return this.local_player;
     }
 }

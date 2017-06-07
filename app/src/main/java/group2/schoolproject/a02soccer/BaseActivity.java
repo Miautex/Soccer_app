@@ -20,8 +20,7 @@ import pkgDatabase.Database;
 import pkgMenu.DynamicMenuItem;
 
 /**
- * Created by Raphael on 28.04.2017.
- * The best productowner
+ * @author Raphael Moser
  */
 
 public class BaseActivity extends AppCompatActivity {
@@ -49,7 +48,7 @@ public class BaseActivity extends AppCompatActivity {
             } else if (item.getItemId() == DynamicMenuItem.SPANISCH.ordinal()) {
                 editor.putString("preference_general_language", "es");
             }
-            editor.commit();
+            editor.apply();
             finish();
             startActivity(new Intent(this, this.getClass()).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
         }
@@ -80,18 +79,6 @@ public class BaseActivity extends AppCompatActivity {
         menu.clear();
         onPrepareOptionsMenu(menu, this.getClass());
         return true;
-    }
-
-    protected void changeLanguage(String s) {
-        Locale locale = new Locale(s);
-        Database.getInstance().setLocale(locale);
-        Resources res = getResources();
-        DisplayMetrics dm = res.getDisplayMetrics();
-        Configuration conf = res.getConfiguration();
-        conf.locale = locale;
-        res.updateConfiguration(conf, dm);
-        finish();
-        startActivity(new Intent(this, this.getClass()).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
     }
 
     protected void setLanguage(String s) {

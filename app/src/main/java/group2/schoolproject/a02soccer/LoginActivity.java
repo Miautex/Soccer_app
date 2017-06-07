@@ -15,6 +15,7 @@ import java.net.ConnectException;
 import java.net.NoRouteToHostException;
 import java.net.SocketTimeoutException;
 
+import pkgData.LocalUserData;
 import pkgDatabase.Database;
 import pkgDatabase.LoadAllGamesHandler;
 import pkgDatabase.LoadAllPlayersHandler;
@@ -48,26 +49,36 @@ public class LoginActivity extends BaseActivity
         try {
             db = Database.getInstance();
 
-            /*setDefaultCredentials();
-            if (db.isInitialLogin() && db.isAutologin()) {
-                db.setInitialLogin(false);
-                tryLogin();
-            }*/
-
             String username = (String) this.getIntent().getSerializableExtra("username");
             String password = (String) this.getIntent().getSerializableExtra("password");
             Boolean doAutoLogin = (Boolean) this.getIntent().getSerializableExtra("doAutoLogin");
             isOnline = (Boolean) this.getIntent().getSerializableExtra("isOnline");
 
+            LocalUserData lud = null;
+
             if (isOnline == null) {
                 isOnline = true;
             }
 
+            //set username (if not set, try to use default from files)
             if (username != null) {
                 edtUsername.setText(username);
             }
+            else {
+                lud = db.loadLocalUserData(this);
+                if (lud != null) {
+                    edtUsername.setText(lud.getPlayer().getUsername());
+                }
+            }
+
+            //set password (if not set, try to use default from files)
             if (password != null) {
                 edtPassword.setText(password);
+            }
+            else {
+                if (lud != null) {
+                    edtPassword.setText(lud.getPassword());
+                }
             }
 
             if (doAutoLogin != null && doAutoLogin) {
@@ -75,7 +86,7 @@ public class LoginActivity extends BaseActivity
             }
         }
         catch (Exception ex) {
-            showMessage(getString(R.string.Error) + ": " + ex.getMessage());
+            showMessage(getString(R.string.Error) + ": " + getString(R.string.msg_CannotConnectToWebservice));
         }
     }
 
@@ -110,14 +121,21 @@ public class LoginActivity extends BaseActivity
         });
     }
 
+    @Override
     public void onClick(View arg0) {
         try {
             if (arg0.getId() == R.id.btnLogin) {
                 tryLogin(isOnline);
             }
         } catch (Exception e) {
+            e.printStackTrace();
             showMessage(getString(R.string.Error) + ": " + e.getMessage());
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        //disable back during login
     }
 
     private void tryLogin(Boolean isOnline) {
@@ -137,7 +155,7 @@ public class LoginActivity extends BaseActivity
                         if (db.loginLocal(edtUsername.getText().toString(), edtPassword.getText().toString(), this)) {
                             openMainActivity();
                         } else {
-                            showMessage(getString(R.string.msg_UsernameOrPasswordInvalid));
+                            showMessage(getString(R.string.msg_CannotConnectToWebservice));
                         }
                     }
                     catch (NoLocalDataException ex) {
@@ -149,6 +167,7 @@ public class LoginActivity extends BaseActivity
         catch (Exception ex) {
             toggleLoginInputs(true);
             showMessage(ex.getMessage());
+            ex.printStackTrace();
         }
     }
 
@@ -178,11 +197,6 @@ public class LoginActivity extends BaseActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         return true;
-    }
-
-    private void setDefaultCredentials() {
-        edtUsername.setText(db.getStoredUsername());
-        edtPassword.setText(db.getStoredPassword());
     }
 
     @Override

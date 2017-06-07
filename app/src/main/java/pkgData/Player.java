@@ -22,6 +22,7 @@ public final class Player implements Comparable, Serializable, Cloneable {
     private TreeSet<PlayerPosition> positions = null;
     private Float avgGoalDifference = null;
     private PlayerStatistics statistics;
+    private boolean isLocallySavedOnly;
 
     public Player() {
         super();
@@ -30,6 +31,8 @@ public final class Player implements Comparable, Serializable, Cloneable {
         name = null;
         username = null;
         positions = new TreeSet<>();
+        statistics = new PlayerStatistics();
+        isLocallySavedOnly = false;
     }
 
     public Player(int id){
@@ -133,6 +136,14 @@ public final class Player implements Comparable, Serializable, Cloneable {
 
     public void setStatistics(PlayerStatistics statistics) {
         this.statistics = statistics;
+    }
+
+    public boolean isLocallySavedOnly() {
+        return isLocallySavedOnly;
+    }
+
+    public void setLocallySavedOnly(boolean locallySavedOnly) {
+        isLocallySavedOnly = locallySavedOnly;
     }
 
     @Override
