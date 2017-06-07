@@ -61,9 +61,6 @@
                     android:id="@+id/test"
                     android:title="Test"
                 />
-                <item
-                    android:id="@+id/qr"
-                    android:title="qr"/>
             </menu>
         </item>
     </group>

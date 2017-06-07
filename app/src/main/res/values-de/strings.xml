@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Soccer</string>
     <!--Activitytitles-->
+    <string name="title_activity_main">Soccer</string>
+    <string name="title_activity_main_offline">Soccer (Offline)</string>
     <string name="title_activity_add_game_select_players">Spielerauswahl</string>
     <string name="title_activity_team_management">Teamzuweisung</string>
     <string name="title_activity_add_game_enter_data">Ergebniseingabe</string>
@@ -180,7 +182,6 @@
     <string name="msg_NoPlayersToAssign">Keine Spieler zum aufteilen</string>
     <string name="msg_dialogDeletePlayer">Wollen Sie Spieler \'%s\' wirklich löschen?</string>
     <string name="player">Spieler</string>
-    <string name="title_activity_main"></string>
     <string name="title_activity_site_notice">Impressum</string>
     <string name="nav_site_notice_title">Impressum</string>
 </resources>

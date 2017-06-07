@@ -229,9 +229,6 @@ public class MainActivity extends BaseActivity
                 case R.id.test:
                     openActivity(TeamDivision2.class);
                     break;
-                case R.id.qr:
-                    //openActivity(TeamDivision2.class);
-                    break;
                 case R.id.mniSiteNotice:
                     openActivity(SiteNoticeActivity.class);
                     break;

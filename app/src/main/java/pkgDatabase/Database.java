@@ -86,7 +86,8 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
     private String loginKey;
     private boolean isOnline;
     //For uploading data of offline mode to webservice (see uploadLocallySavedPlayers() and onUploadPlayerFinished())
-    private int numPlayersToUpload;
+    private int numPlayersToUpload, numGamesToUpload;
+    private boolean isLocalDataUploadInProgress;
 
     private Database() {
         this.loginKey = null;
@@ -103,6 +104,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         this.gamesChangedListener = new ArrayList<>();
         onlineStatusChangedListeners = new ArrayList<>();
         this.isOnline = true;
+        this.isLocalDataUploadInProgress = false;
     }
 
     public static Database getInstance() {
@@ -612,7 +614,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
             for (Game g : handler.getGames()) {
                 //if game was already loaded, copy over participations
                 Game tmpGame = this.cachedGames.ceiling(g);
-                if (tmpGame.equals(g)) {
+                if (tmpGame != null && tmpGame.equals(g)) {
                     for (Participation part: tmpGame.getParticipations()) {
                         g.addParticipation(part);
                     }
@@ -1013,7 +1015,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
         notifyOnOnlineStatusChangedListener();
 
         //if was offline and is now online, try to upload locally saved data
-        if (!this.isOnline && online && isLocallySavedDataAvailable()) {
+        if (online && isLocallySavedDataAvailable() && !isLocalDataUploadInProgress) {
             uploadLocallySavedData();
         }
 
@@ -1025,6 +1027,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
      */
     private void uploadLocallySavedData() {
         try {
+            isLocalDataUploadInProgress = true;
             uploadLocallySavedPlayers();
         }
         catch (Exception ex) {
@@ -1039,29 +1042,32 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
     private void uploadLocallySavedPlayers() throws Exception {
         numPlayersToUpload = localPlayers.size();
 
-        //Upload locally saved players
-        for (final PlayerWithPassword p : localPlayers) {
-            insert(p.getPlayer(), new OnPlayerInsertedListener() {
-                @Override
-                public void insertPlayerFinished(InsertPlayerHandler handler) {
-                    try {
-                        if (handler.getException() == null) {
-                            setIdForPlayersOfLocalGames(handler.getPlayerLocal(), handler.getPlayer());
-                            setPassword(handler.getPlayer(), p.getPassword(), null);
-                            removePlayerLocallyForce(handler.getPlayerLocal());
-                            onUploadPlayerFinished();
-                        }
-                        else if (handler.getException().getClass().equals(DuplicateUsernameException.class)) {
-                            setIdForPlayersOfLocalGames(handler.getPlayerLocal(), handler.getPlayer());
-                            removePlayerLocallyForce(handler.getPlayerLocal());
-                            onUploadPlayerFinished();
+        if (numPlayersToUpload == 0) {
+            onUploadPlayerFinished();
+        }
+        else {
+            //Upload locally saved players
+            for (final PlayerWithPassword p : localPlayers) {
+                insert(p.getPlayer(), new OnPlayerInsertedListener() {
+                    @Override
+                    public void insertPlayerFinished(InsertPlayerHandler handler) {
+                        try {
+                            if (handler.getException() == null) {
+                                setIdForPlayersOfLocalGames(handler.getPlayerLocal(), handler.getPlayer());
+                                setPassword(handler.getPlayer(), p.getPassword(), null);
+                                removePlayerLocallyForce(handler.getPlayerLocal());
+                                onUploadPlayerFinished();
+                            } else if (handler.getException().getClass().equals(DuplicateUsernameException.class)) {
+                                setIdForPlayersOfLocalGames(handler.getPlayerLocal(), handler.getPlayer());
+                                removePlayerLocallyForce(handler.getPlayerLocal());
+                                onUploadPlayerFinished();
+                            }
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
                         }
                     }
-                    catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                }
-            });
+                });
+            }
         }
     }
 
@@ -1116,9 +1122,31 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
     }
 
     /**
+     * sets isLocalDataUploadInProgress to false once all games are uploaded
+     */
+    private void onUploadGameFinished() {
+        try {
+            numGamesToUpload--;
+
+            if (numGamesToUpload <= 0) {
+                isLocalDataUploadInProgress = false;
+            }
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    /**
      * Uploads local games to webservice (inserts participations as well)
      */
     private void uploadLocallySavedGames() throws Exception {
+        numGamesToUpload = localGames.size();
+
+        if (numGamesToUpload == 0) {
+            onUploadGameFinished();
+        }
+
         //Upload locally saved games
         for (Game g : localGames) {
             insert(g, new OnGameInsertedListener() {
@@ -1127,6 +1155,7 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
                     try {
                         if (handler.getException() == null) {
                             removeGameLocally(handler.getGameLocal());
+                            onUploadGameFinished();
                         }
                     }
                     catch (Exception ex) {
@@ -1176,10 +1205,8 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
             }
         }
         else {
-            //if db is only but there is locally saved data available for upload, upload data
-            if (isLocallySavedDataAvailable()) {
-                uploadLocallySavedData();
-            }
+            //if db is online but there is locally saved data available for upload, upload data
+            setOnline(true);
 
             loadAllPlayers(loadPListener);
             loadAllGames(loadGListener);
