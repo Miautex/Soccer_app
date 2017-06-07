@@ -1,7 +1,5 @@
 package group2.schoolproject.a02soccer;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -18,10 +16,11 @@ import pkgData.Game;
 import pkgData.Participation;
 import pkgData.Player;
 import pkgData.Team;
+import pkgListeners.OnOkDialogButtonPressedListener;
 import pkgListeners.OnTeamChangedListener;
 import pkgTab.TeamDivisionTab;
 
-public class TeamDivisionActivity extends BaseActivity implements OnTeamChangedListener, View.OnClickListener {
+public class TeamDivisionActivity extends BaseActivity implements OnTeamChangedListener, View.OnClickListener, OnOkDialogButtonPressedListener {
 
     private SectionsPageAdapter mSectionsPageAdapter;
     private Game game = null;
@@ -94,20 +93,13 @@ public class TeamDivisionActivity extends BaseActivity implements OnTeamChangedL
     }
 
     private void createWarning(String s){
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
-        builder1.setMessage(s);
-        builder1.setCancelable(true);
+        OkDialog dia = new OkDialog(this, s);
+        dia.show();
+    }
 
-        builder1.setPositiveButton(
-                "OK",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        setWarnedTrue();
-                        dialog.cancel();
-                    }
-                });
-        AlertDialog alert11 = builder1.create();
-        alert11.show();
+    @Override
+    public void okDialogButtonPressed() {
+        setWarnedTrue();
     }
 
     @Override
