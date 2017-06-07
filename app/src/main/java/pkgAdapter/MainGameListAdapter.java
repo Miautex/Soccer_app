@@ -78,6 +78,8 @@ public class MainGameListAdapter extends ArrayAdapter<Game> {
         txvScore.setText(game.getScoreTeamA() + ":" + game.getScoreTeamB());
 
         if (game.isLocallySavedOnly()) {
+            txvDayOfWeek.setTextColor(getContext().getResources().getColor(R.color.redLogo));
+            txvSeparator.setTextColor(getContext().getResources().getColor(R.color.redLogo));
             txvDate.setTextColor(getContext().getResources().getColor(R.color.redLogo));
             txvScore.setTextColor(getContext().getResources().getColor(R.color.redLogo));
         }
