@@ -19,11 +19,11 @@
             android:negativeButtonText="@string/preference_teamassignment_layout_negativeBtn"
             />
     </PreferenceCategory>
-    <PreferenceCategory android:title="Design Color">
+    <!--<PreferenceCategory android:title="Design Color">
         <com.rarepebble.colorpicker.ColorPreference
             android:key="colorPicker"
             android:title="Change the look of the app"
             android:defaultValue="@color/standardRed"
             />
-    </PreferenceCategory>
+    </PreferenceCategory>-->
 </PreferenceScreen>
