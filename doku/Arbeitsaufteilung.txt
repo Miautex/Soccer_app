@@ -1,0 +1,46 @@
+Aufgabenbereiche:
+	Santner: Datenbank
+			 Spiel löschen
+			 Spiel ändern
+			 Spiel anlegen
+			 Spieler löschen
+			 Spieler anpassen
+			 Spieler Statistiken
+			 Offline Modus
+			 Webservice
+			 Klassendiagramme
+			 Storymap
+			 Tester
+			 
+			 
+	Wilscher: Webservice Schnittstelle
+			  Einstellungen
+			  Datenbank
+			  Datenbank(Webservice)
+			  Klassendiagramme
+			  Impressum
+			  Tester
+			  
+	Moser:	 Spiel anlegen
+			 Spieler Statistiken (Scoreboard)
+			 Menü
+			 Einstellungen
+			 Dokumentation
+			 Storymap
+			 Klassendiagramme
+			 Tester
+			 
+	Sunny:	Layout
+			Sicherheitsabfragen
+			Spieler Auflistung
+			Tester
+			Spieler anlegen
+			  
+			  
+			   
+			  Buissnesslogic
+			  Boundary	Classes (Schnittstellen/GUI)
+			  Controll classes 
+			  Data class
+			  
+			  

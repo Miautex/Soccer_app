@@ -20,7 +20,6 @@ public final class Player implements Comparable, Serializable, Cloneable {
     private String name = null,
                    username = null;
     private TreeSet<PlayerPosition> positions = null;
-    private Float avgGoalDifference = null;
     private PlayerStatistics statistics;
     private boolean isLocallySavedOnly;
 

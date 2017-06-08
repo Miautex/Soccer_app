@@ -1,0 +1,10 @@
+A) Projekt-Doku
+	Einleitung (Wer,Was,Gruppe, Start, Ende)
+	Story Map/Produkt Backlog (alle UserStories inkl. Aktzeptanz für AT) --> alle sonstige Arbeitspakete
+	Modellierung der Daten (Klassendiagramm, ERD)
+	Webservice (Doku der Webservices)
+	Architektur - Programmierung (grafisch)
+	Arbeitsaufteilung -> Verantwortung
+	Prozessfortschritt
+	
+	B)Produktdoku (Manual)
