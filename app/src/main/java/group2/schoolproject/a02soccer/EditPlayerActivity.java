@@ -257,12 +257,13 @@ public class EditPlayerActivity extends BaseActivity
             throw new PasswordTooShortException(String.format(getString(R.string.msg_PasswordTooShort),
                     ex.getMinLenght()), ex.getMinLenght());
         }
-        finally {
+        catch (Exception ex) {
             toggleProgressBar(false);
         }
     }
 
     private void toggleProgressBar(boolean isEnabled) {
+        System.out.println("------------- PB="+isEnabled);
         if (isEnabled) {
             pb.setVisibility(View.VISIBLE);
         }
