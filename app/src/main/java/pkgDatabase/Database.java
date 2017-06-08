@@ -981,7 +981,6 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
             fis.close();
         }
         catch (Exception ex) {
-            ex.printStackTrace();
             data = null;
         }
 

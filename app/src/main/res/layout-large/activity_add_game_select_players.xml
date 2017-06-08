@@ -92,12 +92,13 @@
             android:textSize="40sp" />
 
         <LinearLayout
-            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true">
+            android:layout_alignParentStart="true"
+            android:layout_gravity="bottom"
+            android:id="@+id/linearLayout">
 
             <Button
                 android:id="@+id/btnCancel"
@@ -105,13 +106,24 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_gravity="bottom"
                 android:text="@string/btnCancel" />
+
+            <Button
+                android:id="@+id/btnQRScan"
+                style="@style/buttonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="bottom"
+                android:text="QRCode" />
 
             <Button
                 android:id="@+id/btnSave"
                 style="@style/buttonStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
                 android:layout_weight="1"
                 android:text="@string/btnContinue" />
         </LinearLayout>

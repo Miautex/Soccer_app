@@ -42,9 +42,9 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentStart="true"
-                android:paddingTop="10dp"
                 android:gravity="center"
                 android:paddingBottom="10dp"
+                android:paddingTop="10dp"
                 android:textSize="24sp" />
 
             <TextView
@@ -78,10 +78,10 @@
             android:id="@+id/pager"
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            android:layout_weight="0.5"
-            android:layout_below="@+id/layout_common_data"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"></android.support.v4.view.ViewPager>
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/layout_common_data"
+            android:layout_weight="0.5"></android.support.v4.view.ViewPager>
 
         <RelativeLayout
             android:id="@+id/layout_buttons"
@@ -91,28 +91,32 @@
 
             <ProgressBar
                 android:id="@+id/progressBar"
-                android:indeterminate="true"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentRight="true"
+                android:layout_above="@+id/containerButtons"
                 android:layout_alignParentEnd="true"
-                android:visibility="gone"/>
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentStart="true"
+                android:indeterminate="true"
+                android:visibility="gone" />
 
             <LinearLayout
+                android:id="@+id/containerButtons"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true">
+                android:layout_gravity="bottom"
+                android:layout_toEndOf="@+id/progressBar"
+                android:layout_toRightOf="@+id/progressBar">
 
                 <Button
                     android:id="@+id/btnBack"
                     style="@style/buttonStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
                     android:layout_weight="1"
                     android:text="@string/btnBack" />
 
@@ -121,9 +125,11 @@
                     style="@style/buttonStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
                     android:layout_weight="1"
                     android:text="@string/btnSave" />
             </LinearLayout>
+
         </RelativeLayout>
     </RelativeLayout>
 
