@@ -356,9 +356,8 @@ public class MainActivity extends BaseActivity
     }
 
     public void onDeleteGame(Game selectedGame) throws Exception {
-        String msg = getString(R.string.msg_ConfirmGameDeletion);
-        String title = String.format(getString(R.string.msg_ConfirmPlayerDeletion), msg);
-        ConfirmDeleteDialog cdd = new ConfirmDeleteDialog(selectedGame, this, title);
+        String msg = String.format(getString(R.string.msg_ConfirmGameDeletion));
+        ConfirmDeleteDialog cdd = new ConfirmDeleteDialog(selectedGame, this, msg);
         cdd.show();
     }
 

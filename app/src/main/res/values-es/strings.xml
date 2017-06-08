@@ -38,7 +38,7 @@
     <string name="Scoreboard_titles_goalsgot">Marcador: Goles en contra</string>
     <string name="Scoreboard_titles_goalsshot">Marcador: Goles marcados</string>
     <string name="Scoreboard_titles_wins">Marcador: Ghana</string>
-    <string name="SelectPlayersForGame">Seleccione jugadores para el juego</string>
+    <string name="SelectPlayersForGame">Seleccione jugadores el jugo</string>
     <string name="ShowPlayersOrGames">Mostrar:</string>
     <string name="Username">Nombre de usuario</string>
     <string name="action_settings">Ajustes</string>
@@ -162,7 +162,6 @@
     <string name="title_activity_site_notice">Aviso del sitio</string>
     <string name="title_activity_team_management">División de equipo</string>
     <string name="title_dialogDeletePlayer">¿Eliminar jugador?</string>
-    <string name="use_flash">Utilizar Flash</string>
     <string name="yes">Sí</string>
 
     <!--Spinner Arrays-->
@@ -176,4 +175,10 @@
         <item>Goles en contra</item>
         <item>Derrotas</item>
     </string-array>
+
+
+    <string name="qr_on_open">Toque para capturar. Pellizco/Tramo para ampliar</string>
+    <string name="qr_player_already_added">El reproductor ya está agregado</string>
+    <string name="qr_player_not_found">Jugador no encontrado</string>
+    <string name="qr_failed">Algo salió mal</string>
 </resources>

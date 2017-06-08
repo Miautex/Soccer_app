@@ -237,8 +237,8 @@ public class AddGameSelectPlayersActivity extends BaseActivity implements View.O
                 setCheckPlayers(result);
 
             }
-            if (resultCode == Activity.RESULT_CANCELED) {
-                showMessage("Something went wrong");
+            else if (resultCode != Activity.RESULT_CANCELED) {
+                showMessage(getString(R.string.qr_failed));
             }
         }
 

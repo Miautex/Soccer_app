@@ -159,6 +159,7 @@ public class LoginActivity extends BaseActivity
                         }
                     }
                     catch (NoLocalDataException ex) {
+                        ex.printStackTrace();
                         showMessage(getString(R.string.msg_CannotConnectToWebservice));
                     }
                 }

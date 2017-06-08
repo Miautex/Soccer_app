@@ -941,12 +941,13 @@ public class Database extends Application implements OnLoginListener, OnLoadAllP
      */
     private void initOfflineSavedData(Context ctx) {
         LocalData localData = loadLocalData(ctx);
-
-        if (localData.getLocalPlayers() != null) {
-            localPlayers = localData.getLocalPlayers();
-        }
-        if (localData.getLocalGames() != null) {
-            localGames = localData.getLocalGames();
+        if (localData != null) {
+            if (localData.getLocalPlayers() != null) {
+                localPlayers = localData.getLocalPlayers();
+            }
+            if (localData.getLocalGames() != null) {
+                localGames = localData.getLocalGames();
+            }
         }
     }
 

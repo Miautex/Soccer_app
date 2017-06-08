@@ -192,6 +192,9 @@
     <string name="permission_camera_rationale">Kamera-Zugriff wird für die Erkennung benötigt</string>
     <string name="preference_sitenotice_title">Impressum</string>
     <string name="read_barcode">Barcode scannen</string>
-    <string name="use_flash">Blitz benutzen</string>
     <string name="title_dialogDeletePlayer">Spieler löschen?</string>
+    <string name="qr_on_open">Zum Scannen tippen. Zoomen mit zwei Fingern</string>
+    <string name="qr_player_already_added">Spieler ist bereits hinzugefügt</string>
+    <string name="qr_player_not_found">Spieler nicht gefunden</string>
+    <string name="qr_failed">Unbekannter Fehler</string>
 </resources>

@@ -28,7 +28,6 @@ import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -40,7 +39,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -52,12 +50,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.TreeSet;
 
+import pkgAdapter.Player_QrList;
 import pkgBarcodeScanner.BarcodeGraphic;
 import pkgBarcodeScanner.BarcodeTrackerFactory;
 import pkgBarcodeScanner.camera.CameraSource;
 import pkgBarcodeScanner.camera.CameraSourcePreview;
 import pkgBarcodeScanner.camera.GraphicOverlay;
-import pkgAdapter.Player_QrList;
 import pkgData.Player;
 import pkgDatabase.Database;
 
@@ -141,9 +139,7 @@ public final class QRScannerActivity extends BaseActivity implements View.OnClic
         gestureDetector = new GestureDetector(this, new CaptureGestureListener());
         scaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
 
-        Snackbar.make(mGraphicOverlay, "Tap to capture. Pinch/Stretch to zoom",
-                Snackbar.LENGTH_LONG)
-                .show();
+        showMessage(getString(R.string.qr_on_open));
     }
 
     /**
@@ -209,8 +205,7 @@ public final class QRScannerActivity extends BaseActivity implements View.OnClic
             boolean hasLowStorage = registerReceiver(null, lowstorageFilter) != null;
 
             if (hasLowStorage) {
-                Toast.makeText(this, R.string.low_storage_error, Toast.LENGTH_LONG).show();
-                Log.w(TAG, getString(R.string.low_storage_error));
+                showMessage(getString(R.string.low_storage_error));
             }
         }
 
@@ -380,11 +375,10 @@ public final class QRScannerActivity extends BaseActivity implements View.OnClic
                 Player p = db.getPlayerByID(id);
 
                 if(p == null){
-                    //// TODO: 05.06.2017 values.xml bearbeiten
-                    throw new Exception("keinen Spieler gefunden");
+                    throw new Exception(getString(R.string.qr_player_not_found));
                 }
                 if(arrayAdapter.contains(p.getId())){
-                    throw new Exception("Spieler ist bereits hinzugefügt");
+                    throw new Exception(getString(R.string.qr_player_already_added));
                 }
                 arrayAdapter.add(p);
                 arrayAdapter.notifyDataSetChanged();
@@ -412,20 +406,22 @@ public final class QRScannerActivity extends BaseActivity implements View.OnClic
                     arrayAdapter.add(p);
                     actv.setText("");
                 } else {
-                    showMessage("spieler bereits hinzugefügt");
+                    showMessage(getString(R.string.qr_player_already_added));
                 }
             } else {
-                showMessage("spieler gibt es nicht");
+                showMessage(getString(R.string.qr_player_not_found));
             }
         }
         else if(v.getId() == R.id.btnSave){
             Intent data = new Intent();
-            data.putExtra("Result",arrayAdapter.getAllPlayers());
+            data.putExtra("Result", arrayAdapter.getAllPlayers());
             setResult(Activity.RESULT_OK,data);
             finish();
         }
         else if(v.getId() == R.id.btnBack){
-            this.finish();
+            Intent data = new Intent();
+            setResult(Activity.RESULT_CANCELED, data);
+            finish();
         }
     }
 

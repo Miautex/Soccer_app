@@ -248,9 +248,9 @@
     <string name="low_storage_error">Scanner dependencies cannot be downloaded due to low device storage</string>
     <string name="barcode_header">Click &quot;Read Barcode&quot; to read a barcode</string>
     <string name="read_barcode">Scan Barcode</string>
-    <string name="auto_focus">Auto Focus</string>
-    <string name="use_flash">Use Flash</string>
-    <string name="barcode_success">Barcode read successfully</string>
-    <string name="barcode_failure">No barcode captured</string>
-    <string name="barcode_error">Error reading barcode: %1$s\"</string>
+    <string name="qr_on_open">Tap to capture. Pinch/Stretch to zoom</string>
+    <string name="qr_player_not_found">Player not found</string>
+    <string name="qr_player_already_added">Player is already added</string>
+    <string name="qr_failed">Something went wrong</string>
+
 </resources>
