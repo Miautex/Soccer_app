@@ -96,6 +96,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
+            android:layout_gravity="bottom"
             android:id="@+id/linearLayout">
 
             <Button
@@ -104,6 +105,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_gravity="bottom"
                 android:text="@string/btnCancel" />
 
             <Button
@@ -112,6 +114,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_gravity="bottom"
                 android:text="QRCode" />
 
             <Button
@@ -119,6 +122,7 @@
                 style="@style/buttonStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
                 android:layout_weight="1"
                 android:text="@string/btnContinue" />
         </LinearLayout>

@@ -26,6 +26,7 @@
         android:layout_below="@+id/txvMessage"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_gravity="bottom"
         android:layout_marginTop="18dp">
 
         <Button
@@ -33,6 +34,7 @@
             style="@style/buttonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
             android:layout_weight="1"
             android:text="@string/no" />
 
@@ -41,6 +43,7 @@
             style="@style/buttonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
             android:layout_weight="1"
             android:text="@string/yes" />
     </LinearLayout>
