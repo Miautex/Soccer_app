@@ -15,9 +15,15 @@ import pkgAdapter.BackgroundContainer;
 import pkgAdapter.StableArrayAdapter;
 import pkgAdapter.StableArrayAdapter2;
 import pkgData.Player;
+import pkgData.Team;
 import pkgDatabase.Database;
 
-public class TeamDivision2 extends BaseActivity /*implements View.OnTouchListener*/ {
+/**
+ * @author Raphael Moser
+ * //todo improve (clean) the code
+ */
+
+public class TeamDivision2 extends BaseActivity {
 
     StableArrayAdapter adapterAll;
     StableArrayAdapter2 adapterTeam1, adapterTeam2;
@@ -62,9 +68,9 @@ public class TeamDivision2 extends BaseActivity /*implements View.OnTouchListene
         lvTeam2 = (ListView) findViewById(R.id.lvTeam2);
 
         lvAllPlayers.setAdapter(adapterAll);
-        adapterTeam1 = new StableArrayAdapter2(this, team1, mTouchListenerTeam1);
+        adapterTeam1 = new StableArrayAdapter2(this, team1, mTouchListenerTeam1, Team.TEAM1);
         adapterTeam1.setColor(Color.GRAY);
-        adapterTeam2 = new StableArrayAdapter2(this, team2, mTouchListenerTeam2);
+        adapterTeam2 = new StableArrayAdapter2(this, team2, mTouchListenerTeam2,Team.TEAM2);
         adapterTeam2.setColor(Color.GRAY);
         lvTeam1.setAdapter(adapterTeam1);
         lvTeam2.setAdapter(adapterTeam2);
@@ -405,7 +411,6 @@ public class TeamDivision2 extends BaseActivity /*implements View.OnTouchListene
             adapterTeam2.setColor(Color.WHITE);
             adapterTeam2.notifyDataSetChanged();
             isTouchTeamActive = true;
-
         }
 
     }
@@ -413,29 +418,20 @@ public class TeamDivision2 extends BaseActivity /*implements View.OnTouchListene
     private void movePlayerFromTeam1(View viewToMove) {
         int position = lvTeam1.getPositionForView(viewToMove);
         if (direction == Direction.RIGHT) {
-            adapterTeam2.add(adapterTeam1.getItem(position));
+            adapterTeam2.addWithPosition(adapterTeam1.removeWithPos(adapterTeam1.getItem(position)));
             adapterTeam2.notifyDataSetChanged();
-            adapterTeam1.remove(adapterTeam1.getItem(position));
-        } else if (direction == Direction.LEFT) {
-            adapterAll.add(adapterTeam1.getItem(position));
-            adapterAll.notifyDataSetChanged();
-            adapterTeam1.remove(adapterTeam1.getItem(position));
         }
 
     }
 
+
+
     private void movePlayerFromTeam2(View viewToMove) {
         int position = lvTeam2.getPositionForView(viewToMove);
         if (direction == Direction.LEFT) {
-            adapterTeam1.add(adapterTeam2.getItem(position));
+            adapterTeam1.addWithPosition(adapterTeam2.removeWithPos(adapterTeam2.getItem(position)));
             adapterTeam1.notifyDataSetChanged();
-            adapterTeam2.remove(adapterTeam2.getItem(position));
-        } else if (direction == Direction.RIGHT) {
-            adapterAll.add(adapterTeam2.getItem(position));
-            adapterAll.notifyDataSetChanged();
-            adapterTeam2.remove(adapterTeam2.getItem(position));
         }
-
     }
 
     /**

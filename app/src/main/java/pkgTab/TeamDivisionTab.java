@@ -68,10 +68,9 @@ public class TeamDivisionTab extends Fragment implements View.OnClickListener, O
     }
 
     public void onClick(View bttn) {
-        if(bttn.getClass() == Button.class){
+        if (bttn.getClass() == Button.class) {
             movePlayerRow(bttn);
-        }
-        else if (bttn.getClass() == TextView.class){
+        } else if (bttn.getClass() == TextView.class) {
             TableRow row = (TableRow) bttn.getParent();
             Player p = players.get(Integer.parseInt(((TextView) row.getChildAt(0)).getText().toString()));
             showFullName(p.toString());
@@ -79,8 +78,8 @@ public class TeamDivisionTab extends Fragment implements View.OnClickListener, O
 
     }
 
-    private void showFullName(String s){
-        ((TeamDivisionActivity)listener).showMessage(s);
+    private void showFullName(String s) {
+        ((TeamDivisionActivity) listener).showMessage(s);
     }
 
     private void movePlayerRow(View bttn) {
@@ -130,7 +129,7 @@ public class TeamDivisionTab extends Fragment implements View.OnClickListener, O
                 playerToRow(p);
             }
         } catch (Exception e) {
-            Snackbar.make(view,e.getMessage(),Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(view, e.getMessage(), Snackbar.LENGTH_SHORT).show();
         }
     }
 
@@ -154,7 +153,7 @@ public class TeamDivisionTab extends Fragment implements View.OnClickListener, O
         }
     }
 
-    public ArrayList<Integer> getFreePlayerids(){
+    public ArrayList<Integer> getFreePlayerids() {
         ArrayList<Integer> freePlayer = new ArrayList<>();
         int playercount = tableAllPlayers.getChildCount();
         for (int i = 0; i < playercount; i++) {
@@ -164,7 +163,7 @@ public class TeamDivisionTab extends Fragment implements View.OnClickListener, O
         return freePlayer;
     }
 
-    public int Teammembercount(){
+    public int Teammembercount() {
         return tableTeam1.getChildCount();
     }
 
@@ -176,21 +175,20 @@ public class TeamDivisionTab extends Fragment implements View.OnClickListener, O
                 informOnTeamChangedListener(Integer.parseInt(((TextView) row.getChildAt(0)).getText().toString()), true);
                 ((Button) row.getChildAt(3)).setText("-");
                 ((Button) row.getChildAt(3)).setTextColor(Color.RED);
-                int newPos = getPosition((Spinner)row.getChildAt((2)));
+                int newPos = getPosition((Spinner) row.getChildAt((2)));
                 ((Spinner) row.getChildAt((2))).setSelection(newPos);
                 tableTeam1.addView(row);
             }
         }
     }
 
-    private int getPosition(Spinner s){
+    private int getPosition(Spinner s) {
         Random rand = new Random();
         return rand.nextInt(s.getAdapter().getCount());
     }
 
-    public ArrayList<Participation> getPlayersInTeam() throws Exception {
+    public ArrayList<Participation> getPlayersInTeam(){
         ArrayList<Participation> list = new ArrayList<>();
-        hasOnlyOneGoalkeeper();
         for (int i = 0; i < tableTeam1.getChildCount(); i++) {
             TableRow row = (TableRow) tableTeam1.getChildAt(i);
             TextView textv = (TextView) row.getChildAt(0);
@@ -199,25 +197,6 @@ public class TeamDivisionTab extends Fragment implements View.OnClickListener, O
             list.add(new Participation(players.get(playerId), team, StringToEnum((sp.getSelectedItem().toString()))));
         }
         return list;
-    }
-
-    public boolean hasOnlyOneGoalkeeper(){
-        boolean hasTwoGoalies = false;
-        boolean onlyOneGoalie = false;
-        for (int i = 0; i < tableTeam1.getChildCount(); i++) {
-            TableRow row = (TableRow) tableTeam1.getChildAt(i);
-            Spinner sp = (Spinner) row.getChildAt(2);
-            if (getString(R.string.PosGoal).equals(sp.getSelectedItem().toString())){
-                if(onlyOneGoalie){
-                    hasTwoGoalies = true;
-                }
-                onlyOneGoalie = true;
-            }
-        }
-        if(hasTwoGoalies){
-            onlyOneGoalie = false;
-        }
-        return onlyOneGoalie;
     }
 
     private void setLayouts() {
@@ -238,10 +217,9 @@ public class TeamDivisionTab extends Fragment implements View.OnClickListener, O
         TextView txtName = new TextView(this.getContext());
         txtName.setLayoutParams(layoutTextView);
         txtName.setGravity(Gravity.CENTER_VERTICAL);
-        if(name.length() >= 20){
+        if (name.length() >= 20) {
             txtName.setTextSize(14);
-        }
-        else{
+        } else {
             txtName.setTextSize(16);
         }
         txtName.setTextColor(Color.BLACK);
@@ -274,59 +252,32 @@ public class TeamDivisionTab extends Fragment implements View.OnClickListener, O
         return button;
     }
 
-    private String EnumToString(PlayerPosition position){
+    private String EnumToString(PlayerPosition position) {
         String retVal = "";
-        if(position == PlayerPosition.ATTACK){
+        if (position == PlayerPosition.ATTACK) {
             retVal = getString(R.string.PosAtk);
-        }
-        else if (position == PlayerPosition.DEFENSE){
+        } else if (position == PlayerPosition.DEFENSE) {
             retVal = getString(R.string.PosDef);
-        }
-        else if (position == PlayerPosition.GOAL){
+        } else if (position == PlayerPosition.GOAL) {
             retVal = getString(R.string.PosGoal);
-        }
-        else if (position == PlayerPosition.MIDFIELD){
+        } else if (position == PlayerPosition.MIDFIELD) {
             retVal = getString(R.string.PosMid);
         }
         return retVal;
     }
 
-    private PlayerPosition StringToEnum (String position){
+    private PlayerPosition StringToEnum(String position) {
         PlayerPosition retVal = null;
-        if (position.equals(getString(R.string.PosAtk))){
+        if (position.equals(getString(R.string.PosAtk))) {
             retVal = PlayerPosition.ATTACK;
-        }
-        else if (position.equals(getString(R.string.PosDef))){
+        } else if (position.equals(getString(R.string.PosDef))) {
             retVal = PlayerPosition.DEFENSE;
-        }
-        else if (position.equals(getString(R.string.PosMid))){
+        } else if (position.equals(getString(R.string.PosMid))) {
             retVal = PlayerPosition.MIDFIELD;
-        }
-        else if (position.equals(getString(R.string.PosGoal))){
+        } else if (position.equals(getString(R.string.PosGoal))) {
             retVal = PlayerPosition.GOAL;
         }
         return retVal;
     }
-
-    public ArrayList<Integer> getGoalieOnlyId(){
-        ArrayList<Integer> freePlayer = new ArrayList<>();
-        int playercount = tableAllPlayers.getChildCount();
-        for (int i = 0; i < playercount; i++) {
-            TableRow row = (TableRow) tableAllPlayers.getChildAt(i);
-            freePlayer.add(Integer.parseInt(((TextView) row.getChildAt(0)).getText().toString()));
-        }
-        ArrayList<Integer> singleGoalies = new ArrayList<>();
-        for (int i : freePlayer){
-            Player p = players.get(i);
-            TreeSet <PlayerPosition> ts = p.getPositions();
-            if(ts.contains(PlayerPosition.GOAL) && ts.size()==1){
-                singleGoalies.add(p.getId());
-            }
-        }
-        return singleGoalies;
-    }
-
-
-
 }
 
