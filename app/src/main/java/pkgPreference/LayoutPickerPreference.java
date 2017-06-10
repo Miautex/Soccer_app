@@ -35,11 +35,9 @@ public class LayoutPickerPreference extends DialogPreference implements View.OnC
         super.onBindDialogView(view);
         optionButtons.put(R.id.optionLayout1, new OptionEntity<>((ImageButton) view.findViewById(R.id.optionLayout1), AssignmentLayout.TAB_LAYOUT));
         optionButtons.put(R.id.optionLayout2, new OptionEntity<>((ImageButton) view.findViewById(R.id.optionLayout2), AssignmentLayout.SLIDE_LAYOUT));
-        optionButtons.put(R.id.optionLayout3, new OptionEntity<>((ImageButton) view.findViewById(R.id.optionLayout3), AssignmentLayout.RADIO_LAYOUT));
 
         optionButtons.get(R.id.optionLayout1).getView().setOnClickListener(this);
         optionButtons.get(R.id.optionLayout2).getView().setOnClickListener(this);
-        optionButtons.get(R.id.optionLayout3).getView().setOnClickListener(this);
 
         preferences = getSharedPreferences();
 

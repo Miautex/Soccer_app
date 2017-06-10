@@ -1,42 +1,49 @@
 package group2.schoolproject.a02soccer;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewTreeObserver;
+import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 import pkgAdapter.BackgroundContainer;
-import pkgAdapter.StableArrayAdapter;
-import pkgAdapter.StableArrayAdapter2;
+import pkgAdapter.SwipeListAdapter;
+import pkgAdapter.SwipeListAdapter2;
+import pkgData.Game;
+import pkgData.Participation;
 import pkgData.Player;
 import pkgData.Team;
-import pkgDatabase.Database;
+import pkgListeners.OnOkDialogButtonPressedListener;
 
 /**
  * @author Raphael Moser
- * //todo improve (clean) the code
+ *
  */
 
-public class TeamDivision2 extends BaseActivity {
+public class TeamDivision2 extends BaseActivity implements View.OnClickListener, OnOkDialogButtonPressedListener {
 
-    StableArrayAdapter adapterAll;
-    StableArrayAdapter2 adapterTeam1, adapterTeam2;
-    ListView lvAllPlayers, lvTeam1, lvTeam2;
-    BackgroundContainer BackgroundContainerAll, BackgroundContainerTeam1, BackgroundContainerTeam2;
-    boolean mSwiping = false;
-    boolean mItemPressed = false;
-    HashMap<Long, Integer> mItemIdTopMapAll = new HashMap<>();
-    HashMap<Long, Integer> mItemIdTopMapTeam1 = new HashMap<>();
-    HashMap<Long, Integer> mItemIdTopMapTeam2 = new HashMap<>();
-    Direction direction = null;
-    Boolean isTouchTeamActive = false;
-    ArrayList<Player> players;
+    private SwipeListAdapter adapterAll;
+    private SwipeListAdapter2 adapterTeam1, adapterTeam2;
+    private ListView lvAllPlayers, lvTeam1, lvTeam2;
+    private BackgroundContainer BackgroundContainerAll, BackgroundContainerTeam1, BackgroundContainerTeam2;
+    private Button btnShuffle,btnShufflePos, btnContinue, btnCancel;
+    private boolean mSwiping = false;
+    private boolean mItemPressed = false;
+    private HashMap<Long, Integer> mItemIdTopMapAll = new HashMap<>();
+    private HashMap<Long, Integer> mItemIdTopMapTeam1 = new HashMap<>();
+    private HashMap<Long, Integer> mItemIdTopMapTeam2 = new HashMap<>();
+    private Direction direction = null;
+    private Boolean isTouchTeamActive = false;
+    private ArrayList<Player> players;
+    private Game game;
 
     private static final int SWIPE_DURATION = 250;
     private static final int MOVE_DURATION = 150;
@@ -48,34 +55,110 @@ public class TeamDivision2 extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team_division2);
-        players = Database.getInstance().getCachedPlayers();
-        ArrayList<Player> team1 = new ArrayList<>();
-        ArrayList<Player> team2 = new ArrayList<>();
-
-        BackgroundContainerAll = (BackgroundContainer) findViewById(R.id.listViewBackgroundAllPlayers);
-        BackgroundContainerTeam1 = (BackgroundContainer) findViewById(R.id.listViewBackgroundTeam1);
-        BackgroundContainerTeam2 = (BackgroundContainer) findViewById(R.id.listViewBackgroundTeam2);
-
-        //adapterAll = new StableArrayAdapter(this, allPlayers, mTouchListenerAll);
-        adapterAll = new StableArrayAdapter(this, players, mTouchListenerAll);
-        adapterAll.setColor(Color.WHITE);
+        setTitle(R.string.title_activity_team_management);
 
 
-        // adapterTeam2 = new StableArrayAdapter(this, R.layout.swipe_list, team2, mTouchListenerTeam2);
+        getIntents();
+        getViews();
+        createAdapters();
+        setOnclickListenersAndAdapters();
+    }
 
+    private void getIntents(){
+        game = (Game) this.getIntent().getSerializableExtra("game");
+        players = (ArrayList<Player>) getIntent().getSerializableExtra("players");
+    }
+
+    private void getViews(){
+        btnShuffle = (Button) findViewById(R.id.btnShuffle);
+        btnCancel = (Button) findViewById(R.id.btnCancel);
+        btnContinue = (Button) findViewById(R.id.btnContinue);
+        btnShufflePos = (Button) findViewById(R.id.btnShufflePos);
         lvAllPlayers = (ListView) findViewById(R.id.lvAllPlayer);
         lvTeam1 = (ListView) findViewById(R.id.lvTeam1);
         lvTeam2 = (ListView) findViewById(R.id.lvTeam2);
+        BackgroundContainerAll = (BackgroundContainer) findViewById(R.id.listViewBackgroundAllPlayers);
+        BackgroundContainerTeam1 = (BackgroundContainer) findViewById(R.id.listViewBackgroundTeam1);
+        BackgroundContainerTeam2 = (BackgroundContainer) findViewById(R.id.listViewBackgroundTeam2);
+    }
 
-        lvAllPlayers.setAdapter(adapterAll);
-        adapterTeam1 = new StableArrayAdapter2(this, team1, mTouchListenerTeam1, Team.TEAM1);
+    private void createAdapters(){
+        adapterAll = new SwipeListAdapter(this, players, mTouchListenerAll);
+        adapterAll.setColor(Color.WHITE);
+
+        adapterTeam1 = new SwipeListAdapter2(this, new ArrayList<Player>(), mTouchListenerTeam1, Team.TEAM1);
         adapterTeam1.setColor(Color.GRAY);
-        adapterTeam2 = new StableArrayAdapter2(this, team2, mTouchListenerTeam2,Team.TEAM2);
+
+        adapterTeam2 = new SwipeListAdapter2(this, new ArrayList<Player>(), mTouchListenerTeam2,Team.TEAM2);
         adapterTeam2.setColor(Color.GRAY);
+    }
+
+    private void setOnclickListenersAndAdapters(){
         lvTeam1.setAdapter(adapterTeam1);
         lvTeam2.setAdapter(adapterTeam2);
-
         lvAllPlayers.setAdapter(adapterAll);
+        btnShufflePos.setOnClickListener(this);
+        btnShuffle.setOnClickListener(this);
+        btnContinue.setOnClickListener(this);
+        btnCancel.setOnClickListener(this);
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        try {
+            if (v.getId() == R.id.btnShuffle) {
+                shufflePlayers();
+                createWarning(getString(R.string.msg_ShuffleWarning));
+            }
+            else if (v.getId() == R.id.btnContinue) {
+                ArrayList<Participation> participations = createParticipations();
+                game.removeAllParticipations();
+                for (Participation p : participations) {
+                    game.addParticipation(p);
+                }
+                Intent myIntent = new Intent(this, AddGameEnterDataActivity.class);
+                myIntent.putExtra("game", game);
+                this.startActivity(myIntent);
+            } else if (v.getId() == R.id.btnCancel) {
+                this.finish();
+            }
+            else if(v.getId() ==  R.id.btnShufflePos){
+                createWarning(getString(R.string.msg_ShuffleWarning));
+                adapterTeam1.shufflePositions();
+                adapterTeam1.notifyDataSetChanged();
+                adapterTeam2.shufflePositions();
+                adapterTeam2.notifyDataSetChanged();
+            }
+        }
+        catch (Exception e){
+            showMessage(e.getMessage());
+        }
+    }
+
+
+
+    public ArrayList<Participation> createParticipations() throws Exception {
+        ArrayList<Participation> list1 = adapterTeam1.getParticipations();
+        ArrayList<Participation> list2 = adapterTeam2.getParticipations();
+        if (adapterAll.getCount() != players.size()) {
+            throw new Exception(getString(R.string.msg_PlayerhasNoTeam));
+        } else if (Math.abs((list1.size() - list2.size())) > 1) {
+            throw new Exception(getString(R.string.msg_UnbalancedTeams));
+        }
+        list1.addAll(list2);
+        return list1;
+    }
+
+
+    private void createWarning(String s){
+        OkDialog dia = new OkDialog(this, s);
+        dia.show();
+    }
+
+    @Override
+    public void okDialogButtonPressed() {
+
     }
 
     private View.OnTouchListener mTouchListenerAll = new View.OnTouchListener() {
@@ -295,100 +378,103 @@ public class TeamDivision2 extends BaseActivity {
 
         @Override
         public boolean onTouch(final View v, MotionEvent event) {
-            if (mSwipeSlop < 0) {
-                mSwipeSlop = ViewConfiguration.get(TeamDivision2.this).getScaledTouchSlop();
-            }
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    BackgroundContainerTeam2.showBackground(v.getTop(), v.getHeight());
-                    if (mItemPressed) {
-                        // Multi-item swipes not handled
-                        return false;
-                    }
-                    mItemPressed = true;
-                    mDownX = event.getX();
-                    break;
-                case MotionEvent.ACTION_CANCEL:
-                    v.setAlpha(1);
-                    v.setTranslationX(0);
-                    mItemPressed = false;
-                    break;
-                case MotionEvent.ACTION_MOVE: {
-                    float x = event.getX() + v.getTranslationX();
-                    float deltaX = x - mDownX;
-                    float deltaXAbs = Math.abs(deltaX);
-                    if (!mSwiping) {
-                        if (deltaXAbs > mSwipeSlop) {
-                            mSwiping = true;
-                            lvTeam2.requestDisallowInterceptTouchEvent(true);
-                            BackgroundContainerTeam2.showBackground(v.getTop(), v.getHeight());
-                        }
-                    }
-                    if (mSwiping) {
-                        v.setTranslationX((x - mDownX));
-                        v.setAlpha(1 - deltaXAbs / v.getWidth());
-                    }
+            if(isTouchTeamActive) {
+                if (mSwipeSlop < 0) {
+                    mSwipeSlop = ViewConfiguration.get(TeamDivision2.this).getScaledTouchSlop();
                 }
-                break;
-                case MotionEvent.ACTION_UP: {
-                    BackgroundContainerTeam2.hideBackground();
-                    // User let go - figure out whether to animate the view out, or back into place
-                    if (mSwiping) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        BackgroundContainerTeam2.showBackground(v.getTop(), v.getHeight());
+                        if (mItemPressed) {
+                            // Multi-item swipes not handled
+                            return false;
+                        }
+                        mItemPressed = true;
+                        mDownX = event.getX();
+                        break;
+                    case MotionEvent.ACTION_CANCEL:
+                        v.setAlpha(1);
+                        v.setTranslationX(0);
+                        mItemPressed = false;
+                        break;
+                    case MotionEvent.ACTION_MOVE: {
                         float x = event.getX() + v.getTranslationX();
                         float deltaX = x - mDownX;
                         float deltaXAbs = Math.abs(deltaX);
-                        float fractionCovered;
-                        float endX;
-                        float endAlpha;
-                        final boolean remove;
-                        if (deltaXAbs > (v.getWidth() / 4)) {
-                            if (x < mDownX) {
-                                direction = Direction.LEFT;
-                            } else if (x > mDownX) {
-                                direction = Direction.RIGHT;
+                        if (!mSwiping) {
+                            if (deltaXAbs > mSwipeSlop) {
+                                mSwiping = true;
+                                lvTeam2.requestDisallowInterceptTouchEvent(true);
+                                BackgroundContainerTeam2.showBackground(v.getTop(), v.getHeight());
                             }
-                            // Greater than a quarter of the width - animate it out
-                            fractionCovered = deltaXAbs / v.getWidth();
-                            endX = deltaX < 0 ? -v.getWidth() : v.getWidth();
-                            endAlpha = 0;
-                            remove = true;
-                        } else {
-                            // Not far enough - animate it back
-                            fractionCovered = 1 - (deltaXAbs / v.getWidth());
-                            endX = 0;
-                            endAlpha = 1;
-                            remove = false;
                         }
-                        // Animate position and alpha of swiped item
-                        // NOTE: This is a simplified version of swipe behavior, for the
-                        // purposes of this demo about animation. A real version should use
-                        // velocity (via the VelocityTracker class) to send the item off or
-                        // back at an appropriate speed.
-                        long duration = Math.abs((int) ((1 - fractionCovered) * SWIPE_DURATION));
-                        lvTeam2.setEnabled(false);
-                        v.animate().setDuration(duration).alpha(endAlpha).translationX(endX).withEndAction(new Runnable() {
-                            @Override
-                            public void run() {
-                                // Restore animated values
-                                v.setAlpha(1);
-                                v.setTranslationX(0);
-                                if (remove) {
-                                    animateRemovalTeam2(lvTeam2, v);
-                                } else {
-                                    BackgroundContainerTeam2.hideBackground();
-                                    mSwiping = false;
-                                    lvTeam2.setEnabled(true);
-                                }
-                            }
-                        });
+                        if (mSwiping) {
+                            v.setTranslationX((x - mDownX));
+                            v.setAlpha(1 - deltaXAbs / v.getWidth());
+                        }
                     }
+                    break;
+                    case MotionEvent.ACTION_UP: {
+                        BackgroundContainerTeam2.hideBackground();
+                        // User let go - figure out whether to animate the view out, or back into place
+                        if (mSwiping) {
+                            float x = event.getX() + v.getTranslationX();
+                            float deltaX = x - mDownX;
+                            float deltaXAbs = Math.abs(deltaX);
+                            float fractionCovered;
+                            float endX;
+                            float endAlpha;
+                            final boolean remove;
+                            if (deltaXAbs > (v.getWidth() / 4)) {
+                                if (x < mDownX) {
+                                    direction = Direction.LEFT;
+                                } else if (x > mDownX) {
+                                    direction = Direction.RIGHT;
+                                }
+                                // Greater than a quarter of the width - animate it out
+                                fractionCovered = deltaXAbs / v.getWidth();
+                                endX = deltaX < 0 ? -v.getWidth() : v.getWidth();
+                                endAlpha = 0;
+                                remove = true;
+                            } else {
+                                // Not far enough - animate it back
+                                fractionCovered = 1 - (deltaXAbs / v.getWidth());
+                                endX = 0;
+                                endAlpha = 1;
+                                remove = false;
+                            }
+                            // Animate position and alpha of swiped item
+                            // NOTE: This is a simplified version of swipe behavior, for the
+                            // purposes of this demo about animation. A real version should use
+                            // velocity (via the VelocityTracker class) to send the item off or
+                            // back at an appropriate speed.
+                            long duration = Math.abs((int) ((1 - fractionCovered) * SWIPE_DURATION));
+                            lvTeam2.setEnabled(false);
+                            v.animate().setDuration(duration).alpha(endAlpha).translationX(endX).withEndAction(new Runnable() {
+                                @Override
+                                public void run() {
+                                    // Restore animated values
+                                    v.setAlpha(1);
+                                    v.setTranslationX(0);
+                                    if (remove) {
+                                        animateRemovalTeam2(lvTeam2, v);
+                                    } else {
+                                        BackgroundContainerTeam2.hideBackground();
+                                        mSwiping = false;
+                                        lvTeam2.setEnabled(true);
+                                    }
+                                }
+                            });
+                        }
+                    }
+                    mItemPressed = false;
+                    break;
+                    default:
+                        return false;
                 }
-                mItemPressed = false;
-                break;
-                default:
-                    return false;
+                return true;
             }
-            return true;
+            return false;
         }
     };
 
@@ -421,10 +507,11 @@ public class TeamDivision2 extends BaseActivity {
             adapterTeam2.addWithPosition(adapterTeam1.removeWithPos(adapterTeam1.getItem(position)));
             adapterTeam2.notifyDataSetChanged();
         }
-
+        else{
+            adapterTeam1.addWithPosition(adapterTeam1.removeWithPos(adapterTeam1.getItem(position)));
+            adapterTeam1.notifyDataSetChanged();
+        }
     }
-
-
 
     private void movePlayerFromTeam2(View viewToMove) {
         int position = lvTeam2.getPositionForView(viewToMove);
@@ -432,6 +519,58 @@ public class TeamDivision2 extends BaseActivity {
             adapterTeam1.addWithPosition(adapterTeam2.removeWithPos(adapterTeam2.getItem(position)));
             adapterTeam1.notifyDataSetChanged();
         }
+        else{
+            adapterTeam2.addWithPosition(adapterTeam2.removeWithPos(adapterTeam2.getItem(position)));
+            adapterTeam2.notifyDataSetChanged();
+        }
+    }
+
+    private void shufflePlayers(){
+        Random rand = new Random();
+        ArrayList<Player> freePlayers = adapterAll.getFreePlayers();
+        int diff = adapterTeam1.getCount() - adapterTeam2.getCount();
+        if (freePlayers.size() != 0) {
+            if (diff < 0) {
+                for (int i = 0; i > diff; diff++) {
+                    Player p = adapterAll.getItem(rand.nextInt(freePlayers.size()));
+                    adapterTeam1.add(p);
+                    adapterAll.remove(p);
+                }
+            } else if (diff > 0) {
+                for (int i = 0; i < diff; diff--) {
+                    Player p = adapterAll.getItem(rand.nextInt(freePlayers.size()));
+                    adapterTeam2.add(p);
+                    adapterAll.remove(p);
+                }
+            }
+            if (diff == 0 && freePlayers.size() != 0) {
+                for (int i = 0; i < freePlayers.size(); ) {
+                    if (diff == 0) {
+                        Player p = adapterAll.getItem(rand.nextInt(freePlayers.size()));
+                        adapterTeam1.add(p);
+                        adapterAll.remove(p);
+                        diff++;
+                    } else {
+                        Player p = adapterAll.getItem(rand.nextInt(freePlayers.size()));
+                        adapterTeam2.add(p);
+                        adapterAll.remove(p);
+                        diff--;
+                    }
+                }
+            }
+            if (adapterAll.getCount() == 0) {
+                BackgroundContainerAll.setVisibility(View.INVISIBLE);
+                lvAllPlayers.setVisibility(View.INVISIBLE);
+                adapterTeam1.setColor(Color.WHITE);
+                adapterTeam1.notifyDataSetChanged();
+                adapterTeam2.setColor(Color.WHITE);
+                adapterTeam2.notifyDataSetChanged();
+                isTouchTeamActive = true;
+            }
+        } else {
+            showMessage(getString(R.string.msg_NoPlayersToAssign));
+        }
+
     }
 
     /**
@@ -596,9 +735,6 @@ public class TeamDivision2 extends BaseActivity {
                 mItemIdTopMapTeam2.put(itemId, child.getTop());
             }
         }
-        // Delete the item from the adapter
-        //movePlayerFromTeam2(viewToRemove);
-
         final ViewTreeObserver observer = listview.getViewTreeObserver();
         observer.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             public boolean onPreDraw() {

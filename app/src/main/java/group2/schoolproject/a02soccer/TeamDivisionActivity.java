@@ -29,7 +29,6 @@ public class TeamDivisionActivity extends BaseActivity implements OnTeamChangedL
     private ArrayList<Participation> participations = null;
     private TreeMap<Integer, Player> allPlayers = null;
     private OnTeamChangedListener[] listener = new OnTeamChangedListener[2];
-    private boolean warned = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,9 +89,6 @@ public class TeamDivisionActivity extends BaseActivity implements OnTeamChangedL
         participations = list1;
     }
 
-    public void setWarnedTrue(){
-        warned=true;
-    }
 
     private void createWarning(String s){
         OkDialog dia = new OkDialog(this, s);
@@ -101,7 +97,7 @@ public class TeamDivisionActivity extends BaseActivity implements OnTeamChangedL
 
     @Override
     public void okDialogButtonPressed() {
-        setWarnedTrue();
+        System.out.println("des mocht anfoch nichts");
     }
 
     @Override

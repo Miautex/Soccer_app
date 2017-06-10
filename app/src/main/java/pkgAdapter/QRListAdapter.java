@@ -24,14 +24,14 @@ import pkgDatabase.Database;
  * @author Raphael Moser
  */
 
-public class Player_QrList extends ArrayAdapter<Player> implements View.OnClickListener{
+public class QRListAdapter extends ArrayAdapter<Player> implements View.OnClickListener{
     private final Context context;
     private TreeMap<Integer,Player> players;
     private ArrayList<Integer> ids;
     private Drawable drawable;
 
 
-    public Player_QrList(@NonNull Context context) {
+    public QRListAdapter(@NonNull Context context) {
         super(context, -1);
         players = new TreeMap<>();
         ids = new ArrayList<>();

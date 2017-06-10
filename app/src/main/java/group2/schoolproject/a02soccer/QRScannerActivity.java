@@ -50,7 +50,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.TreeSet;
 
-import pkgAdapter.Player_QrList;
+import pkgAdapter.QRListAdapter;
 import pkgBarcodeScanner.BarcodeGraphic;
 import pkgBarcodeScanner.BarcodeTrackerFactory;
 import pkgBarcodeScanner.camera.CameraSource;
@@ -87,7 +87,7 @@ public final class QRScannerActivity extends BaseActivity implements View.OnClic
     private CameraSourcePreview mPreview;
     private GraphicOverlay<BarcodeGraphic> mGraphicOverlay;
     private ListView lol;
-    Player_QrList arrayAdapter;
+    QRListAdapter arrayAdapter;
     //ArrayAdapter<String> arrayAdapter;
     private ArrayList<String> test = new ArrayList<>();
 
@@ -114,7 +114,7 @@ public final class QRScannerActivity extends BaseActivity implements View.OnClic
         btnConitnue.setOnClickListener(this);
         imgButton.setOnClickListener(this);
         lol = (ListView) findViewById(R.id.lol);
-        arrayAdapter = new Player_QrList(this);
+        arrayAdapter = new QRListAdapter(this);
         //user can't scan its QR-Code, therefore he is added on startup
         arrayAdapter.add(db.getCurrentlyLoggedInPlayer());
         lol.setAdapter(arrayAdapter);

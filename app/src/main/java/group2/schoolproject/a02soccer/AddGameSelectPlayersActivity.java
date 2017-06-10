@@ -3,7 +3,9 @@ package group2.schoolproject.a02soccer;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -210,10 +212,17 @@ public class AddGameSelectPlayersActivity extends BaseActivity implements View.O
 
         //Intent myIntent = new Intent(this, TeamDivisionActivity.class);
         //Intent myIntent = new Intent(this, AddGameEnterDataActivity.class);
-        Intent myIntent = new Intent(this, TeamDivisionActivity.class);
+        Intent myIntent;
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        String layout = sp.getString("preference_assignment_layout","Wilscher suckt");
+        if(layout == "TAB_LAYOUT") {
+            myIntent = new Intent(this, TeamDivisionActivity.class);
+        }
+        else{
+            myIntent = new Intent(this, TeamDivision2.class);
+        }
         myIntent.putExtra("game", result);
         myIntent.putExtra("players",selectedPlayers);
-
         this.startActivity(myIntent);
     }
 

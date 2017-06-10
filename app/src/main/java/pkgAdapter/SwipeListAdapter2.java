@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -31,31 +32,31 @@ import pkgDatabase.Database;
  *
  */
 
-    public class StableArrayAdapter2 extends ArrayAdapter<Player> implements AdapterView.OnItemSelectedListener {
+    public class SwipeListAdapter2 extends ArrayAdapter<Player> implements AdapterView.OnItemSelectedListener {
     private ArrayList<Player> values = new ArrayList<>();
     private View.OnTouchListener mTouchListener;
     private final Context context;
     private SpinnerAdapter spinnerAdapter;
     private int color = Color.WHITE;
-    private TreeMap<Player,Integer> playerwithSpinnerPos;
+    private TreeMap<Player,Integer> playerWithPos;
     private Team team;
 
 
-    public void add(@Nullable Player object) {
-        super.add(object);
-        values.add(object);
+    public void add(@Nullable Player player) {
+        super.add(player);
+        values.add(player);
     }
 
     public void addWithPosition(Participation part){
         super.add(part.getPlayer());
         values.add(part.getPlayer());
-        playerwithSpinnerPos.put(part.getPlayer(),positionToInt(part.getPlayer(),part.getPosition()));
+        playerWithPos.put(part.getPlayer(),positionToInt(part.getPlayer(),part.getPosition()));
     }
 
     public Participation removeWithPos(Player p){
         Participation part = new Participation();
         part.setPlayer(p);
-        part.setPosition(intToPosition(p,playerwithSpinnerPos.get(p)));
+        part.setPosition(intToPosition(p, playerWithPos.get(p)));
         remove(p);
         return part;
     }
@@ -65,18 +66,18 @@ import pkgDatabase.Database;
     }
 
 
-    public void remove(@Nullable Player object) {
-        super.remove(object);
-        values.remove(object);
+    public void remove(@Nullable Player player) {
+        super.remove(player);
+        values.remove(player);
     }
 
 
-    public StableArrayAdapter2(Context context, List<Player> objects, View.OnTouchListener listener,Team team) {
-        super(context, -1, objects);
+    public SwipeListAdapter2(Context context, List<Player> oplayers, View.OnTouchListener listener, Team team) {
+        super(context, -1, oplayers);
         this.context = context;
         mTouchListener = listener;
-        values.addAll(objects);
-        playerwithSpinnerPos = new TreeMap<>();
+        values.addAll(oplayers);
+        playerWithPos = new TreeMap<>();
         this.team = team;
     }
 
@@ -95,18 +96,20 @@ import pkgDatabase.Database;
     @Override
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View linea = inflater.inflate(R.layout.swipe_list, parent, false);
-        linea.setBackgroundColor(color);
-        View linea2 = linea.findViewById(R.id.linearLayout2);
-        TextView test = (TextView) linea2.findViewById(R.id.listItem);
-        Spinner spinner = (Spinner) linea2.findViewById(R.id.spinner);
+        View conatainer = inflater.inflate(R.layout.swipe_list, parent, false);
+        conatainer.setBackgroundColor(color);
+        View contentContainer = conatainer.findViewById(R.id.linearLayout2);
+        TextView playerName = (TextView) contentContainer.findViewById(R.id.listItem);
+        Spinner positionsSpinner = (Spinner) contentContainer.findViewById(R.id.spinner);
+        TextView positionsPreview = (TextView) conatainer.findViewById(R.id.posOverview);
+        positionsPreview.setVisibility(View.GONE);
         if (values != null && values.size() >= 0) {
-            test.setText(values.get(position).toString());
-            spinner = createSpinner(spinner, values.get(position).getPositions(),values.get(position));
-            spinner.setOnItemSelectedListener(this);
+            playerName.setText(values.get(position).toString());
+            positionsSpinner = createSpinner(positionsSpinner, values.get(position).getPositions(),values.get(position));
+            positionsSpinner.setOnItemSelectedListener(this);
         }
-        linea.setOnTouchListener(mTouchListener);
-        return linea;
+        conatainer.setOnTouchListener(mTouchListener);
+        return conatainer;
     }
 
     private Spinner createSpinner(Spinner s,TreeSet<PlayerPosition> positions, Player player) {
@@ -116,8 +119,8 @@ import pkgDatabase.Database;
         }
         spinnerAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, spinnerArray);
         s.setAdapter(spinnerAdapter);
-        if(playerwithSpinnerPos.containsKey(player)) {
-            s.setSelection(playerwithSpinnerPos.get(player));
+        if(playerWithPos.containsKey(player)) {
+            s.setSelection(playerWithPos.get(player));
         }
         return s;
     }
@@ -157,14 +160,14 @@ import pkgDatabase.Database;
     }
 
     public void setItem(int position){
-        playerwithSpinnerPos.remove(values.get(position));
+        playerWithPos.remove(values.get(position));
     }
 
     public ArrayList<Participation> getParticipations(){
         ArrayList<Participation> participations = new ArrayList<>();
         for (Player p : values) {
             ArrayList<PlayerPosition> newList = new ArrayList<>(p.getPositions());
-            Participation temp = new Participation(p,team,newList.get(playerwithSpinnerPos.get(p)));
+            Participation temp = new Participation(p,team,newList.get(playerWithPos.get(p)));
             participations.add(temp);
         }
         return participations;
@@ -175,16 +178,15 @@ import pkgDatabase.Database;
         LinearLayout linea = (LinearLayout) parent.getParent();
         TextView t = (TextView) linea.getChildAt(0);
         Spinner s = (Spinner) linea.getChildAt(1);
-        System.out.println(position);
         s.setSelection(position);
         String username = t.getText().toString().split("\n")[1].trim();
         username = username.substring(1);
         Player p = Database.getInstance().getPlayerByUsername(username);
-        if(playerwithSpinnerPos.containsKey(p));
+        if(playerWithPos.containsKey(p));
         {
-            playerwithSpinnerPos.remove(p);
+            playerWithPos.remove(p);
         }
-        playerwithSpinnerPos.put(p,position);
+        playerWithPos.put(p,position);
     }
 
     @Override
@@ -194,7 +196,7 @@ import pkgDatabase.Database;
 
     private PlayerPosition intToPosition(Player p, int pos){
         ArrayList<PlayerPosition> newList = new ArrayList<>(p.getPositions());
-        return newList.get(playerwithSpinnerPos.get(p));
+        return newList.get(playerWithPos.get(p));
     }
 
     private int positionToInt(Player p, PlayerPosition pos){
@@ -209,5 +211,14 @@ import pkgDatabase.Database;
             }
         }
         return count;
+    }
+    public void shufflePositions(){
+        Random rand = new Random();
+        ArrayList<PlayerPosition> positions;
+        for (Player p : values){
+            positions = new ArrayList<>(p.getPositions());
+            playerWithPos.remove(p);
+            playerWithPos.put(p,rand.nextInt(positions.size()));
+        }
     }
 }
