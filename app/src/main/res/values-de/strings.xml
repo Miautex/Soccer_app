@@ -190,4 +190,42 @@
     <string name="qr_player_already_added">Spieler ist bereits hinzugefügt</string>
     <string name="qr_player_not_found">Spieler nicht gefunden</string>
     <string name="qr_failed">Unbekannter Fehler</string>
+
+    <string name="site_notice"><![CDATA[
+        <!doctype html>
+        <html>
+            <head>
+                <title>Impressum</title>
+                <style>
+                    h1, h2, h3 {
+                        text-align: center;
+                    }
+                </style>
+            </head>
+            <body>
+                <h2>Entwickler</h2>
+                <ul>
+                    <li>MOSER Raphael</li>
+                    <li>SANTNER Elias</li>
+                    <li>SONNBERGER Martin</li>
+                    <li>WILSCHER Marco</li>
+                </ul>
+                <h2>Software Bibliotheken</h2>
+                <ul>
+                    <li><a href="https://github.com/google/gson">Gson</a></li>
+                    <li><a href="https://github.com/apache/commons-lang">Apache Commons Lang</a></li>
+                    <li><a href="https://github.com/zxing/zxing">ZXing</a></li>
+                    <li><a href="https://github.com/googlesamples/android-vision">Android Vision API</a></li>
+                    </ul>
+                <h2>Icons</h2>
+                <ul>
+                    <li>? icon erstellt von <a href="http://www.flaticon.com/authors/vaadin" title="Vaadin">Vaadin</a> von <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> (<a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>)</li>
+                    <li>? icon erstellt von <a href="http://www.freepik.com" title="Freepik">Freepik</a> von <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> (<a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>)</li>
+                </ul>
+                <br/>
+                <h3>Developed by</h3>
+                <h1>Kelch Crew</h1>
+            </body>
+        </html>
+    ]]></string>
 </resources>

@@ -23,7 +23,7 @@ public class SettingsActivity extends BaseActivity implements SharedPreferences.
     public void onSharedPreferenceChanged (SharedPreferences sharedPreferences, String key) {
         if (key.equals("preference_general_language")) {
             finish();
-            openActivity(MainActivity.class);
+            openActivity(SettingsActivity.class);
         }
     }
 

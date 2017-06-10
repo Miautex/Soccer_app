@@ -210,23 +210,26 @@
                 </style>
             </head>
             <body>
-                <!--<h1>Impressum</h1>-->
-                <h2>Mitwirkende</h2>
+                <h2>Developers</h2>
                 <ul>
-                    <li>SANTNER Elias</li>
                     <li>MOSER Raphael</li>
-                    <li>WILSCHER Marco</li>
+                    <li>SANTNER Elias</li>
                     <li>SONNBERGER Martin</li>
+                    <li>WILSCHER Marco</li>
                 </ul>
-                <h2>Verwendete Bibliotheken</h2>
+                <h2>Software Libraries</h2>
                 <ul>
                     <li><a href="https://github.com/google/gson">Gson</a></li>
                     <li><a href="https://github.com/apache/commons-lang">Apache Commons Lang</a></li>
                     <li><a href="https://github.com/zxing/zxing">ZXing</a></li>
-                    <li><a href="https://github.com/martin-stone/hsv-alpha-color-picker-android">Colorpicker</a></li>
-                    <li><a href="https://github.com/dm77/barcodescanner">Barcodescanner</a></li>
+                    <li><a href="https://github.com/googlesamples/android-vision">Android Vision API</a></li>
+                    </ul>
+                <h2>Icons</h2>
+                <ul>
+                    <li>? icon made by <a href="http://www.flaticon.com/authors/vaadin" title="Vaadin">Vaadin</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> (<a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>)</li>
+                    <li>? icon made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> (<a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>)</li>
                 </ul>
-                <br />
+                <br/>
                 <h3>Developed by</h3>
                 <h1>Kelch Crew</h1>
             </body>
@@ -244,5 +247,4 @@
     <string name="qr_player_not_found">Player not found</string>
     <string name="qr_player_already_added">Player is already added</string>
     <string name="qr_failed">Something went wrong</string>
-
 </resources>

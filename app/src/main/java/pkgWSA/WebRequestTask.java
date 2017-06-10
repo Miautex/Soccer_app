@@ -19,7 +19,6 @@ import pkgMisc.StringEscape;
 
 public final class WebRequestTask extends AsyncTask <RequestParameter, Void, AccessorResponse> {
     private static final Charset CHARSET = Charset.forName("UTF-8");
-
     private WebRequestTaskListener listener = null;
 
     @Override
