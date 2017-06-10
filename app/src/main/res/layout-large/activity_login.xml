@@ -8,53 +8,56 @@
         android:id="@+id/txvName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/txvPassword"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
         android:padding="20dp"
         android:text="@string/Username"
-        android:textSize="24sp"
-        android:layout_alignTop="@+id/edtName"
-        android:layout_alignRight="@+id/txvPassword"
-        android:layout_alignEnd="@+id/txvPassword" />
+        android:textSize="24sp" />
 
     <EditText
         android:id="@+id/edtName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="274dp"
+        android:layout_alignBottom="@+id/txvName"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/txvName"
+        android:layout_marginEnd="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_toEndOf="@+id/txvName"
+        android:layout_toRightOf="@+id/txvName"
         android:ems="10"
+        android:textSize="24sp"
         android:inputType="textPersonName"
         android:selectAllOnFocus="false"
-        android:textSize="24sp"
-        android:layout_marginRight="44dp"
-        android:layout_marginEnd="44dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:singleLine="false" />
 
     <TextView
         android:id="@+id/txvPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_alignLeft="@+id/txvName"
+        android:layout_alignStart="@+id/txvName"
+        android:layout_centerVertical="true"
         android:padding="20dp"
         android:text="@string/Password"
-        android:textSize="24sp"
-        android:layout_marginRight="53dp"
-        android:layout_marginEnd="53dp"
-        android:layout_below="@+id/edtName"
-        android:layout_toLeftOf="@+id/edtPassword"
-        android:layout_toStartOf="@+id/edtPassword" />
+        android:textSize="24sp" />
 
     <EditText
         android:id="@+id/edtPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/edtName"
+        android:layout_alignRight="@+id/edtName"
+        android:layout_below="@+id/txvName"
+        android:layout_toRightOf="@+id/txvName"
         android:ems="10"
-        android:inputType="textPassword"
         android:textSize="24sp"
-        android:layout_alignBaseline="@+id/txvPassword"
-        android:layout_alignBottom="@+id/txvPassword"
-        android:layout_alignLeft="@+id/edtName"
-        android:layout_alignStart="@+id/edtName" />
+        android:inputType="textPassword"
+        android:layout_alignBottom="@+id/txvPassword" />
 
     <LinearLayout
         android:id="@+id/layLinear"
