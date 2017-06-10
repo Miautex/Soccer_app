@@ -59,7 +59,7 @@
     <string name="low_storage_error">Las dependencias de detección de rostros no se pueden descargar debido al almacenamiento bajo del dispositivo</string>
     <string name="misc">Diverso</string>
     <string name="mniAdd">Añadir</string>
-    <string name="mniDisplay">Monitor</string>
+    <string name="mniDisplay">Descripción general</string>
     <string name="mniEdit">Editar datos de usuario</string>
     <string name="mniEnglish">English</string>
     <string name="mniGerman">Deutsch</string>
@@ -153,7 +153,7 @@
     <string name="title_activity_edit_player_admin">Editar jugador</string>
     <string name="title_activity_edit_player_own">Editar datos de usuario propios</string>
     <string name="title_activity_login">Iniciar sesión</string>
-    <string name="title_activity_main">Visión de conjunto</string>
+    <string name="title_activity_main">Descripción general</string>
     <string name="title_activity_main_offline">Descripción general (Desconectado)</string>
     <string name="title_activity_player_stats">Estadísticas del jugador</string>
     <string name="title_activity_score_board">Marcador</string>
@@ -163,20 +163,10 @@
     <string name="title_activity_team_management">División de equipo</string>
     <string name="title_dialogDeletePlayer">¿Eliminar jugador?</string>
     <string name="yes">Sí</string>
-
-    <!--Spinner Arrays-->
-    <string-array name="spinnerPlayerGameValues">
-        <item>Jugador</item>
-        <item>Jugo</item>
-    </string-array>
-    <string-array name="spinnerScoreboard">
-        <item>Ghana</item>
-        <item>Goles marcados</item>
-        <item>Goles en contra</item>
-        <item>Derrotas</item>
-    </string-array>
-
-
+    <string name="players">Jugador</string>
+    <string name="games">Jugo</string>
+    <string name="wins">Ghana</string>
+    <string name="defeats">Derrotas</string>
     <string name="qr_on_open">Toque para capturar. Pellizco/Tramo para ampliar</string>
     <string name="qr_player_already_added">El reproductor ya está agregado</string>
     <string name="qr_player_not_found">Jugador no encontrado</string>

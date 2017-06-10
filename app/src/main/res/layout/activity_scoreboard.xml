@@ -32,8 +32,7 @@
             android:layout_alignParentTop="true"
             android:layout_margin="5dp"
             android:layout_toEndOf="@+id/txtUnwichtig"
-            android:layout_toRightOf="@+id/lblShowPlayersOrGames"
-            android:entries="@array/spinnerScoreboard" />
+            android:layout_toRightOf="@+id/lblShowPlayersOrGames" />
 
     </RelativeLayout>
 

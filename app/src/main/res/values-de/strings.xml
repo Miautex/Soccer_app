@@ -98,18 +98,11 @@
     <string name= "position">Position</string>
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
+    <string name="players">Spieler</string>
+    <string name="games">Spiele</string>
+    <string name="wins">Siege</string>
+    <string name="defeats">Niederlagen</string>
 
-    <!--Spinner Arrays-->
-    <string-array name="spinnerPlayerGameValues">
-        <item>Spieler</item>
-        <item>Spiele</item>
-    </string-array>
-    <string-array name="spinnerScoreboard">
-        <item>Siege</item>
-        <item>Torjäger</item>
-        <item>Tore bekommen</item>
-        <item>Niederlagen</item>
-    </string-array>
 
     <!--Error Messages-->
     <string name="Error">Fehler</string>
@@ -177,7 +170,7 @@
     <string name="btnPositive_dialogDeletePlayer">Ja</string>
     <string name="game">Spiel</string>
     <string name="misc">Sonstiges</string>
-    <string name="mniDisplay">Anzeigen</string>
+    <string name="mniDisplay">Übersicht</string>
     <string name="msg_DataSavedLocally">Daten lokal gespeichert</string>
     <string name="msg_NoPlayersToAssign">Keine Spieler zum aufteilen</string>
     <string name="msg_dialogDeletePlayer">Wollen Sie Spieler \'%s\' wirklich löschen?</string>

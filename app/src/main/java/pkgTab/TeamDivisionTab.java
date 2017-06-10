@@ -6,17 +6,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -29,6 +25,7 @@ import java.util.TreeSet;
 
 import group2.schoolproject.a02soccer.R;
 import group2.schoolproject.a02soccer.TeamDivisionActivity;
+import pkgAdapter.CustomSpinnerAdapter;
 import pkgData.Participation;
 import pkgData.Player;
 import pkgData.PlayerPosition;
@@ -101,6 +98,7 @@ public class TeamDivisionTab extends Fragment implements View.OnClickListener, O
 
     public void playerToRow(Player player) {
         TableRow row = new TableRow(this.getContext());
+        row.setGravity(Gravity.CENTER_VERTICAL);
         row.addView(createTextViewId(String.valueOf(player.getId())));
         row.addView(createTextViewName(player.getName()));
         row.addView(createSpinner(player.getPositions()));
@@ -234,7 +232,8 @@ public class TeamDivisionTab extends Fragment implements View.OnClickListener, O
         for (PlayerPosition pos : positions) {
             spinnerArray.add(EnumToString(pos));
         }
-        SpinnerAdapter spinnerAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, spinnerArray);
+        //SpinnerAdapter spinnerAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, spinnerArray);
+        CustomSpinnerAdapter<String> spinnerAdapter = new CustomSpinnerAdapter<>(getContext(), (ArrayList<String>) spinnerArray);
         Spinner spinnerPosition = new Spinner(this.getContext());
         spinnerPosition.setLayoutParams(layoutSpinner);
         spinnerPosition.setAdapter(spinnerAdapter);

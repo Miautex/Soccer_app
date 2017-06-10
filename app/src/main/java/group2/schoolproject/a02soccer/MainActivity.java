@@ -2,6 +2,7 @@ package group2.schoolproject.a02soccer;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -24,10 +25,12 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import pkgAdapter.MainGameListAdapter;
 import pkgAdapter.MainPlayerListAdapter;
+import pkgAdapter.CustomSpinnerIconAdapter;
 import pkgData.Game;
-import pkgMisc.LocalUserData;
 import pkgData.Player;
 import pkgDatabase.Database;
 import pkgDatabase.pkgHandler.LoadAllGamesHandler;
@@ -44,6 +47,7 @@ import pkgDatabase.pkgListener.OnPlayersChangedListener;
 import pkgException.CannotDeletePlayerOfLocalGameException;
 import pkgException.CouldNotDeletePlayerException;
 import pkgListeners.OnDeleteDialogButtonPressedListener;
+import pkgMisc.LocalUserData;
 
 @SuppressWarnings("ConstantConditions")
 public class MainActivity extends BaseActivity
@@ -86,6 +90,8 @@ public class MainActivity extends BaseActivity
             registrateEventHandlers();
             displayLoggedInUser();
 
+            fillSpinner();
+
             //Set selection (either players or games displayed; default: players)
             Boolean showPlayers = (Boolean) this.getIntent().getSerializableExtra("showPlayers");
             if (showPlayers == null || showPlayers) {
@@ -101,6 +107,19 @@ public class MainActivity extends BaseActivity
             ex.printStackTrace();
             showMessage(getString(R.string.Error) + ": " + ex.getMessage());
         }
+    }
+
+    private void fillSpinner() {
+        ArrayList<String> values = new ArrayList<>();
+        values.add(getString(R.string.players));
+        values.add(getString(R.string.games));
+
+        ArrayList<Drawable> icons = new ArrayList<>();
+        icons.add(getResources().getDrawable(R.drawable.ic_player));
+        icons.add(getResources().getDrawable(R.drawable.ic_game));
+
+        CustomSpinnerIconAdapter<String> spAdapter = new CustomSpinnerIconAdapter<>(this, values, icons);
+        spPlayersGames.setAdapter(spAdapter);
     }
 
     private void setupMenu(boolean isAdmin) {

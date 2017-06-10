@@ -32,8 +32,7 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:selectAllOnFocus="false"
-        android:singleLine="false"
-        android:text="admin" />
+        android:singleLine="false" />
 
     <TextView
         android:id="@+id/txvPassword"

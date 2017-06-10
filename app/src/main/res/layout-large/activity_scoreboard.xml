@@ -28,7 +28,6 @@
             android:id="@+id/spSorting"
             android:layout_width="500dp"
             android:layout_height="30dp"
-            android:entries="@array/spinnerScoreboard"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/txtUnwichtig"
             android:layout_alignParentRight="true"

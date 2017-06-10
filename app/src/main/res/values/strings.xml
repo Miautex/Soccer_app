@@ -40,7 +40,7 @@
     <string name="mniLogout">Logout</string>
     <string name="mniAdd">Add</string>
     <string name="mniEdit">Edit Userdata</string>
-    <string name="mniDisplay">Display</string>
+    <string name="mniDisplay">Overview</string>
     <string name="ctxMniEditPlayer">Edit</string>
     <string name="ctxMniDeletePlayer">Delete</string>
 
@@ -106,18 +106,10 @@
     <string name="player">Player</string>
     <string name="game">Game</string>
     <string name="misc">Miscellaneous</string>
-
-    <!--Spinner Arrays-->
-    <string-array name="spinnerPlayerGameValues">
-        <item>Players</item>
-        <item>Games</item>
-    </string-array>
-    <string-array name="spinnerScoreboard">
-        <item>Wins</item>
-        <item>Goals Shot</item>
-        <item>Goals Got</item>
-        <item>Defeats</item>
-    </string-array>
+    <string name="players">Players</string>
+    <string name="games">Games</string>
+    <string name="wins">Wins</string>
+    <string name="defeats">Defeats</string>
 
     <!--Settings Array-->
     <string-array name="language_entries">

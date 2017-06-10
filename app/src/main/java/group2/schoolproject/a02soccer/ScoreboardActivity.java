@@ -11,19 +11,21 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.TreeSet;
 
+import pkgAdapter.CustomSpinnerAdapter;
 import pkgAdapter.ScoreboardListAdapter;
 import pkgComparator.PlayerComparatorDefeats;
 import pkgComparator.PlayerComparatorGoalsGot;
 import pkgComparator.PlayerComparatorGoalsShot;
 import pkgComparator.PlayerComparatorWins;
 import pkgData.Player;
-import pkgMisc.PlayerWithScore;
 import pkgDatabase.Database;
+import pkgMisc.PlayerWithScore;
 
 public class ScoreboardActivity extends BaseActivity implements AdapterView.OnItemSelectedListener, AdapterView.OnItemClickListener {
 
     //kommentar
     private ListView lsv = null;
+    private Spinner spSorting = null;
     private Database db;
 
     @Override
@@ -32,15 +34,27 @@ public class ScoreboardActivity extends BaseActivity implements AdapterView.OnIt
         setTitle(R.string.title_activity_score_board);
         setContentView(R.layout.activity_scoreboard);
         lsv = (ListView) findViewById(R.id.lsv_Score);
-        Spinner spinner = (Spinner) findViewById(R.id.spSorting);
-        spinner.setOnItemSelectedListener(this);
+        spSorting = (Spinner) findViewById(R.id.spSorting);
+        spSorting.setOnItemSelectedListener(this);
         lsv.setOnItemClickListener(this);
         try {
             db = Database.getInstance();
+            fillSpinner();
         } catch (Exception e) {
             showMessage(getString(R.string.Error) + ": " +e.getMessage());
         }
 
+    }
+
+    private void fillSpinner() {
+        ArrayList<String> values = new ArrayList<>();
+        values.add(getString(R.string.wins));
+        values.add(getString(R.string.GoalsShotAll));
+        values.add(getString(R.string.GoalsGot));
+        values.add(getString(R.string.defeats));
+
+        CustomSpinnerAdapter<String> spAdapter = new CustomSpinnerAdapter<>(this, values);
+        spSorting.setAdapter(spAdapter);
     }
 
     @Override

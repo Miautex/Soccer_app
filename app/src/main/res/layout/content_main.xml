@@ -33,7 +33,6 @@
             android:id="@+id/spinnerPlayerGame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:entries="@array/spinnerPlayerGameValues"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/lblShowPlayersOrGames"
             android:layout_toEndOf="@+id/lblShowPlayersOrGames"
