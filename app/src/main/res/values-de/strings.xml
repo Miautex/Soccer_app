@@ -190,6 +190,8 @@
     <string name="qr_player_already_added">Spieler ist bereits hinzugefügt</string>
     <string name="qr_player_not_found">Spieler nicht gefunden</string>
     <string name="qr_failed">Unbekannter Fehler</string>
+    <string name="btnQR">QR-Code</string>
+    <string name="title_activity_qr_scanner">QR-Code-Scanner</string>
 
     <string name="site_notice"><![CDATA[
         <!doctype html>

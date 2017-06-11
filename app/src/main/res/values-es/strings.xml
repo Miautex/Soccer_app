@@ -171,4 +171,6 @@
     <string name="qr_player_already_added">El reproductor ya está agregado</string>
     <string name="qr_player_not_found">Jugador no encontrado</string>
     <string name="qr_failed">Algo salió mal</string>
+    <string name="btnQR">Código QR</string>
+    <string name="title_activity_qr_scanner">Escáner QR-Code</string>
 </resources>

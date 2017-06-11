@@ -232,7 +232,10 @@ public class AddGameEnterDataActivity extends BaseActivity implements OnScoreCha
 
     private void closeKeyboard() {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
+        View currentFocus = this.getCurrentFocus();
+        if (currentFocus != null) {
+            imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
+        }
     }
 
     private void openMainActivity() {
