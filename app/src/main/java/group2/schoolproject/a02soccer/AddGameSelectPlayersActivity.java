@@ -41,14 +41,13 @@ public class AddGameSelectPlayersActivity extends BaseActivity implements View.O
 
     private DatePicker datePicker = null;
     private TableLayout tablePlayers = null;
-    private TableLayout tablePlayersHeader = null;
     private Button btnContinue = null,
             btnCancel = null,
             btnQRScan = null;
     private CheckBox ckbParticipationHeader = null;
     private ZXingScannerView scanner;
 
-    private Database db = null;
+    private Database db;
     private HashMap<Integer, Player> hmPlayers = null;
     private int numSelectedCheckboxes = 0;
     private static final int RC_BARCODE_CAPTURE = 9001;
@@ -86,7 +85,6 @@ public class AddGameSelectPlayersActivity extends BaseActivity implements View.O
     private void getAllViews() {
         datePicker = (DatePicker) findViewById(R.id.datePicker);
         tablePlayers = (TableLayout) findViewById(R.id.table_Players);
-        tablePlayersHeader = (TableLayout) findViewById(R.id.table_PlayersHeader);
         btnContinue = (Button) findViewById(R.id.btnSave);
         btnCancel = (Button) findViewById(R.id.btnCancel);
         btnQRScan = (Button) findViewById(R.id.btnQRScan);

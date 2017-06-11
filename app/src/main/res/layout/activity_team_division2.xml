@@ -8,13 +8,46 @@
     android:background="@drawable/background">
 
 
-    <FrameLayout
+    <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:id="@+id/tableLayout">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/redLogo">
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Team 1"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Team 2"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+        </TableRow>
+
+    </TableLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="448dp"
+        android:layout_above="@+id/linearLayout"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/linearLayout">
+        android:layout_below="@+id/tableLayout">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -23,19 +56,19 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true">
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:orientation="horizontal">
 
                 <view
                     android:id="@+id/listViewBackgroundTeam1"
                     class="pkgAdapter.BackgroundContainer"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="match_parent"
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
+                    android:layout_weight="1"
                     android:background="@drawable/tablelayoutred"
                     android:visibility="visible">
 
@@ -52,10 +85,10 @@
                     android:id="@+id/listViewBackgroundTeam2"
                     class="pkgAdapter.BackgroundContainer"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="match_parent"
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
+                    android:layout_weight="1"
                     android:background="@drawable/tablelayoutred"
                     android:visibility="visible">
 
@@ -71,15 +104,14 @@
             </LinearLayout>
 
 
-
             <view
                 android:id="@+id/listViewBackgroundAllPlayers"
                 class="pkgAdapter.BackgroundContainer"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:visibility="visible"
                 android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true">
+                android:layout_centerHorizontal="true"
+                android:visibility="visible">
                 <!--android:background="@color/white"-->
 
                 <ListView
@@ -115,11 +147,11 @@
 
         <Button
             android:id="@+id/btnShufflePos"
-            android:layout_width="0dp"
             style="@style/buttonStyle"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Shuffle Pos" />
+            android:text="@string/btnShufflePos" />
 
         <Button
             android:id="@+id/btnShuffle"
@@ -139,4 +171,5 @@
             android:layout_weight="1"
             android:text="@string/btnContinue" />
     </LinearLayout>
+
 </RelativeLayout>

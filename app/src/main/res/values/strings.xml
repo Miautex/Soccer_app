@@ -32,6 +32,7 @@
     <string name="btnShuffle">Shuffle</string>
     <string name="btnAdd">Add</string>
     <string name="btnBack">Back</string>
+    <string name= "btnShufflePos">Shuffle Pos</string>
 
     <!--Menuitems-->
     <string name="mniMain">Main</string>
@@ -111,6 +112,7 @@
     <string name="games">Games</string>
     <string name="wins">Wins</string>
     <string name="defeats">Defeats</string>
+
 
     <!--Settings Array-->
     <string-array name="language_entries">
