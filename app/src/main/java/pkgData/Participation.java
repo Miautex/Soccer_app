@@ -1,5 +1,7 @@
 package pkgData;
 
+import android.support.annotation.NonNull;
+
 import java.io.Serializable;
 
 public final class Participation implements Comparable, Serializable {
@@ -192,7 +194,7 @@ public final class Participation implements Comparable, Serializable {
     }
 
     @Override
-    public int compareTo(Object o) {
+    public int compareTo(@NonNull Object o) {
         int cp;
         Participation tmpPart = (Participation) o;
         cp = getPlayer().compareTo(tmpPart.getPlayer());

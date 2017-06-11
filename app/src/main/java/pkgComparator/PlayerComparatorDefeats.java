@@ -5,7 +5,7 @@ import java.util.Comparator;
 import pkgData.Player;
 
 /**
- * Created by Raphael on 21.05.2017.
+ * @author Raphael Moser
  */
 
 public class PlayerComparatorDefeats implements Comparator<Player> {

@@ -1,5 +1,7 @@
 package pkgData;
 
+import android.support.annotation.NonNull;
+
 import java.io.Serializable;
 import java.util.TreeSet;
 
@@ -87,7 +89,7 @@ public final class Player implements Comparable, Serializable, Cloneable {
     }
 
     public String getUsername() {
-        String retVal = null;
+        String retVal;
 
         //if username is deactivated (contains '~'), return deactivated
         if (username.contains("~")) {
@@ -125,17 +127,11 @@ public final class Player implements Comparable, Serializable, Cloneable {
         positions.add(position);
     }
 
-    public void removePosition(PlayerPosition position) throws Exception {
-        positions.remove(position);
-    }
 
     public PlayerStatistics getStatistics() {
         return statistics;
     }
 
-    public void setStatistics(PlayerStatistics statistics) {
-        this.statistics = statistics;
-    }
 
     public boolean isLocallySavedOnly() {
         return isLocallySavedOnly;
@@ -181,7 +177,7 @@ public final class Player implements Comparable, Serializable, Cloneable {
     }
 
     @Override
-    public int compareTo(Object o) {
+    public int compareTo(@NonNull Object o) {
         Player tmpP = (Player) o;
 
         return this.getId()-tmpP.getId();

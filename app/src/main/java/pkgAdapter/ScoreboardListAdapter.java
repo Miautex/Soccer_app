@@ -1,6 +1,7 @@
 package pkgAdapter;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,8 +28,9 @@ public class ScoreboardListAdapter extends ArrayAdapter<PlayerWithScore> {
         this.values = values;
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.list_scoreboard, parent, false);
         TextView name = (TextView) rowView.findViewById(R.id.name);

@@ -23,7 +23,7 @@ public class OkDialog extends Dialog implements
     private TextView msg;
     private String text;
 
-    public OkDialog(OnOkDialogButtonPressedListener listener, String text) {
+    OkDialog(OnOkDialogButtonPressedListener listener, String text) {
         super((Activity) listener);
         this.listener = listener;
         this.text = text;

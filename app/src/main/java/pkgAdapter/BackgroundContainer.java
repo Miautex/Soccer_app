@@ -16,7 +16,7 @@ import group2.schoolproject.a02soccer.R;
 
     boolean mShowing = false;
     Drawable mShadowedBackground;
-    int mOpenAreaTop, mOpenAreaBottom, mOpenAreaHeight;
+    int mOpenAreaTop, mOpenAreaHeight;
     boolean mUpdateBounds = false;
 
     public BackgroundContainer(Context context) {

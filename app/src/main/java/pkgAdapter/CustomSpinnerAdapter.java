@@ -1,6 +1,7 @@
 package pkgAdapter;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,7 @@ import group2.schoolproject.a02soccer.R;
 import pkgMisc.PxDpConverter;
 
 /**
- * Created by Elias on 10.06.2017.
+ * @author  Elias Santner
  */
 
 public class CustomSpinnerAdapter<T> extends ArrayAdapter<T> {
@@ -30,14 +31,15 @@ public class CustomSpinnerAdapter<T> extends ArrayAdapter<T> {
         this.values = values;
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        return getCustomView(position, convertView, parent);
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+        return getCustomView(position, parent);
     }
 
     @Override
-    public View getDropDownView(int position, View convertView, ViewGroup parent) {
-        View view = getCustomView(position, convertView, parent);
+    public View getDropDownView(int position, View convertView, @NonNull ViewGroup parent) {
+        View view = getCustomView(position, parent);
         view.setBackground(context.getResources().getDrawable(R.drawable.buttonshape));
         view.setPadding(PxDpConverter.toDp(8, context), PxDpConverter.toDp(8, context),
                 PxDpConverter.toDp(8, context), PxDpConverter.toDp(8, context));
@@ -57,7 +59,7 @@ public class CustomSpinnerAdapter<T> extends ArrayAdapter<T> {
         }
     }
 
-    private View getCustomView(int position, View convertView, ViewGroup parent) {
+    private View getCustomView(int position, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.list_spinner, parent, false);
         getAllViews(rowView);

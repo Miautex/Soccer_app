@@ -2,6 +2,7 @@ package pkgAdapter;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,14 +46,15 @@ public class CustomSpinnerIconAdapter<T> extends ArrayAdapter<T> {
         }
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        return getCustomView(position, convertView, parent);
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+        return getCustomView(position, parent);
     }
 
     @Override
-    public View getDropDownView(int position, View convertView, ViewGroup parent) {
-        View view = getCustomView(position, convertView, parent);
+    public View getDropDownView(int position, View convertView, @NonNull ViewGroup parent) {
+        View view = getCustomView(position, parent);
         view.setBackground(context.getResources().getDrawable(R.drawable.buttonshape));
         view.setPadding(0, PxDpConverter.toDp(15, context), 0, PxDpConverter.toDp(15, context));
 
@@ -76,7 +78,7 @@ public class CustomSpinnerIconAdapter<T> extends ArrayAdapter<T> {
         }
     }
 
-    private View getCustomView(int position, View convertView, ViewGroup parent) {
+    private View getCustomView(int position, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.list_icon_spinner, parent, false);
         getAllViews(rowView);

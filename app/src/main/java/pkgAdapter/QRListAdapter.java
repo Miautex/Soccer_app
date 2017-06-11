@@ -1,7 +1,6 @@
 package pkgAdapter;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -28,7 +27,6 @@ public class QRListAdapter extends ArrayAdapter<Player> implements View.OnClickL
     private final Context context;
     private TreeMap<Integer,Player> players;
     private ArrayList<Integer> ids;
-    private Drawable drawable;
 
 
     public QRListAdapter(@NonNull Context context) {
@@ -54,14 +52,13 @@ public class QRListAdapter extends ArrayAdapter<Player> implements View.OnClickL
         return rowView;
     }
 
-    public void setBackground(Drawable drawable){
-        this.drawable = drawable;
-    }
     @Override
     public void add(@Nullable Player object) {
         super.add(object);
-        ids.add(object.getId());
-        players.put(object.getId(),object);
+        if(object != null) {
+            ids.add(object.getId());
+            players.put(object.getId(), object);
+        }
     }
 
     public boolean contains(int id){
@@ -71,8 +68,10 @@ public class QRListAdapter extends ArrayAdapter<Player> implements View.OnClickL
     @Override
     public void remove(@Nullable Player object) {
         super.remove(object);
-        ids.remove(object.getId());
-        players.remove(object.getId());
+        if(object != null) {
+            ids.remove(object.getId());
+            players.remove(object.getId());
+        }
     }
 
     @Override

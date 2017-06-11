@@ -28,7 +28,7 @@ import pkgListeners.OnOkDialogButtonPressedListener;
  *
  */
 
-public class TeamDivision2 extends BaseActivity implements View.OnClickListener, OnOkDialogButtonPressedListener {
+public class TeamDivisionActivity_swipe extends BaseActivity implements View.OnClickListener, OnOkDialogButtonPressedListener {
 
     private SwipeListAdapter adapterAll;
     private SwipeListAdapter2 adapterTeam1, adapterTeam2;
@@ -107,11 +107,11 @@ public class TeamDivision2 extends BaseActivity implements View.OnClickListener,
     @Override
     public void onClick(View v) {
         try {
-            if (v.getId() == R.id.btnShuffle) {
+            if (v == btnShuffle) {
                 shufflePlayers();
                 createWarning(getString(R.string.msg_ShuffleWarning));
             }
-            else if (v.getId() == R.id.btnContinue) {
+            else if (v == btnContinue) {
                 ArrayList<Participation> participations = createParticipations();
                 game.removeAllParticipations();
                 for (Participation p : participations) {
@@ -120,10 +120,10 @@ public class TeamDivision2 extends BaseActivity implements View.OnClickListener,
                 Intent myIntent = new Intent(this, AddGameEnterDataActivity.class);
                 myIntent.putExtra("game", game);
                 this.startActivity(myIntent);
-            } else if (v.getId() == R.id.btnCancel) {
+            } else if (v == btnCancel) {
                 this.finish();
             }
-            else if(v.getId() ==  R.id.btnShufflePos){
+            else if(v == btnShufflePos){
                 createWarning(getString(R.string.msg_ShuffleWarning));
                 adapterTeam1.shufflePositions();
                 adapterTeam1.notifyDataSetChanged();
@@ -141,7 +141,7 @@ public class TeamDivision2 extends BaseActivity implements View.OnClickListener,
     public ArrayList<Participation> createParticipations() throws Exception {
         ArrayList<Participation> list1 = adapterTeam1.getParticipations();
         ArrayList<Participation> list2 = adapterTeam2.getParticipations();
-        if (adapterAll.getCount() != players.size()) {
+        if (adapterAll.getCount() != 0) {
             throw new Exception(getString(R.string.msg_PlayerhasNoTeam));
         } else if (Math.abs((list1.size() - list2.size())) > 1) {
             throw new Exception(getString(R.string.msg_UnbalancedTeams));
@@ -169,7 +169,7 @@ public class TeamDivision2 extends BaseActivity implements View.OnClickListener,
         @Override
         public boolean onTouch(final View v, MotionEvent event) {
             if (mSwipeSlop < 0) {
-                mSwipeSlop = ViewConfiguration.get(TeamDivision2.this).getScaledTouchSlop();
+                mSwipeSlop = ViewConfiguration.get(TeamDivisionActivity_swipe.this).getScaledTouchSlop();
             }
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
@@ -273,7 +273,7 @@ public class TeamDivision2 extends BaseActivity implements View.OnClickListener,
         public boolean onTouch(final View v, MotionEvent event) {
             if (isTouchTeamActive){
                 if (mSwipeSlop < 0) {
-                    mSwipeSlop = ViewConfiguration.get(TeamDivision2.this).getScaledTouchSlop();
+                    mSwipeSlop = ViewConfiguration.get(TeamDivisionActivity_swipe.this).getScaledTouchSlop();
                 }
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
@@ -380,7 +380,7 @@ public class TeamDivision2 extends BaseActivity implements View.OnClickListener,
         public boolean onTouch(final View v, MotionEvent event) {
             if(isTouchTeamActive) {
                 if (mSwipeSlop < 0) {
-                    mSwipeSlop = ViewConfiguration.get(TeamDivision2.this).getScaledTouchSlop();
+                    mSwipeSlop = ViewConfiguration.get(TeamDivisionActivity_swipe.this).getScaledTouchSlop();
                 }
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:

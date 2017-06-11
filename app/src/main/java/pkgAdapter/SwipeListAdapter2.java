@@ -36,7 +36,6 @@ import pkgDatabase.Database;
     private ArrayList<Player> values = new ArrayList<>();
     private View.OnTouchListener mTouchListener;
     private final Context context;
-    private SpinnerAdapter spinnerAdapter;
     private int color = Color.WHITE;
     private TreeMap<Player,Integer> playerWithPos;
     private Team team;
@@ -56,7 +55,7 @@ import pkgDatabase.Database;
     public Participation removeWithPos(Player p){
         Participation part = new Participation();
         part.setPlayer(p);
-        part.setPosition(intToPosition(p, playerWithPos.get(p)));
+        part.setPosition(intToPosition(p));
         remove(p);
         return part;
     }
@@ -117,7 +116,7 @@ import pkgDatabase.Database;
         for (PlayerPosition pos : positions) {
             spinnerArray.add(EnumToString(pos));
         }
-        spinnerAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, spinnerArray);
+        SpinnerAdapter spinnerAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, spinnerArray);
         s.setAdapter(spinnerAdapter);
         if(playerWithPos.containsKey(player)) {
             s.setSelection(playerWithPos.get(player));
@@ -138,23 +137,6 @@ import pkgDatabase.Database;
         }
         else if (position == PlayerPosition.MIDFIELD){
             retVal = context.getString(R.string.PosMid);
-        }
-        return retVal;
-    }
-
-    private PlayerPosition StringToEnum (String position){
-        PlayerPosition retVal = null;
-        if (position.equals(context.getString(R.string.PosAtk))){
-            retVal = PlayerPosition.ATTACK;
-        }
-        else if (position.equals(context.getString(R.string.PosDef))){
-            retVal = PlayerPosition.DEFENSE;
-        }
-        else if (position.equals(context.getString(R.string.PosMid))){
-            retVal = PlayerPosition.MIDFIELD;
-        }
-        else if (position.equals(context.getString(R.string.PosGoal))){
-            retVal = PlayerPosition.GOAL;
         }
         return retVal;
     }
@@ -182,8 +164,7 @@ import pkgDatabase.Database;
         String username = t.getText().toString().split("\n")[1].trim();
         username = username.substring(1);
         Player p = Database.getInstance().getPlayerByUsername(username);
-        if(playerWithPos.containsKey(p));
-        {
+        if(playerWithPos.containsKey(p)){
             playerWithPos.remove(p);
         }
         playerWithPos.put(p,position);
@@ -194,7 +175,7 @@ import pkgDatabase.Database;
 
     }
 
-    private PlayerPosition intToPosition(Player p, int pos){
+    private PlayerPosition intToPosition(Player p){
         ArrayList<PlayerPosition> newList = new ArrayList<>(p.getPositions());
         return newList.get(playerWithPos.get(p));
     }

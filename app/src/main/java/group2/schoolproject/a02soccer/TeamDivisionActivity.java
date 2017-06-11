@@ -1,7 +1,5 @@
 package group2.schoolproject.a02soccer;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -154,7 +152,7 @@ public class TeamDivisionActivity extends BaseActivity implements OnTeamChangedL
         TeamDivisionTab team1 = ((TeamDivisionTab) mSectionsPageAdapter.getItem(0));
         TeamDivisionTab team2 = ((TeamDivisionTab) mSectionsPageAdapter.getItem(1));
         ArrayList<Integer> freePlayers = ((TeamDivisionTab) mSectionsPageAdapter.getItem(0)).getFreePlayerids();
-        int diff = team1.Teammembercount() - team2.Teammembercount(); // wenn negativ müssen leute in team1, sonst team2
+        int diff = team1.Teammembercount() - team2.Teammembercount(); // diff isn't positive = team1, diff is positive = team2
         if (freePlayers.size() != 0) {
             if (diff < 0) {
                 for (int i = 0; i > diff; diff++) {

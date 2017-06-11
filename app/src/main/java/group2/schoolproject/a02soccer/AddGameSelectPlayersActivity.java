@@ -45,9 +45,7 @@ public class AddGameSelectPlayersActivity extends BaseActivity implements View.O
             btnCancel = null,
             btnQRScan = null;
     private CheckBox ckbParticipationHeader = null;
-    private ZXingScannerView scanner;
 
-    private Database db;
     private HashMap<Integer, Player> hmPlayers = null;
     private int numSelectedCheckboxes = 0;
     private static final int RC_BARCODE_CAPTURE = 9001;
@@ -61,7 +59,7 @@ public class AddGameSelectPlayersActivity extends BaseActivity implements View.O
         registrateEventHandlers();
 
         try {
-            db = Database.getInstance();
+            Database db = Database.getInstance();
             hmPlayers = new HashMap<>();        //for easier access to players by id
 
             //Exit activity when user is not an admin (shouldn't happen)
@@ -213,11 +211,11 @@ public class AddGameSelectPlayersActivity extends BaseActivity implements View.O
         Intent myIntent;
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         String layout = sp.getString("preference_assignment_layout","Wilscher suckt");
-        if(layout == "TAB_LAYOUT") {
+        if(layout.equals("TAB_LAYOUT")) {
             myIntent = new Intent(this, TeamDivisionActivity.class);
         }
         else{
-            myIntent = new Intent(this, TeamDivision2.class);
+            myIntent = new Intent(this, TeamDivisionActivity_swipe.class);
         }
         myIntent.putExtra("game", result);
         myIntent.putExtra("players",selectedPlayers);

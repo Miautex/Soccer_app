@@ -21,9 +21,10 @@ import pkgData.Player;
 import pkgDatabase.Database;
 import pkgMisc.PlayerWithScore;
 
+/**
+ * @author Raphael Moser
+ */
 public class ScoreboardActivity extends BaseActivity implements AdapterView.OnItemSelectedListener, AdapterView.OnItemClickListener {
-
-    //kommentar
     private ListView lsv = null;
     private Spinner spSorting = null;
     private Database db;
@@ -33,17 +34,20 @@ public class ScoreboardActivity extends BaseActivity implements AdapterView.OnIt
         super.onCreate(savedInstanceState);
         setTitle(R.string.title_activity_score_board);
         setContentView(R.layout.activity_scoreboard);
+        db = Database.getInstance();
+        getViews();
+        setListeners();
+        fillSpinner();
+    }
+
+    private void getViews(){
         lsv = (ListView) findViewById(R.id.lsv_Score);
         spSorting = (Spinner) findViewById(R.id.spSorting);
+    }
+
+    private void setListeners(){
         spSorting.setOnItemSelectedListener(this);
         lsv.setOnItemClickListener(this);
-        try {
-            db = Database.getInstance();
-            fillSpinner();
-        } catch (Exception e) {
-            showMessage(getString(R.string.Error) + ": " +e.getMessage());
-        }
-
     }
 
     private void fillSpinner() {
@@ -64,16 +68,16 @@ public class ScoreboardActivity extends BaseActivity implements AdapterView.OnIt
             ts.addAll(Database.getInstance().getCachedPlayers());
             switch (position) {
                 case 0:
-                    lsv.setAdapter(createAdapter(ts,getString(R.string.Scoreboard_titles_wins),new PlayerComparatorWins()));
+                    lsv.setAdapter(createAdapter(ts, getString(R.string.Scoreboard_titles_wins), new PlayerComparatorWins()));
                     break;
                 case 1:
-                    lsv.setAdapter(createAdapter(ts,getString(R.string.Scoreboard_titles_goalsshot),new PlayerComparatorGoalsShot()));
+                    lsv.setAdapter(createAdapter(ts, getString(R.string.Scoreboard_titles_goalsshot), new PlayerComparatorGoalsShot()));
                     break;
                 case 2:
-                    lsv.setAdapter(createAdapter(ts,getString(R.string.Scoreboard_titles_goalsgot),new PlayerComparatorGoalsGot()));
+                    lsv.setAdapter(createAdapter(ts, getString(R.string.Scoreboard_titles_goalsgot), new PlayerComparatorGoalsGot()));
                     break;
                 case 3:
-                    lsv.setAdapter(createAdapter(ts,getString(R.string.Scoreboard_titles_defeats),new PlayerComparatorDefeats()));
+                    lsv.setAdapter(createAdapter(ts, getString(R.string.Scoreboard_titles_defeats), new PlayerComparatorDefeats()));
                     break;
             }
         } catch (Exception e) {

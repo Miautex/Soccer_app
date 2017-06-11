@@ -29,7 +29,6 @@ import android.hardware.Camera;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -48,7 +47,6 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.TreeSet;
 
 import pkgAdapter.QRListAdapter;
 import pkgBarcodeScanner.BarcodeGraphic;
@@ -65,11 +63,18 @@ import pkgDatabase.Database;
  * rear facing camera. During detection overlay graphics are drawn to indicate the position,
  * size, and ID of each barcode.
  */
-public final class QRScannerActivity extends BaseActivity implements View.OnClickListener{
-    private static final String TAG = "Barcode-reader";
-    private TreeSet<String> result = new TreeSet<>();
+public final class QRScannerActivity extends BaseActivity implements View.OnClickListener {
+    private Button btnContinue, btnCancel;
+    private ImageButton imgButton;
+    private ListView addedPlayers;
+    private AutoCompleteTextView actv;
+    private CameraSource mCameraSource;
+    private CameraSourcePreview mPreview;
+    private GraphicOverlay<BarcodeGraphic> mGraphicOverlay;
+
     private Database db;
-    private Button btnConitnue, btnCancel;
+    private QRListAdapter arrayAdapter;
+    private ArrayAdapter autoCompleteAdapter;
 
     // intent request code to handle updating play services if needed.
     private static final int RC_HANDLE_GMS = 9001;
@@ -80,16 +85,6 @@ public final class QRScannerActivity extends BaseActivity implements View.OnClic
     // constants used to pass extra data in the intent
     public static final String AutoFocus = "AutoFocus";
     public static final String UseFlash = "UseFlash";
-
-    private AutoCompleteTextView actv;
-
-    private CameraSource mCameraSource;
-    private CameraSourcePreview mPreview;
-    private GraphicOverlay<BarcodeGraphic> mGraphicOverlay;
-    private ListView lol;
-    QRListAdapter arrayAdapter;
-    //ArrayAdapter<String> arrayAdapter;
-    private ArrayList<String> test = new ArrayList<>();
 
     // helper objects for detecting taps and pinches.
     private ScaleGestureDetector scaleGestureDetector;
@@ -103,42 +98,21 @@ public final class QRScannerActivity extends BaseActivity implements View.OnClic
         super.onCreate(icicle);
         setContentView(R.layout.barcode_capture);
         db = Database.getInstance();
-
-
-        mPreview = (CameraSourcePreview) findViewById(R.id.preview);
-        mGraphicOverlay = (GraphicOverlay<BarcodeGraphic>) findViewById(R.id.graphicOverlay);
-        ImageButton imgButton = (ImageButton) findViewById(R.id.imgbAdd);
-        btnCancel = (Button) findViewById(R.id.btnBack);
-        btnConitnue = (Button) findViewById(R.id.btnSave);
-        btnCancel.setOnClickListener(this);
-        btnConitnue.setOnClickListener(this);
-        imgButton.setOnClickListener(this);
-        lol = (ListView) findViewById(R.id.lol);
-        arrayAdapter = new QRListAdapter(this);
-        //user can't scan its QR-Code, therefore he is added on startup
-        arrayAdapter.add(db.getCurrentlyLoggedInPlayer());
-        lol.setAdapter(arrayAdapter);
-        actv = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView);
-        ArrayList<Player> test = Database.getInstance().getCachedPlayers();
-        ArrayList<String> test2 = new ArrayList<>();
-        for(Player p : test){
-            test2.add(p.getUsername());
-        }
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,test2);
-        actv.setAdapter(adapter);
+        getViews();
+        createAdapters();
+        setListenersAndAdapters();
 
         // Check for the camera permission before accessing the camera.  If the
         // permission is not granted yet, request permission.
         int rc = ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
         if (rc == PackageManager.PERMISSION_GRANTED) {
-            createCameraSource(true,false);
+            createCameraSource(true, false);
         } else {
             requestCameraPermission();
         }
 
         gestureDetector = new GestureDetector(this, new CaptureGestureListener());
         scaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
-
         showMessage(getString(R.string.qr_on_open));
     }
 
@@ -148,20 +122,46 @@ public final class QRScannerActivity extends BaseActivity implements View.OnClic
      * sending the request.
      */
     private void requestCameraPermission() {
-
         final String[] permissions = new String[]{Manifest.permission.CAMERA};
-
         if (!ActivityCompat.shouldShowRequestPermissionRationale(this,
                 Manifest.permission.CAMERA)) {
             ActivityCompat.requestPermissions(this, permissions, RC_HANDLE_CAMERA_PERM);
         }
+    }
 
+    private void getViews() {
+        mPreview = (CameraSourcePreview) findViewById(R.id.preview);
+        mGraphicOverlay = (GraphicOverlay<BarcodeGraphic>) findViewById(R.id.graphicOverlay);
+        imgButton = (ImageButton) findViewById(R.id.imgbAdd);
+        addedPlayers = (ListView) findViewById(R.id.lol);
+        btnCancel = (Button) findViewById(R.id.btnBack);
+        btnContinue = (Button) findViewById(R.id.btnSave);
+        actv = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView);
+    }
+
+    private void createAdapters() {
+        arrayAdapter = new QRListAdapter(this);
+        //user can't scan its QR-Code, therefore he is added on startup
+        arrayAdapter.add(db.getCurrentlyLoggedInPlayer());
+
+        ArrayList<String> allUsernames = new ArrayList<>();
+        for (Player p : Database.getInstance().getCachedPlayers()) {
+            allUsernames.add(p.getUsername());
+        }
+        autoCompleteAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, allUsernames);
+    }
+
+    private void setListenersAndAdapters() {
+        btnCancel.setOnClickListener(this);
+        btnContinue.setOnClickListener(this);
+        imgButton.setOnClickListener(this);
+        addedPlayers.setAdapter(arrayAdapter);
+        actv.setAdapter(autoCompleteAdapter);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent e) {
         boolean b = scaleGestureDetector.onTouchEvent(e);
-
         boolean c = gestureDetector.onTouchEvent(e);
         return b || c || super.onTouchEvent(e);
     }
@@ -170,7 +170,7 @@ public final class QRScannerActivity extends BaseActivity implements View.OnClic
      * Creates and starts the camera.  Note that this uses a higher resolution in comparison
      * to other detection examples to enable the barcode detector to detect small barcodes
      * at long distances.
-     *
+     * <p>
      * Suppressing InlinedApi since there is a check that the minimum version is met before using
      * the constant.
      */
@@ -184,9 +184,7 @@ public final class QRScannerActivity extends BaseActivity implements View.OnClic
         // create a separate tracker instance for each barcode.
         BarcodeDetector barcodeDetector = new BarcodeDetector.Builder(context).build();
         BarcodeTrackerFactory barcodeFactory = new BarcodeTrackerFactory(mGraphicOverlay);
-        barcodeDetector.setProcessor(
-                new MultiProcessor.Builder<>(barcodeFactory).build());
-
+        barcodeDetector.setProcessor(new MultiProcessor.Builder<>(barcodeFactory).build());
         if (!barcodeDetector.isOperational()) {
             // Note: The first time that an app using the barcode or face API is installed on a
             // device, GMS will download a native libraries to the device in order to do detection.
@@ -197,18 +195,15 @@ public final class QRScannerActivity extends BaseActivity implements View.OnClic
             // isOperational() can be used to check if the required native libraries are currently
             // available.  The detectors will automatically become operational once the library
             // downloads complete on device.
-            Log.w(TAG, "Detector dependencies are not yet available.");
 
             // Check for low storage.  If there is low storage, the native library will not be
             // downloaded, so detection will not become operational.
             IntentFilter lowstorageFilter = new IntentFilter(Intent.ACTION_DEVICE_STORAGE_LOW);
             boolean hasLowStorage = registerReceiver(null, lowstorageFilter) != null;
-
             if (hasLowStorage) {
                 showMessage(getString(R.string.low_storage_error));
             }
         }
-
         // Creates and starts the camera.  Note that this uses a higher resolution in comparison
         // to other detection examples to enable the barcode detector to detect small barcodes
         // at long distances.
@@ -275,9 +270,7 @@ public final class QRScannerActivity extends BaseActivity implements View.OnClic
      * @see #requestPermissions(String[], int)
      */
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode != RC_HANDLE_CAMERA_PERM) {
             System.out.println("Got unexpected permission result: " + requestCode);
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -285,16 +278,12 @@ public final class QRScannerActivity extends BaseActivity implements View.OnClic
         }
 
         if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            Log.d(TAG, "Camera permission granted - initialize the camera source");
             // we have permission, so create the camerasource
-            boolean autoFocus = getIntent().getBooleanExtra(AutoFocus,false);
+            boolean autoFocus = getIntent().getBooleanExtra(AutoFocus, false);
             boolean useFlash = getIntent().getBooleanExtra(UseFlash, false);
             createCameraSource(autoFocus, useFlash);
             return;
         }
-
-        //Log.e(TAG, "Permission not granted: results len = " + grantResults.length +
-          //      " Result code = " + (grantResults.length > 0 ? grantResults[0] : "(empty)"));
 
         DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
@@ -323,7 +312,6 @@ public final class QRScannerActivity extends BaseActivity implements View.OnClic
                     GoogleApiAvailability.getInstance().getErrorDialog(this, code, RC_HANDLE_GMS);
             dlg.show();
         }
-
         if (mCameraSource != null) {
             try {
                 mPreview.start(mCameraSource, mGraphicOverlay);
@@ -370,28 +358,21 @@ public final class QRScannerActivity extends BaseActivity implements View.OnClic
         }
 
         if (best != null) {
-            try{
+            try {
                 int id = Integer.parseInt(best.displayValue);
                 Player p = db.getPlayerByID(id);
 
-                if(p == null){
+                if (p == null) {
                     throw new Exception(getString(R.string.qr_player_not_found));
                 }
-                if(arrayAdapter.contains(p.getId())){
+                if (arrayAdapter.contains(p.getId())) {
                     throw new Exception(getString(R.string.qr_player_already_added));
                 }
                 arrayAdapter.add(p);
                 arrayAdapter.notifyDataSetChanged();
-            }
-            catch(Exception e){
+            } catch (Exception e) {
                 showMessage(e.getMessage());
             }
-
-            //Intent data = new Intent();
-            //data.putExtra(BarcodeObject, best);
-            //setResult(CommonStatusCodes.SUCCESS, data);
-            //finish();
-            //return true;
         }
         return false;
     }
@@ -411,14 +392,12 @@ public final class QRScannerActivity extends BaseActivity implements View.OnClic
             } else {
                 showMessage(getString(R.string.qr_player_not_found));
             }
-        }
-        else if(v.getId() == R.id.btnSave){
+        } else if (v.getId() == R.id.btnSave) {
             Intent data = new Intent();
             data.putExtra("Result", arrayAdapter.getAllPlayers());
-            setResult(Activity.RESULT_OK,data);
+            setResult(Activity.RESULT_OK, data);
             finish();
-        }
-        else if(v.getId() == R.id.btnBack){
+        } else if (v.getId() == R.id.btnBack) {
             Intent data = new Intent();
             setResult(Activity.RESULT_CANCELED, data);
             finish();

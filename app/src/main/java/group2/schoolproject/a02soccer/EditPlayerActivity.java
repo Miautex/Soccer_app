@@ -175,8 +175,6 @@ public class EditPlayerActivity extends BaseActivity
     }
 
     private void onBtnSaveClick() throws Exception {
-        boolean isSuccess = false;
-        String msg = null;
 
         if (edtName.getText().toString().isEmpty() || edtUsername.getText().toString().isEmpty()) {
             throw new Exception(getString(R.string.msg_EnterNameUsername));
@@ -263,7 +261,6 @@ public class EditPlayerActivity extends BaseActivity
     }
 
     private void toggleProgressBar(boolean isEnabled) {
-        System.out.println("------------- PB="+isEnabled);
         if (isEnabled) {
             pb.setVisibility(View.VISIBLE);
         }

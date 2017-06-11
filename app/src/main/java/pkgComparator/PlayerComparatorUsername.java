@@ -5,7 +5,7 @@ import java.util.Comparator;
 import pkgData.Player;
 
 /**
- * Created by Elias on 01.06.2017.
+ * @author Elias Santner
  */
 
 public class PlayerComparatorUsername implements Comparator<Player>, Serializable {

@@ -57,10 +57,6 @@
                     android:id="@+id/mniSiteNotice"
                     android:icon="@drawable/ic_sitenotice"
                     android:title="@string/nav_site_notice_title"/>
-                <item
-                    android:id="@+id/test"
-                    android:title="Test"
-                />
             </menu>
         </item>
     </group>

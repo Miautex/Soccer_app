@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="group2.schoolproject.a02soccer.TeamDivision2"
+    tools:context="group2.schoolproject.a02soccer.TeamDivisionActivity_swipe"
     android:background="@drawable/background">
 
 
@@ -23,7 +22,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Team 1"
+                android:text="@string/team1"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
@@ -33,7 +32,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Team 2"
+                android:text="@string/team2"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="18sp" />

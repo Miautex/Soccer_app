@@ -19,12 +19,10 @@ public class ConfirmDeleteDialog extends Dialog implements
         android.view.View.OnClickListener {
 
     private OnDeleteDialogButtonPressedListener listener;
-    private Button btnYes, btnNo;
-    private TextView msg;
     private Object selectedObject;
     private String text;
 
-    public ConfirmDeleteDialog(Object selectedObject, OnDeleteDialogButtonPressedListener listener, String text) {
+    ConfirmDeleteDialog(Object selectedObject, OnDeleteDialogButtonPressedListener listener, String text) {
         super((Activity) listener);
         this.listener = listener;
         this.selectedObject = selectedObject;
@@ -37,9 +35,9 @@ public class ConfirmDeleteDialog extends Dialog implements
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_confirmdelete);
 
-        msg = (TextView) findViewById(R.id.txvMessage);
-        btnYes = (Button) findViewById(R.id.btnYes);
-        btnNo = (Button) findViewById(R.id.btnNo);
+        TextView msg = (TextView) findViewById(R.id.txvMessage);
+        Button btnYes = (Button) findViewById(R.id.btnYes);
+        Button btnNo = (Button) findViewById(R.id.btnNo);
 
         msg.setText(text);
         btnYes.setOnClickListener(this);

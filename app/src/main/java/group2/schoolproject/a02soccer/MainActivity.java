@@ -60,7 +60,6 @@ public class MainActivity extends BaseActivity
     private ListView lsvPlayersGames = null;
     private Spinner spPlayersGames = null;
     private SwipeRefreshLayout swipeRefreshLayout = null;
-    private NavigationView navView = null;
 
     private ImageButton imgQRCode = null;
     private boolean arePlayersRefreshed, areGamesRefreshed, hasRefreshFailed;
@@ -245,9 +244,6 @@ public class MainActivity extends BaseActivity
                     db.logout(this);
                     openLoginActivity();
                     break;
-                case R.id.test:
-                    openActivity(TeamDivision2.class);
-                    break;
                 case R.id.mniSiteNotice:
                     openActivity(SiteNoticeActivity.class);
                     break;
@@ -266,7 +262,7 @@ public class MainActivity extends BaseActivity
         lsvPlayersGames = (ListView) this.findViewById(R.id.lsvPlayersGames);
         spPlayersGames = (Spinner) this.findViewById(R.id.spinnerPlayerGame);
         swipeRefreshLayout = (SwipeRefreshLayout) this.findViewById(R.id.swiperefresh);
-        navView = (NavigationView) this.findViewById(R.id.nav_view);
+        NavigationView navView = (NavigationView) this.findViewById(R.id.nav_view);
         View headerLayout = navView.getHeaderView(0);
         imgQRCode = (ImageButton) headerLayout.findViewById(R.id.imgQRCode);
     }
@@ -375,7 +371,7 @@ public class MainActivity extends BaseActivity
     }
 
     public void onDeleteGame(Game selectedGame) throws Exception {
-        String msg = String.format(getString(R.string.msg_ConfirmGameDeletion));
+        String msg = getString(R.string.msg_ConfirmGameDeletion);
         ConfirmDeleteDialog cdd = new ConfirmDeleteDialog(selectedGame, this, msg);
         cdd.show();
     }
