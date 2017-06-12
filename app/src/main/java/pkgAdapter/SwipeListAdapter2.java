@@ -11,7 +11,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -112,11 +111,11 @@ import pkgDatabase.Database;
     }
 
     private Spinner createSpinner(Spinner s,TreeSet<PlayerPosition> positions, Player player) {
-        List<String> spinnerArray = new ArrayList<>();
+        ArrayList<String> spinnerArray = new ArrayList<>();
         for (PlayerPosition pos : positions) {
             spinnerArray.add(EnumToString(pos));
         }
-        SpinnerAdapter spinnerAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, spinnerArray);
+        CustomSpinnerAdapter<String> spinnerAdapter = new CustomSpinnerAdapter<>(getContext(), spinnerArray);
         s.setAdapter(spinnerAdapter);
         if(playerWithPos.containsKey(player)) {
             s.setSelection(playerWithPos.get(player));

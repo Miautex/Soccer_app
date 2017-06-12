@@ -105,15 +105,12 @@ public class AddGameSelectPlayersActivity extends BaseActivity implements View.O
             LinearLayout llo = new LinearLayout(this);
 
 
-            cb.setChecked(true);
+            cb.setChecked(false);
             cb.setOnClickListener(this);
             txvName.setText(p.toString());
             txvName.setGravity(Gravity.TOP);
             txvId.setText(Integer.toString(p.getId()));
             txvId.setVisibility(View.GONE);
-
-
-            numSelectedCheckboxes++;
 
             //Set layout like header
             cb.setLayoutParams(new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
