@@ -44,6 +44,7 @@ public class TeamDivisionActivity_swipe extends BaseActivity implements View.OnC
     private Boolean isTouchTeamActive = false;
     private ArrayList<Player> players;
     private Game game;
+    private boolean isWarned;
 
     private static final int SWIPE_DURATION = 250;
     private static final int MOVE_DURATION = 150;
@@ -56,8 +57,7 @@ public class TeamDivisionActivity_swipe extends BaseActivity implements View.OnC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team_division2);
         setTitle(R.string.title_activity_team_management);
-
-
+        isWarned = false;
         getIntents();
         getViews();
         createAdapters();
@@ -109,7 +109,9 @@ public class TeamDivisionActivity_swipe extends BaseActivity implements View.OnC
         try {
             if (v == btnShuffle) {
                 shufflePlayers();
-                createWarning(getString(R.string.msg_ShuffleWarning));
+                if(!isWarned) {
+                    createWarning(getString(R.string.msg_ShuffleWarning));
+                }
             }
             else if (v == btnContinue) {
                 ArrayList<Participation> participations = createParticipations();
@@ -124,7 +126,9 @@ public class TeamDivisionActivity_swipe extends BaseActivity implements View.OnC
                 this.finish();
             }
             else if(v == btnShufflePos){
-                createWarning(getString(R.string.msg_ShuffleWarning));
+                if(!isWarned) {
+                    createWarning(getString(R.string.msg_ShuffleWarning));
+                }
                 adapterTeam1.shufflePositions();
                 adapterTeam1.notifyDataSetChanged();
                 adapterTeam2.shufflePositions();
@@ -152,8 +156,9 @@ public class TeamDivisionActivity_swipe extends BaseActivity implements View.OnC
 
 
     private void createWarning(String s){
-        OkDialog dia = new OkDialog(this, s);
-        dia.show();
+            OkDialog dia = new OkDialog(this, s);
+            dia.show();
+            isWarned = true;
     }
 
     @Override
