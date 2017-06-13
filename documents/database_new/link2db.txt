@@ -1,0 +1,3 @@
+DB: SOCCER_APP_4BG2
+
+https://klio.htl-villach.at/phpmyadmin/index.php?db=SOCCER_APP_4BG2

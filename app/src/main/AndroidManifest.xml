@@ -97,7 +97,8 @@
             android:label="@string/title_activity_login"
             android:theme="@style/Theme.App.Base"
             android:screenOrientation="portrait"/>
-        <activity android:name=".SiteNoticeActivity">
+        <activity android:name=".SiteNoticeActivity"
+            android:screenOrientation="portrait">
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
             android:value="group2.schoolproject.a02soccer.MainActivity"/>
