@@ -2,7 +2,6 @@ package pkgPreference;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
 import android.view.View;
@@ -66,10 +65,10 @@ public class LayoutPickerPreference extends DialogPreference implements View.OnC
     private void highlightSelectedOption (OptionEntity<ImageButton, AssignmentLayout> option) {
         for (Map.Entry<Integer, OptionEntity<ImageButton, AssignmentLayout>> entry: optionButtons.entrySet()) {
             if (entry.getKey() == option.getView().getId()) {
-                entry.getValue().getView().setColorFilter(Color.RED);
+                entry.getValue().getView().setBackgroundResource(R.drawable.button_selected);
             }
             else {
-                entry.getValue().getView().setColorFilter(Color.TRANSPARENT);
+                entry.getValue().getView().setBackgroundResource(R.drawable.button_default);
             }
         }
     }
