@@ -27,6 +27,7 @@ public class TeamDivisionActivity extends BaseActivity implements OnTeamChangedL
     private ArrayList<Participation> participations = null;
     private TreeMap<Integer, Player> allPlayers = null;
     private OnTeamChangedListener[] listener = new OnTeamChangedListener[2];
+    private boolean isWarned;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +40,7 @@ public class TeamDivisionActivity extends BaseActivity implements OnTeamChangedL
         for (Player p : temp) {
             allPlayers.put(p.getId(), p);
         }
+        isWarned = false;
         setContentView(R.layout.activity_team_division);
         mSectionsPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
         viewPager = (ViewPager) findViewById(R.id.container);
@@ -89,8 +91,9 @@ public class TeamDivisionActivity extends BaseActivity implements OnTeamChangedL
 
 
     private void createWarning(String s){
-        OkDialog dia = new OkDialog(this, s);
-        dia.show();
+            OkDialog dia = new OkDialog(this, s);
+            dia.show();
+            isWarned = true;
     }
 
     @Override
@@ -137,11 +140,16 @@ public class TeamDivisionActivity extends BaseActivity implements OnTeamChangedL
             } else if (button.getId() == R.id.btnCancel) {
                 this.finish();
             } else if (button.getId() == R.id.btnShuffle) {
-                //// TODO: 06.06.2017 Values eintragen 
                 shuffle();
-                createWarning("Teams sollten von Manuel überprüft werden");
+                if(!isWarned) {
+                    createWarning(getString(R.string.msg_ShuffleWarning));
+                }
             }
         } catch (Exception e) {
+            if(!e.getMessage().equals("n must be positive"))
+            {
+                showMessage(e.getMessage());
+            }
             showMessage(e.getMessage());
         }
     }
@@ -155,12 +163,14 @@ public class TeamDivisionActivity extends BaseActivity implements OnTeamChangedL
         int diff = team1.Teammembercount() - team2.Teammembercount(); // diff isn't positive = team1, diff is positive = team2
         if (freePlayers.size() != 0) {
             if (diff < 0) {
-                for (int i = 0; i > diff; diff++) {
+                //// TODO: 13.06.2017 Santner kommentier des anfoch aus wenns die stört 
+                for (int i = 0; i > diff /*&& freePlayers.size() == 0*/; diff++) {
                     team1.movePlayerRow(freePlayers.remove(rand.nextInt(freePlayers.size())));
                 }
             } else if (diff > 0) {
-                for (int i = 0; i < diff; diff--) {
+                for (int i = 0; i < diff /*&& freePlayers.size() == 0*/; diff--) {
                     team2.movePlayerRow(freePlayers.remove(rand.nextInt(freePlayers.size())));
+
                 }
             }
             if (diff == 0 && freePlayers.size() != 0) {
