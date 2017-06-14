@@ -163,12 +163,11 @@ public class TeamDivisionActivity extends BaseActivity implements OnTeamChangedL
         int diff = team1.Teammembercount() - team2.Teammembercount(); // diff isn't positive = team1, diff is positive = team2
         if (freePlayers.size() != 0) {
             if (diff < 0) {
-                //// TODO: 13.06.2017 Santner kommentier des anfoch aus wenns die stört 
-                for (int i = 0; i > diff /*&& freePlayers.size() == 0*/; diff++) {
+                for (int i = 0; i > diff; diff++) {
                     team1.movePlayerRow(freePlayers.remove(rand.nextInt(freePlayers.size())));
                 }
             } else if (diff > 0) {
-                for (int i = 0; i < diff /*&& freePlayers.size() == 0*/; diff--) {
+                for (int i = 0; i < diff; diff--) {
                     team2.movePlayerRow(freePlayers.remove(rand.nextInt(freePlayers.size())));
 
                 }
