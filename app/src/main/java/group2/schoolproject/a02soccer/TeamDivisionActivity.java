@@ -146,10 +146,6 @@ public class TeamDivisionActivity extends BaseActivity implements OnTeamChangedL
                 }
             }
         } catch (Exception e) {
-            if(!e.getMessage().equals("n must be positive"))
-            {
-                showMessage(e.getMessage());
-            }
             showMessage(e.getMessage());
         }
     }
@@ -163,11 +159,11 @@ public class TeamDivisionActivity extends BaseActivity implements OnTeamChangedL
         int diff = team1.Teammembercount() - team2.Teammembercount(); // diff isn't positive = team1, diff is positive = team2
         if (freePlayers.size() != 0) {
             if (diff < 0) {
-                for (int i = 0; i > diff; diff++) {
+                for (int i = 0; i > diff && freePlayers.size() != 0; diff++) {
                     team1.movePlayerRow(freePlayers.remove(rand.nextInt(freePlayers.size())));
                 }
             } else if (diff > 0) {
-                for (int i = 0; i < diff; diff--) {
+                for (int i = 0; i < diff && freePlayers.size() != 0; diff--) {
                     team2.movePlayerRow(freePlayers.remove(rand.nextInt(freePlayers.size())));
 
                 }
