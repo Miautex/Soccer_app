@@ -370,6 +370,8 @@ public final class QRScannerActivity extends BaseActivity implements View.OnClic
                 }
                 arrayAdapter.add(p);
                 arrayAdapter.notifyDataSetChanged();
+            } catch (NumberFormatException e) {
+                showMessage(getString(R.string.qr_player_not_found));
             } catch (Exception e) {
                 showMessage(e.getMessage());
             }

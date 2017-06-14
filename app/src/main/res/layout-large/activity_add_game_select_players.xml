@@ -51,7 +51,7 @@
                     android:layout_width="0dp"
                     android:layout_column="0"
                     android:layout_weight="1.1"
-                    android:checked="true"
+                    android:checked="false"
                     android:gravity="center"
                     android:text="@string/Participation"
                     android:textSize="24sp"
@@ -116,7 +116,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_gravity="bottom"
-                android:text="QRCode" />
+                android:text="@string/btnQR" />
 
             <Button
                 android:id="@+id/btnSave"
