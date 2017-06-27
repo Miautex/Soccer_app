@@ -58,10 +58,10 @@
     <string name="preference_category_webservice">Webservice</string>
     <string name="preference_webservice_ip_title">IP</string>
     <string name="preference_webservice_ip_summary">Webservice IP Address</string>
-    <string name="preference_webservice_ip_default" translatable="false">192.168.192.1</string>
+    <string name="preference_webservice_ip_default" translatable="false">212.152.179.116</string>
     <string name="preference_webservice_port_title">Port</string>
     <string name="preference_webservice_port_summary">Webservice Port</string>
-    <string name="preference_webservice_port_default" translatable="false">25120</string>
+    <string name="preference_webservice_port_default" translatable="false">8080</string>
     <string name="preference_general_usesnackbar">Use Snackbar</string>
     <string name="preference_category_user_title">User</string>
     <string name="preference_user_username_summary">Username</string>
@@ -232,8 +232,8 @@
                     </ul>
                 <h2>Icons</h2>
                 <ul>
-                    <li>? icon made by <a href="http://www.flaticon.com/authors/vaadin" title="Vaadin">Vaadin</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> (<a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>)</li>
-                    <li>? icon made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> (<a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>)</li>
+                    <li><a href="http://www.flaticon.com/authors/vaadin" title="Vaadin">Vaadin</a> (<a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>)</li>
+                    <li><a href="http://www.freepik.com" title="Freepik">Freepik</a> (<a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>)</li>
                 </ul>
                 <br/>
                 <h3>Developed by</h3>

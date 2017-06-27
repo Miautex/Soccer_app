@@ -61,7 +61,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public boolean onPrepareOptionsMenu(Menu menu, Class cl) {
-        menu.add(0, DynamicMenuItem.SETTINGS.ordinal(), Menu.NONE, "DEBUG SETTINGS");
+        //menu.add(0, DynamicMenuItem.SETTINGS.ordinal(), Menu.NONE, "DEBUG SETTINGS");
         if (getResources().getConfiguration().locale.toString().contains("de")) {
             menu.add(0, DynamicMenuItem.ENGLISH.ordinal(), Menu.NONE, R.string.mniEnglish);
             menu.add(0, DynamicMenuItem.SPANISCH.ordinal(), Menu.NONE, "Spanisch");

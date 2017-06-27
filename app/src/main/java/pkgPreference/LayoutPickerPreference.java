@@ -40,7 +40,7 @@ public class LayoutPickerPreference extends DialogPreference implements View.OnC
 
         preferences = getSharedPreferences();
 
-        AssignmentLayout layout = AssignmentLayout.valueOf(preferences.getString(getKey(), AssignmentLayout.TAB_LAYOUT.toString()));
+        AssignmentLayout layout = AssignmentLayout.valueOf(preferences.getString(getKey(), AssignmentLayout.SLIDE_LAYOUT.toString()));
 
         selectedOption = getOptionEntityByLayout(layout);
         highlightSelectedOption(selectedOption);
