@@ -207,7 +207,7 @@ public class AddGameSelectPlayersActivity extends BaseActivity implements View.O
         //Intent myIntent = new Intent(this, AddGameEnterDataActivity.class);
         Intent myIntent;
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        String layout = sp.getString("preference_assignment_layout","TAB_LAYOUT");
+        String layout = sp.getString("preference_assignment_layout","SLIDE_LAYOUT");
 
         if(layout.equals("TAB_LAYOUT")) {
             myIntent = new Intent(this, TeamDivisionActivity.class);

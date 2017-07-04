@@ -151,7 +151,7 @@ public class TeamDivisionActivity extends BaseActivity implements OnTeamChangedL
     }
 
 
-    private void shuffle() {
+    private void shuffle() throws Exception{
         Random rand = new Random();
         TeamDivisionTab team1 = ((TeamDivisionTab) mSectionsPageAdapter.getItem(0));
         TeamDivisionTab team2 = ((TeamDivisionTab) mSectionsPageAdapter.getItem(1));

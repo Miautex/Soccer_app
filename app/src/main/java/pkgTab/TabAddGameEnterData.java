@@ -412,6 +412,8 @@ public class TabAddGameEnterData extends Fragment implements View.OnFocusChangeL
         ((BaseActivity) scoreChangedListener).showMessage(msg);
     }
 
+
+
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
         //unused

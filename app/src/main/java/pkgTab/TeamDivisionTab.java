@@ -165,7 +165,7 @@ public class TeamDivisionTab extends Fragment implements View.OnClickListener, O
         return tableTeam1.getChildCount();
     }
 
-    public void movePlayerRow(int id) {
+    public void movePlayerRow(int id) throws Exception {
         for (int i = 0; i < tableAllPlayers.getChildCount(); i++) {
             TableRow row = (TableRow) tableAllPlayers.getChildAt(i);
             if (Integer.parseInt(((TextView) row.getChildAt(0)).getText().toString()) == id) {
@@ -180,9 +180,13 @@ public class TeamDivisionTab extends Fragment implements View.OnClickListener, O
         }
     }
 
-    private int getPosition(Spinner s) {
+    private int getPosition(Spinner s) throws Exception {
         Random rand = new Random();
-        return rand.nextInt(s.getAdapter().getCount());
+        int retVal = rand.nextInt(s.getAdapter().getCount());
+        if(retVal == 0){
+            throw new Exception("Check Position of Players");
+        }
+        return retVal;
     }
 
     public ArrayList<Participation> getPlayersInTeam(){
