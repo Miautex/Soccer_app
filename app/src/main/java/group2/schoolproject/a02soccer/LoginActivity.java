@@ -218,9 +218,11 @@ public class LoginActivity extends BaseActivity
                     msg = getString(R.string.msg_UsernameOrPasswordInvalid);
                 }
                 catch (ConnectException | FileNotFoundException | SocketTimeoutException | NoRouteToHostException e) {
+                    e.printStackTrace();
                     tryLogin(false);
                 }
                 catch (Exception e) {
+                    e.printStackTrace();
                     msg = getString(R.string.msg_CannotConnectToWebservice);
                 }
                 finally {

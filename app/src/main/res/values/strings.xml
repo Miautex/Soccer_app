@@ -58,7 +58,7 @@
     <string name="preference_category_webservice">Webservice</string>
     <string name="preference_webservice_ip_title">IP</string>
     <string name="preference_webservice_ip_summary">Webservice IP Address</string>
-    <string name="preference_webservice_ip_default" translatable="false">212.152.179.116</string>
+    <string name="preference_webservice_ip_default" translatable="false">62.116.48.144</string>
     <string name="preference_webservice_port_title">Port</string>
     <string name="preference_webservice_port_summary">Webservice Port</string>
     <string name="preference_webservice_port_default" translatable="false">8080</string>

@@ -49,6 +49,7 @@ public final class WebRequestTask extends AsyncTask <RequestParameter, Void, Acc
                             fullUri.append(parameter.getUriQuery());
                         }
 
+                        System.out.println("---------------------- '" + fullUri.toString() + "'");
                         url = new URL(fullUri.toString());
                         con = (HttpURLConnection) url.openConnection();
 

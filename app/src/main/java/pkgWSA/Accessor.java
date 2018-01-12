@@ -11,7 +11,7 @@ import group2.schoolproject.a02soccer.R;
  */
 
 public final class Accessor {
-    private static String serverUrl = "http://{ip}:{port}/team02/services/";
+    private static String serverUrl = "http://{ip}:{port}/SoccerAppWeb/services/";
     private static Context ctx = null;
     private static boolean initialized = false;
 
