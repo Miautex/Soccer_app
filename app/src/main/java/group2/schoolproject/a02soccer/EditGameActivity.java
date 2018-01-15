@@ -181,11 +181,11 @@ public class EditGameActivity extends BaseActivity implements OnScoreChangedList
             }
         }
 
-        //If goalsShot of TeamA != goalsGot of TeamB and vice versa
+        /*//If goalsShot of TeamA != goalsGot of TeamB and vice versa
         if (!(goalData[0][0]==goalData[1][1] && goalData[0][1]==goalData[1][0])) {
             throw new Exception(getString(R.string.msg_InconsistentGoalData));
         }
-        else {
+        else {*/
             if (!NamePWValidator.validate(edtRemark.getText().toString())) {
                 throw new Exception(getString(R.string.msg_IllegalRemark));
             }
@@ -203,7 +203,7 @@ public class EditGameActivity extends BaseActivity implements OnScoreChangedList
                 toggleProgressBar(false);
                 openMainActivity();
             }
-        }
+        //}
     }
 
     @Override

@@ -169,12 +169,12 @@ public class AddGameEnterDataActivity extends BaseActivity implements OnScoreCha
             }
         }
 
-        ////If goalsShot of TeamA != goalsGot of TeamB and vice versa
-        //if (!(goalData[0][0]==goalData[1][1] && goalData[0][1]==goalData[1][0])) {
-        //    throw new Exception(getString(R.string.msg_InconsistentGoalData));
-        //}
-        //else {
-//
+        /*//If goalsShot of TeamA != goalsGot of TeamB and vice versa
+        if (!(goalData[0][0]==goalData[1][1] && goalData[0][1]==goalData[1][0])) {
+            throw new Exception(getString(R.string.msg_InconsistentGoalData));
+        }
+        else {*/
+
             if (!NamePWValidator.validate(edtRemark.getText().toString())) {
                 throw new Exception(getString(R.string.msg_IllegalRemark));
             }
