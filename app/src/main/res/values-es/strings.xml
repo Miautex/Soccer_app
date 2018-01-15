@@ -173,4 +173,5 @@
     <string name="qr_failed">Algo salió mal</string>
     <string name="btnQR">Código QR</string>
     <string name="title_activity_qr_scanner">Escáner QR-Code</string>
+    <string name="msg_ShuffleWarning">Por favor comprobar si equipos se válido</string>
 </resources>

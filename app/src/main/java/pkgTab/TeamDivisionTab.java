@@ -166,15 +166,20 @@ public class TeamDivisionTab extends Fragment implements View.OnClickListener, O
     }
 
     public void movePlayerRow(int id) throws Exception {
-        for (int i = 0; i < tableAllPlayers.getChildCount(); i++) {
+        boolean found = false;
+        Random rand = new Random();
+
+        for (int i = 0; i < tableAllPlayers.getChildCount() && !found; i++) {
             TableRow row = (TableRow) tableAllPlayers.getChildAt(i);
             if (Integer.parseInt(((TextView) row.getChildAt(0)).getText().toString()) == id) {
+                found = true;
                 tableAllPlayers.removeView(row);
                 informOnTeamChangedListener(Integer.parseInt(((TextView) row.getChildAt(0)).getText().toString()), true);
                 ((Button) row.getChildAt(3)).setText("-");
                 ((Button) row.getChildAt(3)).setTextColor(Color.RED);
-                int newPos = getPosition((Spinner) row.getChildAt((2)));
-                ((Spinner) row.getChildAt((2))).setSelection(newPos);
+                //set random position
+                Spinner posSp = (Spinner) row.getChildAt((2));
+                posSp.setSelection(rand.nextInt(posSp.getCount()));
                 tableTeam1.addView(row);
             }
         }

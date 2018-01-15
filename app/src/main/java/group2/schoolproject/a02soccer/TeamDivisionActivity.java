@@ -156,27 +156,22 @@ public class TeamDivisionActivity extends BaseActivity implements OnTeamChangedL
         TeamDivisionTab team1 = ((TeamDivisionTab) mSectionsPageAdapter.getItem(0));
         TeamDivisionTab team2 = ((TeamDivisionTab) mSectionsPageAdapter.getItem(1));
         ArrayList<Integer> freePlayers = ((TeamDivisionTab) mSectionsPageAdapter.getItem(0)).getFreePlayerids();
-        int diff = team1.Teammembercount() - team2.Teammembercount(); // diff isn't positive = team1, diff is positive = team2
-        if (freePlayers.size() != 0) {
-            if (diff < 0) {
-                for (int i = 0; i > diff && freePlayers.size() != 0; diff++) {
-                    team1.movePlayerRow(freePlayers.remove(rand.nextInt(freePlayers.size())));
-                }
-            } else if (diff > 0) {
-                for (int i = 0; i < diff && freePlayers.size() != 0; diff--) {
-                    team2.movePlayerRow(freePlayers.remove(rand.nextInt(freePlayers.size())));
 
+        int diff;
+        if (freePlayers.size() != 0) {
+            while (freePlayers.size() != 0) {
+                diff = team1.Teammembercount() - team2.Teammembercount();
+
+                if (diff < 0) {
+                    team1.movePlayerRow(freePlayers.remove(rand.nextInt(freePlayers.size())));
+                } else if (diff > 0){
+                    team2.movePlayerRow(freePlayers.remove(rand.nextInt(freePlayers.size())));
                 }
-            }
-            if (diff == 0 && freePlayers.size() != 0) {
-                for (int i = 0; i < freePlayers.size(); ) {
-                    if (diff == 0) {
+                else {
+                    if (rand.nextFloat() > 0.5f)
                         team1.movePlayerRow(freePlayers.remove(rand.nextInt(freePlayers.size())));
-                        diff++;
-                    } else {
+                    else
                         team2.movePlayerRow(freePlayers.remove(rand.nextInt(freePlayers.size())));
-                        diff--;
-                    }
                 }
             }
         } else {
